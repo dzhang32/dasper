@@ -1,2 +1,2 @@
 # dasper
-Detecting Aberrant Splicing Events from RNA-sequencing
+**D**etecting **A**berrant **Sp**licing **E**vents from **R**NA-sequencing
