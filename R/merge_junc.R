@@ -51,12 +51,25 @@ merge_junc <- function(junc_paths, sample_ids, load_func = .load_STAR, chr_to_fi
     }else{
 
       junc_df_all <- junc_df_all %>%
-        dplyr::full_join(junc_df, by = c("chr", "start", "end"))
+        dplyr::full_join(junc_df, by = c("chr", "start", "end", "strand"))
 
     }
 
   }
 
+  # does the number unique chr_start_ends match the total length of junc_df?
+  # if not, then warn user that some strands of junctions that have identical coords may be different
+  uniq_junc_n <- junc_df_all %>%
+    dplyr::group_by(chr, start, end) %>%
+    dplyr::summarise(n = dplyr::n())
+
+  if(any(uniq_junc_n[["n"]] != 1)){
+
+    warning("Some juncs with identical co-ords occupy more than 1 row.\nPotentially due to junctions with idenitical co-ords, but differing strands.")
+
+  }
+
+  # replace all missing values with 0
   junc_df_all[is.na(junc_df_all)] <- 0
 
   print(stringr::str_c(Sys.time(), " - done!"))
@@ -69,14 +82,16 @@ merge_junc <- function(junc_paths, sample_ids, load_func = .load_STAR, chr_to_fi
 # can be replaced if user juncs in a diff format
 .load_STAR <- function(junc_path, sample_id){
 
-  # omits strand info, STAR only uses intron motif to determine strand
-  # instead, will add later when annotating by reference
   junc_df <-
     readr::read_delim(junc_path,
                       delim = "\t",
-                      col_names = c("chr", "start", "end", "strand", "intron_motif", "annotation", "uniq_map_read_count", "multi_map_read_count", "max_overhang"),
+                      col_names = c("chr", "start", "end", "strand",
+                                    "intron_motif", "annotation", "uniq_map_read_count", "multi_map_read_count", "max_overhang"),
                       col_types = readr::cols(chr = "c", .default = "i")) %>%
-    dplyr::select(chr:end, !!sample_id := uniq_map_read_count)
+    dplyr::mutate(strand = dplyr::case_when(strand == 0 ~ "*",
+                                            strand == 1 ~ "+",
+                                            strand == 2 ~ "-")) %>%
+    dplyr::select(chr:strand, !!sample_id := uniq_map_read_count)
 
   return(junc_df)
 

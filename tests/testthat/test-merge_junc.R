@@ -12,12 +12,12 @@ merged_juncs <-
 
 test_that(".load_STAR has the correct output", {
   expect_equal(nrow(example_juncs_1), 10000)
-  expect_equal(ncol(example_juncs_1), 4)
+  expect_equal(ncol(example_juncs_1), 5)
   expect_true(tibble::is_tibble(example_juncs_1))
 })
 
 test_that("merging juncs has correct output", {
-  expect_equal(ncol(merged_juncs), 5)
+  expect_equal(ncol(merged_juncs), 6)
   expect_gte(nrow(merged_juncs), 10000)
   expect_true(tibble::is_tibble(merged_juncs))
   expect_false(any(is.na(merged_juncs)))
