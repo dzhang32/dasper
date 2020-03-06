@@ -10,3 +10,10 @@ Description: What the package does (one paragraph).
 License: What license it uses
 Encoding: UTF-8
 LazyData: true
+Suggests: 
+    testthat (>= 2.1.0)
+Imports: 
+    stringr,
+    dplyr,
+    readr
+RoxygenNote: 7.0.2
