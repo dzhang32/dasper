@@ -15,5 +15,7 @@ Suggests:
 Imports: 
     stringr,
     dplyr,
-    readr
+    readr,
+    refGenome,
+    GenomicRanges
 RoxygenNote: 7.0.2

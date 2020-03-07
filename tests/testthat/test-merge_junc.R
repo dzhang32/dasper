@@ -1,5 +1,4 @@
 context("Loading and merging junctions")
-library(dasper)
 
 example_juncs_1 <- .load_STAR("../../data-raw/example_juncs_1.txt", sample_id = "example_1")
 
