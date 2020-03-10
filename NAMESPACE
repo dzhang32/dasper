@@ -2,3 +2,4 @@
 
 export(annotate_junc_ref)
 export(merge_junc)
+import(S4Vectors)

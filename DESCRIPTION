@@ -17,5 +17,7 @@ Imports:
     dplyr,
     readr,
     refGenome,
-    GenomicRanges
+    GenomicRanges,
+    S4Vectors,
+    IRanges
 RoxygenNote: 7.0.2
