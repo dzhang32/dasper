@@ -20,3 +20,30 @@
   return(gr_start_end_list)
 
 }
+
+#' Merges two Characterlists into one with element-wise concatenation of the
+#' vectors inside each list
+#'
+#' \code{.merge_lists}
+#'
+#' @param x CharacterList
+#' @param y CharacterList
+#'
+#' @return
+.merge_lists <- function(x, y){
+
+  if(!identical(names(x), names(y))) stop("names of x and y lists should be identical!")
+
+  x_y <- c(x, y) %>% unlist()
+
+  x_y_merged <-
+    x_y %>%
+    unname() %>%
+    S4Vectors::split(f = names(x_y) %>%
+                       factor(levels = names(x))) %>% # required to keep all levels/names
+    IRanges::CharacterList() %>%
+    unique()
+
+  return(x_y_merged)
+
+}
