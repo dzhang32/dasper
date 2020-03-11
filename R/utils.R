@@ -10,12 +10,13 @@
 .get_gr_for_start_end <- function(gr){
 
   gr_start <- gr
-  GenomicRanges::end(gr_start) <- GenomicRanges::start(gr_start)
+  end(gr_start) <- start(gr_start)
 
   gr_end <- gr
-  GenomicRanges::start(gr_end) <- GenomicRanges::end(gr_end)
+  start(gr_end) <- end(gr_end)
 
-  gr_start_end_list <- list(start = gr_start, end = gr_end)
+  gr_start_end_list <- list(start = gr_start,
+                            end = gr_end)
 
   return(gr_start_end_list)
 
@@ -39,9 +40,9 @@
   x_y_merged <-
     x_y %>%
     unname() %>%
-    S4Vectors::split(f = names(x_y) %>%
+    split(f = names(x_y) %>%
                        factor(levels = names(x))) %>% # required to keep all levels/names
-    IRanges::CharacterList() %>%
+    CharacterList() %>%
     unique()
 
   return(x_y_merged)
