@@ -10,14 +10,12 @@
 #'   junction co-ordinates. Other metadata columns will be returned unchanged.
 #' @param gtf either path to gtf or object of class \code{ensemblGenome} loaded
 #'   using \code{\link{refGenome}}.
-#' @param ignore.strand whether to use the strand information when finding hits
-#'   between exons and junctions.
 #'
 #' @return junction metadata with additional columns that detail overlapping
 #'   genes/transcripts/exons and junction categories.
 #'
 #' @export
-annotate_junc_ref <- function(junc_metadata, gtf, ignore.strand = F){
+annotate_junc_ref <- function(junc_metadata, gtf){
 
   ##### Check user input is correct #####
 
@@ -48,33 +46,23 @@ annotate_junc_ref <- function(junc_metadata, gtf, ignore.strand = F){
 
   }
 
-  ref_exons <- ref@ev$gtf[ref@ev$gtf$feature == "exon",] %>% GenomicRanges::GRanges()
+  ref_exons <- ref@ev$gtf[ref@ev$gtf$feature == "exon",] %>% GRanges()
   ref_junc <- refGenome::getSpliceTable(ref)
   ref_junc <- ref_junc@ev$gtf
 
-  ##### Obtain junction annotation through overlapping exons #####
+  ##### Obtain annotation through overlapping exons #####
 
   print(stringr::str_c(Sys.time(), " - Getting junction annotation using overlapping exons..."))
 
-  # obtain the reference annotation from the overlapping exons
-  junc_metadata <- .get_ref_exons_annot(junc_metadata,
-                                        ref_exons,
-                                        ignore.strand = ignore.strand)
+  junc_metadata <- .get_ref_exons_annot(junc_metadata, ref_exons)
 
-  ##### Tidy junction annotation #####
+  ##### Tidy annotation - collapse gene annotation to per junction and infer strand #####
 
   print(stringr::str_c(Sys.time(), " - Tidying junction annotation..."))
 
-  # collapse gene/strand columns to per junc instead of per start/end for easier querying
-  for(col_to_merge in c("strand", "gene_name", "gene_id")){
+  junc_metadata <- .tidy_junc_annot(junc_metadata)
 
-    mcols(junc_metadata)[[stringr::str_c(col_to_merge, "_junc")]] <-
-      .merge_lists(mcols(junc_metadata)[[stringr::str_c(col_to_merge, "_start")]],
-                   mcols(junc_metadata)[[stringr::str_c(col_to_merge, "_end")]])
-
-  }
-
-  ##### Derive junction categories #####
+  ##### Derive junction categories using strand & overlapping exon annotation #####
 
   print(stringr::str_c(Sys.time(), " - Deriving junction categories..."))
 
@@ -103,12 +91,12 @@ annotate_junc_ref <- function(junc_metadata, gtf, ignore.strand = F){
 #'   reference.
 #'
 #' @return junction metadata with annotation.
-.get_ref_exons_annot <- function(junc_metadata, ref_exons, junc_start_end, ref_exons_start_end, ignore.strand,
+.get_ref_exons_annot <- function(junc_metadata, ref_exons,
                                  ref_cols = c("strand", "gene_name", "gene_id", "transcript_id", "exon_id")){
 
   # match junctions to exon definitions
-  GenomicRanges::start(junc_metadata) <- GenomicRanges::start(junc_metadata) - 1
-  GenomicRanges::end(junc_metadata) <- GenomicRanges::end(junc_metadata) + 1
+  start(junc_metadata) <- start(junc_metadata) - 1
+  end(junc_metadata) <- end(junc_metadata) + 1
 
   # make a gr where each junc/exon is marked by only a start or end co-ordinate
   junc_start_end <- .get_gr_for_start_end(junc_metadata)
@@ -122,10 +110,10 @@ annotate_junc_ref <- function(junc_metadata, gtf, ignore.strand = F){
 
     # avoid seqlevel non-overlap warnings
     suppressWarnings(
-      junc_exon_hits <- GenomicRanges::findOverlaps(query = junc_start_end[[start_end]],
+      junc_exon_hits <- findOverlaps(query = junc_start_end[[start_end]],
                                                     subject = ref_exons_start_end[[end_start]],
                                                     type = "equal",
-                                                    ignore.strand = ignore.strand)
+                                                    ignore.strand = F)
     )
 
     # set junc_hits to factor with levels containing all junction indexes
@@ -146,36 +134,82 @@ annotate_junc_ref <- function(junc_metadata, gtf, ignore.strand = F){
       }else{
 
         # if strand extract strand
-        ref_col_values <- GenomicRanges::strand(ref_exons)
+        ref_col_values <- strand(ref_exons)
 
       }
 
       mcols(junc_metadata)[stringr::str_c(ref_cols[j], "_", start_end)] <- ref_col_values %>%
         .[subjectHits(junc_exon_hits)] %>% # subset the exons by those that overlap juncs
         split(junc_hits_fct, drop = F) %>% # split into groups based on index of overlapping junc
-        IRanges::CharacterList() %>%
-        unique() # parrallelised unique - remove duplicates in for example strand if junc overlaps >1 exon
+        CharacterList() %>%
+        unique() # parrallelised unique - remove duplicates when for example strand if junc overlaps >1 exon
 
     }
   }
 
   # convert junc co-ords back to intron definitions
-  GenomicRanges::start(junc_metadata) <- GenomicRanges::start(junc_metadata) + 1
-  GenomicRanges::end(junc_metadata) <- GenomicRanges::end(junc_metadata) - 1
+  start(junc_metadata) <- start(junc_metadata) + 1
+  end(junc_metadata) <- end(junc_metadata) - 1
 
   return(junc_metadata)
 
 }
 
-#' Classifies junctions
+#' Tidy junction annotation
 #'
-#' \code{.classify_junc} categories junctions into "annotated",
-#' "novel_acceptor", "novel_donor", "novel_combo", "exon_skip", "ambig_gene" and
-#' "none" using information from annotation and strand. Adds two additional columns
+#' \code{.tidy_junc_annot} merges the gene and strand details from the start and
+#' end into one column per junction. Then, combines strand information from the
+#' original rna-seq based and that from overlapping annotation.
 #'
 #' @inheritParams annotate_junc_ref
 #'
+#' @param cols_to_merge
+#'
 #' @return
+.tidy_junc_annot <- function(junc_metadata, cols_to_merge = c("strand", "gene_name", "gene_id")){
+
+  # collapse gene/strand columns to per junc instead of per start/end for easier querying
+  for(col in cols_to_merge){
+
+    mcols(junc_metadata)[[stringr::str_c(col, "_junc")]] <-
+      .merge_lists(mcols(junc_metadata)[[stringr::str_c(col, "_start")]],
+                   mcols(junc_metadata)[[stringr::str_c(col, "_end")]])
+
+  }
+
+  # replacing empty strands ("none") and those with >1 strand ("ambig_gene") with "*"
+  # this ensures each vector in CharacterList is of length 1
+  # so can be unlisted and length(chr_list) == length(unlist(chr_list))
+  mcols(junc_metadata)[["strand_junc"]][lengths(mcols(junc_metadata)[["strand_junc"]]) == 0] <- "*"
+  mcols(junc_metadata)[["strand_junc"]][lengths(mcols(junc_metadata)[["strand_junc"]]) > 1] <- "*"
+  strand_annot <- unlist(mcols(junc_metadata)[["strand_junc"]])
+
+  # compare the strand obtained from annotation strand to original strand
+  orig_strand <- as.character(strand(junc_metadata))
+
+  # salvage situations when either original or annotation strand is "*" and the other is "+" or "-"
+  strand(junc_metadata) <- dplyr::case_when(orig_strand == strand_annot ~ orig_strand,
+                                            orig_strand == "*" & strand_annot != "*" ~ strand_annot,
+                                            strand_annot == "*" & orig_strand != "*" ~ orig_strand)
+
+  # remove to avoid confusion between strand() and strand_junc
+  mcols(junc_metadata)[["strand_junc"]] <- NULL
+
+  return(junc_metadata)
+
+}
+
+#' Classifys junctions
+#'
+#' \code{.classify_junc} categories junctions into "annotated",
+#' "novel_acceptor", "novel_donor", "novel_combo", "exon_skip", "ambig_gene" and
+#' "none" using information from annotation and strand. Adds two additional
+#' columns
+#'
+#' @inheritParams annotate_junc_ref
+#'
+#' @return junction metadata with additional columns informing whether that
+#'   junction is present within annotation and it's category.
 .classify_junc <- function(junc_metadata, ref_junc){
 
   # find whether junction is found in splice table
@@ -183,17 +217,18 @@ annotate_junc_ref <- function(junc_metadata, gtf, ignore.strand = F){
     dplyr::rename(start = lend, end = rstart) %>%
     dplyr::mutate(start = start + 1, # match exon boundaries to intron co-ords
                   end = end -1) %>%
-    GenomicRanges::GRanges() %>%
+    GRanges() %>%
     unique()
 
   # avoid diff seqlevels warning
-  suppressWarnings(annot_hits <- GenomicRanges::findOverlaps(query = junc_metadata,
+  suppressWarnings(annot_hits <- findOverlaps(query = junc_metadata,
                                                              subject = ref_junc_gr,
                                                              type = "equal"))
 
   mcols(junc_metadata)["junc_in_ref"] <- 1:length(junc_metadata) %in% queryHits(annot_hits)
 
   # classify junctions
+  strand_junc <- as.character(strand(junc_metadata))
   mcols(junc_metadata)["junc_cat"] <-
     dplyr::case_when(junc_metadata$junc_in_ref == T ~ "annotated",
                      lengths(junc_metadata$gene_name_junc) == 0 ~ "none",
@@ -201,10 +236,10 @@ annotate_junc_ref <- function(junc_metadata, gtf, ignore.strand = F){
                      lengths(junc_metadata$gene_name_start) > 0 & lengths(junc_metadata$gene_name_end) > 0 &
                        any(junc_metadata$transcript_id_start %in% junc_metadata$transcript_id_end) ~ "novel_exon_skip",
                      lengths(junc_metadata$gene_name_start) > 0 & lengths(junc_metadata$gene_name_end) > 0 ~ "novel_combo",
-                     all(junc_metadata$strand_junc == "+") & lengths(junc_metadata$gene_name_start) > 0 ~ "novel_acceptor",
-                     all(junc_metadata$strand_junc == "-") & lengths(junc_metadata$gene_name_start) > 0 ~ "novel_donor",
-                     all(junc_metadata$strand_junc == "+") & lengths(junc_metadata$gene_name_end) > 0 ~ "novel_donor",
-                     all(junc_metadata$strand_junc == "-") & lengths(junc_metadata$gene_name_end) > 0 ~ "novel_acceptor")
+                     strand_junc == "+" & lengths(junc_metadata$gene_name_start) > 0 ~ "novel_acceptor",
+                     strand_junc == "-" & lengths(junc_metadata$gene_name_start) > 0 ~ "novel_donor",
+                     strand_junc == "+" & lengths(junc_metadata$gene_name_end) > 0 ~ "novel_donor",
+                     strand_junc == "-" & lengths(junc_metadata$gene_name_end) > 0 ~ "novel_acceptor")
 
   return(junc_metadata)
 
