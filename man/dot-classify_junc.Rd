@@ -2,7 +2,7 @@
 % Please edit documentation in R/annotate_junc.R
 \name{.classify_junc}
 \alias{.classify_junc}
-\title{Classifies junctions}
+\title{Classifys junctions}
 \usage{
 .classify_junc(junc_metadata, ref_junc)
 }
@@ -12,10 +12,12 @@
 junction co-ordinates. Other metadata columns will be returned unchanged.}
 }
 \value{
-
+junction metadata with additional columns informing whether that
+  junction is present within annotation and it's category.
 }
 \description{
 \code{.classify_junc} categories junctions into "annotated",
 "novel_acceptor", "novel_donor", "novel_combo", "exon_skip", "ambig_gene" and
-"none" using information from annotation and strand. Adds two additional columns
+"none" using information from annotation and strand. Adds two additional
+columns
 }

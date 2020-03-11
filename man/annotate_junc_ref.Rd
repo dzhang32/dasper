@@ -4,7 +4,7 @@
 \alias{annotate_junc_ref}
 \title{Annotate junctions using reference annotation}
 \usage{
-annotate_junc_ref(junc_metadata, gtf, ignore.strand = F)
+annotate_junc_ref(junc_metadata, gtf)
 }
 \arguments{
 \item{junc_metadata}{junction metadata in a
@@ -13,9 +13,6 @@ junction co-ordinates. Other metadata columns will be returned unchanged.}
 
 \item{gtf}{either path to gtf or object of class \code{ensemblGenome} loaded
 using \code{\link{refGenome}}.}
-
-\item{ignore.strand}{whether to use the strand information when finding hits
-between exons and junctions.}
 }
 \value{
 junction metadata with additional columns that detail overlapping
@@ -25,5 +22,5 @@ junction metadata with additional columns that detail overlapping
 \code{annotate_junc_ref} annotates junctions by whether their start and end
 position precisely overlap with a known exon boundary. On this basis, then
 categorises junctions into "annotated", "novel_acceptor", "novel_donor",
-"novel_combo", "exon_skip", "ambig_gene" and "none".
+"novel_combo", "novel_exon_skip", "ambig_gene" and "none".
 }

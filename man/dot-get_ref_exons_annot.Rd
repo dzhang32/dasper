@@ -7,9 +7,6 @@
 .get_ref_exons_annot(
   junc_metadata,
   ref_exons,
-  junc_start_end,
-  ref_exons_start_end,
-  ignore.strand,
   ref_cols = c("strand", "gene_name", "gene_id", "transcript_id", "exon_id")
 )
 }
@@ -20,17 +17,14 @@ junction co-ordinates. Other metadata columns will be returned unchanged.}
 
 \item{ref_exons}{annotated exons imported from the gtf.}
 
+\item{ref_cols}{column names matching the annotation columns from the
+reference.}
+
 \item{junc_start_end}{start and end of the junctions returned from
 \code{\link{.get_gr_for_start_end}}.}
 
 \item{ref_exons_start_end}{start and end of the exons returned from
 \code{\link{.get_gr_for_start_end}}.}
-
-\item{ignore.strand}{whether to use the strand information when finding hits
-between exons and junctions.}
-
-\item{ref_cols}{column names matching the annotation columns from the
-reference.}
 }
 \value{
 junction metadata with annotation.
