@@ -225,21 +225,30 @@ annotate_junc_ref <- function(junc_metadata, gtf){
                                                              subject = ref_junc_gr,
                                                              type = "equal"))
 
-  mcols(junc_metadata)["junc_in_ref"] <- 1:length(junc_metadata) %in% queryHits(annot_hits)
+  mcols(junc_metadata)[["junc_in_ref"]] <- 1:length(junc_metadata) %in% queryHits(annot_hits)
 
   # classify junctions
+  # separate strand out for readability
   strand_junc <- as.character(strand(junc_metadata))
-  mcols(junc_metadata)["junc_cat"] <-
-    dplyr::case_when(junc_metadata$junc_in_ref == T ~ "annotated",
-                     lengths(junc_metadata$gene_name_junc) == 0 ~ "none",
-                     lengths(junc_metadata$gene_name_junc) > 1 ~ "ambig_gene", # after these checks lengths(gene_name_junc) must equal 1
-                     lengths(junc_metadata$gene_name_start) > 0 & lengths(junc_metadata$gene_name_end) > 0 &
-                       any(junc_metadata$transcript_id_start %in% junc_metadata$transcript_id_end) ~ "novel_exon_skip",
-                     lengths(junc_metadata$gene_name_start) > 0 & lengths(junc_metadata$gene_name_end) > 0 ~ "novel_combo",
-                     strand_junc == "+" & lengths(junc_metadata$gene_name_start) > 0 ~ "novel_acceptor",
-                     strand_junc == "-" & lengths(junc_metadata$gene_name_start) > 0 ~ "novel_donor",
-                     strand_junc == "+" & lengths(junc_metadata$gene_name_end) > 0 ~ "novel_donor",
-                     strand_junc == "-" & lengths(junc_metadata$gene_name_end) > 0 ~ "novel_acceptor")
+  mcols(junc_metadata)[["junc_cat"]] <-
+    dplyr::case_when(mcols(junc_metadata)[["junc_in_ref"]] == T ~ "annotated",
+                     lengths(mcols(junc_metadata)[["gene_name_junc"]]) == 0 ~ "none",
+                     lengths(mcols(junc_metadata)[["gene_name_junc"]]) > 1 ~ "ambig_gene", # after these checks lengths(gene_name_junc) must equal 1
+                     lengths(mcols(junc_metadata)[["gene_name_start"]]) > 0 & lengths(mcols(junc_metadata)[["gene_name_end"]]) > 0 ~ "novel_combo",
+                     strand_junc == "+" & lengths(mcols(junc_metadata)[["gene_name_start"]]) > 0 ~ "novel_acceptor",
+                     strand_junc == "-" & lengths(mcols(junc_metadata)[["gene_name_start"]]) > 0 ~ "novel_donor",
+                     strand_junc == "+" & lengths(mcols(junc_metadata)[["gene_name_end"]]) > 0 ~ "novel_donor",
+                     strand_junc == "-" & lengths(mcols(junc_metadata)[["gene_name_end"]]) > 0 ~ "novel_acceptor")
+
+  # split the novel_combo into novel_combo and novel_exon_skip
+  # do this separately to save time - case_when evaluates each condition across all junctions
+  # since each column is called as mcols(junc_metadata)[["col"]]
+  # converting this data_frame() parses CharacterLists to list(), so also non-optimal solution
+  mcols(junc_metadata)[["index_tmp"]] <- 1:length(junc_metadata)
+  novel_combo <- junc_metadata[mcols(junc_metadata)[["junc_cat"]] == "novel_combo"]
+  exon_skip_indexes <- mcols(novel_combo)[["index_tmp"]][any(novel_combo$transcript_id_start %in% novel_combo$transcript_id_end)]
+  mcols(junc_metadata)[["junc_cat"]][exon_skip_indexes] <- "novel_exon_skip"
+  mcols(junc_metadata)[["index_tmp"]] <- NULL
 
   return(junc_metadata)
 
