@@ -3,11 +3,15 @@
 #' A dataset containing the example junction data for 2 samples outputted from
 #' \code{\link{merge_junc}} used for vignettes and testing.
 #'
-#' @format A data frame with 19733 rows and 5 variables: \describe{
+#' @format list detailing 19733 junctions with metadata:
+#' \describe{
 #'   \item{chr}{chromsome}
 #'   \item{start}{first position of intron}
 #'   \item{end}{last position of intron}
 #'   \item{strand}{strand of intron}
+#'   }
+#'   and counts:
+#' \describe{
 #'   \item{eg1}{raw junction counts for sample "eg1"}
 #'   \item{eg2}{raw junction counts for sample "eg1"}
 #'   }

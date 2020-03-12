@@ -2,7 +2,7 @@ context("Loading and merging junctions")
 
 example_juncs_1 <- .load_STAR("../../data-raw/example_juncs_1.txt", sample_id = "example_1")
 
-merged_juncs <-
+juncs <-
   merge_junc(junc_paths = c("../../data-raw/example_juncs_1.txt",
                             "../../data-raw/example_juncs_2.txt"),
              sample_ids = c("eg1", "eg2"),
@@ -16,10 +16,11 @@ test_that(".load_STAR has the correct output", {
 })
 
 test_that("merging juncs has correct output", {
-  expect_equal(ncol(merged_juncs), 6)
-  expect_gte(nrow(merged_juncs), 10000)
-  expect_true(tibble::is_tibble(merged_juncs))
-  expect_false(any(is.na(merged_juncs)))
+  expect_gte(nrow(juncs$raw_count), 10000)
+  expect_true(is.list(juncs))
+  expect_match(class(juncs$metadata), "GRanges")
+  expect_true(tibble::is_tibble(juncs$raw_count))
+  expect_false(any(is.na(juncs)))
 })
 
 test_that("merging juncs has catches errors", {

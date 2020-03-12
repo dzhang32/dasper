@@ -69,12 +69,20 @@ merge_junc <- function(junc_paths, sample_ids, load_func = .load_STAR, chr_to_fi
 
   }
 
-  # replace all missing values with 0
+  # replace all missing count values with 0
   junc_df_all[is.na(junc_df_all)] <- 0
+
+  # structure as metadata and counts
+  juncs <-
+    list(metadata = junc_df_all %>%
+           dplyr::select(chr, start, end, strand) %>%
+           GRanges(),
+         raw_count = junc_df_all %>%
+           dplyr::select(-chr, -start, -end, -strand))
 
   print(stringr::str_c(Sys.time(), " - done!"))
 
-  return(junc_df_all)
+  return(juncs)
 
 }
 

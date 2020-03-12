@@ -3,13 +3,7 @@ context("Annotating juncs with reference")
 load("../../data/example_juncs.rda")
 load("example_gtf.rda")
 
-example_juncs_gr <-
-  example_juncs %>%
-  dplyr::select(chr, start, end, strand) %>%
-  as.data.frame() %>%
-  GRanges()
-
-junc_metadata <- annotate_junc_ref(junc_metadata = example_juncs_gr, gtf = ref)
+junc_metadata <- annotate_junc_ref(junc_metadata = example_juncs[["metadata"]], gtf = ref)
 
 test_that("tidying annotation correctly infers strand", {
 
@@ -23,16 +17,16 @@ test_that("tidying annotation correctly infers strand", {
 
 })
 
-test_that("the general junc_metadata output lookss correct", {
+test_that("the general junc_metadata output looks correct", {
   expect_match(class(junc_metadata), "GRanges")
-  expect_equal(length(junc_metadata), length(example_juncs_gr))
+  expect_equal(length(junc_metadata), length(example_juncs[["metadata"]]))
   expect_false(any(is.na(junc_metadata$junc_cat)))
 })
 
 test_that("annotate_junc_ref catches user-input errors", {
   expect_error(annotate_junc_ref(junc_metadata = example_juncs, gtf = ref),
                "junction_metadata must be in a GRanges format")
-  expect_error(annotate_junc_ref(junc_metadata = example_juncs_gr, gtf = 40),
+  expect_error(annotate_junc_ref(junc_metadata = example_juncs[["metadata"]], gtf = 40),
                "gtf must either be a path to the .gtf file or a pre-loaded gtf of class ensemblGenome")
 })
 
