@@ -13,7 +13,7 @@
 \arguments{
 \item{junc_metadata}{junction metadata in a
 \code{\link[GenomicRanges]{GRanges}} format. The essential component is the
-junction co-ordinates. Other metadata columns will be returned unchanged.}
+junction co-ordinates.}
 
 \item{ref_exons}{annotated exons imported from the gtf.}
 

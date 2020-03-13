@@ -9,7 +9,7 @@ annotate_junc_ref(junc_metadata, gtf)
 \arguments{
 \item{junc_metadata}{junction metadata in a
 \code{\link[GenomicRanges]{GRanges}} format. The essential component is the
-junction co-ordinates. Other metadata columns will be returned unchanged.}
+junction co-ordinates.}
 
 \item{gtf}{either path to gtf or object of class \code{ensemblGenome} loaded
 using \code{\link{refGenome}}.}

@@ -7,7 +7,7 @@ juncs <-
                             "../../data-raw/example_juncs_2.txt"),
              sample_ids = c("eg1", "eg2"),
              load_func = .load_STAR,
-             chr_to_filter = NULL)
+             chr_to_filter = c(1:22, "X", "Y", "M"))
 
 test_that(".load_STAR has the correct output", {
   expect_equal(nrow(example_juncs_1), 10000)
