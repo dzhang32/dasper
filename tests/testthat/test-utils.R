@@ -1,4 +1,4 @@
-context("Testing common helper functions")
+context("Testing common utility functions")
 
 gr <- GRanges((stringr::str_c("chr1:", 1:10, "-", 11:20)))
 
