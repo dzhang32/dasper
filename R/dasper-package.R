@@ -5,7 +5,7 @@ NULL
 
 #' @import S4Vectors
 #' @importFrom magrittr %>%
-#' @importFrom GenomicRanges seqnames start end strand start<- end<- strand<-
+#' @importFrom GenomicRanges seqnames start end strand width start<- end<- strand<-
 #' @importFrom GenomicRanges findOverlaps GRanges
 #' @importFrom IRanges CharacterList
 NULL
