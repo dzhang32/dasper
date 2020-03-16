@@ -28,6 +28,8 @@ filter_junc <- function(junc_metadata, raw_count,
   # keep in all junctions by default
   junc_filter <- !logical(length = length(junc_metadata))
 
+  print(stringr::str_c(Sys.time(), " - Filtering junctions..."))
+
   if(!is.null(count_thresh)){
 
     count_filter <- .get_count_filter(raw_count, count_thresh, n_samp)
@@ -43,7 +45,7 @@ filter_junc <- function(junc_metadata, raw_count,
 
   if(!is.null(junc_cats)){
 
-    # check that user has inputted cats that are expected
+    # check that user has inputted junction categories that are expected
     exp_junc_cats <- c("annotated", "novel_acceptor", "novel_donor", "novel_exon_skip", "novel_combo", "ambig_gene", "none")
     mismatch <- junc_cats[!(junc_cats %in% exp_junc_cats)]
 
@@ -64,6 +66,8 @@ filter_junc <- function(junc_metadata, raw_count,
     junc_filter <- junc_filter & !(1:length(junc_filter) %in% queryHits(hits))
 
   }
+
+  print(stringr::str_c(Sys.time(), " - done!"))
 
   juncs_filtered <- list(metadata = junc_metadata[junc_filter],
                          raw_count = raw_count[junc_filter,])
