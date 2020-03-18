@@ -9,9 +9,7 @@
 #'
 #' @inheritParams annotate_junc_ref
 #'
-#' @return list containing the junction metadata with additional details of
-#'   cluster definitions and dataframes containing the raw and normalised
-#'   counts.
+#' @return normalised junction counts for each sample as a dataframe.
 #'
 #' @export
 normalise_junc <- function(junc_metadata, raw_count){
@@ -26,14 +24,17 @@ normalise_junc <- function(junc_metadata, raw_count){
 
   print(stringr::str_c(Sys.time(), (" - Normalising junction counts...")))
 
-  junc_metadata <- .normalise_count(junc_metadata, raw_count)
+  norm_count <- .normalise_count(junc_metadata, raw_count)
 
   print(stringr::str_c(Sys.time(), (" - done!")))
 
-  return(junc_raw_norm_metadata_list)
+  juncs <- list(metadata = junc_metadata,
+                raw_count = raw_count,
+                norm_count = norm_count)
+
+  return(juncs)
 
 }
-
 
 #' Obtain junction clusters
 #'
@@ -130,7 +131,7 @@ normalise_junc <- function(junc_metadata, raw_count){
   norm_count <- norm_count %>%
     dplyr::as_tibble()
 
-  # convert NA's (junctions )
+  # convert NA's (junctions that have 0 reads in their cluster) to 0
   norm_count[is.na(norm_count)] <- 0
 
   return(norm_count)
