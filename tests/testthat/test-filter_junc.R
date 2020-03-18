@@ -1,4 +1,4 @@
-context("Testing junction filter")
+context("Testing junction filtering")
 
 load("example_juncs_w_annot.rda")
 

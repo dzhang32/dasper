@@ -1,4 +1,4 @@
-context("Loading and merging junctions")
+context("Testing the merging of junctions")
 
 example_juncs_1 <- .load_STAR("../../data-raw/example_juncs_1.txt", sample_id = "example_1")
 

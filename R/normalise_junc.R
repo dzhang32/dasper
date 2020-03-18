@@ -1,15 +1,15 @@
 #' Normalise junction counts
 #'
-#' \code{normalise_junc} takes as input the junction metadata and counts for
-#' each samples and normalises the counts for each sample. First, each junctions
-#' is clustered by finding all other junctions that share an acceptor or donor
-#' position. Then, a proportion spliced in is calculated for each junction by
-#' dividing the junction count the total number of counts in the associated
-#' cluster.
+#' \code{normalise_junc} normalises the junction counts for each sample. First,
+#' each junction is clustered by finding all other junctions that share with it
+#' an acceptor or donor position. Then, a proportion-spliced-in is calculated
+#' for each junction by dividing the raw junction count by the total number of
+#' counts in it's associated cluster.
 #'
 #' @inheritParams annotate_junc_ref
 #'
-#' @return normalised junction counts for each sample as a dataframe.
+#' @return list containing metadata in a \code{\link[GenomicRanges]{GRanges}}
+#'   format and dataframes detailing raw and normalised counts.
 #'
 #' @export
 normalise_junc <- function(junc_metadata, raw_count){
@@ -46,8 +46,6 @@ normalise_junc <- function(junc_metadata, raw_count){
 #' @inheritParams annotate_junc_ref
 #'
 #' @return junction metadata with cluster definitions.
-#'
-#' @export
 .get_junc_cluster <- function(junc_metadata){
 
   # find overlaps between the junction starts and ends
@@ -93,8 +91,6 @@ normalise_junc <- function(junc_metadata, raw_count){
 #'
 #' @return dataframe matching the \code{raw_count} with columns as samples, rows
 #'   as junctions with elements replaced with the normalised counts.
-#'
-#' @export
 .normalise_count <- function(junc_metadata, raw_count){
 
   norm_count <- matrix(ncol = ncol(raw_count),

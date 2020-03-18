@@ -16,8 +16,8 @@ filter_junc(
 }
 \arguments{
 \item{junc_metadata}{junction metadata in a
-\code{\link[GenomicRanges]{GRanges}} format. The essential component is the
-junction co-ordinates.}
+\code{\link[GenomicRanges]{GRanges}} format, the essential component being
+the junction co-ordinates.}
 
 \item{raw_count}{dataframe with columns as samples, rows as junctions, cells
 as the raw count.}
@@ -28,19 +28,20 @@ filtered out.}
 \item{n_samp}{the number of samples that have to express the junction above
 the \code{count_thresh}.}
 
-\item{junc_width}{numeric vector of length = 2. The first element denoting
-the lower limit of junction width and the second the upper limit. Junctions
+\item{junc_width}{numeric vector of length 2. The first element denoting the
+lower limit of junction width and the second the upper limit. Junctions
 with widths outside this range will be filtered out.}
 
 \item{blacklist_gr}{any junctions overlapping this set of regions (in a
-GRanges format) will be filtered out.}
+\code{\link[GenomicRanges]{GRanges}} format) will be filtered out.}
 }
 \value{
-list containing the filtered set of junctions. Metadata in a GRanges
-  format and raw counts as a dataframe.
+list containing the filtered set of junctions - metadata in a
+  \code{\link[GenomicRanges]{GRanges}} format and raw counts as a dataframe.
 }
 \description{
-\code{filter_junc} filters out noisy junctions based on raw counts,
-junc_width/width of junctions, annotation of the junction and whether the
-junction overlaps with a set of (blacklist) regions.
+\code{filter_junc} filters out "noisy" junctions based on raw counts, the
+width of junctions, annotation category of the junction returned from
+\code{\link{annotate_junc_ref}} and whether the junction overlaps with a set
+of (blacklist) regions.
 }

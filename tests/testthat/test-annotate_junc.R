@@ -1,4 +1,4 @@
-context("Annotating juncs with reference")
+context("Testing the annotation of junctions")
 
 load("../../data/example_juncs.rda")
 load("example_gtf.rda")

@@ -1,8 +1,9 @@
 #' Filter junctions
 #'
-#' \code{filter_junc} filters out noisy junctions based on raw counts,
-#' junc_width/width of junctions, annotation of the junction and whether the
-#' junction overlaps with a set of (blacklist) regions.
+#' \code{filter_junc} filters out "noisy" junctions based on raw counts, the
+#' width of junctions, annotation category of the junction returned from
+#' \code{\link{annotate_junc_ref}} and whether the junction overlaps with a set
+#' of (blacklist) regions.
 #'
 #' @inheritParams annotate_junc_ref
 #'
@@ -12,14 +13,14 @@
 #'   filtered out.
 #' @param n_samp the number of samples that have to express the junction above
 #'   the \code{count_thresh}.
-#' @param junc_width numeric vector of length = 2. The first element denoting
-#'   the lower limit of junction width and the second the upper limit. Junctions
+#' @param junc_width numeric vector of length 2. The first element denoting the
+#'   lower limit of junction width and the second the upper limit. Junctions
 #'   with widths outside this range will be filtered out.
 #' @param blacklist_gr any junctions overlapping this set of regions (in a
-#'   GRanges format) will be filtered out.
+#'   \code{\link[GenomicRanges]{GRanges}} format) will be filtered out.
 #'
-#' @return list containing the filtered set of junctions. Metadata in a GRanges
-#'   format and raw counts as a dataframe.
+#' @return list containing the filtered set of junctions - metadata in a
+#'   \code{\link[GenomicRanges]{GRanges}} format and raw counts as a dataframe.
 #'
 #' @export
 filter_junc <- function(junc_metadata, raw_count,

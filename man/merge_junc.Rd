@@ -14,17 +14,19 @@ merge_junc(
 \arguments{
 \item{junc_paths}{paths to files containing junction data.}
 
-\item{sample_ids}{sample ids in the same order as \code{junc_paths}.}
+\item{sample_ids}{sample ids in the same order as \code{junc_paths} which
+will be used as column names.}
 
 \item{load_func}{function to load in junctions. By default, requires STAR
-formatted junctions. But this could be switched dependent on user-specific
-junction data format.}
+formatted junctions (SJ.out). But this can be switched dependent on the
+format of the user's junction data.}
 
-\item{chr_to_filter}{chromosomes you would like to keep. By default, no
-filter is applied.}
+\item{chr_to_filter}{chromosomes to keep. By default, no filter is applied.}
 }
 \value{
-junction co-ordinates and the raw counts from each sample.
+list containing the junction co-ordinates as a
+  \code{\link[GenomicRanges]{GRanges}} object and a dataframe with raw counts
+  for each sample.
 }
 \description{
 \code{merge_junc} merges the junction data from several samples. Uses a

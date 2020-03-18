@@ -11,8 +11,8 @@
 }
 \arguments{
 \item{junc_metadata}{junction metadata in a
-\code{\link[GenomicRanges]{GRanges}} format. The essential component is the
-junction co-ordinates.}
+\code{\link[GenomicRanges]{GRanges}} format, the essential component being
+the junction co-ordinates.}
 
 \item{cols_to_merge}{}
 }

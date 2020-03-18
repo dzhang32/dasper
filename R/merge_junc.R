@@ -5,14 +5,16 @@
 #' sample.
 #'
 #' @param junc_paths paths to files containing junction data.
-#' @param sample_ids sample ids in the same order as \code{junc_paths}.
+#' @param sample_ids sample ids in the same order as \code{junc_paths} which
+#'   will be used as column names.
 #' @param load_func function to load in junctions. By default, requires STAR
-#'   formatted junctions. But this could be switched dependent on user-specific
-#'   junction data format.
-#' @param chr_to_filter chromosomes you would like to keep. By default, no
-#'   filter is applied.
+#'   formatted junctions (SJ.out). But this can be switched dependent on the
+#'   format of the user's junction data.
+#' @param chr_to_filter chromosomes to keep. By default, no filter is applied.
 #'
-#' @return junction co-ordinates and the raw counts from each sample.
+#' @return list containing the junction co-ordinates as a
+#'   \code{\link[GenomicRanges]{GRanges}} object and a dataframe with raw counts
+#'   for each sample.
 #'
 #' @export
 merge_junc <- function(junc_paths, sample_ids, load_func = .load_STAR, chr_to_filter = NULL){

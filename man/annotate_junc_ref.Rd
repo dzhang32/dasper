@@ -8,19 +8,21 @@ annotate_junc_ref(junc_metadata, gtf)
 }
 \arguments{
 \item{junc_metadata}{junction metadata in a
-\code{\link[GenomicRanges]{GRanges}} format. The essential component is the
-junction co-ordinates.}
+\code{\link[GenomicRanges]{GRanges}} format, the essential component being
+the junction co-ordinates.}
 
 \item{gtf}{either path to gtf or object of class \code{ensemblGenome} loaded
-using \code{\link{refGenome}}.}
+using \code{refGenome}.}
 }
 \value{
-junction metadata with additional columns that detail overlapping
-  genes/transcripts/exons and junction categories.
+junction metadata as a \code{\link[GenomicRanges]{GRanges}} object
+  with additional columns that detail overlapping genes/transcripts/exons and
+  junction categories.
 }
 \description{
 \code{annotate_junc_ref} annotates junctions by whether their start and end
-position precisely overlap with a known exon boundary. On this basis, then
-categorises junctions into "annotated", "novel_acceptor", "novel_donor",
-"novel_combo", "novel_exon_skip", "ambig_gene" and "none".
+position precisely overlaps with a known exon boundary. Using this
+information along with the strand, junctions are categorised into
+"annotated", "novel_acceptor", "novel_donor", "novel_combo",
+"novel_exon_skip", "ambig_gene" and "none".
 }
