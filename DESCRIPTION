@@ -8,7 +8,10 @@ Authors@R:
            role = c("aut", "cre"),
            email = "david.zhang@ucl.ac.uk",
            comment = c(ORCID = "0000-0003-2382-8460"))
-Description: What the package does (one paragraph).
+Description: The aim of dasper is to detect aberrant splicing events 
+  from RNA-seq data. By comparing patient RNA-seq data to a set of user-defined 
+  controls, dasper will score each splicing event in the patient with an anomaly 
+  score representing the degree to which that splicing event looks abnormal.
 License: Artistic-2.0
 URL: https://github.com//dzhang32/dasper
 BugReports: https://support.bioconductor.org/t/dasper

@@ -17,11 +17,11 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![BioC status](http://www.bioconductor.org/shields/build/release/bioc/dasper.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/dasper)
 [![Codecov test coverage](https://codecov.io/gh/dzhang32/dasper/branch/master/graph/badge.svg)](https://codecov.io/gh/dzhang32/dasper?branch=master)
+[![BioC status](http://www.bioconductor.org/shields/build/release/bioc/dasper.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/dasper)
 <!-- badges: end -->
 
-The goal of `dasper` is to 
+The aim of `dasper` is to **d**etect **a**berrant **sp**licing **e**vents from **R**NA-seq data. By comparing patient RNA-seq data to a set of user-defined controls, `dasper` will score each splicing event in the patient with an anomaly score representing the degree to which that splicing event looks abnormal. This package is still in the experimental stage of development currently and subject to major changes in the future.
 
 ## Installation instructions
 
@@ -40,6 +40,7 @@ And the development version from [GitHub](https://github.com/) with:
 ```{r 'install_dev', eval = FALSE}
 BiocManager::install("dzhang32/dasper")
 ```
+
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
@@ -55,7 +56,7 @@ Below is the citation output from using `citation('dasper')` in R. Please
 run this yourself to check for any updates on how to cite __dasper__.
 
 ```{r 'citation', eval = requireNamespace('dasper')}
-print(citation('dasper'), bibtex = TRUE)
+print(citation("dasper"), bibtex = TRUE)
 ```
 
 Please note that the `dasper` was only made possible thanks to many other R and bioinformatics software authors, which are cited either in the vignettes and/or the paper(s) describing this package.

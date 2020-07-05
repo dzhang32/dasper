@@ -4,9 +4,9 @@ dasper
 ======
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) [![BioC status](http://www.bioconductor.org/shields/build/release/bioc/dasper.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/dasper) [![Codecov test coverage](https://codecov.io/gh/dzhang32/dasper/branch/master/graph/badge.svg)](https://codecov.io/gh/dzhang32/dasper?branch=master) <!-- badges: end -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) [![Codecov test coverage](https://codecov.io/gh/dzhang32/dasper/branch/master/graph/badge.svg)](https://codecov.io/gh/dzhang32/dasper?branch=master) [![BioC status](http://www.bioconductor.org/shields/build/release/bioc/dasper.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/dasper) <!-- badges: end -->
 
-The goal of `dasper` is to
+The aim of `dasper` is to **d**etect **a**berrant **sp**licing **e**vents from **R**NA-seq data. By comparing patient RNA-seq data to a set of user-defined controls, `dasper` will score each splicing event in the patient with an anomaly score representing the degree to which that splicing event looks abnormal. This package is still in the experimental stage of development currently and subject to major changes in the future.
 
 Installation instructions
 -------------------------
@@ -43,39 +43,22 @@ Citation
 Below is the citation output from using `citation('dasper')` in R. Please run this yourself to check for any updates on how to cite **dasper**.
 
 ``` r
-print(citation('dasper'), bibtex = TRUE)
+print(citation("dasper"), bibtex = TRUE)
 #> 
-#> dzhang32 (2020). _Detecting abberant splicing events from
-#> RNA-sequencing data_. doi: 10.18129/B9.bioc.dasper (URL:
-#> https://doi.org/10.18129/B9.bioc.dasper),
-#> https://github.com/dzhang32/dasper - R package version 0.99.0, <URL:
-#> http://www.bioconductor.org/packages/dasper>.
+#> To cite package 'dasper' in publications use:
+#> 
+#>   David Zhang (2020). dasper: Detecting abberant splicing events from
+#>   RNA-sequencing data. R package version 0.99.0.
+#>   https://github.com//dzhang32/dasper
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
-#>     title = {Detecting abberant splicing events from RNA-sequencing data},
-#>     author = {{dzhang32}},
+#>     title = {dasper: Detecting abberant splicing events from RNA-sequencing data},
+#>     author = {David Zhang},
 #>     year = {2020},
-#>     url = {http://www.bioconductor.org/packages/dasper},
-#>     note = {https://github.com/dzhang32/dasper - R package version 0.99.0},
-#>     doi = {10.18129/B9.bioc.dasper},
-#>   }
-#> 
-#> dzhang32 (2020). "Detecting abberant splicing events from
-#> RNA-sequencing data." _bioRxiv_. doi: 10.1101/TODO (URL:
-#> https://doi.org/10.1101/TODO), <URL:
-#> https://www.biorxiv.org/content/10.1101/TODO>.
-#> 
-#> A BibTeX entry for LaTeX users is
-#> 
-#>   @Article{,
-#>     title = {Detecting abberant splicing events from RNA-sequencing data},
-#>     author = {{dzhang32}},
-#>     year = {2020},
-#>     journal = {bioRxiv},
-#>     doi = {10.1101/TODO},
-#>     url = {https://www.biorxiv.org/content/10.1101/TODO},
+#>     note = {R package version 0.99.0},
+#>     url = {https://github.com//dzhang32/dasper},
 #>   }
 ```
 

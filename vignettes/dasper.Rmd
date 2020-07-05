@@ -63,8 +63,8 @@ write.bibtex(bib, file = "dasper.bib")
 
 ```{r "install", eval = FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
-      install.packages("BiocManager")
-  }
+    install.packages("BiocManager")
+}
 
 BiocManager::install("dasper")
 
@@ -74,7 +74,7 @@ BiocManager::valid()
 
 ## Required knowledge
 
-`r Biocpkg("dasper")` is based on many other packages and in particular in those that have implemented the infrastructure needed for dealing with RNA-seq data (EDIT!). That is, packages like `r Biocpkg("SummarizedExperiment")` (EDIT!).
+`r Biocpkg("dasper")` is based on many other packages and in particular in those that have implemented the infrastructure needed for dealing with RNA-seq data. That is, packages like `r Biocpkg("SummarizedExperiment")` and `r Biocpkg("GenomicRanges")`.
 
 If you are asking yourself the question "Where do I start using Bioconductor?" you might be interested in [this blog post](http://lcolladotor.github.io/2014/10/16/startbioc/#.VkOKbq6rRuU).
 
@@ -93,17 +93,23 @@ citation("dasper")
 
 # Quick start to using to `dasper`
 
+## Workflow
+
+```{r dasper workflow}
+knitr::include_graphics("dasper_workflow.png")
+```
+
+## Example
+
 ```{r "start", message=FALSE}
 library("dasper")
 ```
 
-Edit this as you see fit =)
+Edit this as you see fit =) (to be completed...)
 
 Here is an example of you can cite your package inside the vignette:
 
 * `r Biocpkg("dasper")` `r citep(bib[["dasper"]])`
-
-
 
 # Reproducibility
 
@@ -160,8 +166,6 @@ library("sessioninfo")
 options(width = 120)
 session_info()
 ```
-
-
 
 # Bibliography
 
