@@ -1,3 +1,5 @@
 ^dev$
 ^dasper\.Rproj$
 ^\.Rproj\.user$
+^\.github$
+^codecov\.yml$

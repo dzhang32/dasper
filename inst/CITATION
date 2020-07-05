@@ -1,0 +1,29 @@
+pkgVer <- function(pkg) {
+    if (!exists("meta") || is.null(meta)) meta <- packageDescription(pkg)
+    ver <- meta$Version
+    paste0('https://github.com/dzhang32/', pkg, ' - R package version ', ver)
+}
+
+c(
+
+    bibentry(bibtype="manual",
+        title = "Detecting abberant splicing events from RNA-sequencing data",
+        author = personList(
+            as.person("dzhang32")
+        ),
+        year = format(Sys.Date(), "%Y"),
+        url = "http://www.bioconductor.org/packages/dasper",
+        note = pkgVer('dasper'),
+        doi = '10.18129/B9.bioc.dasper'
+    ),
+    bibentry(bibtype="article",
+        title = "Detecting abberant splicing events from RNA-sequencing data",
+        author = personList(
+            as.person("dzhang32")
+        ),
+        year = 2020,
+        journal = "bioRxiv",
+        doi = "10.1101/TODO",
+        url = "https://www.biorxiv.org/content/10.1101/TODO"
+    )
+)
