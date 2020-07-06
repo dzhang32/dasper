@@ -20,15 +20,15 @@ order and corresponding to file path(s). Will be used as the \code{colData}
 of the \code{\link[SummarizedExperiment]{SummarizedExperiment}} object.}
 
 \item{controls}{either a logical vector of the same length as paths with
-TRUEs labelling cases Or, one of "fibroblasts", "whole_blood" representing
-the samples of which GTEx tissue to use as controls. By default, will
+TRUEs labelling controls Or, "fibroblasts" representing the samples of
+which GTEx tissue to use as controls. If left unchanged, by default will
 assume all samples are patients.}
 
 \item{load_func}{function to load in junctions. By default, requires STAR
 formatted junctions (SJ.out). But this can be switched dependent on the
 format of the user's junction data. Function must take as input a junction
-path then return a dataframe with the columns "chr", "start", "end", and
-"count".}
+path then return a dataframe with the columns "chr", "start", "end",
+"strand" and "count".}
 
 \item{chrs}{chromosomes to keep. If NULL, no filter is applied.}
 }
@@ -48,10 +48,13 @@ expects the junction data to be in STAR aligned format (SJ.out).
 \examples{
 example_juncs_1_path <-
     system.file("extdata", "example_juncs_1.txt",
-                "dasper", mustWork = TRUE)
+        "dasper",
+        mustWork = TRUE
+    )
 juncs <-
-    junc_load(junc_paths = c(example_juncs_1_path),
-              metadata = tibble(samp_id = c("example_1")))
+    junc_load(
+        junc_paths = c(example_juncs_1_path),
+        metadata = tibble(samp_id = c("example_1"))
+    )
 juncs
-
 }
