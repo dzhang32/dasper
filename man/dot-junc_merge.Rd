@@ -8,7 +8,7 @@
 }
 \description{
 \code{.junc_merge} will merge two sets of junction data together. It uses a
-\code{\link[full_join]{dplyr}} so will keep all rows from both datasets. It
-will also ensure ambiguous strands ("*") are allowed to match with forward
-("+") and reverse ("-") strands.
+full_join so will keep all rows from both datasets. It will also ensure
+ambiguous strands ("*") are allowed to match with forward ("+") and reverse
+("-") strands.
 }

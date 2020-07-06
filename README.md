@@ -45,20 +45,37 @@ Below is the citation output from using `citation('dasper')` in R. Please run th
 ``` r
 print(citation("dasper"), bibtex = TRUE)
 #> 
-#> To cite package 'dasper' in publications use:
-#> 
-#>   David Zhang (2020). dasper: Detecting abberant splicing events from
-#>   RNA-sequencing data. R package version 0.99.0.
-#>   https://github.com//dzhang32/dasper
+#> dzhang32 (2020). _Detecting abberant splicing events from
+#> RNA-sequencing data_. doi: 10.18129/B9.bioc.dasper (URL:
+#> https://doi.org/10.18129/B9.bioc.dasper),
+#> https://github.com/dzhang32/dasper - R package version 0.99.0, <URL:
+#> http://www.bioconductor.org/packages/dasper>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
-#>     title = {dasper: Detecting abberant splicing events from RNA-sequencing data},
-#>     author = {David Zhang},
+#>     title = {Detecting abberant splicing events from RNA-sequencing data},
+#>     author = {{dzhang32}},
 #>     year = {2020},
-#>     note = {R package version 0.99.0},
-#>     url = {https://github.com//dzhang32/dasper},
+#>     url = {http://www.bioconductor.org/packages/dasper},
+#>     note = {https://github.com/dzhang32/dasper - R package version 0.99.0},
+#>     doi = {10.18129/B9.bioc.dasper},
+#>   }
+#> 
+#> dzhang32 (2020). "Detecting abberant splicing events from
+#> RNA-sequencing data." _bioRxiv_. doi: 10.1101/TODO (URL:
+#> https://doi.org/10.1101/TODO), <URL:
+#> https://www.biorxiv.org/content/10.1101/TODO>.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Article{,
+#>     title = {Detecting abberant splicing events from RNA-sequencing data},
+#>     author = {{dzhang32}},
+#>     year = {2020},
+#>     journal = {bioRxiv},
+#>     doi = {10.1101/TODO},
+#>     url = {https://www.biorxiv.org/content/10.1101/TODO},
 #>   }
 ```
 
