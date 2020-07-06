@@ -28,7 +28,7 @@ example_juncs_2_path <- system.file("extdata", "example_juncs_2.txt", package = 
 example_juncs <-
     junc_load(
         junc_paths = c(example_juncs_1_path, example_juncs_2_path),
-        chr_to_filter = c()
+        metadata = dplyr::tibble(samp_id = c("example_1", "example_2"))
     )
 
 usethis::use_data(example_juncs, compress = "gzip")
