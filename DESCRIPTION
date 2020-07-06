@@ -27,7 +27,8 @@ Suggests:
     BiocStyle,
     knitcitations,
     sessioninfo,
-    rmarkdown
+    rmarkdown,
+    tibble
 VignetteBuilder: knitr
 Imports: 
     stringr,

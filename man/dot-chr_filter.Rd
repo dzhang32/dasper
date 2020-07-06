@@ -6,6 +6,11 @@
 \usage{
 .chr_filter(x, chrs)
 }
+\arguments{
+\item{x}{df containing at minimum a column named "chr".}
+
+\item{chrs}{chrs chromosomes to keep. If NULL, no filter is applied.}
+}
 \description{
 \code{.chr_filter} will filter a df, keeping only chromosomes listed in the
 chrs argument. It includes a couple of checks to notify users whether some or

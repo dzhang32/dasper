@@ -6,6 +6,12 @@
 \usage{
 .load_STAR(junc_path)
 }
+\arguments{
+\item{junc_path}{path to the junction data.}
+}
+\value{
+df detailing junction co-ordinates and counts.
+}
 \description{
 \code{.load_STAR} will load raw junction data that is outputted from STAR
 (SJ.out) into R. This will format the junction data, retaining only chr,

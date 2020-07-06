@@ -17,10 +17,10 @@ test_that(".load_STAR has the correct output", {
 ##### .junc_merge #####
 
 junc_df_all <- .junc_merge(
-        junc_df_all = tibble(),
-        example_juncs_1,
-        i = 1
-    )
+    junc_df_all = tibble(),
+    example_juncs_1,
+    i = 1
+)
 
 junc_df_all_2 <- .junc_merge(junc_df_all,
     example_juncs_1 %>% dplyr::mutate(strand = "*"),

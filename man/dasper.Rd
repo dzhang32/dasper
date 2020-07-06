@@ -3,4 +3,7 @@
 \docType{package}
 \name{dasper}
 \alias{dasper}
-\title{placeholder for package description - to be updated}
+\title{dasper: detecting abberant splicing events from RNA-seq data}
+\description{
+Placeholder for package description - to be updated
+}

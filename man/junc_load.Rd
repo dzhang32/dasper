@@ -30,7 +30,7 @@ format of the user's junction data. Function must take as input a junction
 path then return a dataframe with the columns "chr", "start", "end",
 "strand" and "count".}
 
-\item{chrs}{chromosomes to keep. If NULL, no filter is applied.}
+\item{chrs}{chrs chromosomes to keep. If NULL, no filter is applied.}
 }
 \value{
 \code{\link[SummarizedExperiment]{SummarizedExperiment}} object
@@ -41,11 +41,13 @@ containing junction data.
 it into a \code{\link[SummarizedExperiment]{SummarizedExperiment}} object.
 Control samples can be user-inputted or selected from GTEx data publicly
 released through the recount2 project
-(\link{https://jhubiostatistics.shinyapps.io/recount/}) and downloaded
-through snaptron (http://snaptron.cs.jhu.edu/). By default, \code{junc_load}
+(\url{https://jhubiostatistics.shinyapps.io/recount/}) and downloaded
+through snaptron (\url{http://snaptron.cs.jhu.edu/}). By default, \code{junc_load}
 expects the junction data to be in STAR aligned format (SJ.out).
 }
 \examples{
+
+\dontrun{
 example_juncs_1_path <-
     system.file("extdata", "example_juncs_1.txt",
         "dasper",
@@ -54,7 +56,9 @@ example_juncs_1_path <-
 juncs <-
     junc_load(
         junc_paths = c(example_juncs_1_path),
-        metadata = tibble(samp_id = c("example_1"))
+        metadata = dplyr::tibble(samp_id = c("example_1"))
     )
 juncs
+}
+
 }

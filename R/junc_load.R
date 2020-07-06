@@ -4,8 +4,8 @@
 #' it into a \code{\link[SummarizedExperiment]{SummarizedExperiment}} object.
 #' Control samples can be user-inputted or selected from GTEx data publicly
 #' released through the recount2 project
-#' (\link{https://jhubiostatistics.shinyapps.io/recount/}) and downloaded
-#' through snaptron (http://snaptron.cs.jhu.edu/). By default, \code{junc_load}
+#' (\url{https://jhubiostatistics.shinyapps.io/recount/}) and downloaded
+#' through snaptron (\url{http://snaptron.cs.jhu.edu/}). By default, \code{junc_load}
 #' expects the junction data to be in STAR aligned format (SJ.out).
 #'
 #' @param junc_paths file path(s) to junction data.
@@ -21,12 +21,15 @@
 #'   format of the user's junction data. Function must take as input a junction
 #'   path then return a dataframe with the columns "chr", "start", "end",
 #'   "strand" and "count".
-#' @param chrs chromosomes to keep. If NULL, no filter is applied.
+#'
+#' @inheritParams .chr_filter
 #'
 #' @return \code{\link[SummarizedExperiment]{SummarizedExperiment}} object
 #'   containing junction data.
 #'
 #' @examples
+#'
+#' \dontrun{
 #' example_juncs_1_path <-
 #'     system.file("extdata", "example_juncs_1.txt",
 #'         "dasper",
@@ -35,9 +38,11 @@
 #' juncs <-
 #'     junc_load(
 #'         junc_paths = c(example_juncs_1_path),
-#'         metadata = tibble(samp_id = c("example_1"))
+#'         metadata = dplyr::tibble(samp_id = c("example_1"))
 #'     )
 #' juncs
+#' }
+#'
 #' @export
 junc_load <- function(junc_paths,
     metadata = NULL,
@@ -107,6 +112,10 @@ junc_load <- function(junc_paths,
 #' \code{.load_STAR} will load raw junction data that is outputted from STAR
 #' (SJ.out) into R. This will format the junction data, retaining only chr,
 #' start, end, strand and count (uniq_map_read_count) columns.
+#'
+#' @param junc_path path to the junction data.
+#'
+#' @return df detailing junction co-ordinates and counts.
 .load_STAR <- function(junc_path) {
     junc_df <-
         readr::read_delim(junc_path,
@@ -133,6 +142,13 @@ junc_load <- function(junc_paths,
 #' full_join so will keep all rows from both datasets. It will also ensure
 #' ambiguous strands ("*") are allowed to match with forward ("+") and reverse
 #' ("-") strands.
+#'
+#' @param junc_df_all df that will contain info on junctions from all samples.
+#' @param junc_df df containing the the info of junctions to be added.
+#' @param i iteration of the loop. Used to give the count column a arbritrary,
+#'   differentiating name for each sample. E.g. "count_1".
+#'
+#' @return df with the junctions from junc_df incoporated into junc_df_all.
 .junc_merge <- function(junc_df_all, junc_df, i) {
     if (i == 1) {
         junc_df_all <- junc_df

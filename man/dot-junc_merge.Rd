@@ -6,6 +6,17 @@
 \usage{
 .junc_merge(junc_df_all, junc_df, i)
 }
+\arguments{
+\item{junc_df_all}{df that will contain info on junctions from all samples.}
+
+\item{junc_df}{df containing the the info of junctions to be added.}
+
+\item{i}{iteration of the loop. Used to give the count column a arbritrary,
+differentiating name for each sample. E.g. "count_1".}
+}
+\value{
+df with the junctions from junc_df incoporated into junc_df_all.
+}
 \description{
 \code{.junc_merge} will merge two sets of junction data together. It uses a
 full_join so will keep all rows from both datasets. It will also ensure
