@@ -48,16 +48,19 @@ expects the junction data to be in STAR aligned format (SJ.out).
 \examples{
 
 \dontrun{
+
 example_juncs_1_path <-
     system.file("extdata", "example_juncs_1.txt",
         "dasper",
         mustWork = TRUE
     )
+
 juncs <-
     junc_load(
         junc_paths = c(example_juncs_1_path),
         metadata = dplyr::tibble(samp_id = c("example_1"))
     )
+
 juncs
 }
 

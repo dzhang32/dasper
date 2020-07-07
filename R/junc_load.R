@@ -21,8 +21,7 @@
 #'   format of the user's junction data. Function must take as input a junction
 #'   path then return a dataframe with the columns "chr", "start", "end",
 #'   "strand" and "count".
-#'
-#' @inheritParams .chr_filter
+#' @param chrs chrs chromosomes to keep. If NULL, no filter is applied.
 #'
 #' @return \code{\link[SummarizedExperiment]{SummarizedExperiment}} object
 #'   containing junction data.
@@ -44,7 +43,6 @@
 #'     )
 #'
 #' juncs
-#'
 #' }
 #'
 #' @export
@@ -120,6 +118,9 @@ junc_load <- function(junc_paths,
 #' @param junc_path path to the junction data.
 #'
 #' @return df detailing junction co-ordinates and counts.
+#'
+#' @keywords internal
+#' @noRd
 .load_STAR <- function(junc_path) {
     junc_df <-
         readr::read_delim(junc_path,
@@ -140,6 +141,8 @@ junc_load <- function(junc_paths,
     return(junc_df)
 }
 
+
+
 #' Merge two junction datasets together
 #'
 #' \code{.junc_merge} will merge two sets of junction data together. It uses a
@@ -153,6 +156,9 @@ junc_load <- function(junc_paths,
 #'   differentiating name for each sample. E.g. "count_1".
 #'
 #' @return df with the junctions from junc_df incoporated into junc_df_all.
+#'
+#' @keywords internal
+#' @noRd
 .junc_merge <- function(junc_df_all, junc_df, i) {
     if (i == 1) {
         junc_df_all <- junc_df

@@ -6,8 +6,12 @@
 #' alternative nomenclature may be used - e.g. "M" vs "MT", or "chr1" vs "1".
 #'
 #' @param x df containing at minimum a column named "chr".
-#' @param chrs chrs chromosomes to keep. If NULL, no filter is applied.
+#' @inheritParams junc_load
 #'
+#' @return df with only containing chromosomes in chrs.
+#'
+#' @keywords internal
+#' @noRd
 .chr_filter <- function(x, chrs) {
 
     # check if different chromosome formats
