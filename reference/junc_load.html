@@ -102,7 +102,7 @@ expects the junction data to be in STAR aligned format (SJ.out)." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="../NA/NA/NA/">
+  <a href="https://github.com/dzhang32/dasper/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -121,7 +121,7 @@ expects the junction data to be in STAR aligned format (SJ.out)." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Load junctions from patient and control RNA-seq data</h1>
-    <small class="dont-index">Source: <a href='NA/NA/NA/blob/master/R/junc_load.R'><code>R/junc_load.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/junc_load.R'><code>R/junc_load.R</code></a></small>
     <div class="hidden name"><code>junc_load.Rd</code></div>
     </div>
 
@@ -185,16 +185,19 @@ containing junction data.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+
 <span class='kw'>example_juncs_1_path</span> <span class='op'>&lt;-</span>
     <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"example_juncs_1.txt"</span>,
         <span class='st'>"dasper"</span>,
         mustWork = <span class='fl'>TRUE</span>
     )
+
 <span class='kw'>juncs</span> <span class='op'>&lt;-</span>
     <span class='fu'><a href='https://rdrr.io/pkg/dasper/man/junc_load.html'>junc_load</a></span>(
         junc_paths = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>example_juncs_1_path</span>),
         metadata = <span class='kw'>dplyr</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(samp_id = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"example_1"</span>))
     )
+
 <span class='kw'>juncs</span>
 }
 </div></pre>
