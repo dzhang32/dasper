@@ -2,13 +2,7 @@
 
 NEW FEATURES
 
-* Added a `NEWS.md` file to track changes to the package.
+* Converted `dasper` into a Bioconductor-friendly format using [biocthis](https://lcolladotor.github.io/biocthis/)
+* Added `junc_load()`, which loads raw junction data outputted from RNA-sequencing alignmetn into an `RangedSummarizedExperiment` object
 
-SIGNIFICANT USER-VISIBLE CHANGES
 
-* Your main changes to a function `foo()` or parameter `param`.
-
-BUG FIXES
-
-* Your bug fixes. See more details at
-<http://bioconductor.org/developers/package-guidelines/#news>.

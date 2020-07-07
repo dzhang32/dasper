@@ -4,7 +4,7 @@ dasper
 ======
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) [![Codecov test coverage](https://codecov.io/gh/dzhang32/dasper/branch/master/graph/badge.svg)](https://codecov.io/gh/dzhang32/dasper?branch=master) [![BioC status](http://www.bioconductor.org/shields/build/release/bioc/dasper.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/dasper) <!-- badges: end -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) [![R build status](https://github.com/dzhang32/dasper/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/dzhang32/dasper/actions) [![Codecov test coverage](https://codecov.io/gh/dzhang32/dasper/branch/master/graph/badge.svg)](https://codecov.io/gh/dzhang32/dasper?branch=master) [![BioC status](http://www.bioconductor.org/shields/build/release/bioc/dasper.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/dasper) <!-- badges: end -->
 
 The aim of `dasper` is to **d**etect **a**berrant **sp**licing **e**vents from **R**NA-seq data. By comparing patient RNA-seq data to a set of user-defined controls, `dasper` will score each splicing event in the patient with an anomaly score representing the degree to which that splicing event looks abnormal. This package is still in the experimental stage of development currently and subject to major changes in the future.
 

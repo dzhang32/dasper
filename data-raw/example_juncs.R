@@ -22,6 +22,8 @@ for (i in 1:2) {
     )
 }
 
+# store .rda of example_juncs as in /data
+# to be used by users
 example_juncs_1_path <- system.file("extdata", "example_juncs_1.txt", package = "dasper", mustWork = TRUE)
 example_juncs_2_path <- system.file("extdata", "example_juncs_2.txt", package = "dasper", mustWork = TRUE)
 
