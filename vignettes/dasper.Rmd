@@ -74,7 +74,7 @@ BiocManager::valid()
 
 ## Required knowledge
 
-`r Biocpkg("dasper")` is based on many other packages and in particular in those that have implemented the infrastructure needed for dealing with RNA-seq data. That is, packages like `r Biocpkg("SummarizedExperiment")` and `r Biocpkg("GenomicRanges")`.
+The expected input of `r Biocpkg("dasper")` are junctions reads (outputted from an aligner such as [STAR](https://github.com/alexdobin/STAR)) and coverage in the form of BigWig files (which can be generated from BAM files using [RSeQC](http://rseqc.sourceforge.net/#bam2wig-py).`r Biocpkg("dasper")` is based on many other packages and in particular in those that have implemented the infrastructure needed for dealing with RNA-seq data. The packages `r Biocpkg("SummarizedExperiment")` and `r Biocpkg("GenomicRanges")` are used throughout, therefore familiarity with these packages will greatly help in interpreting the output of `r Biocpkg("dasper")`. 
 
 If you are asking yourself the question "Where do I start using Bioconductor?" you might be interested in [this blog post](http://lcolladotor.github.io/2014/10/16/startbioc/#.VkOKbq6rRuU).
 
@@ -98,6 +98,13 @@ citation("dasper")
 ```{r dasper workflow}
 knitr::include_graphics("dasper_workflow.png")
 ```
+
+The above workflow diagram gives a top-level overview of the core functions within `dasper` and describes the order in which they are intended to be run. This are broadly split into 4 categories: 
+
+  1. **Process junctions** - these functions are prefixed with a "junc_". They will load in your junctions to an `r Biocpkg("SummarizedExperiment")`, annotate your junctions using reference annotation, filter out junctions for those that likely originate from techinical noise and normalise your junction counts to allow for comparison between samples. 
+  2. **Process coverage** - these functions are prefixed with a "cov_". They annotate your junctions with coverage from nearby regions then normalise this coverage to allow for comparison between samples.
+  3. **Outlier detection** - to be added. 
+  4. **Sashimi plots** - to be added. 
 
 ## Example
 
@@ -124,7 +131,6 @@ The `r Biocpkg("dasper")` package `r citep(bib[["dasper"]])` was made possible t
 * `r CRANpkg("testthat")` `r citep(bib[["testthat"]])`
 
 This package was developed using `r BiocStyle::Githubpkg("lcolladotor/biocthis")`.
-
 
 Code for creating the vignette
 
