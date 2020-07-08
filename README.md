@@ -97,4 +97,4 @@ Development tools
 
 For more details, check the `dev` directory.
 
-This package was developed using *[biocthis](https://github.com/lcolladotor/biocthis)*.
+In particular, I am very grateful to [Leo](http://lcolladotor.github.io/) for his time and advice throughout the development of `dasper`. The transition of `dasper` Bioconductor-friendly package was made possible thanks to his *[biocthis](https://github.com/lcolladotor/biocthis)* package.

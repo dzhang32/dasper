@@ -76,6 +76,5 @@ Please note that the `dasper` project is released with a [Contributor Code of Co
 
 For more details, check the `dev` directory.
 
-This package was developed using `r BiocStyle::Githubpkg('lcolladotor/biocthis')`.
-
+In particular, I am very grateful to [Leo](http://lcolladotor.github.io/) for his time and advice throughout the development of `dasper`. The transition of `dasper` Bioconductor-friendly package was made possible thanks to his `r BiocStyle::Githubpkg('lcolladotor/biocthis')` package. 
 
