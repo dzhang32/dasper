@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • dasper</title>
+<title>Random set of example junctions from two samples — example_junctions • dasper</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,9 @@
 
 
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="Random set of example junctions from two samples — example_junctions" />
+<meta property="og:description" content="A dataset containing the example junction data for 2 samples outputted from
+junction_load." />
 
 
 
@@ -58,7 +60,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -113,28 +115,40 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/dzhang32/dasper/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+    <h1>Random set of example junctions from two samples</h1>
+    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>example_junctions.Rd</code></div>
     </div>
 
-    <div id="dasper-0990" class="section level1">
-<h1 class="page-header" data-toc-text="0.99.0">
-<a href="#dasper-0990" class="anchor"></a>dasper 0.99.0</h1>
-<p>NEW FEATURES</p>
-<ul>
-<li>Converted <code>dasper</code> into a Bioconductor-friendly format using <a href="https://lcolladotor.github.io/biocthis/">biocthis</a>
-</li>
-<li>Added <code><a href="https://rdrr.io/pkg/dasper/man/junction_load.html">junction_load()</a></code>, which loads raw junction data outputted from RNA-sequencing alignmetn into an <code>RangedSummarizedExperiment</code> object</li>
-</ul>
-</div>
-  </div>
+    <div class="ref-description">
+    <p>A dataset containing the example junction data for 2 samples outputted from
+<code><a href='https://rdrr.io/pkg/dasper/man/junction_load.html'>junction_load</a></code>.</p>
+    </div>
 
+    <pre class="usage"><span class='kw'>example_junctions</span></pre>
+
+
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>RangedSummarizedExperiment from the
+<code>SummarizedExperiment</code> detailing the counts, co-ordinates of
+junctions for 2 example samples:</p><dl>
+<dt>assays</dt><dd><p>matrix with counts for ~20,000 junctions and 2 samples</p></dd>
+<dt>colData</dt><dd><p>example sample metadata</p></dd>
+<dt>rowRanges</dt><dd><p>GRanges object describing the co-ordinates and strand of each junction</p></dd>
+
+</dl>
+
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+
+    <p>generated using data-raw/example_junctions.R</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
-
 </div>
 
 
