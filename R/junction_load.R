@@ -35,15 +35,15 @@
 #' @examples
 #'
 #' \dontrun{
-#' example_junctions_1_path <-
-#'     system.file("extdata", "example_junctions_1.txt",
+#' junctions_example_1_path <-
+#'     system.file("extdata", "junctions_example_1.txt",
 #'         "dasper",
 #'         mustWork = TRUE
 #'     )
 #'
 #' junctions <-
 #'     junction_load(
-#'         junction_paths = c(example_junctions_1_path),
+#'         junction_paths = c(junctions_example_1_path),
 #'         metadata = dplyr::tibble(samp_id = c("example_1"))
 #'     )
 #'
