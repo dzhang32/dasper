@@ -6,10 +6,11 @@
 \usage{
 junction_load(
   junction_paths,
-  metadata = NULL,
+  metadata = dplyr::tibble(samp_id = stringr::str_c("samp_", 1:length(junction_paths))),
   controls = rep(FALSE, length(junction_paths)),
   load_func = .load_STAR,
-  chrs = NULL
+  chrs = NULL,
+  coord_system = "ensembl"
 )
 }
 \arguments{
@@ -31,6 +32,13 @@ path then return a dataframe with the columns "chr", "start", "end",
 "strand" and "count".}
 
 \item{chrs}{chrs chromosomes to keep. If NULL, no filter is applied.}
+
+\item{coord_system}{One of "ensembl" (1-based) or "ucsc" (0-based) denoting
+the co-ordinate system corresponding to the user junctions from
+junction_paths. Only used when controls is set to "fibroblasts". This is
+used ensure control data (UCSC-based) is harmonised to user's junctions
+when merging. The outputted junctions will always follow the user's
+co-ordinate system.}
 }
 \value{
 \code{\link[SummarizedExperiment]{SummarizedExperiment}} object
