@@ -101,7 +101,7 @@ knitr::include_graphics("dasper_workflow.png")
 
 The above workflow diagram gives a top-level overview of the core functions within `dasper` and describes the order in which they are intended to be run. This are broadly split into 4 categories: 
 
-  1. **Process junctions** - these functions are prefixed with a "junc_". They will load in your junctions to an `r Biocpkg("SummarizedExperiment")`, annotate your junctions using reference annotation, filter out junctions for those that likely originate from techinical noise and normalise your junction counts to allow for comparison between samples. 
+  1. **Process junctions** - these functions are prefixed with a "junction_". They will load in your junctions to an `r Biocpkg("SummarizedExperiment")`, annotate your junctions using reference annotation, filter out junctions for those that likely originate from techinical noise and normalise your junction counts to allow for comparison between samples. 
   2. **Process coverage** - these functions are prefixed with a "cov_". They annotate your junctions with coverage from nearby regions then normalise this coverage to allow for comparison between samples.
   3. **Outlier detection** - to be added. 
   4. **Sashimi plots** - to be added. 

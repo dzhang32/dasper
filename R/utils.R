@@ -6,7 +6,7 @@
 #' alternative nomenclature may be used - e.g. "M" vs "MT", or "chr1" vs "1".
 #'
 #' @param x df containing at minimum a column named "chr".
-#' @inheritParams junc_load
+#' @inheritParams junction_load
 #'
 #' @return df with only containing chromosomes in chrs.
 #'

@@ -1,7 +1,7 @@
 #' Random set of example junctions from two samples
 #'
 #' A dataset containing the example junction data for 2 samples outputted from
-#' \code{\link{junc_load}}.
+#' \code{\link{junction_load}}.
 #'
 #' @format RangedSummarizedExperiment from the
 #'   \code{\link{SummarizedExperiment}} detailing the counts, co-ordinates of
@@ -11,5 +11,5 @@
 #'   \item{colData}{example sample metadata}
 #'   \item{rowRanges}{GRanges object describing the co-ordinates and strand of each junction}
 #'   }
-#' @source generated using data-raw/example_juncs.R
-"example_juncs"
+#' @source generated using data-raw/example_junctions.R
+"example_junctions"

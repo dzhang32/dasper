@@ -1,14 +1,14 @@
 #' Load junctions from patient and control RNA-seq data
 #'
-#' \code{junc_load} loads in raw patient and control junction data and formats
+#' \code{junction_load} loads in raw patient and control junction data and formats
 #' it into a \code{\link[SummarizedExperiment]{SummarizedExperiment}} object.
 #' Control samples can be user-inputted or selected from GTEx data publicly
 #' released through the recount2 project
 #' (\url{https://jhubiostatistics.shinyapps.io/recount/}) and downloaded
-#' through snaptron (\url{http://snaptron.cs.jhu.edu/}). By default, \code{junc_load}
+#' through snaptron (\url{http://snaptron.cs.jhu.edu/}). By default, \code{junction_load}
 #' expects the junction data to be in STAR aligned format (SJ.out).
 #'
-#' @param junc_paths file path(s) to junction data.
+#' @param junction_paths file path(s) to junction data.
 #' @param metadata dataframe containing sample metadata with rows in the same
 #'   order and corresponding to file path(s). Will be used as the \code{colData}
 #'   of the \code{\link[SummarizedExperiment]{SummarizedExperiment}} object.
@@ -29,43 +29,46 @@
 #' @examples
 #'
 #' \dontrun{
-#'
-#' example_juncs_1_path <-
-#'     system.file("extdata", "example_juncs_1.txt",
+#' example_junctions_1_path <-
+#'     system.file("extdata", "example_junctions_1.txt",
 #'         "dasper",
 #'         mustWork = TRUE
 #'     )
 #'
-#' juncs <-
-#'     junc_load(
-#'         junc_paths = c(example_juncs_1_path),
+#' junctions <-
+#'     junction_load(
+#'         junction_paths = c(example_junctions_1_path),
 #'         metadata = dplyr::tibble(samp_id = c("example_1"))
 #'     )
 #'
-#' juncs
+#' junctions
 #' }
 #'
 #' @export
-junc_load <- function(junc_paths,
+junction_load <- function(junction_paths,
     metadata = NULL,
-    controls = rep(FALSE, length(junc_paths)),
+    controls = rep(FALSE, length(junction_paths)),
     load_func = .load_STAR,
     chrs = NULL) {
 
     ##### Read in and merge junction data #####
 
-    junc_df_all <- dplyr::tibble()
+    junction_df_all <- NULL
 
-    for (i in seq_along(junc_paths)) {
-        print(stringr::str_c(Sys.time(), " - loading junctions for sample ", i, "/", length(junc_paths), "..."))
+    for (i in seq_along(junction_paths)) {
+        print(stringr::str_c(Sys.time(), " - loading junctions for sample ", i, "/", length(junction_paths), "..."))
 
-        junc_df <- load_func(junc_paths[i])
+        junction_df <- load_func(junction_paths[i])
 
-        if (!is.null(chrs)) {
-            junc_df <- .chr_filter(junc_df, chrs)
+        if (!all(colnames(junction_df) %in% c("chr", "start", "end", "strand", "count"))) {
+            stop("load_func must return a dataframe with the columns 'chr', 'start', 'end', 'strand' and 'count'")
         }
 
-        junc_df_all <- .junc_merge(junc_df_all, junc_df, i)
+        if (!is.null(chrs)) {
+            junction_df <- .chr_filter(junction_df, chrs)
+        }
+
+        junction_df_all <- .junction_merge(junction_df_all, junction_df)
     }
 
     ##### Add control data/identifier #####
@@ -75,7 +78,7 @@ junc_load <- function(junc_paths,
 
 
     } else {
-        if (!(is.logical(controls)) | length(controls) != length(junc_paths)) {
+        if (!(is.logical(controls)) | length(controls) != length(junction_paths)) {
             stop("Controls argument must be a logical vector of same length as the number of junction paths")
         }
 
@@ -86,27 +89,27 @@ junc_load <- function(junc_paths,
     ##### Tidy junction data #####
 
     # replace all missing count (NA) values with 0
-    junc_df_all[is.na(junc_df_all)] <- 0
+    junction_df_all[is.na(junction_df_all)] <- 0
 
     # convert junctions into a RangedSummarizedExperiment
-    raw_counts <- junc_df_all %>%
+    raw_counts <- junction_df_all %>%
         dplyr::select(-chr, -start, -end, -strand) %>%
         as.matrix()
 
-    junc_coords <- junc_df_all %>%
+    junction_coords <- junction_df_all %>%
         dplyr::select(chr, start, end, strand) %>%
         GRanges()
 
-    juncs <-
+    junctions <-
         SummarizedExperiment::SummarizedExperiment(
             assays = list(raw_counts),
-            rowRanges = junc_coords,
+            rowRanges = junction_coords,
             colData = metadata
         )
 
     print(stringr::str_c(Sys.time(), " - done!"))
 
-    return(juncs)
+    return(junctions)
 }
 
 #' Load raw junction data
@@ -115,15 +118,15 @@ junc_load <- function(junc_paths,
 #' (SJ.out) into R. This will format the junction data, retaining only chr,
 #' start, end, strand and count (uniq_map_read_count) columns.
 #'
-#' @param junc_path path to the junction data.
+#' @param junction_path path to the junction data.
 #'
 #' @return df detailing junction co-ordinates and counts.
 #'
 #' @keywords internal
 #' @noRd
-.load_STAR <- function(junc_path) {
-    junc_df <-
-        readr::read_delim(junc_path,
+.load_STAR <- function(junction_path) {
+    junction_df <-
+        readr::read_delim(junction_path,
             delim = "\t",
             col_names = c(
                 "chr", "start", "end", "strand",
@@ -138,35 +141,35 @@ junc_load <- function(junc_paths,
         )) %>%
         dplyr::select(chr:strand, count := uniq_map_read_count)
 
-    return(junc_df)
+    return(junction_df)
 }
 
 
 
 #' Merge two junction datasets together
 #'
-#' \code{.junc_merge} will merge two sets of junction data together. It uses a
+#' \code{.junction_merge} will merge two sets of junction data together. It uses a
 #' full_join so will keep all rows from both datasets. It will also ensure
 #' ambiguous strands ("*") are allowed to match with forward ("+") and reverse
 #' ("-") strands.
 #'
-#' @param junc_df_all df that will contain info on junctions from all samples.
-#' @param junc_df df containing the the info of junctions to be added.
+#' @param junction_df_all df that will contain info on junctions from all samples.
+#' @param junction_df df containing the the info of junctions to be added.
 #' @param i iteration of the loop. Used to give the count column a arbritrary,
 #'   differentiating name for each sample. E.g. "count_1".
 #'
-#' @return df with the junctions from junc_df incoporated into junc_df_all.
+#' @return df with the junctions from junction_df incoporated into junction_df_all.
 #'
 #' @keywords internal
 #' @noRd
-.junc_merge <- function(junc_df_all, junc_df, i) {
-    if (i == 1) {
-        junc_df_all <- junc_df
+.junction_merge <- function(junction_df_all, junction_df) {
+    if (is.null(junction_df_all)) {
+        junction_df_all <- junction_df
     } else {
 
         # when merging allow for * strands to match with + or -
-        junc_df_all <- junc_df_all %>%
-            dplyr::full_join(junc_df,
+        junction_df_all <- junction_df_all %>%
+            dplyr::full_join(junction_df,
                 by = c("chr", "start", "end")
             ) %>%
             dplyr::mutate(
@@ -182,13 +185,64 @@ junc_load <- function(junc_paths,
                 strand.y = NULL
             )
 
-        if (any(is.na(junc_df_all[["strand"]]))) {
+        if (any(is.na(junction_df_all[["strand"]]))) {
             stop("No strands should be left as NA after processing")
         }
     }
 
-    junc_df_all <- junc_df_all %>%
-        dplyr::rename(!!stringr::str_c("count_", i) := count)
+    # number of cols should equal the number of samples
+    # use this value to annotate the co
+    num_count_cols <- junction_df_all %>%
+        colnames() %>%
+        stringr::str_detect("count") %>%
+        sum()
 
-    return(junc_df_all)
+    junction_df_all <- junction_df_all %>%
+        dplyr::rename(!!stringr::str_c("count_", num_count_cols) := count)
+
+    return(junction_df_all)
+}
+
+#' Download and merge control data from recount2
+#'
+#' \code{.junction_add_controls}
+#'
+#' @keywords internal
+#' @noRd
+.junction_add_controls <- function(controls, junction_df_all, dest_dir = tempdir()) {
+
+    # generate details of controls to download
+    controls_df <-
+        dplyr::tibble(
+            control = c("fibroblasts"),
+            gtex_tissue = c("cells_transformed_fibroblasts"),
+            dropbox_path = c("https://www.dropbox.com/s/6w3nrbzt3nknkmh/GTEx_junctions_cells_transformed_fibroblasts.rda?dl=1"),
+            file_name = dropbox_path %>%
+                stringr::str_replace(".*/", "") %>%
+                stringr::str_replace("\\?.*", "")
+        )
+
+    controls_df <- controls_df %>%
+        dplyr::filter(control == controls)
+
+    # create a temporary destination folder and download control junction data
+    dir.create(dest_dir, showWarnings = FALSE, recursive = TRUE)
+
+    file_path <- stringr::str_c(dest_dir, "/", controls_df[["file_name"]])
+
+    print(stringr::str_c(Sys.time(), " - Downloading junction data from GTEx controls: ", controls_df[["control"]], "..."))
+
+    utils::download.file(
+        url = controls_df[["dropbox_path"]],
+        destfile = file_path,
+        mode = "wb"
+    )
+
+    load(file = file_path)
+
+    # merge control data with cases
+    junction_df_all <- junction_df_all %>%
+        .junction_merge(GTEx_junctions_tidy)
+
+    return(junction_df_all)
 }

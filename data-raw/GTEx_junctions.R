@@ -34,10 +34,10 @@ chr_info <- read_delim("/data/references/chr_info/hg38.chrom.sizes",
 
 # downloads junction data for selected tissues using snaptron
 tissues <- unique(gtex_metadata[["SMTSD_tidy"]])
-GTEx_juncs_all <- list()
+GTEx_junctions_all <- list()
 
 for (i in seq_along(tissues)) {
-    GTEx_juncs <- tibble()
+    GTEx_junctions <- tibble()
 
     gtex_metadata_tissue <- gtex_metadata %>%
         filter(SMTSD_tidy == tissues[i])
@@ -46,7 +46,7 @@ for (i in seq_along(tissues)) {
     for (j in 1:nrow(chr_info)) {
         print(str_c(Sys.time(), " - downloading junction data for ", chr_info[["UCSC_seqlevel"]][j]))
 
-        juncs_per_chr <-
+        junctions_per_chr <-
             read_delim(str_c(
                 "http://snaptron.cs.jhu.edu/gtex/snaptron?regions=",
                 chr_info[["UCSC_seqlevel"]][j],
@@ -57,13 +57,13 @@ for (i in seq_along(tissues)) {
             delim = "\t"
             )
 
-        GTEx_juncs <- bind_rows(GTEx_juncs, juncs_per_chr)
+        GTEx_junctions <- bind_rows(GTEx_junctions, junctions_per_chr)
     }
 
-    GTEx_juncs_all[[i]] <- GTEx_juncs
+    GTEx_junctions_all[[i]] <- GTEx_junctions
 }
 
-names(GTEx_juncs_all) <- tissues
+names(GTEx_junctions_all) <- tissues
 
 ##### Format and upload junction data #####
 
@@ -85,39 +85,39 @@ tidy_raw_count <- function(x) {
 
 # for now, upload these to dropbox to be able to loaded by dasper users
 # potentially transfer to ExperimentalHub in future
-drop_create("public/dasper/GTEx_v6_juncs")
+drop_create("public/dasper/GTEx_v6_junctions")
 
-for (i in 1:length(GTEx_juncs_all)) {
+for (i in 1:length(GTEx_junctions_all)) {
 
     # reformat GTEx junc counts into a count matrix
-    GTEx_juncs_tidy <- GTEx_juncs_all[[i]][["samples"]] %>%
+    GTEx_junctions_tidy <- GTEx_junctions_all[[i]][["samples"]] %>%
         str_split(pattern = ",")
 
-    GTEx_juncs_tidy <- GTEx_juncs_tidy %>%
+    GTEx_junctions_tidy <- GTEx_junctions_tidy %>%
         lapply(FUN = tidy_raw_count) %>%
         do.call(args = ., bind_rows)
 
     # format colnames to be R-friendly
-    colnames(GTEx_juncs_tidy) <- colnames(GTEx_juncs_tidy) %>% str_c("gtex_", .)
+    colnames(GTEx_junctions_tidy) <- colnames(GTEx_junctions_tidy) %>% str_c("gtex_", .)
 
     # replace all NAs with 0s
-    GTEx_juncs_tidy[is.na(GTEx_juncs_tidy)] <- 0
+    GTEx_junctions_tidy[is.na(GTEx_junctions_tidy)] <- 0
 
     # add back the original
-    GTEx_juncs_tidy <- GTEx_juncs_tidy %>%
-        bind_cols(GTEx_juncs_all[[i]] %>% dplyr::select(chr = chromosome, start, end, strand), .)
+    GTEx_junctions_tidy <- GTEx_junctions_tidy %>%
+        bind_cols(GTEx_junctions_all[[i]] %>% dplyr::select(chr = chromosome, start, end, strand), .)
 
     # upload to dropbox
-    save(GTEx_juncs_tidy,
-        file = str_c("data/GTEx_juncs_", names(GTEx_juncs_all)[i], ".rda"),
+    save(GTEx_junctions_tidy,
+        file = str_c("data/GTEx_junctions_", names(GTEx_junctions_all)[i], ".rda"),
         compress = "gzip"
     )
 
-    drop_upload(str_c("data/GTEx_juncs_", names(GTEx_juncs_all)[i], ".rda"),
-        path = "public/dasper/GTEx_v6_juncs"
+    drop_upload(str_c("data/GTEx_junctions_", names(GTEx_junctions_all)[i], ".rda"),
+        path = "public/dasper/GTEx_v6_junctions"
     )
 
-    file.remove(str_c("data/GTEx_juncs_", names(GTEx_juncs_all)[i], ".rda"))
+    file.remove(str_c("data/GTEx_junctions_", names(GTEx_junctions_all)[i], ".rda"))
 }
 
-# fibros - https://www.dropbox.com/s/6w3nrbzt3nknkmh/GTEx_juncs_cells_transformed_fibroblasts.rda?dl=0
+# fibros - https://www.dropbox.com/s/6w3nrbzt3nknkmh/GTEx_junctions_cells_transformed_fibroblasts.rda?dl=1

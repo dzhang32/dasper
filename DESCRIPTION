@@ -38,6 +38,7 @@ Imports:
     S4Vectors,
     IRanges,
     magrittr,
-    SummarizedExperiment
+    SummarizedExperiment,
+    utils
 Depends: 
     R (>= 2.10)
