@@ -137,10 +137,11 @@ expects the junction data to be in STAR aligned format (SJ.out).</p>
 
     <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/dasper/man/junction_load.html'>junction_load</a></span>(
   <span class='kw'>junction_paths</span>,
-  metadata = <span class='kw'>NULL</span>,
+  metadata = <span class='kw'>dplyr</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(samp_id = <span class='kw'>stringr</span>::<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_c.html'>str_c</a></span>(<span class='st'>"samp_"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>junction_paths</span>))),
   controls = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>FALSE</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>junction_paths</span>)),
   load_func = <span class='kw'>.load_STAR</span>,
-  chrs = <span class='kw'>NULL</span>
+  chrs = <span class='kw'>NULL</span>,
+  coord_system = <span class='st'>"ensembl"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -175,6 +176,15 @@ path then return a dataframe with the columns "chr", "start", "end",
       <th>chrs</th>
       <td><p>chrs chromosomes to keep. If NULL, no filter is applied.</p></td>
     </tr>
+    <tr>
+      <th>coord_system</th>
+      <td><p>One of "ensembl" (1-based) or "ucsc" (0-based) denoting
+the co-ordinate system corresponding to the user junctions from
+junction_paths. Only used when controls is set to "fibroblasts". This is
+used ensure control data (UCSC-based) is harmonised to user's junctions
+when merging. The outputted junctions will always follow the user's
+co-ordinate system.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -185,15 +195,15 @@ containing junction data.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>example_junctions_1_path</span> <span class='op'>&lt;-</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"example_junctions_1.txt"</span>,
+<span class='kw'>junctions_example_1_path</span> <span class='op'>&lt;-</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"junctions_example_1.txt"</span>,
         <span class='st'>"dasper"</span>,
         mustWork = <span class='fl'>TRUE</span>
     )
 
 <span class='kw'>junctions</span> <span class='op'>&lt;-</span>
     <span class='fu'><a href='https://rdrr.io/pkg/dasper/man/junction_load.html'>junction_load</a></span>(
-        junction_paths = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>example_junctions_1_path</span>),
+        junction_paths = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>junctions_example_1_path</span>),
         metadata = <span class='kw'>dplyr</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(samp_id = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"example_1"</span>))
     )
 
