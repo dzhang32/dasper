@@ -111,6 +111,15 @@ test_that("junction_load has correct output", {
             as.character(),
         "21"
     )
+    expect_identical(
+      SummarizedExperiment::rowRanges(junctions_w_control) %>% start() %>% which.max(),
+      junctions_w_control %>% nrow()
+    )
+    expect_identical(
+      SummarizedExperiment::rowRanges(junctions_w_control) %>% start() %>% which.min(),
+      1L
+    )
+
 })
 
 test_that("junction_load catches user-input errors", {

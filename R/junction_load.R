@@ -87,7 +87,11 @@ junction_load <- function(junction_paths,
 
         junctions_controls <- .control_coord_convert(junctions_controls, coord_system)
 
+        if (!is.null(chrs)) {
+
         junctions_controls <- .chr_filter(junctions_controls, chrs)
+
+        }
 
         junctions_all <- .junction_merge(junctions_all, junctions_controls)
 
@@ -125,6 +129,11 @@ junction_load <- function(junction_paths,
             rowRanges = junction_coords,
             colData = metadata
         )
+
+    # sort ranges in natural order by chr, start, end
+    junctions <- junctions %>%
+      GenomeInfoDb::sortSeqlevels() %>%
+      sort(ignore.strand = TRUE)
 
     print(stringr::str_c(Sys.time(), " - done!"))
 
