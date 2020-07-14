@@ -28,9 +28,12 @@ junctions_example_2_path <- system.file("extdata", "junctions_example_2.txt", pa
 
 # only take chr21 + 22 and first 3 GTEx control samples to save space
 junctions_example <-
-  junction_load(junction_paths = c(junctions_example_1_path, junctions_example_2_path),
-                controls = "fibroblasts",
-                chrs = c("21", "22"))
+    junction_load(
+        junction_paths = c(junctions_example_1_path, junctions_example_2_path),
+        controls = "fibroblasts",
+        chrs = c("21", "22")
+    )
+
 junctions_example <- junctions_example[, c(1:5)]
 
 usethis::use_data(junctions_example, compress = "gzip")
