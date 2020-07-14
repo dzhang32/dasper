@@ -21,7 +21,7 @@
 #'   format of the user's junction data. Function must take as input a junction
 #'   path then return a dataframe with the columns "chr", "start", "end",
 #'   "strand" and "count".
-#' @param chrs chrs chromosomes to keep. If NULL, no filter is applied.
+#' @param chrs chromosomes to keep. If NULL, no filter is applied.
 #' @param coord_system One of "ensembl" (1-based) or "ucsc" (0-based) denoting
 #'   the co-ordinate system corresponding to the user junctions from
 #'   junction_paths. Only used when controls is set to "fibroblasts". This is
