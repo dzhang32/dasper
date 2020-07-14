@@ -22,24 +22,22 @@
 #'
 #' @examples
 #'
-#' load("data/junctions_example.rda")
 #' junctions_example <-
 #'     junction_annot(
 #'         junctions_example,
 #'         "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
 #'     )
 #' junctions_example
-#'
 #' @export
 junction_annot <- function(junctions, ref) {
 
     ##### Check user input is correct #####
 
     if (!(methods::isClass(junctions, "RangedSummarisedExperiment"))) {
-        stop("junction_metadata must be in a RangedSummarisedExperiment format")
+        stop("junctions must be in a RangedSummarisedExperiment format")
     }
 
-    if (class(ref) != "character" & !methods::isClass(ref, "TxDb")) {
+    if (class(ref) != "character" & class(ref) != "TxDb") {
         stop("ref must either be a path to the .gtf/gff3 file or a pre-loaded TxDb object")
     }
 
@@ -75,7 +73,7 @@ junction_annot <- function(junctions, ref) {
 
     print(stringr::str_c(Sys.time(), " - Deriving junction categories..."))
 
-    junctions <- .junction_cat(junctions)
+    junctions <- .type(junctions)
 
     print(stringr::str_c(Sys.time(), " - done!"))
 
@@ -111,7 +109,7 @@ junction_annot <- function(junctions, ref) {
             ignore.strand = ignore.strand
         )
 
-    mcols(junctions)[["junction_in_ref"]] <- 1:length(junctions) %in% unique(queryHits(junctions_intron_hits))
+    mcols(junctions)[["in_ref"]] <- 1:length(junctions) %in% unique(queryHits(junctions_intron_hits))
 
     ##### Do junctions start/end overlap with an exon end/start? #####
 
@@ -182,13 +180,13 @@ junction_annot <- function(junctions, ref) {
 #'
 #' @keywords internal
 #' @noRd
-.junction_annot_tidy <- function(junctions) {
+.junction_annot_tidy <- function(junctions, cols_to_merge = c("gene_id", "strand")) {
 
     ##### Collapse gene_id/strand annotation from start/end #####
 
     # collapse gene/strand columns to per junction
     # instead of per start/end for easier querying
-    for (col in c("gene_id", "strand")) {
+    for (col in cols_to_merge) {
         mcols(junctions)[[stringr::str_c(col, "_junction")]] <-
             .merge_CharacterList(
                 x = mcols(junctions)[[stringr::str_c(col, "_start")]],
@@ -229,7 +227,7 @@ junction_annot <- function(junctions, ref) {
 
 #' Categorises junctions depending on reference annotation and strand
 #'
-#' \code{.junction_cat} categories junctions into "annotated",
+#' \code{.type} categories junctions into "annotated",
 #' "novel_acceptor", "novel_donor", "novel_combo", "novel_exon_skip", "ambig_gene" and
 #' "none" using information from annotation and strand.
 #'
@@ -240,14 +238,14 @@ junction_annot <- function(junctions, ref) {
 #'
 #' @keywords internal
 #' @noRd
-.junction_cat <- function(junctions, ref_junc) {
+.type <- function(junctions, ref_junc) {
 
     # store strand out for readability
     strand_junc <- as.character(strand(junctions))
 
-    mcols(junctions)[["junction_cat"]] <-
+    mcols(junctions)[["type"]] <-
         dplyr::case_when(
-            mcols(junctions)[["junction_in_ref"]] == T ~ "annotated",
+            mcols(junctions)[["in_ref"]] == T ~ "annotated",
             lengths(mcols(junctions)[["gene_id_junction"]]) == 0 ~ "unannotated",
             lengths(mcols(junctions)[["gene_id_junction"]]) > 1 ~ "ambig_gene", # after these checks lengths(gene_id_junction) must equal 1
             lengths(mcols(junctions)[["gene_id_start"]]) > 0 & lengths(mcols(junctions)[["gene_id_end"]]) > 0 ~ "novel_combo",
@@ -258,7 +256,7 @@ junction_annot <- function(junctions, ref) {
             TRUE ~ NA_character_
         )
 
-    if (any(is.na(mcols(junctions)[["junction_cat"]]))) {
+    if (any(is.na(mcols(junctions)[["type"]]))) {
         stop("There should be no junction categories left as NA after tidying...")
     }
 
@@ -268,10 +266,22 @@ junction_annot <- function(junctions, ref) {
     # the below only checks for novel_exon_skip in the novel_combo subset
     # the two distinguished by whether the start/end of junction overlap a matching transcript
     mcols(junctions)[["index_tmp"]] <- 1:length(junctions)
-    novel_combo <- junctions[mcols(junctions)[["junction_cat"]] == "novel_combo"]
-    novel_exon_skip_indexes <- mcols(novel_combo)[["index_tmp"]][any(novel_combo$transcript_id_start %in% novel_combo$transcript_id_end)]
-    mcols(junctions)[["junction_cat"]][novel_exon_skip_indexes] <- "novel_exon_skip"
+    novel_combo <- junctions[mcols(junctions)[["type"]] == "novel_combo"]
+    novel_exon_skip_indexes <- mcols(novel_combo)[["index_tmp"]][any(mcols(novel_combo)[["tx_name_start"]] %in% mcols(novel_combo)[["tx_name_end"]])]
+    mcols(junctions)[["type"]][novel_exon_skip_indexes] <- "novel_exon_skip"
     mcols(junctions)[["index_tmp"]] <- NULL
+
+    # set junction categories as factor with all possible levels
+    mcols(junctions)[["type"]] <- mcols(junctions)[["type"]] %>%
+        factor(levels = c(
+            "annotated",
+            "novel_acceptor",
+            "novel_donor",
+            "novel_exon_skip",
+            "novel_combo",
+            "ambig_gene",
+            "unannotated"
+        ))
 
     return(junctions)
 }

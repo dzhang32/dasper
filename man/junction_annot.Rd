@@ -32,12 +32,10 @@ Using this information along with the strand, junctions are categorised into
 }
 \examples{
 
-load("data/junctions_example.rda")
 junctions_example <-
     junction_annot(
         junctions_example,
         "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
     )
 junctions_example
-
 }
