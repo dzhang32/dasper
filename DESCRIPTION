@@ -39,7 +39,10 @@ Imports:
     IRanges,
     magrittr,
     SummarizedExperiment,
-    utils, 
-    BiocFileCache
+    utils,
+    BiocFileCache,
+    methods,
+    GenomeInfoDb,
+    GenomicFeatures
 Depends: 
     R (>= 2.10)

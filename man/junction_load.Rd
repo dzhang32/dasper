@@ -31,7 +31,7 @@ format of the user's junction data. Function must take as input a junction
 path then return a dataframe with the columns "chr", "start", "end",
 "strand" and "count".}
 
-\item{chrs}{chrs chromosomes to keep. If NULL, no filter is applied.}
+\item{chrs}{chromosomes to keep. If NULL, no filter is applied.}
 
 \item{coord_system}{One of "ensembl" (1-based) or "ucsc" (0-based) denoting
 the co-ordinate system corresponding to the user junctions from
