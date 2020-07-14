@@ -36,7 +36,7 @@ path then return a dataframe with the columns "chr", "start", "end",
 \item{coord_system}{One of "ensembl" (1-based) or "ucsc" (0-based) denoting
 the co-ordinate system corresponding to the user junctions from
 junction_paths. Only used when controls is set to "fibroblasts". This is
-used ensure control data (UCSC-based) is harmonised to user's junctions
+used ensure control data is harmonised to user's junctions
 when merging. The outputted junctions will always follow the user's
 co-ordinate system.}
 }

@@ -34,18 +34,24 @@ test_that(".junction_merge has the correct output", {
 
 ##### .control_coord_convert #####
 
-ensembl <- junctions_example_1 %>%
-    dplyr::mutate(chr = "MT")
-ucsc <- ensembl %>%
+# control data (raw GTEx data downloaded via snaptron)
+# uses 1-based co-ordinates, yet prefixes chromsomes with a "chr"
+control <- junctions_example_1 %>%
+    dplyr::mutate(chr = chr %>% stringr::str_c("chr", .) %>%
+        stringr::str_replace("MT", "M"))
+
+# generate ensembl/ucsc example junctions
+ensembl <- junctions_example_1
+ucsc <- junctions_example_1 %>%
     dplyr::mutate(
-        chr = stringr::str_c("chr", chr),
+        chr = stringr::str_c("chr", chr) %>%
+            stringr::str_replace("MT", "M"),
         start = start - 1,
         end = end - 1
     )
 
-# control data is currently always UCSC based
-ucsc_2 <- .control_coord_convert(ucsc, coord_system = "ucsc")
-ensembl_2 <- .control_coord_convert(ucsc, coord_system = "ensembl")
+ucsc_2 <- .control_coord_convert(control, coord_system = "ucsc")
+ensembl_2 <- .control_coord_convert(control, coord_system = "ensembl")
 
 test_that(".control_coord_convert has the correct output", {
     expect_identical(ucsc, ucsc_2)
@@ -77,7 +83,7 @@ junctions_w_control <-
     junction_load(
         junction_paths = c(junctions_example_1_path, junctions_example_2_path),
         controls = "fibroblasts",
-        chrs = c("21"),
+        chrs = c("21", "MT"),
         coord_system = "ensembl"
     )
 
@@ -109,17 +115,8 @@ test_that("junction_load has correct output", {
             GenomicRanges::seqnames() %>%
             unique() %>%
             as.character(),
-        "21"
+        c("21", "MT")
     )
-    expect_identical(
-      SummarizedExperiment::rowRanges(junctions_w_control) %>% start() %>% which.max(),
-      junctions_w_control %>% nrow()
-    )
-    expect_identical(
-      SummarizedExperiment::rowRanges(junctions_w_control) %>% start() %>% which.min(),
-      1L
-    )
-
 })
 
 test_that("junction_load catches user-input errors", {

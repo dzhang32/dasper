@@ -25,7 +25,7 @@
 #' @param coord_system One of "ensembl" (1-based) or "ucsc" (0-based) denoting
 #'   the co-ordinate system corresponding to the user junctions from
 #'   junction_paths. Only used when controls is set to "fibroblasts". This is
-#'   used ensure control data (UCSC-based) is harmonised to user's junctions
+#'   used ensure control data is harmonised to user's junctions
 #'   when merging. The outputted junctions will always follow the user's
 #'   co-ordinate system.
 #'
@@ -88,9 +88,7 @@ junction_load <- function(junction_paths,
         junctions_controls <- .control_coord_convert(junctions_controls, coord_system)
 
         if (!is.null(chrs)) {
-
-        junctions_controls <- .chr_filter(junctions_controls, chrs)
-
+            junctions_controls <- .chr_filter(junctions_controls, chrs)
         }
 
         junctions_all <- .junction_merge(junctions_all, junctions_controls)
@@ -132,8 +130,8 @@ junction_load <- function(junction_paths,
 
     # sort ranges in natural order by chr, start, end
     junctions <- junctions %>%
-      GenomeInfoDb::sortSeqlevels() %>%
-      sort(ignore.strand = TRUE)
+        GenomeInfoDb::sortSeqlevels() %>%
+        sort(ignore.strand = TRUE)
 
     print(stringr::str_c(Sys.time(), " - done!"))
 
@@ -236,6 +234,8 @@ junction_load <- function(junction_paths,
 #' \code{.junction_dl_controls} will download GTEx control junctions from
 #' Dropbox using \code{\link[BiocFileCache]{BiocFileCache}}.
 #'
+#' @inheritParams junction_load
+#'
 #' @keywords internal
 #' @noRd
 .junction_dl_controls <- function(controls) {
@@ -271,13 +271,14 @@ junction_load <- function(junction_paths,
     return(GTEx_junctions_tidy)
 }
 
-#' Make sure that control junction use the same coordinate system as the user's
+#' Make sure that control junctions use the same coordinate system as the user's
 #'
-#' \code{.control_coord_convert} will convert the control junction co-ordinates
-#' to "ensembl" (1-based) if the user's co-ordinate system is Ensembl based. In
-#' such cases, "chrM" will be converted to "MT", the "chr" will be removed from
-#' chromosomes, and 1 will be added to both "start" and "end". If user's
-#' co-ordinate system set to "ucsc", won't change anything.
+#' \code{.control_coord_convert} will convert control junctions to match users
+#' junctions. If user's co-ordinate system set to "ensembl",  "chrM" will be
+#' converted to "MT", the "chr" will be removed from chromosomes, and 1 will be
+#' added to both "start" and "end". If user's co-ordinate system set to "ucsc",
+#' 1 will be taken off from the start and end to convert from 1-based to 0-based
+#' co-ordinates.
 #'
 #' @inheritParams junction_load
 #'
@@ -292,9 +293,13 @@ junction_load <- function(junction_paths,
         junctions_controls <- junctions_controls %>%
             dplyr::mutate(
                 chr = chr %>% stringr::str_replace("chr", ""),
-                chr = chr %>% stringr::str_replace("^M$", "MT"),
-                start = start + 1,
-                end = end + 1
+                chr = chr %>% stringr::str_replace("^M$", "MT")
+            )
+    } else if (coord_system == "ucsc") {
+        junctions_controls <- junctions_controls %>%
+            dplyr::mutate(
+                start = start - 1,
+                end = end - 1
             )
     }
 
