@@ -25,7 +25,6 @@ Suggests:
     covr,
     knitr,
     BiocStyle,
-    knitcitations,
     sessioninfo,
     rmarkdown,
     tibble
@@ -43,6 +42,7 @@ Imports:
     BiocFileCache,
     methods,
     GenomeInfoDb,
-    GenomicFeatures
+    GenomicFeatures,
+    knitcitations
 Depends: 
     R (>= 2.10)
