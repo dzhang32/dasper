@@ -14,9 +14,12 @@ test_that(".junction_annot_tidy correctly infers strand", {
 
 ##### junction_annot #####
 
-ref <- GenomicFeatures::makeTxDbFromGFF("ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz")
+suppressWarnings(expr = {
+    ref <- GenomicFeatures::makeTxDbFromGFF("ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz")
+})
 
 junctions <- junction_annot(junctions_example, ref)
+
 
 test_that("junction_annot output generally looks correct", {
     expect_true(methods::isClass(junctions, "RangedSummarisedExperiment"))

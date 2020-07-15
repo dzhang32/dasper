@@ -73,7 +73,7 @@ junction_annot <- function(junctions, ref) {
 
     print(stringr::str_c(Sys.time(), " - Deriving junction categories..."))
 
-    junctions <- .type(junctions)
+    junctions <- .junction_cat(junctions)
 
     print(stringr::str_c(Sys.time(), " - done!"))
 
@@ -227,7 +227,7 @@ junction_annot <- function(junctions, ref) {
 
 #' Categorises junctions depending on reference annotation and strand
 #'
-#' \code{.type} categories junctions into "annotated",
+#' \code{.junction_cat} categories junctions into "annotated",
 #' "novel_acceptor", "novel_donor", "novel_combo", "novel_exon_skip", "ambig_gene" and
 #' "none" using information from annotation and strand.
 #'
@@ -238,7 +238,7 @@ junction_annot <- function(junctions, ref) {
 #'
 #' @keywords internal
 #' @noRd
-.type <- function(junctions, ref_junc) {
+.junction_cat <- function(junctions, ref_junc) {
 
     # store strand out for readability
     strand_junc <- as.character(strand(junctions))
