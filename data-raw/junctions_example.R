@@ -35,6 +35,6 @@ junctions_example <-
     )
 
 # and first 3 GTEx control samples to save space
-junctions_example <- junctions_example[, c(1:5)]
+raw_counts <- junctions_example[, c(1:5)]
 
 usethis::use_data(junctions_example, compress = "xz")

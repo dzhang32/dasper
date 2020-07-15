@@ -123,7 +123,7 @@ junction_load <- function(junction_paths,
 
     junctions <-
         SummarizedExperiment::SummarizedExperiment(
-            assays = list(raw_counts = raw_counts),
+            assays = list(raw = raw_counts),
             rowRanges = junction_coords,
             colData = metadata
         )
