@@ -26,7 +26,7 @@ for (i in 1:2) {
 junctions_example_1_path <- system.file("extdata", "junctions_example_1.txt", package = "dasper", mustWork = TRUE)
 junctions_example_2_path <- system.file("extdata", "junctions_example_2.txt", package = "dasper", mustWork = TRUE)
 
-# only take chr21 + 22 and first 3 GTEx control samples to save space
+# only take chr21 + 22
 junctions_example <-
     junction_load(
         junction_paths = c(junctions_example_1_path, junctions_example_2_path),
@@ -34,6 +34,7 @@ junctions_example <-
         chrs = c("21", "22")
     )
 
+# and first 3 GTEx control samples to save space
 junctions_example <- junctions_example[, c(1:5)]
 
-usethis::use_data(junctions_example, compress = "gzip")
+usethis::use_data(junctions_example, compress = "xz")
