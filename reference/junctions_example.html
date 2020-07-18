@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • dasper</title>
+<title>Set of example junctions from 5 samples — junctions_example • dasper</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Set of example junctions from 5 samples — junctions_example" />
+<meta property="og:description" content="A dataset containing the example junction data for 2 case and 3 control
+samples outputted from junction_load.	The junctions have been
+filtered for only those lying on chromosome 21 or 22." />
 
 
 
@@ -58,7 +61,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -111,66 +114,38 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Set of example junctions from 5 samples</h1>
+    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>junctions_example.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>A dataset containing the example junction data for 2 case and 3 control
+samples outputted from <code><a href='https://rdrr.io/pkg/dasper/man/junction_load.html'>junction_load</a></code>.	The junctions have been
+filtered for only those lying on chromosome 21 or 22.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='kw'>junctions_example</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="dasper.html">dasper</a></code> </p>
-        </td>
-        <td><p>dasper: detecting abberant splicing events from RNA-seq data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="junction_annot.html">junction_annot()</a></code> </p>
-        </td>
-        <td><p>Annotate junctions using reference annotation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="junction_filter.html">junction_filter()</a></code> </p>
-        </td>
-        <td><p>Filter junctions</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="junction_load.html">junction_load()</a></code> </p>
-        </td>
-        <td><p>Load junctions from patient and control RNA-seq data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="junctions_example.html">junctions_example</a></code> </p>
-        </td>
-        <td><p>Set of example junctions from 5 samples</p></td>
-      </tr>
-    </tbody>
-    </table>
+
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>RangedSummarizedExperiment from <code>SummarizedExperiment</code>
+detailing the counts, co-ordinates of junctions lying on chromosome 21/22
+for 2 example samples and 3 controls:</p><dl>
+<dt>assays</dt><dd><p>matrix with
+counts for junctions (rows) and 5 samples (cols)</p></dd> <dt>colData</dt><dd><p>example
+sample metadata</p></dd> <dt>rowRanges</dt><dd><p><code><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></code>
+object describing the co-ordinates and strand of each junction</p></dd> 
+</dl>
+
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+
+    <p>generated using data-raw/junctions_example.R</p>
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
