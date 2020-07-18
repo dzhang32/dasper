@@ -105,9 +105,14 @@ manual_check <- function(junctions, ref_exons, n) {
         junction_to_test <- junctions[i]
 
         expect_exons_start <-
-            ref_exons[end(ref_exons) == (start(junction_to_test) - 1) & as.character(seqnames(ref_exons)) == as.character(seqnames(junction_to_test))]
+          ref_exons[end(ref_exons) == (start(junction_to_test) - 1) &
+                      as.character(seqnames(ref_exons)) == as.character(seqnames(junction_to_test)) &
+                      as.character(strand(ref_exons)) == as.character(strand(junction_to_test))]
+
         expect_exons_end <-
-            ref_exons[start(ref_exons) == (end(junction_to_test) + 1) & as.character(seqnames(ref_exons)) == as.character(seqnames(junction_to_test))]
+          ref_exons[start(ref_exons) == (end(junction_to_test) + 1) &
+                      as.character(seqnames(ref_exons)) == as.character(seqnames(junction_to_test)) &
+                      as.character(strand(ref_exons)) == as.character(strand(junction_to_test))]
 
         # check exons
         check <- all(check, identical(
@@ -153,5 +158,5 @@ test_that("exon annotation has been correctly retreived", {
     expect_true(manual_check(novel_exon_skip, ref_exons, 20))
     expect_true(manual_check(novel_combo, ref_exons, 5))
     expect_true(manual_check(ambig_gene, ref_exons, 5))
-    expect_true(manual_check(unannotated, ref_exons, 5))
+    expect_true(manual_check(unannotated, ref_exons, 50))
 })
