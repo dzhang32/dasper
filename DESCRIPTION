@@ -27,7 +27,8 @@ Suggests:
     BiocStyle,
     sessioninfo,
     rmarkdown,
-    tibble
+    tibble,
+    knitcitations
 VignetteBuilder: knitr
 Imports: 
     stringr,
@@ -38,11 +39,9 @@ Imports:
     IRanges,
     magrittr,
     SummarizedExperiment,
-    utils,
     BiocFileCache,
     methods,
     GenomeInfoDb,
-    GenomicFeatures,
-    knitcitations
+    GenomicFeatures
 Depends: 
     R (>= 2.10)
