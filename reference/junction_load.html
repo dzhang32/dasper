@@ -135,7 +135,7 @@ through snaptron (<a href='http://snaptron.cs.jhu.edu/'>http://snaptron.cs.jhu.e
 expects the junction data to be in STAR aligned format (SJ.out).</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/dasper/man/junction_load.html'>junction_load</a></span>(
+    <pre class="usage"><span class='fu'>junction_load</span>(
   <span class='kw'>junction_paths</span>,
   metadata = <span class='kw'>dplyr</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(samp_id = <span class='kw'>stringr</span>::<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_c.html'>str_c</a></span>(<span class='st'>"samp_"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>junction_paths</span>))),
   controls = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>FALSE</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>junction_paths</span>)),
@@ -202,7 +202,7 @@ containing junction data.</p>
     )
 
 <span class='kw'>junctions</span> <span class='op'>&lt;-</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/dasper/man/junction_load.html'>junction_load</a></span>(
+    <span class='fu'>junction_load</span>(
         junction_paths = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>junctions_example_1_path</span>),
         metadata = <span class='kw'>dplyr</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(samp_id = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"example_1"</span>))
     )
