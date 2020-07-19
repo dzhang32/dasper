@@ -95,56 +95,70 @@ test_that("junction categories meet expectations", {
 })
 
 ref_exons <- ref %>% GenomicFeatures::exons(columns = c("gene_id", "tx_name", "exon_name"))
+ref_exons_start_end <- .get_start_end(ref_exons)
 
 # define function to manually check n randomly sampled junctions
 # to make exon annotation from junction_annot matches expections
-manual_check <- function(junctions, ref_exons, n) {
+annot_check <- function(junctions, ref_exons, n) {
     check <- TRUE
 
+    start(junctions) <- start(junctions) - 1
+    end(junctions) <- end(junctions) + 1
+
+    junctions_start_end <- .get_start_end(junctions)
+    ref_exons_start_end <- .get_start_end(ref_exons)
+
     for (i in sample(1:length(junctions), n, replace = T)) {
-        junction_to_test <- junctions[i]
+        junction_to_test <- junctions_start_end %>%
+            lapply(FUN = function(x) {
+                x[i]
+            })
 
         expect_exons_start <-
-          ref_exons[end(ref_exons) == (start(junction_to_test) - 1) &
-                      as.character(seqnames(ref_exons)) == as.character(seqnames(junction_to_test)) &
-                      as.character(strand(ref_exons)) == as.character(strand(junction_to_test))]
+            ref_exons[findOverlaps(ref_exons_start_end[["end"]],
+                junction_to_test[["start"]],
+                ignore.strand = F
+            ) %>%
+                queryHits()]
 
         expect_exons_end <-
-          ref_exons[start(ref_exons) == (end(junction_to_test) + 1) &
-                      as.character(seqnames(ref_exons)) == as.character(seqnames(junction_to_test)) &
-                      as.character(strand(ref_exons)) == as.character(strand(junction_to_test))]
+            ref_exons[findOverlaps(ref_exons_start_end[["start"]],
+                junction_to_test[["end"]],
+                ignore.strand = F
+            ) %>%
+                queryHits()]
 
         # check exons
         check <- all(check, identical(
             expect_exons_start$exon_name %>% unique() %>% sort(),
-            mcols(junction_to_test)[["exon_name_start"]] %>% unlist() %>% unname() %>% sort()
+            mcols(junction_to_test[["start"]])[["exon_name_start"]] %>% unlist() %>% unname() %>% sort()
         ))
 
         check <- all(check, identical(
             expect_exons_end$exon_name %>% unique() %>% sort(),
-            mcols(junction_to_test)[["exon_name_end"]] %>% unlist() %>% unname() %>% sort()
+            mcols(junction_to_test[["start"]])[["exon_name_end"]] %>% unlist() %>% unname() %>% sort()
         ))
 
         # check transcripts
         check <- all(check, identical(
             expect_exons_start$tx_name %>% unlist() %>% unique() %>% sort(),
-            mcols(junction_to_test)[["tx_name_start"]] %>% unlist() %>% unname() %>% sort()
+            mcols(junction_to_test[["start"]])[["tx_name_start"]] %>% unlist() %>% unname() %>% sort()
         ))
 
         check <- all(check, identical(
             expect_exons_end$tx_name %>% unlist() %>% unique() %>% sort(),
-            mcols(junction_to_test)[["tx_name_end"]] %>% unlist() %>% unname() %>% sort()
+            mcols(junction_to_test[["start"]])[["tx_name_end"]] %>% unlist() %>% unname() %>% sort()
         ))
 
         # check genes
         check <- all(check, identical(
             expect_exons_start$gene_id %>% unlist() %>% unique() %>% sort(),
-            mcols(junction_to_test)[["gene_id_start"]] %>% unlist() %>% unname() %>% sort()
+            mcols(junction_to_test[["start"]])[["gene_id_start"]] %>% unlist() %>% unname() %>% sort()
         ))
 
         check <- all(check, identical(
             expect_exons_end$gene_id %>% unlist() %>% unique() %>% sort(),
-            mcols(junction_to_test)[["gene_id_end"]] %>% unlist() %>% unname() %>% sort()
+            mcols(junction_to_test[["start"]])[["gene_id_end"]] %>% unlist() %>% unname() %>% sort()
         ))
     }
 
@@ -152,11 +166,11 @@ manual_check <- function(junctions, ref_exons, n) {
 }
 
 test_that("exon annotation has been correctly retreived", {
-    expect_true(manual_check(annotated, ref_exons, 50))
-    expect_true(manual_check(novel_donor, ref_exons, 20))
-    expect_true(manual_check(novel_acceptor, ref_exons, 20))
-    expect_true(manual_check(novel_exon_skip, ref_exons, 20))
-    expect_true(manual_check(novel_combo, ref_exons, 5))
-    expect_true(manual_check(ambig_gene, ref_exons, 5))
-    expect_true(manual_check(unannotated, ref_exons, 50))
+    expect_true(annot_check(annotated, ref_exons, 10))
+    expect_true(annot_check(novel_donor, ref_exons, 10))
+    expect_true(annot_check(novel_acceptor, ref_exons, 10))
+    expect_true(annot_check(novel_exon_skip, ref_exons, 10))
+    expect_true(annot_check(novel_combo, ref_exons, 5))
+    expect_true(annot_check(ambig_gene, ref_exons, 5))
+    expect_true(annot_check(unannotated, ref_exons, 10))
 })

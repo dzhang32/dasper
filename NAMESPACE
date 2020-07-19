@@ -3,6 +3,7 @@
 export(junction_annot)
 export(junction_filter)
 export(junction_load)
+export(junction_norm)
 import(S4Vectors)
 importFrom(GenomicRanges,"end<-")
 importFrom(GenomicRanges,"start<-")
