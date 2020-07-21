@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Filter junctions — junction_filter" />
-<meta property="og:description" content="junction_filter filters out &quot;noisy&quot; junctions based on raw counts, the
+<meta property="og:description" content="junction_filter filters out &quot;noisy&quot; junctions based on counts, the
 width of junctions, annotation category of the junction returned from
 junction_annot and whether the junction overlaps with a set of
 (blacklist) regions." />
@@ -123,7 +123,7 @@ junction_annot and whether the junction overlaps with a set of
     </div>
 
     <div class="ref-description">
-    <p><code>junction_filter</code> filters out "noisy" junctions based on raw counts, the
+    <p><code>junction_filter</code> filters out "noisy" junctions based on counts, the
 width of junctions, annotation category of the junction returned from
 <code><a href='junction_annot.html'>junction_annot</a></code> and whether the junction overlaps with a set of
 (blacklist) regions.</p>
@@ -149,15 +149,15 @@ width of junctions, annotation category of the junction returned from
     <tr>
       <th>count_thresh</th>
       <td><p>named vector with names matching the names of the
-<code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a></code> in <code>junctions</code>. Element
-denotes the number of counts below which a junction will be filtered out.</p></td>
+<code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a></code> in <code>junctions</code>. Values
+denote the number of counts below which a junction will be filtered out.</p></td>
     </tr>
     <tr>
       <th>n_samp</th>
       <td><p>named vector with names matching the names of the
-<code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a></code> in <code>junctions</code>. Each
-element denotes number of samples that have to express the junction above
-the <code>count_thresh</code> in order for that junction to not be filtered.</p></td>
+<code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a></code> in <code>junctions</code>. Values
+denotes number of samples that have to express the junction above the
+<code>count_thresh</code> in order for that junction to not be filtered.</p></td>
     </tr>
     <tr>
       <th>width_range</th>
@@ -191,8 +191,8 @@ Further information can be found via the publication
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_filter</span>(<span class='kw'>junctions_example</span>)</div><div class='output co'>#&gt; [1] "2020-07-20 21:47:37 - Filtering junctions..."
-#&gt; [1] "2020-07-20 21:47:37 - done!"</div><div class='input'><span class='kw'>junctions</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
+<span class='kw'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_filter</span>(<span class='kw'>junctions_example</span>)</div><div class='output co'>#&gt; [1] "2020-07-21 13:55:54 - Filtering junctions..."
+#&gt; [1] "2020-07-21 13:55:55 - done!"</div><div class='input'><span class='kw'>junctions</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
 #&gt; dim: 4873 5 
 #&gt; metadata(0):
 #&gt; assays(1): raw

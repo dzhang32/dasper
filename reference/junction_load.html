@@ -159,7 +159,7 @@ of the <code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummari
     </tr>
     <tr>
       <th>controls</th>
-      <td><p>either a logical vector of the same length as paths with
+      <td><p>either a logical vector of the same length as <code>junction_paths</code> with
 TRUEs labelling controls Or, "fibroblasts" representing the samples of
 which GTEx tissue to use as controls. If left unchanged, by default will
 assume all samples are patients.</p></td>
@@ -180,7 +180,7 @@ path then return a dataframe with the columns "chr", "start", "end",
       <th>coord_system</th>
       <td><p>One of "ensembl" (1-based) or "ucsc" (0-based) denoting
 the co-ordinate system corresponding to the user junctions from
-junction_paths. Only used when controls is set to "fibroblasts". This is
+<code>junction_paths</code>. Only used when controls is set to "fibroblasts". This is
 used ensure control data is harmonised to user's junctions
 when merging. The outputted junctions will always follow the user's
 co-ordinate system.</p></td>
