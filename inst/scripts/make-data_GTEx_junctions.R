@@ -66,7 +66,7 @@ tidy_raw_count <- function(x) {
 
 # for now, upload these to dropbox to be able to loaded by dasper users
 # potentially transfer to ExperimentalHub in future
-# drop_auth()
+# rdrop2::drop_auth(rdstoken = )
 drop_create("public/dasper/GTEx_v6_junctions")
 
 # downloads junction data for selected tissues using snaptron
@@ -92,7 +92,8 @@ for (i in 1:nrow(tissues_of_interest)) {
             "&sids=", str_c(gtex_metadata_tissue[["rail_id"]], collapse = ",")
           ),
           delim = "\t"
-          )
+          ) %>%
+          dplyr::select(chromosome, start, end, strand, samples)
       })
         GTEx_junctions <- bind_rows(GTEx_junctions, junctions_per_chr)
     }
