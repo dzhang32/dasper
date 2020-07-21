@@ -18,13 +18,13 @@ junction_filter(
 \code{\link[SummarizedExperiment]{SummarizedExperiment}} object.}
 
 \item{count_thresh}{named vector with names matching the names of the
-\code{\link[SummarizedExperiment]{assays}} in \code{junctions}. Element
-denotes the number of counts below which a junction will be filtered out.}
+\code{\link[SummarizedExperiment]{assays}} in \code{junctions}. Values
+denote the number of counts below which a junction will be filtered out.}
 
 \item{n_samp}{named vector with names matching the names of the
-\code{\link[SummarizedExperiment]{assays}} in \code{junctions}. Each
-element denotes number of samples that have to express the junction above
-the \code{count_thresh} in order for that junction to not be filtered.}
+\code{\link[SummarizedExperiment]{assays}} in \code{junctions}. Values
+denotes number of samples that have to express the junction above the
+\code{count_thresh} in order for that junction to not be filtered.}
 
 \item{width_range}{numeric vector of length 2. The first element denoting the
 lower limit of junction width and the second the upper limit. Junctions
@@ -41,7 +41,7 @@ with widths outside this range will be filtered out.}
 filtered set of junctions.
 }
 \description{
-\code{junction_filter} filters out "noisy" junctions based on raw counts, the
+\code{junction_filter} filters out "noisy" junctions based on counts, the
 width of junctions, annotation category of the junction returned from
 \code{\link{junction_annot}} and whether the junction overlaps with a set of
 (blacklist) regions.

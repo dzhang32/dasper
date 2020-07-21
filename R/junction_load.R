@@ -12,7 +12,7 @@
 #' @param metadata dataframe containing sample metadata with rows in the same
 #'   order and corresponding to file path(s). Will be used as the \code{colData}
 #'   of the \code{\link[SummarizedExperiment]{SummarizedExperiment}} object.
-#' @param controls either a logical vector of the same length as paths with
+#' @param controls either a logical vector of the same length as \code{junction_paths} with
 #'   TRUEs labelling controls Or, "fibroblasts" representing the samples of
 #'   which GTEx tissue to use as controls. If left unchanged, by default will
 #'   assume all samples are patients.
@@ -24,7 +24,7 @@
 #' @param chrs chromosomes to keep. If NULL, no filter is applied.
 #' @param coord_system One of "ensembl" (1-based) or "ucsc" (0-based) denoting
 #'   the co-ordinate system corresponding to the user junctions from
-#'   junction_paths. Only used when controls is set to "fibroblasts". This is
+#'   \code{junction_paths}. Only used when controls is set to "fibroblasts". This is
 #'   used ensure control data is harmonised to user's junctions
 #'   when merging. The outputted junctions will always follow the user's
 #'   co-ordinate system.

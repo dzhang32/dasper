@@ -8,9 +8,9 @@
 #'
 #' @inheritParams junction_annot
 #'
-#' @return junctions as a with additional an
-#'   \code{\link[SummarizedExperiment]{assay}} containing the normalised
-#'   counts.
+#' @return junctions as a
+#'   \code{\link[SummarizedExperiment]{SummarizedExperiment}} object with an
+#'   additional \code{assay} containing the normalised counts.
 #'
 #' @examples
 #'
