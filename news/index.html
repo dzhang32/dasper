@@ -127,6 +127,8 @@
 <li>Added <code><a href="../reference/junction_load.html">junction_load()</a></code>, which loads raw junction data outputted from RNA-sequencing alignment into an <code>RangedSummarizedExperiment</code> object. Includes an option to allow download of user-specified control junctions.</li>
 <li>Added <code><a href="../reference/junction_annot.html">junction_annot()</a></code>, which uses information from reference annotation and the strand of a junction to classify junctions as “annotated”, “novel_acceptor”, “novel_donor”, “novel_exon_skip”, “novel_combo”, “ambig_gene” and “unannotated”.</li>
 <li>Added <code><a href="../reference/junction_filter.html">junction_filter()</a></code>, which filters junctions by their count, width, annotation or if they overlap a set of user-defined regions.</li>
+<li>Added <code><a href="../reference/junction_norm.html">junction_norm()</a></code>, which normalises raw junction counts in a proportion-spliced-in by dividing the counts of each junction by the total number of counts in it’s associated cluster.</li>
+<li>Added <code><a href="../reference/junction_score.html">junction_score()</a></code>, which scores patient junctions based on the extent their counts deviate from the control count distribution of the same junction.</li>
 </ul>
 </div>
   </div>
