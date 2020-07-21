@@ -63,6 +63,10 @@ junction_score <- function(junctions, score_func = .zscore, ...) {
             )
     }
 
+    # add colnames to prevent dimnames warning from
+    # SummarizedExperiment::`assays<-`
+    colnames(case_score) <- colnames(case_count)
+
     # subset for only case samples
     # to enable adding score as an assay
     # otherwise score would have a diff number of columns to junction
