@@ -47,7 +47,7 @@ test_that("junction_filter has correct output", {
 
     # count
     expect_false(junctions %>%
-        SummarizedExperiment::assays() %>%
+        assays() %>%
         .[["raw"]] %>%
         apply(
             MARGIN = 1,
@@ -58,7 +58,7 @@ test_that("junction_filter has correct output", {
         all())
 
     expect_true(by_count %>%
-        SummarizedExperiment::assays() %>%
+        assays() %>%
         .[["raw"]] %>%
         apply(
             MARGIN = 1,
@@ -82,7 +82,7 @@ test_that("junction_filter has correct output", {
 
     # all
     expect_true(by_all %>%
-        SummarizedExperiment::assays() %>%
+        assays() %>%
         .[["raw"]] %>%
         apply(
             MARGIN = 1,

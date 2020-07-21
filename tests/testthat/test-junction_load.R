@@ -89,22 +89,22 @@ junctions_w_control <-
 
 test_that("junction_load has correct output", {
     expect_match(class(junctions), "RangedSummarizedExperiment")
-    expect_identical(SummarizedExperiment::colData(junctions)[["samp_id"]], c("samp_1"))
-    expect_identical(SummarizedExperiment::colData(junctions)[["case_control"]], c("case"))
-    expect_identical(SummarizedExperiment::assay(junctions) %>% colnames(), c("count_1"))
+    expect_identical(colData(junctions)[["samp_id"]], c("samp_1"))
+    expect_identical(colData(junctions)[["case_control"]], c("case"))
+    expect_identical(assays(junctions)[["raw"]] %>% colnames(), c("count_1"))
 
     expect_match(class(junctions_w_case), "RangedSummarizedExperiment")
-    expect_identical(SummarizedExperiment::colData(junctions_w_case)[["case_control"]], c("control", "case"))
-    expect_identical(SummarizedExperiment::assay(junctions_w_case) %>% colnames(), c("count_1", "count_2"))
-    expect_identical(SummarizedExperiment::colData(junctions_w_case)[["samp_id"]], c("example_1", "example_2"))
+    expect_identical(colData(junctions_w_case)[["case_control"]], c("control", "case"))
+    expect_identical(assays(junctions_w_case)[["raw"]] %>% colnames(), c("count_1", "count_2"))
+    expect_identical(colData(junctions_w_case)[["samp_id"]], c("example_1", "example_2"))
 
     expect_match(class(junctions_w_control), "RangedSummarizedExperiment")
     expect_identical(
-        SummarizedExperiment::colData(junctions_w_control)[["case_control"]],
-        c(rep("case", 2), rep("control", ncol(SummarizedExperiment::assay(junctions_w_control)) - 2))
+        colData(junctions_w_control)[["case_control"]],
+        c(rep("case", 2), rep("control", ncol(assays(junctions_w_control)[["raw"]]) - 2))
     )
     expect_identical(
-        SummarizedExperiment::assay(junctions_w_control) %>%
+        assays(junctions_w_control)[["raw"]] %>%
             colnames() %>%
             stringr::str_replace("_.*", "") %>%
             unique(),

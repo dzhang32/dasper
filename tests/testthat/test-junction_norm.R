@@ -7,12 +7,12 @@ junctions <- junction_norm(junctions_example)
 test_that("junction_norm general output looks correct", {
     expect_true(methods::isClass(junctions, "RangedSummarizedExperiment"))
     expect_equal(
-        colnames(SummarizedExperiment::assays(junctions)[["raw"]]),
-        colnames(SummarizedExperiment::assays(junctions)[["norm"]])
+        colnames(assays(junctions)[["raw"]]),
+        colnames(assays(junctions)[["norm"]])
     )
     expect_equal(
-        nrow(SummarizedExperiment::assays(junctions)[["raw"]]),
-        nrow(SummarizedExperiment::assays(junctions)[["norm"]])
+        nrow(assays(junctions)[["raw"]]),
+        nrow(assays(junctions)[["norm"]])
     )
     expect_false(any(lengths(mcols(junctions)[["clusters"]]) == 0))
     expect_identical(
@@ -23,15 +23,15 @@ test_that("junction_norm general output looks correct", {
 
 # all clusters with only a single junction should have a value of 1 or 0
 mono_cluster <- which(lengths(mcols(junctions)[["clusters"]]) == 1)
-mono_cluster_counts <- SummarizedExperiment::assays(junctions)[["norm"]][mono_cluster, ]
+mono_cluster_counts <- assays(junctions)[["norm"]][mono_cluster, ]
 
 test_that("normalised counts have expected values", {
-    expect_false(any(is.na(SummarizedExperiment::assays(junctions)[["norm"]])))
-    expect_true(all(SummarizedExperiment::assays(junctions)[["norm"]] <= 1))
-    expect_true(all(SummarizedExperiment::assays(junctions)[["norm"]] >= 0))
+    expect_false(any(is.na(assays(junctions)[["norm"]])))
+    expect_true(all(assays(junctions)[["norm"]] <= 1))
+    expect_true(all(assays(junctions)[["norm"]] >= 0))
     expect_identical(
-        which(SummarizedExperiment::assays(junctions)[["raw"]] == 0),
-        which(SummarizedExperiment::assays(junctions)[["norm"]] == 0)
+        which(assays(junctions)[["raw"]] == 0),
+        which(assays(junctions)[["norm"]] == 0)
     )
     expect_true(all(unlist(mono_cluster_counts) %in% c(0, 1)))
 })
@@ -66,13 +66,13 @@ norm_check <- function(junctions, n) {
 
         # if the cluster only has 1 junction, we don't need to sum
         if (length(expect_cluster) >= 2) {
-            expect_cluster_sum_counts <- SummarizedExperiment::assays(junctions)[["raw"]][expect_cluster, ] %>%
+            expect_cluster_sum_counts <- assays(junctions)[["raw"]][expect_cluster, ] %>%
                 apply(MARGIN = 2, FUN = sum)
         } else {
-            expect_cluster_sum_counts <- SummarizedExperiment::assays(junctions)[["raw"]][expect_cluster, ]
+            expect_cluster_sum_counts <- assays(junctions)[["raw"]][expect_cluster, ]
         }
 
-        expect_norm_counts <- SummarizedExperiment::assays(junction_start_end_to_test[["start"]])[["raw"]] / expect_cluster_sum_counts
+        expect_norm_counts <- assays(junction_start_end_to_test[["start"]])[["raw"]] / expect_cluster_sum_counts
         expect_norm_counts[is.na(expect_norm_counts)] <- 0
 
         check <- all(check, identical(
@@ -82,7 +82,7 @@ norm_check <- function(junctions, n) {
 
         check <- all(check, identical(
             expect_norm_counts[1, ],
-            SummarizedExperiment::assays(junctions)[["norm"]][i, ]
+            assays(junctions)[["norm"]][i, ]
         ))
     }
 

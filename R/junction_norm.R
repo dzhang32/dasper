@@ -106,8 +106,8 @@ junction_norm <- function(junctions) {
 #' @keywords internal
 #' @noRd
 .junction_norm_count <- function(junctions) {
-    n_junctions <- nrow(SummarizedExperiment::assays(junctions)[["raw"]])
-    n_samps <- ncol(SummarizedExperiment::assays(junctions)[["raw"]])
+    n_junctions <- nrow(assays(junctions)[["raw"]])
+    n_samps <- ncol(assays(junctions)[["raw"]])
 
     norm_counts <- matrix(
         nrow = n_junctions,
@@ -128,7 +128,7 @@ junction_norm <- function(junctions) {
         # 3. sum over each element obtain the total counts per cluster
         cluster_sum_counts <-
             .regroup(
-                x = SummarizedExperiment::assays(junctions)[["raw"]][, i][clusters_unlisted],
+                x = assays(junctions)[["raw"]][, i][clusters_unlisted],
                 group = names(clusters_unlisted),
                 all_groups = 1:length(junctions)
             ) %>%
@@ -140,15 +140,15 @@ junction_norm <- function(junctions) {
         # re-order by the original order
         cluster_sum_counts <- cluster_sum_counts[as.character(mcols(junctions)[["index"]])]
 
-        norm_counts[, i] <- SummarizedExperiment::assays(junctions)[["raw"]][, i] / cluster_sum_counts
+        norm_counts[, i] <- assays(junctions)[["raw"]][, i] / cluster_sum_counts
     }
 
-    colnames(norm_counts) <- colnames(SummarizedExperiment::assays(junctions)[["raw"]])
+    colnames(norm_counts) <- colnames(assays(junctions)[["raw"]])
 
     # convert NA's (junctions that have 0 reads in their cluster) to 0
     norm_counts[is.na(norm_counts)] <- 0
 
-    SummarizedExperiment::assays(junctions)[["norm"]] <- norm_counts
+    assays(junctions)[["norm"]] <- norm_counts
 
     return(junctions)
 }

@@ -8,7 +8,10 @@ NULL
 
 #' @import S4Vectors
 #' @importFrom magrittr %>%
-#' @importFrom GenomicRanges seqnames start end strand width start<- end<- strand<-
+#' @importFrom GenomicRanges seqnames start end strand width
+#' @importFrom GenomicRanges start<- end<- strand<-
 #' @importFrom GenomicRanges findOverlaps GRanges
 #' @importFrom IRanges CharacterList
+#' @importFrom SummarizedExperiment colData assays
+#' @importFrom SummarizedExperiment assays<-
 NULL

@@ -121,7 +121,7 @@ junction_filter <- function(junctions,
         # how many samples for each junction have a count above count_thresh
         count_filter <-
             junctions %>%
-            SummarizedExperiment::assays() %>%
+            assays() %>%
             .[[names(count_thresh)[i]]] %>%
             apply(
                 MARGIN = 1,
