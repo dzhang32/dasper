@@ -10,13 +10,11 @@ tissues_of_interest <-
   tibble(tissue_tidy = c("fibroblast",
                          "whole_blood",
                          "skeletal_muscle",
-                         "lymphocytes",
-                         "skin_sun_exposed"),
+                         "lymphocytes"),
          tissue_gtex = c("Cells - Transformed fibroblasts",
                          "Whole Blood",
                          "Muscle - Skeletal",
-                         "Cells - EBV-transformed lymphocytes",
-                         "Skin - Sun Exposed (Lower leg)"))
+                         "Cells - EBV-transformed lymphocytes"))
 
 # download and filter GTEx metadata
 gtex_metadata <- read_delim("http://snaptron.cs.jhu.edu/data/gtex/samples.tsv", delim = "\t")
