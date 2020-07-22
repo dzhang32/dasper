@@ -5,12 +5,13 @@
 \alias{junctions_example}
 \title{Set of example junctions from 5 samples}
 \format{
-RangedSummarizedExperiment from \code{\link{SummarizedExperiment}}
-detailing the counts, co-ordinates of junctions lying on chromosome 21/22
-for 2 example samples and 3 controls: \describe{ \item{assays}{matrix with
-counts for junctions (rows) and 5 samples (cols)} \item{colData}{example
-sample metadata} \item{rowRanges}{\code{\link[GenomicRanges]{GRanges}}
-object describing the co-ordinates and strand of each junction} }
+\link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
+object from \code{\link{SummarizedExperiment}} detailing the counts,
+co-ordinates of junctions lying on chromosome 21/22 for 2 example samples
+and 3 controls: \describe{ \item{assays}{matrix with counts for junctions
+(rows) and 5 samples (cols)} \item{colData}{example sample metadata}
+\item{rowRanges}{\code{\link[GenomicRanges]{GRanges}} object describing the
+co-ordinates and strand of each junction} }
 }
 \source{
 generated using data-raw/junctions_example.R

@@ -1,21 +1,22 @@
 #' Annotate junctions using reference annotation
 #'
 #' \code{junction_annot} annotates junctions by 1. Whether their start and/or
-#' end position precisely overlaps with an annotated exon boundary and 2. Whether
-#' that junction matches any intron definition from existing annotation.
+#' end position precisely overlaps with an annotated exon boundary and 2.
+#' Whether that junction matches any intron definition from existing annotation.
 #' Using this information along with the strand, junctions are categorised into
 #' "annotated", "novel_acceptor", "novel_donor", "novel_combo",
 #' "novel_exon_skip", "ambig_gene" and "unannotated".
 #'
 #' @param junctions junction data as a
-#'   \code{\link[SummarizedExperiment]{SummarizedExperiment}} object.
+#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#'   object.
 #' @param ref either path to gtf/gff3 or object of class `TxDb` imported using
 #'   \code{\link[GenomicFeatures]{makeTxDbFromGFF}}.
 #'
 #' @return junctions as a
-#'   \code{\link[SummarizedExperiment]{SummarizedExperiment}} object with
-#'   additional `rowData` detailing overlapping genes/transcripts/exons and
-#'   junction categories.
+#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#'   object with additional `rowData` detailing overlapping
+#'   genes/transcripts/exons and junction categories.
 #'
 #' @examples
 #'
@@ -86,7 +87,7 @@ junction_annot <- function(junctions, ref) {
 #'
 #' @keywords internal
 #' @noRd
-.junction_annot_ref <- function(junctions, ref_introns, ref_exons, ignore.strand = F) {
+.junction_annot_ref <- function(junctions, ref_introns, ref_exons, ignore.strand = FALSE) {
 
     ##### Do junctions match introns from the reference annotation? #####
 
@@ -96,7 +97,7 @@ junction_annot <- function(junctions, ref) {
             ignore.strand = ignore.strand
         )
 
-    mcols(junctions)[["in_ref"]] <- 1:length(junctions) %in% unique(queryHits(junctions_intron_hits))
+    mcols(junctions)[["in_ref"]] <- seq_along(junctions) %in% unique(queryHits(junctions_intron_hits))
 
     ##### Do junctions start/end overlap with an exon end/start? #####
 
@@ -138,7 +139,7 @@ junction_annot <- function(junctions, ref) {
                 .regroup(
                     x = ref_col_raw[subjectHits(junctions_exon_hits)], # subset annotation by the
                     groups = queryHits(junctions_exon_hits), # group hits by the junction they overlap
-                    all_groups = 1:length(junctions)
+                    all_groups = seq_along(junctions)
                 ) %>% # each junction is a group
                 CharacterList() %>% # convert output into a CharacterList
                 unique() # unique values for when junction start/end overlaps e.g. two exons
@@ -214,14 +215,13 @@ junction_annot <- function(junctions, ref) {
 
 #' Categorises junctions depending on reference annotation and strand
 #'
-#' \code{.junction_cat} categories junctions into "annotated",
-#' "novel_acceptor", "novel_donor", "novel_combo", "novel_exon_skip", "ambig_gene" and
-#' "none" using information from annotation and strand.
+#' \code{.junction_cat} categories junctions into "annotated", "novel_acceptor",
+#' "novel_donor", "novel_combo", "novel_exon_skip", "ambig_gene" and "none"
+#' using information from annotation and strand.
 #'
 #' @inheritParams junction_annot
 #'
-#' @return junction metadata with additional columns informing whether that
-#'   junction is present within annotation and it's category.
+#' @return junctions with additional metadata detailling junction categories.
 #'
 #' @keywords internal
 #' @noRd
@@ -232,7 +232,7 @@ junction_annot <- function(junctions, ref) {
 
     mcols(junctions)[["type"]] <-
         dplyr::case_when(
-            mcols(junctions)[["in_ref"]] == T ~ "annotated",
+            mcols(junctions)[["in_ref"]] == TRUE ~ "annotated",
             lengths(mcols(junctions)[["gene_id_junction"]]) == 0 ~ "unannotated",
             lengths(mcols(junctions)[["gene_id_junction"]]) > 1 ~ "ambig_gene", # after these checks lengths(gene_id_junction) must equal 1
             lengths(mcols(junctions)[["gene_id_start"]]) > 0 & lengths(mcols(junctions)[["gene_id_end"]]) > 0 ~ "novel_combo",
@@ -252,7 +252,7 @@ junction_annot <- function(junctions, ref) {
     # since each column is called as mcols(junctions)[["col"]]
     # the below only checks for novel_exon_skip in the novel_combo subset
     # the two distinguished by whether the start/end of junction overlap a matching transcript
-    mcols(junctions)[["index_tmp"]] <- 1:length(junctions)
+    mcols(junctions)[["index_tmp"]] <- seq_along(junctions)
     novel_combo <- junctions[mcols(junctions)[["type"]] == "novel_combo"]
     novel_exon_skip_indexes <- mcols(novel_combo)[["index_tmp"]][any(mcols(novel_combo)[["tx_name_start"]] %in% mcols(novel_combo)[["tx_name_end"]])]
     mcols(junctions)[["type"]][novel_exon_skip_indexes] <- "novel_exon_skip"

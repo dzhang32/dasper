@@ -61,14 +61,14 @@ junction_norm <- function(junctions) {
         query = junctions_start_end[["start"]],
         subject = junctions_start_end[["start"]],
         type = "equal",
-        ignore.strand = F
+        ignore.strand = FALSE
     )
 
     end_hits <- findOverlaps(
         query = junctions_start_end[["end"]],
         subject = junctions_start_end[["end"]],
         type = "equal",
-        ignore.strand = F
+        ignore.strand = FALSE
     )
 
     # query hits correspond to the index of each seed junction
@@ -79,14 +79,14 @@ junction_norm <- function(junctions) {
     clusters <- .regroup(
         x = c(subjectHits(start_hits), subjectHits(end_hits)),
         groups = c(queryHits(start_hits), queryHits(end_hits)),
-        all_groups = 1:length(junctions)
+        all_groups = seq_along(junctions)
     ) %>%
         IRanges::IntegerList() %>%
         unique() %>% # unique so that each junction only appears once per cluster
         sort()
 
     # add clusters and indexes to coords
-    mcols(junctions)[["index"]] <- 1:length(junctions)
+    mcols(junctions)[["index"]] <- seq_along(junctions)
     mcols(junctions)[["clusters"]] <- clusters
 
     return(junctions)
@@ -130,7 +130,7 @@ junction_norm <- function(junctions) {
             .regroup(
                 x = assays(junctions)[["raw"]][, i][clusters_unlisted],
                 group = names(clusters_unlisted),
-                all_groups = 1:length(junctions)
+                all_groups = seq_along(junctions)
             ) %>%
             lapply(FUN = sum) %>%
             unlist()

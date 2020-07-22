@@ -8,6 +8,7 @@ NULL
 
 #' @import S4Vectors
 #' @importFrom magrittr %>%
+#' @importFrom dplyr count
 #' @importFrom GenomicRanges seqnames start end strand width
 #' @importFrom GenomicRanges start<- end<- strand<-
 #' @importFrom GenomicRanges findOverlaps GRanges

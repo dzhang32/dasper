@@ -15,7 +15,8 @@ junction_filter(
 }
 \arguments{
 \item{junctions}{junction data as a
-\code{\link[SummarizedExperiment]{SummarizedExperiment}} object.}
+\link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
+object.}
 
 \item{count_thresh}{named vector with names matching the names of the
 \code{\link[SummarizedExperiment]{assays}} in \code{junctions}. Values
@@ -37,8 +38,8 @@ with widths outside this range will be filtered out.}
 \code{\link[GenomicRanges]{GRanges}} format) will be filtered out.}
 }
 \value{
-\code{\link[SummarizedExperiment]{SummarizedExperiment}} containing
-filtered set of junctions.
+\link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
+containing filtered set of junctions.
 }
 \description{
 \code{junction_filter} filters out "noisy" junctions based on counts, the

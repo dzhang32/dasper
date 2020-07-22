@@ -22,13 +22,14 @@
 #' @param regions any junctions overlapping this set of regions (in a
 #'   \code{\link[GenomicRanges]{GRanges}} format) will be filtered out.
 #'
-#' @return \code{\link[SummarizedExperiment]{SummarizedExperiment}} containing
-#'   filtered set of junctions.
+#' @return
+#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#'   containing filtered set of junctions.
 #'
 #' @seealso ENCODE blacklist regions recommended to  be included as
 #'   \code{regions} can be downloaded from
 #'   \url{https://github.com/Boyle-Lab/Blacklist/blob/master/lists/hg38-blacklist.v2.bed.gz}.
-#'   Further information can be found via the publication
+#'    Further information can be found via the publication
 #'   \url{https://www.nature.com/articles/s41598-019-45839-z}.
 #'
 #' @examples
@@ -65,13 +66,8 @@ junction_filter <- function(junctions,
 
         # check that user has inputted junction categories that are expected
         exp_types <- c(
-            "annotated",
-            "novel_acceptor",
-            "novel_donor",
-            "novel_exon_skip",
-            "novel_combo",
-            "ambig_gene",
-            "unannotated"
+            "annotated", "novel_acceptor", "novel_donor", "novel_exon_skip",
+            "novel_combo", "ambig_gene", "unannotated"
         )
 
         mismatch <- exp_types[!(exp_types %in% exp_types)]
@@ -90,7 +86,7 @@ junction_filter <- function(junctions,
     # by region
     if (!is.null(regions)) {
         hits <- findOverlaps(junctions, regions)
-        region_filter <- !(1:length(junctions_filter) %in% queryHits(hits))
+        region_filter <- !(seq_along(junctions_filter) %in% queryHits(hits))
         junctions_filter <- junctions_filter & region_filter
     }
 

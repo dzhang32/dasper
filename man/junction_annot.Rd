@@ -8,21 +8,22 @@ junction_annot(junctions, ref)
 }
 \arguments{
 \item{junctions}{junction data as a
-\code{\link[SummarizedExperiment]{SummarizedExperiment}} object.}
+\link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
+object.}
 
 \item{ref}{either path to gtf/gff3 or object of class \code{TxDb} imported using
 \code{\link[GenomicFeatures]{makeTxDbFromGFF}}.}
 }
 \value{
 junctions as a
-\code{\link[SummarizedExperiment]{SummarizedExperiment}} object with
-additional \code{rowData} detailing overlapping genes/transcripts/exons and
-junction categories.
+\link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
+object with additional \code{rowData} detailing overlapping
+genes/transcripts/exons and junction categories.
 }
 \description{
 \code{junction_annot} annotates junctions by 1. Whether their start and/or
-end position precisely overlaps with an annotated exon boundary and 2. Whether
-that junction matches any intron definition from existing annotation.
+end position precisely overlaps with an annotated exon boundary and 2.
+Whether that junction matches any intron definition from existing annotation.
 Using this information along with the strand, junctions are categorised into
 "annotated", "novel_acceptor", "novel_donor", "novel_combo",
 "novel_exon_skip", "ambig_gene" and "unannotated".

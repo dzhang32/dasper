@@ -8,7 +8,8 @@ junction_norm(junctions)
 }
 \arguments{
 \item{junctions}{junction data as a
-\code{\link[SummarizedExperiment]{SummarizedExperiment}} object.}
+\link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
+object.}
 }
 \value{
 junctions as a

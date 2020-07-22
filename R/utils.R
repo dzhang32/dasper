@@ -126,7 +126,7 @@
         unname() %>% # remove unecessary names from outputted list
         S4Vectors::split(
             f = groups %>% factor(all_groups),
-            drop = F
+            drop = FALSE
         )
 
     return(x_regrouped)
@@ -152,7 +152,7 @@
     }
 
     # set all groups to equal to the indexes of x/y
-    all_groups <- 1:length(x) %>%
+    all_groups <- seq_along(x) %>%
         as.character()
     names(x) <- all_groups
     names(y) <- all_groups

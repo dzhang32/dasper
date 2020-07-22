@@ -8,7 +8,8 @@ junction_score(junctions, score_func = .zscore, ...)
 }
 \arguments{
 \item{junctions}{junction data as a
-\code{\link[SummarizedExperiment]{SummarizedExperiment}} object.}
+\link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
+object.}
 
 \item{score_func}{function to score junctions by abnromality. By default,
 will use a z-score. But this can be switched dependent on the format of the

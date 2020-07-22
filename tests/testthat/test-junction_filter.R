@@ -4,7 +4,9 @@ context("Testing junction filtering")
 
 # annotate junctions to test type filter
 suppressWarnings(expr = {
-    ref <- GenomicFeatures::makeTxDbFromGFF("ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz")
+    ref <- GenomicFeatures::makeTxDbFromGFF(
+        "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+    )
 })
 
 junctions <- junction_annot(junctions_example, ref)

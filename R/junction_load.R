@@ -1,21 +1,25 @@
 #' Load junctions from patient and control RNA-seq data
 #'
-#' \code{junction_load} loads in raw patient and control junction data and formats
-#' it into a \code{\link[SummarizedExperiment]{SummarizedExperiment}} object.
-#' Control samples can be user-inputted or selected from GTEx data publicly
-#' released through the recount2 project
-#' (\url{https://jhubiostatistics.shinyapps.io/recount/}) and downloaded
-#' through snaptron (\url{http://snaptron.cs.jhu.edu/}). By default, \code{junction_load}
-#' expects the junction data to be in STAR aligned format (SJ.out).
+#' \code{junction_load} loads in raw patient and control junction data and
+#' formats it into a
+#' [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#' object. Control samples can be user-inputted or selected from GTEx data
+#' publicly released through the recount2 project
+#' (\url{https://jhubiostatistics.shinyapps.io/recount/}) and downloaded through
+#' snaptron (\url{http://snaptron.cs.jhu.edu/}). By default,
+#' \code{junction_load} expects the junction data to be in STAR aligned format
+#' (SJ.out).
 #'
 #' @param junction_paths file path(s) to junction data.
 #' @param metadata dataframe containing sample metadata with rows in the same
 #'   order and corresponding to file path(s). Will be used as the \code{colData}
-#'   of the \code{\link[SummarizedExperiment]{SummarizedExperiment}} object.
-#' @param controls either a logical vector of the same length as \code{junction_paths} with
-#'   TRUEs labelling controls Or, "fibroblasts" representing the samples of
-#'   which GTEx tissue to use as controls. If left unchanged, by default will
-#'   assume all samples are patients.
+#'   of the
+#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#'   object.
+#' @param controls either a logical vector of the same length as
+#'   \code{junction_paths} with TRUEs labelling controls Or, "fibroblasts"
+#'   representing the samples of which GTEx tissue to use as controls. If left
+#'   unchanged, by default will assume all samples are patients.
 #' @param load_func function to load in junctions. By default, requires STAR
 #'   formatted junctions (SJ.out). But this can be switched dependent on the
 #'   format of the user's junction data. Function must take as input a junction
@@ -24,13 +28,14 @@
 #' @param chrs chromosomes to keep. If NULL, no filter is applied.
 #' @param coord_system One of "ensembl" (1-based) or "ucsc" (0-based) denoting
 #'   the co-ordinate system corresponding to the user junctions from
-#'   \code{junction_paths}. Only used when controls is set to "fibroblasts". This is
-#'   used ensure control data is harmonised to user's junctions
-#'   when merging. The outputted junctions will always follow the user's
-#'   co-ordinate system.
+#'   \code{junction_paths}. Only used when controls is set to "fibroblasts".
+#'   This is used ensure control data is harmonised to user's junctions when
+#'   merging. The outputted junctions will always follow the user's co-ordinate
+#'   system.
 #'
-#' @return \code{\link[SummarizedExperiment]{SummarizedExperiment}} object
-#'   containing junction data.
+#' @return
+#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#'   object containing junction data.
 #'
 #' @examples
 #'
@@ -52,7 +57,7 @@
 #'
 #' @export
 junction_load <- function(junction_paths,
-    metadata = dplyr::tibble(samp_id = stringr::str_c("samp_", 1:length(junction_paths))),
+    metadata = dplyr::tibble(samp_id = stringr::str_c("samp_", seq_along(junction_paths))),
     controls = rep(FALSE, length(junction_paths)),
     load_func = .load_STAR,
     chrs = NULL,
@@ -260,9 +265,9 @@ junction_load <- function(junction_paths,
     suppressWarnings(
 
         # BiocFileCashe will cache the file locally for faster repeated retrival
-        file_path <- BiocFileCache::bfcrpath(BiocFileCache::BiocFileCache(ask = F),
+        file_path <- BiocFileCache::bfcrpath(BiocFileCache::BiocFileCache(ask = FALSE),
             controls_df[["dropbox_path"]],
-            exact = T
+            exact = TRUE
         ) # exact match required, if F then uses regex search
     )
 
