@@ -34,21 +34,11 @@ junction_annot <- function(junctions, ref) {
         stop("junctions must be in a RangedSummarisedExperiment format")
     }
 
-    if (class(ref) != "character" & class(ref) != "TxDb") {
-        stop("ref must either be a path to the .gtf/gff3 file or a pre-loaded TxDb object")
-    }
-
     ##### Extract annotated exons/junctions co-ordinates from gtf #####
 
     print(stringr::str_c(Sys.time(), " - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."))
 
-    if (class(ref) == "character") {
-        print(stringr::str_c(Sys.time(), " - Importing gtf/gff3 as a TxDb..."))
-
-        # import gtf using refGenome, needed to obtain the annotated splice junctions easily
-        ref <- GenomicFeatures::makeTxDbFromGFF(ref)
-    }
-
+    ref <- .ref_load(ref)
     ref_exons <- ref %>% GenomicFeatures::exons(columns = c("gene_id", "tx_name", "exon_name"))
     ref_introns <- ref %>%
         GenomicFeatures::intronsByTranscript() %>%

@@ -29,6 +29,33 @@
     return(x)
 }
 
+#' Load reference annotation
+#'
+#' \code{.ref_load} loads reference annotation using
+#' \code{\link[GenomicFeatures]{makeTxDbFromGFF}} if a character or leaves
+#' \code{ref} unchanged if already a [TxDb-class][GenomicFeatures::TxDb-class].
+#'
+#' @inheritParams junction_annot
+#'
+#' @return [TxDb-class][GenomicFeatures::TxDb-class] object.
+#'
+#' @keywords internal
+#' @noRd
+.ref_load <- function(ref) {
+    if (!is(ref, "character") & !is(ref, "TxDb")) {
+        stop("ref must either be a path to the .gtf/gff3 file or a pre-loaded TxDb object")
+    }
+
+    if (class(ref) == "character") {
+        print(stringr::str_c(Sys.time(), " - Importing gtf/gff3 as a TxDb..."))
+
+        # import gtf using refGenome, needed to obtain the annotated splice junctions easily
+        ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+    }
+
+    return(ref)
+}
+
 #' Splits a \code{GRanges} object by it's start and end.
 #'
 #' \code{.get_gr_for_start_end} takes a \code{GRanges} object and generates 2,
