@@ -14,11 +14,7 @@ test_that(".junction_annot_tidy correctly infers strand", {
 
 ##### junction_annot #####
 
-suppressWarnings(expr = {
-    ref <- GenomicFeatures::makeTxDbFromGFF("ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz")
-})
-
-junctions <- junction_annot(junctions_example, ref)
+junctions <- junctions_annot_example
 
 test_that("junction_annot output generally looks correct", {
     expect_true(methods::isClass(junctions, "RangedSummarisedExperiment"))
@@ -101,6 +97,12 @@ test_that("junction categories meet expectations", {
     )) == 0)
 })
 
+ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+
+suppressWarnings(expr = {
+  ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+})
+
 ref_exons <- ref %>% GenomicFeatures::exons(columns = c("gene_id", "tx_name", "exon_name"))
 
 # define function to manually check n randomly sampled junctions
@@ -114,7 +116,7 @@ annot_check <- function(junctions, ref_exons, n) {
     junctions_start_end <- .get_start_end(junctions)
     ref_exons_start_end <- .get_start_end(ref_exons)
 
-    for (i in sample(1:length(junctions), n, replace = FALSE)) {
+    for (i in sample(1:length(junctions), n, replace = TRUE)) {
         junction_to_test <- junctions_start_end %>%
             lapply(FUN = function(x) {
                 x[i]

@@ -2,14 +2,7 @@ context("Testing junction filtering")
 
 ##### junction_filter #####
 
-# annotate junctions to test type filter
-suppressWarnings(expr = {
-    ref <- GenomicFeatures::makeTxDbFromGFF(
-        "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
-    )
-})
-
-junctions <- junction_annot(junctions_example, ref)
+junctions <- junctions_annot_example
 
 by_count <- junction_filter(junctions,
     count_thresh = c("raw" = 5),

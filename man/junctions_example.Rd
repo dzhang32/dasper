@@ -3,7 +3,7 @@
 \docType{data}
 \name{junctions_example}
 \alias{junctions_example}
-\title{Set of example junctions from 5 samples}
+\title{Set of example junctions}
 \format{
 \link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
 object from \code{\link{SummarizedExperiment}} detailing the counts,
