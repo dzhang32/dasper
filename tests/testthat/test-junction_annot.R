@@ -20,10 +20,17 @@ suppressWarnings(expr = {
 
 junctions <- junction_annot(junctions_example, ref)
 
-
 test_that("junction_annot output generally looks correct", {
     expect_true(methods::isClass(junctions, "RangedSummarisedExperiment"))
     expect_false(any(is.na(mcols(junctions)[["type"]])))
+    expect_identical(
+        lengths(mcols(junctions)[["exon_name_start"]]),
+        lengths(mcols(junctions)[["exon_width_start"]])
+    )
+    expect_identical(
+        lengths(mcols(junctions)[["exon_name_end"]]),
+        lengths(mcols(junctions)[["exon_width_end"]])
+    )
 })
 
 test_that("junction_annot catches user-input errors", {
@@ -95,7 +102,6 @@ test_that("junction categories meet expectations", {
 })
 
 ref_exons <- ref %>% GenomicFeatures::exons(columns = c("gene_id", "tx_name", "exon_name"))
-ref_exons_start_end <- .get_start_end(ref_exons)
 
 # define function to manually check n randomly sampled junctions
 # to make exon annotation from junction_annot matches expections
@@ -108,7 +114,7 @@ annot_check <- function(junctions, ref_exons, n) {
     junctions_start_end <- .get_start_end(junctions)
     ref_exons_start_end <- .get_start_end(ref_exons)
 
-    for (i in sample(1:length(junctions), n, replace = T)) {
+    for (i in sample(1:length(junctions), n, replace = FALSE)) {
         junction_to_test <- junctions_start_end %>%
             lapply(FUN = function(x) {
                 x[i]
@@ -117,14 +123,14 @@ annot_check <- function(junctions, ref_exons, n) {
         expect_exons_start <-
             ref_exons[findOverlaps(ref_exons_start_end[["end"]],
                 junction_to_test[["start"]],
-                ignore.strand = F
+                ignore.strand = FALSE
             ) %>%
                 queryHits()]
 
         expect_exons_end <-
             ref_exons[findOverlaps(ref_exons_start_end[["start"]],
                 junction_to_test[["end"]],
-                ignore.strand = F
+                ignore.strand = FALSE
             ) %>%
                 queryHits()]
 
@@ -137,6 +143,17 @@ annot_check <- function(junctions, ref_exons, n) {
         check <- all(check, identical(
             expect_exons_end$exon_name %>% unique() %>% sort(),
             mcols(junction_to_test[["start"]])[["exon_name_end"]] %>% unlist() %>% unname() %>% sort()
+        ))
+
+        # check exon widths
+        check <- all(check, identical(
+            expect_exons_start %>% width() %>% sort(),
+            mcols(junction_to_test[["start"]])[["exon_width_start"]] %>% unlist() %>% unname() %>% sort()
+        ))
+
+        check <- all(check, identical(
+            expect_exons_end %>% width() %>% sort(),
+            mcols(junction_to_test[["start"]])[["exon_width_end"]] %>% unlist() %>% unname() %>% sort()
         ))
 
         # check transcripts
@@ -160,6 +177,10 @@ annot_check <- function(junctions, ref_exons, n) {
             expect_exons_end$gene_id %>% unlist() %>% unique() %>% sort(),
             mcols(junction_to_test[["start"]])[["gene_id_end"]] %>% unlist() %>% unname() %>% sort()
         ))
+
+        if (check == FALSE) {
+            stop(print(i))
+        }
     }
 
     return(check)

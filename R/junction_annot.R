@@ -109,7 +109,7 @@ junction_annot <- function(junctions, ref) {
     junctions_start_end <- .get_start_end(junctions)
     ref_exons_start_end <- .get_start_end(ref_exons)
 
-    ref_col_names <- c(ref_exons %>% mcols() %>% colnames(), "strand")
+    ref_col_names <- c(ref_exons %>% mcols() %>% colnames(), "strand", "exon_width")
 
     for (start_end in c("start", "end")) {
 
@@ -131,6 +131,10 @@ junction_annot <- function(junctions, ref) {
                 ref_col_raw <- ref_exons %>%
                     strand() %>%
                     as.character()
+            } else if (ref_col_names[i] == "exon_width") {
+                ref_col_raw <- ref_exons %>%
+                    width() %>%
+                    as.integer()
             } else {
                 ref_col_raw <- mcols(ref_exons)[[ref_col_names[i]]]
             }
@@ -139,10 +143,17 @@ junction_annot <- function(junctions, ref) {
                 .regroup(
                     x = ref_col_raw[subjectHits(junctions_exon_hits)], # subset annotation by the
                     groups = queryHits(junctions_exon_hits), # group hits by the junction they overlap
-                    all_groups = seq_along(junctions)
-                ) %>% # each junction is a group
-                CharacterList() %>% # convert output into a CharacterList
-                unique() # unique values for when junction start/end overlaps e.g. two exons
+                    all_groups = seq_along(junctions) # each junction is a group
+                )
+
+            if (is.character(ref_col_tidy[[1]])) {
+                ref_col_tidy <- ref_col_tidy %>%
+                    CharacterList() %>%
+                    unique() # unique values for when junction start/end overlaps e.g. two exons
+            } else {
+                ref_col_tidy <- ref_col_tidy %>%
+                    IRanges::IntegerList()
+            }
 
             mcols(junctions)[[stringr::str_c(ref_col_names[i], "_", start_end)]] <- ref_col_tidy
         }
