@@ -1,5 +1,7 @@
 context("Testing the loading and normalisation of coverage")
 
+github <- TRUE
+
 ##### .cov_exon_intron #####
 
 junctions <- junctions_annot_example[1:1000]
@@ -97,15 +99,17 @@ test_that(".cov_norm_region output looks correct", {
 cov_paths_case <- list.files("/data/RNA_seq_diag/mito/bw/", full.names = T)[1:2]
 cov_paths_control <- list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/", full.names = T)[1]
 
-case_control_cov <- .cov_case_control_load(cov_regions,
-    cov_paths_case,
-    cov_paths_control,
-    cov_chr_control = "chr"
-)
-
-github <- TRUE
-
 test_that(".cov_case_control_load output looks correct", {
+    if (github) {
+        skip("skipping as not testing loading coverage from remote files yet")
+    }
+
+  case_control_cov <- .cov_case_control_load(cov_regions,
+                                             cov_paths_case,
+                                             cov_paths_control,
+                                             cov_chr_control = "chr"
+  )
+
     expect_true(is(case_control_cov, "list"))
     expect_identical(names(case_control_cov), c("case", "control"))
     expect_identical(
@@ -124,10 +128,6 @@ test_that(".cov_case_control_load output looks correct", {
         dim(case_control_cov[["control"]][["exon_cov_start"]]),
         c(length(junctions), length(cov_paths_control))
     )
-
-    if (github) {
-        skip()
-    }
 
     expect_true(identical(
         .cov_load(cov_paths_case[1],
@@ -164,9 +164,23 @@ test_that(".cov_case_control_load output looks correct", {
 
 ##### .cov_norm #####
 
-case_control_cov_norm <- .cov_norm(case_control_cov)
-
 test_that(".cov_norm output looks correct", {
+    if (github) {
+        skip("skipping as not testing loading coverage from remote files yet")
+    }
+
+  # to be removed (as repeat of above)
+  # when can be taken out into global env
+  # after remote coverage loading has been tested
+  case_control_cov <- .cov_case_control_load(cov_regions,
+                                             cov_paths_case,
+                                             cov_paths_control,
+                                             cov_chr_control = "chr"
+  )
+
+
+    case_control_cov_norm <- .cov_norm(case_control_cov)
+
     expect_identical(
         case_control_cov_norm[["case"]][["exon_cov_start"]][1, ],
         case_control_cov[["case"]][["exon_cov_start"]][1, ] / case_control_cov[["case"]][["norm_cov"]][1, ]
@@ -194,8 +208,8 @@ test_that("junction_cov_norm catches user-input errors", {
     expect_error(
         junction_cov_norm(junctions, ref,
             unannot_width,
-            cov_paths_case,
-            cov_paths_control,
+            cov_paths_case = c("path1", "path2"),
+            cov_paths_control = c("path3"),
             cov_chr_control = "not_a_chr"
         ),
         "cov_chr_control must be one of 'chr' or 'no_chr'"

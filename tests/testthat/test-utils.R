@@ -1,5 +1,7 @@
 context("Test utility functions")
 
+github <- TRUE
+
 ##### .chr_filter #####
 
 x <- dplyr::tibble(chr = c("1", "2", "3"))
@@ -75,14 +77,12 @@ test_that(".merge_CharacterList catches user-input errors", {
 
 ##### .cov_load #####
 
-github <- TRUE
-
 test_that(".cov_load has correct output", {
 
     # skip on github for now to save time ...
     # and need to test remote coverage loading
     if (github) {
-        skip("skip")
+        skip("skipping as not testing loading coverage from remote files yet")
     }
 
     cov_paths_case <- list.files("/data/RNA_seq_diag/mito/bw/", full.names = TRUE)[1]
