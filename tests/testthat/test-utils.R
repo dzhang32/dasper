@@ -14,6 +14,18 @@ test_that(".chr_filter catches user-input errors", {
     expect_warning(.chr_filter(x, c("3", "4", "MT")), "junction data: 4, MT")
 })
 
+##### .chr_check #####
+
+x <- GRanges(c("chr1:1-100", "chr2:2-200"))
+y <- GRanges(c("1:1-100", "2:2-200"))
+
+test_that(".chr_check has correct output", {
+    expect_identical(x, .chr_check(x, "chr"))
+    expect_identical(y, .chr_check(x, "no_chr"))
+    expect_identical(x, .chr_check(y, "chr"))
+    expect_identical(y, .chr_check(y, "no_chr"))
+})
+
 ##### .get_start_end #####
 
 x <- GRanges(c("chr1:1-100", "chr2:2-200"))
@@ -59,4 +71,65 @@ test_that(".merge_CharacterList catches user-input errors", {
         .merge_CharacterList(x, CharacterList("1")),
         "lengths of x and y should be identical!"
     )
+})
+
+##### .cov_load #####
+
+github <- TRUE
+
+test_that(".cov_load has correct output", {
+
+    # skip on github for now to save time ...
+    # and need to test remote coverage loading
+    if (github) {
+        skip("skip")
+    }
+
+    cov_paths_case <- list.files("/data/RNA_seq_diag/mito/bw/", full.names = TRUE)[1]
+    cov_paths_control <- list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/", full.names = TRUE)[1]
+
+    junctions <- junctions_example[c(
+        length(junctions_example):(length(junctions_example) - 4),
+        1:5
+    )] %>%
+        SummarizedExperiment::rowRanges()
+    junctions_sorted <- junctions %>% sort()
+
+    mcols(junctions)[["cov"]] <- .cov_load(junctions,
+        cov_path = cov_paths_case,
+        sum_fun = "mean",
+        chr_format = NULL
+    )
+
+    mcols(junctions_sorted)[["cov"]] <- .cov_load(
+        regions = junctions_sorted,
+        cov_path = cov_paths_case,
+        sum_fun = "mean",
+        chr_format = NULL
+    )
+
+    # make sure the order of returned cov is same as inputted regions
+    expect_identical(
+        mcols(sort(junctions))[["cov"]],
+        mcols(junctions_sorted)[["cov"]]
+    )
+
+    # highlight is total cov is 0 (potentially due to different chr formats)
+    expect_warning(
+        .cov_load(junctions,
+            cov_path = cov_paths_control,
+            sum_fun = "sum",
+            chr_format = NULL
+        ),
+        "Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file."
+    )
+
+    mcols(junctions)[["cov_control"]] <- .cov_load(junctions,
+        cov_path = cov_paths_control,
+        sum_fun = "sum",
+        chr_format = "chr"
+    )
+
+    expect_true(sum(mcols(junctions)[["cov"]]) != 0)
+    expect_true(sum(mcols(junctions)[["cov_control"]]) != 0)
 })

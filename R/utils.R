@@ -29,6 +29,32 @@
     return(x)
 }
 
+#' Check chromosomes are correctly formatted
+#'
+#' \code{.chr_filter} will check whether the object \code{x} is matches the
+#' format of chr_format. If not, will convert to the chromosome format.
+#'
+#' @param x object of [GRangesList-class][GenomicRanges::GRangesList-class] or
+#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#'   class.
+#' @param chr_format one of "chr" or "no_chr".
+#'
+#' @return \code{x} with chromosomes matching \code{chr_format}.
+#'
+#' @keywords internal
+#' @noRd
+.chr_check <- function(x, chr_format) {
+    if (chr_format == "chr" & !any(stringr::str_detect(GenomeInfoDb::seqlevels(x), "chr"))) {
+        GenomeInfoDb::seqlevels(x) <- GenomeInfoDb::seqlevels(x) %>%
+            stringr::str_c("chr", .)
+    } else if (chr_format == "no_chr" & any(stringr::str_detect(seqnames(x), "chr"))) {
+        GenomeInfoDb::seqlevels(x) <- GenomeInfoDb::seqlevels(x) %>%
+            stringr::str_replace("chr", "")
+    }
+
+    return(x)
+}
+
 #' Load reference annotation
 #'
 #' \code{.ref_load} loads reference annotation using
@@ -169,4 +195,81 @@
         CharacterList()
 
     return(x_y_merged)
+}
+
+#' Load coverage for set of genomic regions
+#'
+#' \code{.cov_load} loads coverage across a set of genomic regions from a BigWig
+#' file using \url{https://github.com/ChristopherWilks/megadepth}
+#'
+#' @param regions [GRangesList-class][GenomicRanges::GRangesList-class] object.
+#' @param cov_path path to BigWig (or BAM - STILL UNTESTED) file.
+#' @param chr_format NULL or one of "chr" or "no_chr", indicating the chromsome
+#'   format used in the \code{cov_path}. Will convert the \code{regions} to this
+#'   format if they are not already.
+#' @param sum_fun "mean", "sum", "max", "min" indicating the summary function to
+#'   perform across the coverage for each region.
+#'
+#' @return numeric vector of equal length to \code{regions} with each value
+#'   corresponding to the coverage across one genomic interval in
+#'   \code{regions}.
+#'
+#' @keywords internal
+#' @noRd
+.cov_load <- function(regions, cov_path, chr_format = NULL, sum_fun) {
+
+    ##### check user input #####
+
+    if (!sum_fun %in% c("mean", "sum", "max", "min")) {
+        stop("sum_fun must be one of: 'mean', 'sum', 'max' or 'min'")
+    }
+
+    ##### check chr format #####
+
+    if (!is.null(chr_format)) {
+        regions <- .chr_check(regions, chr_format)
+    }
+
+    ##### load coverage #####
+
+    temp_regions_path <- stringr::str_c(tempdir(), "/regions.bed")
+    temp_cov_prefix <- stringr::str_c(tempdir(), "/cov")
+
+    regions %>%
+        as.data.frame() %>%
+        dplyr::select(seqnames, start, end) %>%
+        dplyr::mutate(
+            strand = "*",
+            dummy_1 = ".",
+            dummy_2 = "."
+        ) %>%
+        readr::write_delim(temp_regions_path, delim = "\t", col_names = FALSE)
+
+    # check <- rtracklayer::import(cov_path, which = regions, as = "NumericList")
+
+    system(
+        command = stringr::str_c(
+            "/tools/megadepth/megadepth ", cov_path,
+            " --op ", sum_fun,
+            " --annotation ", temp_regions_path,
+            " ", temp_cov_prefix
+        ),
+        ignore.stdout = FALSE
+    )
+
+    suppressMessages(
+        cov <- readr::read_delim(stringr::str_c(temp_cov_prefix, ".all.tsv"),
+            delim = "\t",
+            col_names = c("chr", "start", "end", "cov"),
+            progress = FALSE
+        )
+    )
+
+    cov <- cov[["cov"]]
+
+    if (sum(cov, na.rm = TRUE) == 0) {
+        warning("Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.")
+    }
+
+    return(cov)
 }

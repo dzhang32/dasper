@@ -14,7 +14,13 @@ test_that(".junction_annot_tidy correctly infers strand", {
 
 ##### junction_annot #####
 
-junctions <- junctions_annot_example
+ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+
+suppressWarnings(expr = {
+    ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+})
+
+junctions <- junction_annot(junctions_example, ref)
 
 test_that("junction_annot output generally looks correct", {
     expect_true(methods::isClass(junctions, "RangedSummarisedExperiment"))
@@ -95,12 +101,6 @@ test_that("junction categories meet expectations", {
         unlist(mcols(unannotated)[["exon_name_start"]]),
         unlist(mcols(unannotated)[["exon_name_end"]])
     )) == 0)
-})
-
-ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
-
-suppressWarnings(expr = {
-  ref <- GenomicFeatures::makeTxDbFromGFF(ref)
 })
 
 ref_exons <- ref %>% GenomicFeatures::exons(columns = c("gene_id", "tx_name", "exon_name"))

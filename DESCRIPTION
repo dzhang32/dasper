@@ -46,6 +46,7 @@ Imports:
     BiocFileCache,
     methods,
     GenomeInfoDb,
-    GenomicFeatures
+    GenomicFeatures,
+    plyranges
 Depends: 
     R (>= 2.10)

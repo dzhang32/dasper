@@ -9,3 +9,4 @@ NEW FEATURES
 * Added `junction_filter()`, which filters junctions by their count, width, annotation or if they overlap a set of user-defined regions.
 * Added `junction_norm()`, which normalises raw junction counts in a proportion-spliced-in by dividing the counts of each junction by the total number of counts in it's associated cluster.
 * Added `junction_score()`, which scores patient junctions based on the extent their counts deviate from the control count distribution of the same junction.
+* Added `junction_cov_norm()`, which will load in coverage for exonic/intronic regions corresponding to each junction, then normalise this to the coverage across the gene associated with each junction. 
