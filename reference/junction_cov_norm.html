@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Normalise junction counts — junction_norm • dasper</title>
+<title>For each junction, obtains the regions to obtain coverage — junction_cov_norm • dasper</title>
 
 
 <!-- jquery -->
@@ -39,12 +39,14 @@
 
 
 
-<meta property="og:title" content="Normalise junction counts — junction_norm" />
-<meta property="og:description" content="junction_norm normalises the junction counts for each sample. First,
-each junction is clustered by finding all other junctions that share with it
-an acceptor or donor position. Then, a proportion-spliced-in (PSI) is
-calculated for each junction by dividing the raw junction count by the total
-number of counts in it's associated cluster." />
+<meta property="og:title" content="For each junction, obtains the regions to obtain coverage — junction_cov_norm" />
+<meta property="og:description" content="junction_cov_norm obtains regions of interest for each junction where
+coverage disruptions would be expected. If ends of junctions are annotated,
+it will use the overlapping exon definitions, picking the shortest exon when
+multiple overlap one end. If unannotated, will use a user-defined width
+(i.e. 20bp). To compare between samples (case/controls) coverage is
+normalised to a set region. By default, the boundaries of each gene
+associated to a junction are used as the region to normalise to." />
 
 
 
@@ -118,20 +120,29 @@ number of counts in it's associated cluster." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Normalise junction counts</h1>
-    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/junction_norm.R'><code>R/junction_norm.R</code></a></small>
-    <div class="hidden name"><code>junction_norm.Rd</code></div>
+    <h1>For each junction, obtains the regions to obtain coverage</h1>
+    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/junction_cov_norm.R'><code>R/junction_cov_norm.R</code></a></small>
+    <div class="hidden name"><code>junction_cov_norm.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>junction_norm</code> normalises the junction counts for each sample. First,
-each junction is clustered by finding all other junctions that share with it
-an acceptor or donor position. Then, a proportion-spliced-in (PSI) is
-calculated for each junction by dividing the raw junction count by the total
-number of counts in it's associated cluster.</p>
+    <p><code>junction_cov_norm</code> obtains regions of interest for each junction where
+coverage disruptions would be expected. If ends of junctions are annotated,
+it will use the overlapping exon definitions, picking the shortest exon when
+multiple overlap one end. If unannotated, will use a user-defined width
+(i.e. 20bp). To compare between samples (case/controls) coverage is
+normalised to a set region. By default, the boundaries of each gene
+associated to a junction are used as the region to normalise to.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>junction_norm</span>(<span class='kw'>junctions</span>)</pre>
+    <pre class="usage"><span class='fu'>junction_cov_norm</span>(
+  <span class='kw'>junctions</span>,
+  <span class='kw'>ref</span>,
+  unannot_width = <span class='fl'>20</span>,
+  <span class='kw'>cov_paths_case</span>,
+  <span class='kw'>cov_paths_control</span>,
+  cov_chr_control = <span class='kw'>NULL</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,26 +153,52 @@ number of counts in it's associated cluster.</p>
 <a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>RangedSummarizedExperiment-class</a>
 object.</p></td>
     </tr>
+    <tr>
+      <th>ref</th>
+      <td><p>either path to gtf/gff3 or object of class <code>TxDb</code> imported using
+<code><a href='https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html'>makeTxDbFromGFF</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>unannot_width</th>
+      <td><p>integer scalar determining the width of the region to
+obtain coverage from when the end of of a junction does not overlap an
+existing exon.</p></td>
+    </tr>
+    <tr>
+      <th>cov_paths_case</th>
+      <td><p>paths to the BigWig/BAM files containing the coverage of
+your case samples. Must be the same length and order to the rows of the
+assays in <code>junctions</code>.</p></td>
+    </tr>
+    <tr>
+      <th>cov_paths_control</th>
+      <td><p>paths to the BigWig/BAM files</p></td>
+    </tr>
+    <tr>
+      <th>cov_chr_control</th>
+      <td><p>either "chr" or "no_chr", indicating the chromosome
+format of control coverage data. To be used if you know the chromosome
+format of the control BigWig/BAM files is different to that of your
+junctions.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>junctions as a
-<code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>SummarizedExperiment</a></code> object with an
-additional <code>assay</code> containing the normalised counts.</p>
+    <p>list containing sublists, one for cases and the other controls. Each
+sublist contains 3 matrices, corresponding the coverage for each sample
+across the 2 exons and intron associated with every junction.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_norm</span>(<span class='kw'>junctions_example</span>)</div><div class='output co'>#&gt; [1] "2020-07-25 00:07:03 - Clustering junctions..."
-#&gt; [1] "2020-07-25 00:07:03 - Normalising junction counts..."
-#&gt; [1] "2020-07-25 00:07:05 - done!"</div><div class='input'><span class='kw'>junctions</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
-#&gt; dim: 97671 5 
-#&gt; metadata(0):
-#&gt; assays(2): raw norm
-#&gt; rownames: NULL
-#&gt; rowData names(2): index clusters
-#&gt; colnames(5): count_1 count_2 gtex_54020 gtex_51495 gtex_56930
-#&gt; colData names(2): samp_id case_control</div></pre>
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'># leave this as not run for now to save time for R CMD check</span>
+<span class='kw'>ref</span> <span class='op'>&lt;-</span> <span class='st'>"ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"</span>
+<span class='kw'>ref</span> <span class='op'>&lt;-</span> <span class='kw'>GenomicFeatures</span>::<span class='fu'><a href='https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html'>makeTxDbFromGFF</a></span>(<span class='kw'>ref</span>)
+<span class='kw'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>cov_norm</span>(<span class='kw'>junctions_annot_example</span>, <span class='kw'>ref</span>)
+<span class='kw'>junctions</span>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
