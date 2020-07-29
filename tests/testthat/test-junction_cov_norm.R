@@ -1,6 +1,6 @@
 context("Testing the loading and normalisation of coverage")
 
-github <- TRUE
+github <- FALSE
 
 ##### .cov_exon_intron #####
 
@@ -104,11 +104,11 @@ test_that(".cov_case_control_load output looks correct", {
         skip("skipping as not testing loading coverage from remote files yet")
     }
 
-  case_control_cov <- .cov_case_control_load(cov_regions,
-                                             cov_paths_case,
-                                             cov_paths_control,
-                                             cov_chr_control = "chr"
-  )
+    case_control_cov <- .cov_case_control_load(cov_regions,
+        cov_paths_case,
+        cov_paths_control,
+        cov_chr_control = "chr"
+    )
 
     expect_true(is(case_control_cov, "list"))
     expect_identical(names(case_control_cov), c("case", "control"))
@@ -169,17 +169,19 @@ test_that(".cov_norm output looks correct", {
         skip("skipping as not testing loading coverage from remote files yet")
     }
 
-  # to be removed (as repeat of above)
-  # when can be taken out into global env
-  # after remote coverage loading has been tested
-  case_control_cov <- .cov_case_control_load(cov_regions,
-                                             cov_paths_case,
-                                             cov_paths_control,
-                                             cov_chr_control = "chr"
-  )
-
+    # to be removed (as repeat of above)
+    # when can be taken out into global env
+    # after remote coverage loading has been tested
+    case_control_cov <- .cov_case_control_load(cov_regions,
+        cov_paths_case,
+        cov_paths_control,
+        cov_chr_control = "chr"
+    )
 
     case_control_cov_norm <- .cov_norm(case_control_cov)
+
+    # no non-finite such as Inf caused by 0 denominator
+    expect_false(any(!is.finite(case_control_cov_norm %>% unlist() %>% unlist())))
 
     expect_identical(
         case_control_cov_norm[["case"]][["exon_cov_start"]][1, ],
@@ -199,7 +201,7 @@ test_that("junction_cov_norm catches user-input errors", {
         junction_cov_norm(junctions, ref,
             unannot_width,
             cov_paths_case = c("needs", "to", "be", "2"),
-            cov_paths_control = c("path"),
+            cov_paths_control = c("path1", "path2"),
             cov_chr_control = "chr"
         ),
         "Number of cases must equal the length of cov_paths_case"
@@ -209,7 +211,17 @@ test_that("junction_cov_norm catches user-input errors", {
         junction_cov_norm(junctions, ref,
             unannot_width,
             cov_paths_case = c("path1", "path2"),
-            cov_paths_control = c("path3"),
+            cov_paths_control = c("path"),
+            cov_chr_control = "chr"
+        ),
+        "cov_paths_control must cover at least 2 controls"
+    )
+
+    expect_error(
+        junction_cov_norm(junctions, ref,
+            unannot_width,
+            cov_paths_case = c("path1", "path2"),
+            cov_paths_control = c("path1", "path2"),
             cov_chr_control = "not_a_chr"
         ),
         "cov_chr_control must be one of 'chr' or 'no_chr'"

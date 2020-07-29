@@ -1,4 +1,5 @@
-#' For each junction, obtains the regions to obtain coverage
+#' For each junction, obtain the normalised coverage across associated
+#' exonic/intronic regions
 #'
 #' \code{junction_cov_norm} obtains regions of interest for each junction where
 #' coverage disruptions would be expected. If ends of junctions are annotated,
@@ -32,7 +33,19 @@
 #' # leave this as not run for now to save time for R CMD check
 #' ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
 #' ref <- GenomicFeatures::makeTxDbFromGFF(ref)
-#' junctions <- cov_norm(junctions_annot_example, ref)
+#' cov_paths_case <- list.files("/data/RNA_seq_diag/mito/bw/", full.names = T)[1:2]
+#' cov_paths_control <-
+#'     list.files(
+#'         "/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/",
+#'         full.names = T)[1:2]
+#' cov <- junction_cov_norm(
+#'     junctions_annot_example,
+#'     ref,
+#'     unannot_width = 20,
+#'     cov_paths_case,
+#'     cov_paths_control,
+#'     cov_chr_control = "chr"
+#' )
 #' junctions
 #' }
 #'
@@ -45,10 +58,13 @@ junction_cov_norm <- function(junctions, ref, unannot_width = 20, cov_paths_case
         stop("Number of cases must equal the length of cov_paths_case")
     }
 
+    if (length(cov_paths_control) < 2) {
+        stop("cov_paths_control must cover at least 2 controls")
+    }
+
     if (!(cov_chr_control %in% c("chr", "no_chr"))) {
         stop("cov_chr_control must be one of 'chr' or 'no_chr'")
     }
-
 
     ##### Get exon/intronic regions for each junction #####
 
@@ -118,7 +134,7 @@ junction_cov_norm <- function(junctions, ref, unannot_width = 20, cov_paths_case
 
         stopifnot(all(lengths(exon_widths) > 0))
 
-        # take the smallest exon is multiple overlap
+        # take the smallest exon if multiple overlap
         exon_widths <- min(exon_widths)
 
         # take off 1bp from the exon widths so resultant exon width remains the same
@@ -226,7 +242,6 @@ junction_cov_norm <- function(junctions, ref, unannot_width = 20, cov_paths_case
         dplyr::select(seqnames, start, end, strand, index) %>%
         GRanges()
 
-
     ##### merge all gene coords together ####
 
     norm_coords <- c(
@@ -321,6 +336,8 @@ junction_cov_norm <- function(junctions, ref, unannot_width = 20, cov_paths_case
 #'
 #' @param case_control_cov list containing coverage for case and controls
 #'   returned by \link{.cov_case_control_load}
+#' @param norm_const integer to add to the normalisation coverages. This
+#'   prevents dividing by 0 and NaN/Inf values resulting.
 #'
 #' @return list containing two lists called "case" and "control". Each
 #'   containing 3 matrices with normalised coverage across exons/introns for
@@ -328,7 +345,7 @@ junction_cov_norm <- function(junctions, ref, unannot_width = 20, cov_paths_case
 #'
 #' @keywords internal
 #' @noRd
-.cov_norm <- function(case_control_cov) {
+.cov_norm <- function(case_control_cov, norm_const = 1) {
 
     # loop across case and controls
     for (case_control in c("case", "control")) {
@@ -344,7 +361,7 @@ junction_cov_norm <- function(junctions, ref, unannot_width = 20, cov_paths_case
                 # normalise coverage across exons/intron
                 # by dividing by the coverage across normalisation regions
                 case_control_cov[[case_control]][[j]] <-
-                    case_control_cov[[case_control]][[j]] / case_control_cov[[case_control]][["norm_cov"]]
+                    case_control_cov[[case_control]][[j]] / (case_control_cov[[case_control]][["norm_cov"]] + norm_const)
 
                 case_control_cov[[case_control]][[j]][is.na(case_control_cov[[case_control]][[j]])] <- 0
             }

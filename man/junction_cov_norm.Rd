@@ -2,7 +2,8 @@
 % Please edit documentation in R/junction_cov_norm.R
 \name{junction_cov_norm}
 \alias{junction_cov_norm}
-\title{For each junction, obtains the regions to obtain coverage}
+\title{For each junction, obtain the normalised coverage across associated
+exonic/intronic regions}
 \usage{
 junction_cov_norm(
   junctions,
@@ -56,7 +57,16 @@ associated to a junction are used as the region to normalise to.
 # leave this as not run for now to save time for R CMD check
 ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
 ref <- GenomicFeatures::makeTxDbFromGFF(ref)
-junctions <- cov_norm(junctions_annot_example, ref)
+cov_paths_case <- list.files("/data/RNA_seq_diag/mito/bw/", full.names = T)[1:2]
+cov_paths_control <- list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/", full.names = T)[1:2]
+cov <- junction_cov_norm(
+    junctions_annot_example,
+    ref,
+    unannot_width = 20,
+    cov_paths_case,
+    cov_paths_control,
+    cov_chr_control = "chr"
+)
 junctions
 }
 

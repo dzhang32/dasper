@@ -32,7 +32,8 @@ Suggests:
     sessioninfo,
     rmarkdown,
     tibble,
-    knitcitations
+    knitcitations,
+    rtracklayer
 VignetteBuilder: knitr
 Imports: 
     stringr,
