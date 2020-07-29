@@ -1,6 +1,6 @@
 context("Testing the loading and normalisation of coverage")
 
-github <- FALSE
+github <- TRUE
 
 ##### .cov_exon_intron #####
 

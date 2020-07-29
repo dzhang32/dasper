@@ -77,26 +77,3 @@ junction_score <- function(junctions, score_func = .zscore, ...) {
 
     return(junctions)
 }
-
-#' Calculate z-score for x from the distribution y
-#'
-#' \code{.zscore} calculates a z-score for each junction count from a patient
-#' sample (\code{x}), indicating it's deviation from the distribution of a
-#' controls counts (\code{y}) of the same junction.
-#'
-#' @param x numeric vector containing case counts for 1 junction.
-#' @param y numeric vector containing control counts for 1 junction.
-#' @param sd_const a numeric scalar to be added to all control standard
-#'   deviations. This is to prevent infinate/NaN values occuring when the
-#'   standard deviation of the control counts is 0.
-#'
-#' @return numeric vector of length equal to \code{x} containing the z-score for
-#'   the case junctions.
-#'
-#' @keywords internal
-#' @noRd
-.zscore <- function(x, y, sd_const = 0.01) {
-    x_score <- (x - mean(y)) / (sd(y) + sd_const)
-
-    return(x_score)
-}

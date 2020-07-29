@@ -114,22 +114,32 @@ test_that(".cov_load has correct output", {
         mcols(junctions_sorted)[["cov"]]
     )
 
-    # highlight is total cov is 0 (potentially due to different chr formats)
-    expect_warning(
-        .cov_load(junctions,
-            cov_path = cov_paths_control,
-            sum_fun = "sum",
-            chr_format = NULL
-        ),
-        "Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file."
-    )
-
     mcols(junctions)[["cov_control"]] <- .cov_load(junctions,
         cov_path = cov_paths_control,
         sum_fun = "sum",
         chr_format = "chr"
     )
 
+    # megadepth matches rtracklayer output
+    expect_equivalent(mcols(junctions)[["cov"]],
+                      rtracklayer::import(con = cov_paths_case,
+                                          which = junctions,
+                                          as = "NumericList") %>%
+                        lapply(FUN = mean) %>%
+                        unlist() %>%
+                        round(3)) # ensure same rounding accuracy as megadepth
+
     expect_true(sum(mcols(junctions)[["cov"]]) != 0)
     expect_true(sum(mcols(junctions)[["cov_control"]]) != 0)
+
+    # highlight is total cov is 0 (potentially due to different chr formats)
+    expect_warning(
+      .cov_load(junctions,
+                cov_path = cov_paths_control,
+                sum_fun = "sum",
+                chr_format = NULL
+      ),
+      "Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file."
+    )
+
 })

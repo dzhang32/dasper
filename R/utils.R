@@ -197,6 +197,28 @@
     return(x_y_merged)
 }
 
+#' Calculate z-score for x from the distribution y
+#'
+#' \code{.zscore} calculates a z-score for each junction count from a patient
+#' sample (\code{x}), indicating it's deviation from the distribution of a
+#' controls counts (\code{y}) of the same junction.
+#'
+#' @param x numeric vector containing case counts/cov for 1 junction.
+#' @param y numeric vector containing control counts for 1 junction.
+#' @param sd_const a numeric scalar to be added to all control standard
+#'   deviations. This is to prevent infinate/NaN values occuring when the
+#'   standard deviation of the control counts is 0.
+#'
+#' @return numeric vector of length equal to \code{x} containing the z-score for
+#'   the case junctions.
+#'
+#' @keywords internal
+#' @noRd
+.zscore <- function(x, y, sd_const = 0.01) {
+    x_score <- (x - mean(y)) / (sd(y) + sd_const)
+    return(x_score)
+}
+
 #' Load coverage for set of genomic regions
 #'
 #' \code{.cov_load} loads coverage across a set of genomic regions from a BigWig
@@ -237,9 +259,9 @@
 
     regions %>%
         as.data.frame() %>%
-        dplyr::select(seqnames, start, end) %>%
+        dplyr::select(seqnames, start, end, strand) %>%
         dplyr::mutate(
-            strand = "*",
+            start = start - 1, # megadepth uses python indexing, -1 here to match rtracklayer
             dummy_1 = ".",
             dummy_2 = "."
         ) %>%
@@ -254,13 +276,14 @@
             " --annotation ", temp_regions_path,
             " ", temp_cov_prefix
         ),
-        ignore.stdout = FALSE
+        ignore.stdout = TRUE
     )
 
     suppressMessages(
         cov <- readr::read_delim(stringr::str_c(temp_cov_prefix, ".all.tsv"),
             delim = "\t",
             col_names = c("chr", "start", "end", "cov"),
+            col_types = readr::cols(chr = "c", start = "i", end = "i", cov = "n"),
             progress = FALSE
         )
     )
