@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>For each junction, obtains the regions to obtain coverage — junction_cov_norm • dasper</title>
+<title>For each junction, obtain the normalised coverage across associated
+exonic/intronic regions — junction_cov_norm • dasper</title>
 
 
 <!-- jquery -->
@@ -39,7 +40,8 @@
 
 
 
-<meta property="og:title" content="For each junction, obtains the regions to obtain coverage — junction_cov_norm" />
+<meta property="og:title" content="For each junction, obtain the normalised coverage across associated
+exonic/intronic regions — junction_cov_norm" />
 <meta property="og:description" content="junction_cov_norm obtains regions of interest for each junction where
 coverage disruptions would be expected. If ends of junctions are annotated,
 it will use the overlapping exon definitions, picking the shortest exon when
@@ -120,7 +122,8 @@ associated to a junction are used as the region to normalise to." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>For each junction, obtains the regions to obtain coverage</h1>
+    <h1>For each junction, obtain the normalised coverage across associated
+exonic/intronic regions</h1>
     <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/junction_cov_norm.R'><code>R/junction_cov_norm.R</code></a></small>
     <div class="hidden name"><code>junction_cov_norm.Rd</code></div>
     </div>
@@ -195,7 +198,16 @@ across the 2 exons and intron associated with every junction.</p>
 <span class='co'># leave this as not run for now to save time for R CMD check</span>
 <span class='kw'>ref</span> <span class='op'>&lt;-</span> <span class='st'>"ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"</span>
 <span class='kw'>ref</span> <span class='op'>&lt;-</span> <span class='kw'>GenomicFeatures</span>::<span class='fu'><a href='https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html'>makeTxDbFromGFF</a></span>(<span class='kw'>ref</span>)
-<span class='kw'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>cov_norm</span>(<span class='kw'>junctions_annot_example</span>, <span class='kw'>ref</span>)
+<span class='kw'>cov_paths_case</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='st'>"/data/RNA_seq_diag/mito/bw/"</span>, full.names = <span class='kw'>T</span>)[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>]
+<span class='kw'>cov_paths_control</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='st'>"/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/"</span>, full.names = <span class='kw'>T</span>)[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>]
+<span class='kw'>cov</span> <span class='op'>&lt;-</span> <span class='fu'>junction_cov_norm</span>(
+    <span class='kw'>junctions_annot_example</span>,
+    <span class='kw'>ref</span>,
+    unannot_width = <span class='fl'>20</span>,
+    <span class='kw'>cov_paths_case</span>,
+    <span class='kw'>cov_paths_control</span>,
+    cov_chr_control = <span class='st'>"chr"</span>
+)
 <span class='kw'>junctions</span>
 }
 </div></pre>
