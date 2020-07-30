@@ -1,38 +1,50 @@
 context("Test functions that score coverage")
 
+github <- TRUE
+
 ##### .cov_score #####
 
-ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
-suppressWarnings(expr = {
-    ref <- GenomicFeatures::makeTxDbFromGFF(ref)
-})
-junctions <- junction_norm(junctions_annot_example)
-junctions <- junction_score(junctions)
-cov_paths_case <- list.files("/data/RNA_seq_diag/mito/bw/", full.names = T)[1:2]
-cov_paths_control <- list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/", full.names = T)[1:2]
-cov <- junction_cov_norm(junctions, ref, unannot_width = 20, cov_paths_case, cov_paths_control, cov_chr_control = "chr")
+if (!github) {
+    ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+    suppressWarnings(expr = {
+        ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+    })
+    junctions <- junction_norm(junctions_annot_example)
+    junctions <- junction_score(junctions)
+    cov_paths_case <- list.files("/data/RNA_seq_diag/mito/bw/", full.names = T)[1:2]
+    cov_paths_control <- list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/", full.names = T)[1:2]
+    cov <- junction_cov_norm(junctions, ref, unannot_width = 20, cov_paths_case, cov_paths_control, cov_chr_control = "chr")
 
-cov_scores <- .cov_score(cov, .zscore, sd_const = 0.02)
+    cov_scores <- .cov_score(cov, .zscore, sd_const = 0.02)
+}
 
-test_that(".cov_exon_intron output generally looks correct", {
+test_that(".cov_score output generally looks correct", {
+    if (github) {
+        skip("skipping as not testing loading coverage from remote files yet")
+    }
+
     expect_true(is(cov_scores, "list"))
     expect_false(any(!is.finite(cov_scores %>% unlist() %>% unlist())))
     expect_identical(dim(cov_scores[[1]]), dim(cov[[1]][[1]]))
 })
 
-control_mean <- cov[["control"]][[1]] %>%
-    apply(
-        MARGIN = 1,
-        FUN = mean
-    )
-
-control_sd <- cov[["control"]][[1]] %>%
-    apply(
-        MARGIN = 1,
-        FUN = sd
-    )
-
 test_that("zscore has been calculated correctly", {
+    if (github) {
+        skip("skipping as not testing loading coverage from remote files yet")
+    }
+
+    control_mean <- cov[["control"]][[1]] %>%
+        apply(
+            MARGIN = 1,
+            FUN = mean
+        )
+
+    control_sd <- cov[["control"]][[1]] %>%
+        apply(
+            MARGIN = 1,
+            FUN = sd
+        )
+
     expect_equivalent(
         cov_scores[[1]][, 1],
         (cov[["case"]][[1]][, 1] - control_mean) / (control_sd + 0.02)
@@ -46,15 +58,19 @@ test_that("zscore has been calculated correctly", {
 
 ##### .cov_score_max #####
 
-cov_region_scores_max <- .cov_score_max(cov_scores)
+test_that(".cov_score_max output generally looks correct", {
+    if (github) {
+        skip("skipping as not testing loading coverage from remote files yet")
+    }
 
-cov_scores_per_samp <- dplyr::tibble(
-    exon_cov_score_start = cov_scores[["exon_cov_score_start"]][, 1],
-    exon_cov_score_end = cov_scores[["exon_cov_score_end"]][, 1],
-    intron_cov_score = cov_scores[["intron_cov_score"]][, 1]
-)
+    cov_region_scores_max <- .cov_score_max(cov_scores)
 
-test_that(".cov_exon_intron output generally looks correct", {
+    cov_scores_per_samp <- dplyr::tibble(
+        exon_cov_score_start = cov_scores[["exon_cov_score_start"]][, 1],
+        exon_cov_score_end = cov_scores[["exon_cov_score_end"]][, 1],
+        intron_cov_score = cov_scores[["intron_cov_score"]][, 1]
+    )
+
     expect_true(is(cov_region_scores_max, "list"))
     expect_true(all(unlist(cov_region_scores_max[["regions"]]) %in% c(1, 2, 3)))
     expect_identical(dim(cov_region_scores_max[[1]]), dim(cov_region_scores_max[[2]]))
