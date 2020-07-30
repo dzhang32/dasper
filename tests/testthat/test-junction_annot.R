@@ -17,7 +17,7 @@ test_that(".junction_annot_tidy correctly infers strand", {
 ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
 
 suppressWarnings(expr = {
-    ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+  ref <- GenomicFeatures::makeTxDbFromGFF(ref)
 })
 
 junctions <- junction_annot(junctions_example, ref)

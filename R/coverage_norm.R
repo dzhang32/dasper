@@ -1,27 +1,27 @@
 #' For each junction, obtain the normalised coverage across associated
 #' exonic/intronic regions
 #'
-#' \code{junction_cov_norm} obtains regions of interest for each junction where
+#' \code{coverage_norm} obtains regions of interest for each junction where
 #' coverage disruptions would be expected. If ends of junctions are annotated,
 #' it will use the overlapping exon definitions, picking the shortest exon when
-#' multiple overlap one end. If unannotated, will use a user-defined width
-#' (i.e. 20bp). To compare between samples (case/controls) coverage is
-#' normalised to a set region. By default, the boundaries of each gene
-#' associated to a junction are used as the region to normalise to.
+#' multiple overlap one end. If unannotated, will use a user-defined width (i.e.
+#' 20bp). To compare between samples (case/controls) coverage is normalised to a
+#' set region. By default, the boundaries of each gene associated to a junction
+#' are used as the region to normalise to.
 #'
 #' @inheritParams junction_annot
 #'
 #' @param unannot_width integer scalar determining the width of the region to
 #'   obtain coverage from when the end of of a junction does not overlap an
 #'   existing exon.
-#' @param cov_paths_case paths to the BigWig/BAM files containing the coverage of
-#'   your case samples. Must be the same length and order to the rows of the
-#'   assays in \code{junctions}.
-#' @param cov_paths_control paths to the BigWig/BAM files
-#' @param cov_chr_control either "chr" or "no_chr", indicating the chromosome
-#'   format of control coverage data. To be used if you know the chromosome
-#'   format of the control BigWig/BAM files is different to that of your
-#'   junctions.
+#' @param coverage_paths_case paths to the BigWig/BAM files containing the
+#'   coverage of your case samples. Must be the same length and order to the
+#'   rows of the assays in \code{junctions}.
+#' @param coverage_paths_control paths to the BigWig/BAM files
+#' @param coverage_chr_control either "chr" or "no_chr", indicating the
+#'   chromosome format of control coverage data. To be used if you know the
+#'   chromosome format of the control BigWig/BAM files is different to that of
+#'   your junctions.
 #'
 #' @return list containing sublists, one for cases and the other controls. Each
 #'   sublist contains 3 matrices, corresponding the coverage for each sample
@@ -33,45 +33,45 @@
 #' # leave this as not run for now to save time for R CMD check
 #' ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
 #' ref <- GenomicFeatures::makeTxDbFromGFF(ref)
-#' cov_paths_case <- list.files("/data/RNA_seq_diag/mito/bw/", full.names = T)[1:2]
-#' cov_paths_control <-
+#' coverage_paths_case <- list.files("/data/RNA_seq_diag/mito/bw/", full.names = T)[1:2]
+#' coverage_paths_control <-
 #'     list.files(
 #'         "/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/",
 #'         full.names = T
 #'     )[1:2]
-#' cov <- junction_cov_norm(
+#' coverage <- coverage_norm(
 #'     junctions_annot_example,
 #'     ref,
 #'     unannot_width = 20,
-#'     cov_paths_case,
-#'     cov_paths_control,
-#'     cov_chr_control = "chr"
+#'     coverage_paths_case,
+#'     coverage_paths_control,
+#'     coverage_chr_control = "chr"
 #' )
 #' junctions
 #' }
 #'
 #' @export
-junction_cov_norm <- function(junctions, ref, unannot_width = 20, cov_paths_case, cov_paths_control, cov_chr_control = NULL) {
+coverage_norm <- function(junctions, ref, unannot_width = 20, coverage_paths_case, coverage_paths_control, coverage_chr_control = NULL) {
 
     ##### Check user-input #####
 
-    if (sum(colData(junctions)[["case_control"]] == "case") != length(cov_paths_case)) {
-        stop("Number of cases must equal the length of cov_paths_case")
+    if (sum(colData(junctions)[["case_control"]] == "case") != length(coverage_paths_case)) {
+        stop("Number of cases must equal the length of coverage_paths_case")
     }
 
-    if (length(cov_paths_control) < 2) {
-        stop("cov_paths_control must cover at least 2 controls")
+    if (length(coverage_paths_control) < 2) {
+        stop("coverage_paths_control must coverageer at least 2 controls")
     }
 
-    if (!(cov_chr_control %in% c("chr", "no_chr"))) {
-        stop("cov_chr_control must be one of 'chr' or 'no_chr'")
+    if (!(coverage_chr_control %in% c("chr", "no_chr"))) {
+        stop("coverage_chr_control must be one of 'chr' or 'no_chr'")
     }
 
     ##### Get exon/intronic regions for each junction #####
 
     print(stringr::str_c(Sys.time(), " - Obtaining exonic and intronic regions to load coverage from..."))
 
-    cov_regions <- .cov_exon_intron(junctions, unannot_width)
+    coverage_regions <- .coverage_exon_intron(junctions, unannot_width)
 
     ##### Get region to normalise coverage with respect to #####
 
@@ -80,36 +80,38 @@ junction_cov_norm <- function(junctions, ref, unannot_width = 20, cov_paths_case
     # load in reference annotation
     ref <- .ref_load(ref)
 
-    cov_regions <- .cov_norm_region(junctions, ref, cov_regions)
+    coverage_regions <- .coverage_norm_region(junctions, ref, coverage_regions)
 
     ##### Load coverage #####
 
-    case_control_cov <- .cov_case_control_load(
-        cov_regions,
-        cov_paths_case,
-        cov_paths_control,
-        cov_chr_control
+    case_control_coverage <- .coverage_case_control_load(
+        coverage_regions,
+        coverage_paths_case,
+        coverage_paths_control,
+        coverage_chr_control
     )
 
     ##### Normalise coverage #####
 
     print(stringr::str_c(Sys.time(), " - Normalising coverage..."))
 
-    case_control_cov <- .cov_norm(case_control_cov)
+    case_control_coverage <- .coverage_norm(case_control_coverage)
 
-    return(case_control_cov)
+    print(stringr::str_c(Sys.time(), " - done!"))
+
+    return(case_control_coverage)
 }
 
 #' Obtain the co-ordinates corresponding to exons and introns for each junction
 #'
-#' \code{.cov_exon_intron} obtains the exonic and intronic regions corresponding
-#' each junction. If the junctions ends are annotated, it just takes the exon
-#' definitions. If unannotated, then will use an arbitrary exon width defined by
-#' the user in \code{unannot_width}. If multiple exons overlap a junction end,
-#' the shortest definition is used. Intron definitions are the junction
-#' co-ordinates.
+#' \code{.coverage_exon_intron} obtains the exonic and intronic regions
+#' corresponding each junction. If the junctions ends are annotated, it just
+#' takes the exon definitions. If unannotated, then will use an arbitrary exon
+#' width defined by the user in \code{unannot_width}. If multiple exons overlap
+#' a junction end, the shortest definition is used. Intron definitions are the
+#' junction co-ordinates.
 #'
-#' @inheritParams cov_norm
+#' @inheritParams coverage_norm
 #'
 #' @return [GRangesList-class][GenomicRanges::GRangesList-class] containing 3
 #'   sets of ranges, corresponding the the flanking exons and intron
@@ -117,8 +119,8 @@ junction_cov_norm <- function(junctions, ref, unannot_width = 20, cov_paths_case
 #'
 #' @keywords internal
 #' @noRd
-.cov_exon_intron <- function(junctions, unannot_width) {
-    cov_regions <- GenomicRanges::GenomicRangesList()
+.coverage_exon_intron <- function(junctions, unannot_width) {
+    coverage_regions <- GenomicRanges::GenomicRangesList()
 
     ##### Get exonic regions of interest #####
 
@@ -147,7 +149,7 @@ junction_cov_norm <- function(junctions, ref, unannot_width = 20, cov_paths_case
             exon_ends <- exon_starts + (exon_widths - 1)
         }
 
-        cov_regions[[stringr::str_c("exon_coords_", start_end)]] <-
+        coverage_regions[[stringr::str_c("exon_coords_", start_end)]] <-
             GRanges(
                 seqnames = seqnames(junctions),
                 ranges = IRanges::IRanges(
@@ -160,38 +162,38 @@ junction_cov_norm <- function(junctions, ref, unannot_width = 20, cov_paths_case
 
     ##### Add intron/junction coords #####
 
-    cov_regions[["intron_coords"]] <-
+    coverage_regions[["intron_coords"]] <-
         SummarizedExperiment::rowRanges(junctions)
 
-    mcols(cov_regions[["intron_coords"]]) <- NULL
+    mcols(coverage_regions[["intron_coords"]]) <- NULL
 
-    return(cov_regions)
+    return(coverage_regions)
 }
 
 #' Obtain the region to normalise coverage
 #'
-#' \code{.cov_norm_region} obtains the region to use to normalise coverage
+#' \code{.coverage_norm_region} obtains the region to use to normalise coverage
 #' across exons and intron for each junction. Currently, this is the gene
 #' definition associated with each junction. For junctions that are unannotated,
 #' the largest local region is taken from the start of the upstream to the end
 #' of downstream exon. For ambiguous genes (> 1 gene associated to a junction),
 #' the shortest gene definition is used.
 #'
-#' @inheritParams cov_norm
+#' @inheritParams coverage_norm
 #'
-#' @param cov_regions
+#' @param coverage_regions
 #'
 #' @return [GRangesList-class][GenomicRanges::GRangesList-class] containing an
-#' additional set of ranges containing regions to use to normalise.
+#'   additional set of ranges containing regions to use to normalise.
 #'
 #' @keywords internal
 #' @noRd
-.cov_norm_region <- function(junctions, ref, cov_regions) {
+.coverage_norm_region <- function(junctions, ref, coverage_regions) {
     ref_genes <- ref %>%
         GenomicFeatures::genes(columns = c("gene_id", "exon_name")) %>%
         as.data.frame()
 
-    cov_norm_regions <- GenomicRanges::GenomicRangesList()
+    coverage_norm_regions <- GenomicRanges::GenomicRangesList()
 
     ##### no gene #####
 
@@ -203,8 +205,8 @@ junction_cov_norm <- function(junctions, ref, unannot_width = 20, cov_paths_case
         GRanges(
             seqnames = seqnames(junctions)[no_gene_indexes],
             ranges = IRanges::IRanges(
-                start = cov_regions[["exon_coords_start"]][no_gene_indexes] %>% start(),
-                end = cov_regions[["exon_coords_end"]][no_gene_indexes] %>% end()
+                start = coverage_regions[["exon_coords_start"]][no_gene_indexes] %>% start(),
+                end = coverage_regions[["exon_coords_end"]][no_gene_indexes] %>% end()
             ),
             strand = strand(junctions)[no_gene_indexes]
         )
@@ -257,86 +259,86 @@ junction_cov_norm <- function(junctions, ref, unannot_width = 20, cov_paths_case
     stopifnot(identical(mcols(norm_coords)[["index"]], seq_along(junctions)))
     mcols(norm_coords)[["index"]] <- NULL
 
-    cov_regions[["norm_coords"]] <- norm_coords
+    coverage_regions[["norm_coords"]] <- norm_coords
 
-    return(cov_regions)
+    return(coverage_regions)
 }
 
 #' Loads coverage from case and control BigWig/BAM files
 #'
-#' \code{.cov_case_control_load} uses \code{dasper:::.cov_load} to load coverage
-#' from BigWig/BAM files. It does this for both case and controls and for each
-#' set of ranges in \code{cov_regions}.
+#' \code{.coverage_case_control_load} uses \code{dasper:::.coverage_load} to
+#' load coverage from BigWig/BAM files. It does this for both case and controls
+#' and for each set of ranges in \code{coverage_regions}.
 #'
-#' @inheritParams junction_cov_norm
-#' @inheritParams .cov_norm_region
+#' @inheritParams coverage_norm
+#' @inheritParams .coverage_norm_region
 #'
 #' @return list containing two lists called "case" and "control", each
 #'   containing coverage matrices. The number of matrices is equal to the length
-#'   of \code{cov_regions}.
+#'   of \code{coverage_regions}.
 #'
 #' @keywords internal
 #' @noRd
-.cov_case_control_load <- function(cov_regions, cov_paths_case, cov_paths_control, cov_chr_control) {
-    case_control_cov <- list()
+.coverage_case_control_load <- function(coverage_regions, coverage_paths_case, coverage_paths_control, coverage_chr_control) {
+    case_control_coverage <- list()
 
     for (case_control in c("case", "control")) {
         if (case_control == "case") {
-            cov_paths <- cov_paths_case
-            chr_format <- NULL # assume case cov paths always same chr as junctions
+            coverage_paths <- coverage_paths_case
+            chr_format <- NULL # assume case coverage paths always same chr as junctions
         } else {
-            cov_paths <- cov_paths_control
-            chr_format <- cov_chr_control
+            coverage_paths <- coverage_paths_control
+            chr_format <- coverage_chr_control
         }
 
-        cov_mats <- list()
+        coverage_mats <- list()
 
-        for (i in seq_along(cov_regions)) {
+        for (i in seq_along(coverage_regions)) {
 
             # sum to obtain total AUC for normalisation
             # mean for exon/intron regions
-            sum_fun <- ifelse(names(cov_regions)[i] == "norm_coords", "sum", "mean")
+            sum_fun <- ifelse(names(coverage_regions)[i] == "norm_coords", "sum", "mean")
 
-            cov_mat <-
+            coverage_mat <-
                 matrix(
-                    nrow = length(cov_regions[[i]]),
-                    ncol = length(cov_paths)
+                    nrow = length(coverage_regions[[i]]),
+                    ncol = length(coverage_paths)
                 )
 
-            for (j in seq_along(cov_paths)) {
+            for (j in seq_along(coverage_paths)) {
                 print(stringr::str_c(
-                    Sys.time(), " - Loading coverage across ", names(cov_regions)[i],
-                    " for ", case_control, " ", j, "/", length(cov_paths), "..."
+                    Sys.time(), " - Loading coverage across ", names(coverage_regions)[i],
+                    " for ", case_control, " ", j, "/", length(coverage_paths), "..."
                 ))
 
-                cov_mat[, j] <- .cov_load(
-                    regions = cov_regions[[i]],
-                    cov_path = cov_paths[j],
+                coverage_mat[, j] <- .coverage_load(
+                    regions = coverage_regions[[i]],
+                    coverage_path = coverage_paths[j],
                     chr_format = chr_format,
                     sum_fun = sum_fun
                 )
             }
 
-            cov_mats[[i]] <- cov_mat
+            coverage_mats[[i]] <- coverage_mat
         }
 
-        case_control_cov[[case_control]] <- cov_mats
+        case_control_coverage[[case_control]] <- coverage_mats
 
         # convert names from coords to coverage to represent contents
-        names(case_control_cov[[case_control]]) <- names(cov_regions) %>%
-            stringr::str_replace("coords", "cov")
+        names(case_control_coverage[[case_control]]) <- names(coverage_regions) %>%
+            stringr::str_replace("coords", "coverage")
     }
 
-    return(case_control_cov)
+    return(case_control_coverage)
 }
 
 #' Normalises coverage across the exons/intron associated with each junction
 #'
-#' \code{.cov_norm} normalises coverage across exons/introns by dividing their
-#' coverage by the total AUC across the norm region.
+#' \code{.coverage_norm} normalises coverage across exons/introns by dividing
+#' their coverage by the total AUC across the norm region.
 #'
-#' @param case_control_cov list containing coverage for case and controls
-#'   returned by \link{.cov_case_control_load}
+#' @param case_control_coverage list containing coverage for case and controls
+#'   returned by \link{.coverage_case_control_load}
 #' @param norm_const integer to add to the normalisation coverages. This
 #'   prevents dividing by 0 and NaN/Inf values resulting.
 #'
@@ -346,32 +348,32 @@ junction_cov_norm <- function(junctions, ref, unannot_width = 20, cov_paths_case
 #'
 #' @keywords internal
 #' @noRd
-.cov_norm <- function(case_control_cov, norm_const = 1) {
+.coverage_norm <- function(case_control_coverage, norm_const = 1) {
 
     # loop across case and controls
     for (case_control in c("case", "control")) {
 
         # and each coverage matrix within case/controls
-        for (j in seq_along(case_control_cov[[case_control]])) {
+        for (j in seq_along(case_control_coverage[[case_control]])) {
 
             # skip normalisation coverage as this does not need to be normalised itself
-            if (names(case_control_cov[[case_control]][j]) == "norm_cov") {
+            if (names(case_control_coverage[[case_control]][j]) == "norm_coverage") {
                 next
             } else {
 
                 # normalise coverage across exons/intron
                 # by dividing by the coverage across normalisation regions
-                case_control_cov[[case_control]][[j]] <-
-                    case_control_cov[[case_control]][[j]] / (case_control_cov[[case_control]][["norm_cov"]] + norm_const)
+                case_control_coverage[[case_control]][[j]] <-
+                    case_control_coverage[[case_control]][[j]] / (case_control_coverage[[case_control]][["norm_coverage"]] + norm_const)
 
-                case_control_cov[[case_control]][[j]][is.na(case_control_cov[[case_control]][[j]])] <- 0
+                case_control_coverage[[case_control]][[j]][is.na(case_control_coverage[[case_control]][[j]])] <- 0
             }
         }
 
         # remove norm coverage
-        case_control_cov[[case_control]] <-
-            case_control_cov[[case_control]][names(case_control_cov[[case_control]]) != "norm_cov"]
+        case_control_coverage[[case_control]] <-
+            case_control_coverage[[case_control]][names(case_control_coverage[[case_control]]) != "norm_coverage"]
     }
 
-    return(case_control_cov)
+    return(case_control_coverage)
 }

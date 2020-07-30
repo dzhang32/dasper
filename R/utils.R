@@ -203,7 +203,7 @@
 #' sample (\code{x}), indicating it's deviation from the distribution of a
 #' controls counts (\code{y}) of the same junction.
 #'
-#' @param x numeric vector containing case counts/cov for 1 junction.
+#' @param x numeric vector containing case counts/coverage for 1 junction.
 #' @param y numeric vector containing control counts for 1 junction.
 #' @param sd_const a numeric scalar to be added to all control standard
 #'   deviations. This is to prevent infinate/NaN values occuring when the
@@ -221,14 +221,14 @@
 
 #' Load coverage for set of genomic regions
 #'
-#' \code{.cov_load} loads coverage across a set of genomic regions from a BigWig
-#' file using \url{https://github.com/ChristopherWilks/megadepth}
+#' \code{.coverage_load} loads coverage across a set of genomic regions from a
+#' BigWig file using \url{https://github.com/ChristopherWilks/megadepth}
 #'
 #' @param regions [GRangesList-class][GenomicRanges::GRangesList-class] object.
-#' @param cov_path path to BigWig (or BAM - STILL UNTESTED) file.
+#' @param coverage_path path to BigWig (or BAM - STILL UNTESTED) file.
 #' @param chr_format NULL or one of "chr" or "no_chr", indicating the chromsome
-#'   format used in the \code{cov_path}. Will convert the \code{regions} to this
-#'   format if they are not already.
+#'   format used in the \code{coverage_path}. Will convert the \code{regions} to
+#'   this format if they are not already.
 #' @param sum_fun "mean", "sum", "max", "min" indicating the summary function to
 #'   perform across the coverage for each region.
 #'
@@ -238,7 +238,7 @@
 #'
 #' @keywords internal
 #' @noRd
-.cov_load <- function(regions, cov_path, chr_format = NULL, sum_fun) {
+.coverage_load <- function(regions, coverage_path, chr_format = NULL, sum_fun) {
 
     ##### check user input #####
 
@@ -255,7 +255,7 @@
     ##### load coverage #####
 
     temp_regions_path <- stringr::str_c(tempdir(), "/regions.bed")
-    temp_cov_prefix <- stringr::str_c(tempdir(), "/cov")
+    temp_coverage_prefix <- stringr::str_c(tempdir(), "/coverage")
 
     regions %>%
         as.data.frame() %>%
@@ -267,20 +267,20 @@
         ) %>%
         readr::write_delim(temp_regions_path, delim = "\t", col_names = FALSE)
 
-    # check <- rtracklayer::import(cov_path, which = regions, as = "NumericList")
+    # check <- rtracklayer::import(coverage_path, which = regions, as = "NumericList")
 
     system(
         command = stringr::str_c(
-            "/tools/megadepth/megadepth ", cov_path,
+            "/tools/megadepth/megadepth ", coverage_path,
             " --op ", sum_fun,
             " --annotation ", temp_regions_path,
-            " ", temp_cov_prefix
+            " ", temp_coverage_prefix
         ),
         ignore.stdout = TRUE
     )
 
     suppressMessages(
-        cov <- readr::read_delim(stringr::str_c(temp_cov_prefix, ".all.tsv"),
+        coverage <- readr::read_delim(stringr::str_c(temp_coverage_prefix, ".all.tsv"),
             delim = "\t",
             col_names = c("chr", "start", "end", "cov"),
             col_types = readr::cols(chr = "c", start = "i", end = "i", cov = "n"),
@@ -288,11 +288,11 @@
         )
     )
 
-    cov <- cov[["cov"]]
+    coverage <- coverage[["cov"]]
 
-    if (sum(cov, na.rm = TRUE) == 0) {
+    if (sum(coverage, na.rm = TRUE) == 0) {
         warning("Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.")
     }
 
-    return(cov)
+    return(coverage)
 }

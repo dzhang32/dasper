@@ -75,9 +75,9 @@ test_that(".merge_CharacterList catches user-input errors", {
     )
 })
 
-##### .cov_load #####
+##### .coverage_load #####
 
-test_that(".cov_load has correct output", {
+test_that(".coverage_load has correct output", {
 
     # skip on github for now to save time ...
     # and need to test remote coverage loading
@@ -85,8 +85,8 @@ test_that(".cov_load has correct output", {
         skip("skipping as not testing loading coverage from remote files yet")
     }
 
-    cov_paths_case <- list.files("/data/RNA_seq_diag/mito/bw/", full.names = TRUE)[1]
-    cov_paths_control <- list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/", full.names = TRUE)[1]
+    coverage_paths_case <- list.files("/data/RNA_seq_diag/mito/bw/", full.names = TRUE)[1]
+    coverage_paths_control <- list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/", full.names = TRUE)[1]
 
     junctions <- junctions_example[c(
         length(junctions_example):(length(junctions_example) - 4),
@@ -95,36 +95,36 @@ test_that(".cov_load has correct output", {
         SummarizedExperiment::rowRanges()
     junctions_sorted <- junctions %>% sort()
 
-    mcols(junctions)[["cov"]] <- .cov_load(junctions,
-        cov_path = cov_paths_case,
+    mcols(junctions)[["coverage"]] <- .coverage_load(junctions,
+        coverage_path = coverage_paths_case,
         sum_fun = "mean",
         chr_format = NULL
     )
 
-    mcols(junctions_sorted)[["cov"]] <- .cov_load(
+    mcols(junctions_sorted)[["coverage"]] <- .coverage_load(
         regions = junctions_sorted,
-        cov_path = cov_paths_case,
+        coverage_path = coverage_paths_case,
         sum_fun = "mean",
         chr_format = NULL
     )
 
-    # make sure the order of returned cov is same as inputted regions
+    # make sure the order of returned coverage is same as inputted regions
     expect_identical(
-        mcols(sort(junctions))[["cov"]],
-        mcols(junctions_sorted)[["cov"]]
+        mcols(sort(junctions))[["coverage"]],
+        mcols(junctions_sorted)[["coverage"]]
     )
 
-    mcols(junctions)[["cov_control"]] <- .cov_load(junctions,
-        cov_path = cov_paths_control,
+    mcols(junctions)[["coverage_control"]] <- .coverage_load(junctions,
+        coverage_path = coverage_paths_control,
         sum_fun = "sum",
         chr_format = "chr"
     )
 
     # megadepth matches rtracklayer output
     expect_equivalent(
-        mcols(junctions)[["cov"]],
+        mcols(junctions)[["coverage"]],
         rtracklayer::import(
-            con = cov_paths_case,
+            con = coverage_paths_case,
             which = junctions,
             as = "NumericList"
         ) %>%
@@ -133,13 +133,13 @@ test_that(".cov_load has correct output", {
             round(3)
     ) # ensure same rounding accuracy as megadepth
 
-    expect_true(sum(mcols(junctions)[["cov"]]) != 0)
-    expect_true(sum(mcols(junctions)[["cov_control"]]) != 0)
+    expect_true(sum(mcols(junctions)[["coverage"]]) != 0)
+    expect_true(sum(mcols(junctions)[["coverage_control"]]) != 0)
 
-    # highlight is total cov is 0 (potentially due to different chr formats)
+    # highlight is total coverage is 0 (potentially due to different chr formats)
     expect_warning(
-        .cov_load(junctions,
-            cov_path = cov_paths_control,
+        .coverage_load(junctions,
+            coverage_path = coverage_paths_control,
             sum_fun = "sum",
             chr_format = NULL
         ),
