@@ -2,6 +2,7 @@
 
 export(junction_annot)
 export(junction_cov_norm)
+export(junction_cov_score)
 export(junction_filter)
 export(junction_load)
 export(junction_norm)
