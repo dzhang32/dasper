@@ -91,9 +91,15 @@ test_that(".coverage_score_max output generally looks correct", {
 
 ##### coverage_score #####
 
-names(coverage[["case"]]) <- c("not", "correct", "names")
 
 test_that("coverage_score catches user-input errors", {
+
+    if (github) {
+      skip("skipping as not testing loading coverage from remote files yet")
+    }
+
+    names(coverage[["case"]]) <- c("not", "correct", "names")
+
     expect_error(
         coverage_score(coverage = coverage[[1]]),
         "coverage should have the names 'case' and 'control'"
