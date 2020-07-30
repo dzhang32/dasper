@@ -37,7 +37,8 @@
 #' cov_paths_control <-
 #'     list.files(
 #'         "/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/",
-#'         full.names = T)[1:2]
+#'         full.names = T
+#'     )[1:2]
 #' cov <- junction_cov_norm(
 #'     junctions_annot_example,
 #'     ref,

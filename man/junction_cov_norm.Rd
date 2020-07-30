@@ -58,7 +58,11 @@ associated to a junction are used as the region to normalise to.
 ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
 ref <- GenomicFeatures::makeTxDbFromGFF(ref)
 cov_paths_case <- list.files("/data/RNA_seq_diag/mito/bw/", full.names = T)[1:2]
-cov_paths_control <- list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/", full.names = T)[1:2]
+cov_paths_control <-
+    list.files(
+        "/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/",
+        full.names = T
+    )[1:2]
 cov <- junction_cov_norm(
     junctions_annot_example,
     ref,
