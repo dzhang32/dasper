@@ -125,56 +125,16 @@ jobs:
           chmod u+x /home/rstudio/tools/megadepth
         shell: bash {0}
       
-      # based off of the example in 
-      # https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions
-      # in particular to change PATH: 
-      # echo "::add-path::/path/to/dir"
-      - name: add megadepth to PATH (bash)
+      - name: add megadepth to PATH
         run: |
+          # based off of the example in 
+          # https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions
+          # in particular to change PATH: 
+          # echo "::add-path::/path/to/dir"
           echo "::add-path::/home/rstudio/tools"
-        shell: bash {0}
-      
-      - name: Try running megadepth (correct libcurl issue)
-        run: |
-          # check PATH updated in new step
-          echo $PATH 
-          megadepth
-        shell: bash {0}
-        
-      - name: Run megadepth (bash) on remote bw
-        run: |
-          echo -e "chr21\t5136044\t5137326\t.\t.\t." >> ~/ranges.bed
-          echo -e "chr22\t50785294\t50788749\t.\t.\t." >> ~/ranges.bed
-          megadepth \
-          http://duffel.rail.bio/recount/SRP012682/bw/SRR1077996_SRS524603_SRX409428_female_uterus.bw \
-          --op sum \
-          --annotation ~/ranges.bed \
-          ~/cov_out 
-        shell: bash {0}
-          
-      - name: Check megadepth (bash) results
-        run: |
-          cat ~/cov_out.all.tsv
-        shell: bash {0}
-      
-      # R PATH not updated with megadepth so let's append a line to .Rprofile
-      - name: add megadepth to PATH (R)
-        run: |
+          # R PATH not updated with megadepth so let's append a line to .Rprofile
           echo "Sys.setenv(PATH = paste('/home/rstudio/tools', Sys.getenv('PATH'), sep = ':'))" >> ~/.Rprofile
-        shell: bash {0}
-      
-      - name: Run megadepth (R) on remote bw
-        run: |
-          system(command = paste0("megadepth ", 
-                                  "http://duffel.rail.bio/recount/SRP012682/bw/SRR1077996_SRS524603_SRX409428_female_uterus.bw", 
-                                  " --op sum ", "--annotation ~/ranges.bed ~/cov_out"))
-        shell: Rscript {0}
-      
-      - name: Check megadepth (R) results
-        run: |
-          print(read.delim("~/cov_out.all.tsv", sep = "\t"))
-        shell: Rscript {0}
-      
+        shell: bash {0} 
       ##### --------------------------------------------------------------------
       
       - name: Install latest git
