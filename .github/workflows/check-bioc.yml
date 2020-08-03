@@ -114,10 +114,9 @@ jobs:
         - /home/runner/work/_temp/Library:/usr/local/lib/R/host-site-library
 
     steps:
-      
-        ##### megadepth ------------------------------------------------------------
-          
-        - name: download megadepth
+    
+      ##### megadepth ------------------------------------------------------------      
+      - name: download megadepth
         run: |
           mkdir /home/rstudio/tools
           wget -P /home/rstudio/tools https://github.com/ChristopherWilks/megadepth/releases/download/1.0.3/megadepth.libcurl4
