@@ -51,19 +51,21 @@ junction_filter <- function(junctions,
 
     # by count
     if (!is.null(count_thresh)) {
+        print(stringr::str_c(Sys.time(), " - by count..."))
         count_filter <- .junction_filter_count(junctions, count_thresh, n_samp)
         junctions_filter <- junctions_filter & count_filter
     }
 
     # by width
     if (!is.null(width_range)) {
+        print(stringr::str_c(Sys.time(), " - by width..."))
         width_filter <- (width(junctions) >= width_range[1]) & (width(junctions) <= width_range[2])
         junctions_filter <- junctions_filter & width_filter
     }
 
     # by type
     if (!is.null(types)) {
-
+        print(stringr::str_c(Sys.time(), " - by type..."))
         # check that user has inputted junction categories that are expected
         exp_types <- c(
             "annotated", "novel_acceptor", "novel_donor", "novel_exon_skip",
@@ -85,6 +87,7 @@ junction_filter <- function(junctions,
 
     # by region
     if (!is.null(regions)) {
+        print(stringr::str_c(Sys.time(), " - by overlap with regions..."))
         hits <- findOverlaps(junctions, regions)
         region_filter <- !(seq_along(junctions_filter) %in% queryHits(hits))
         junctions_filter <- junctions_filter & region_filter

@@ -231,6 +231,7 @@
 #'   this format if they are not already.
 #' @param sum_fun "mean", "sum", "max", "min" indicating the summary function to
 #'   perform across the coverage for each region.
+#' @param out_dir directory to save the the outputs for running \code{megadepth}.
 #'
 #' @return numeric vector of equal length to \code{regions} with each value
 #'   corresponding to the coverage across one genomic interval in
@@ -238,7 +239,7 @@
 #'
 #' @keywords internal
 #' @noRd
-.coverage_load <- function(regions, coverage_path, chr_format = NULL, sum_fun) {
+.coverage_load <- function(regions, coverage_path, chr_format = NULL, sum_fun, out_dir = tempdir()) {
 
     ##### check user input #####
 
@@ -254,8 +255,8 @@
 
     ##### load coverage #####
 
-    temp_regions_path <- stringr::str_c(tempdir(), "/regions.bed")
-    temp_coverage_prefix <- stringr::str_c(tempdir(), "/coverage")
+    temp_regions_path <- stringr::str_c(out_dir, "/regions.bed")
+    temp_coverage_prefix <- stringr::str_c(out_dir, "/coverage")
 
     regions %>%
         as.data.frame() %>%
@@ -271,12 +272,11 @@
 
     system(
         command = stringr::str_c(
-            "/tools/megadepth/megadepth ", coverage_path,
+            "megadepth ", coverage_path,
             " --op ", sum_fun,
             " --annotation ", temp_regions_path,
             " ", temp_coverage_prefix
-        ),
-        ignore.stdout = TRUE
+        ), ignore.stdout = T
     )
 
     suppressMessages(
