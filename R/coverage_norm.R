@@ -22,6 +22,8 @@
 #'   chromosome format of control coverage data. To be used if you know the
 #'   chromosome format of the control BigWig/BAM files is different to that of
 #'   your junctions.
+#' @param load_func a function to use to load coverage. Currently only for
+#'   internal use to increase testing speed.
 #'
 #' @return list containing sublists, one for cases and the other controls. Each
 #'   sublist contains 3 matrices, corresponding the coverage for each sample
@@ -51,7 +53,14 @@
 #' }
 #'
 #' @export
-coverage_norm <- function(junctions, ref, unannot_width = 20, coverage_paths_case, coverage_paths_control, coverage_chr_control = NULL) {
+coverage_norm <- function(junctions,
+    ref,
+    unannot_width = 20,
+    coverage_paths_case,
+    coverage_paths_control,
+    coverage_chr_control = NULL,
+    load_func = .coverage_load,
+    norm_const = 1) {
 
     ##### Check user-input #####
 
@@ -60,11 +69,13 @@ coverage_norm <- function(junctions, ref, unannot_width = 20, coverage_paths_cas
     }
 
     if (length(coverage_paths_control) < 2) {
-        stop("coverage_paths_control must coverageer at least 2 controls")
+        stop("coverage_paths_control must cover at least 2 controls")
     }
 
-    if (!(coverage_chr_control %in% c("chr", "no_chr"))) {
-        stop("coverage_chr_control must be one of 'chr' or 'no_chr'")
+    if (!is.null(coverage_chr_control)) {
+        if (!coverage_chr_control %in% c("chr", "no_chr")) {
+            stop("coverage_chr_control must be one of 'chr' or 'no_chr'")
+        }
     }
 
     ##### Get exon/intronic regions for each junction #####
@@ -84,18 +95,21 @@ coverage_norm <- function(junctions, ref, unannot_width = 20, coverage_paths_cas
 
     ##### Load coverage #####
 
+    print(stringr::str_c(Sys.time(), " - Loading coverage..."))
+
     case_control_coverage <- .coverage_case_control_load(
         coverage_regions,
         coverage_paths_case,
         coverage_paths_control,
-        coverage_chr_control
+        coverage_chr_control,
+        load_func
     )
 
     ##### Normalise coverage #####
 
     print(stringr::str_c(Sys.time(), " - Normalising coverage..."))
 
-    case_control_coverage <- .coverage_norm(case_control_coverage)
+    case_control_coverage <- .coverage_norm(case_control_coverage, norm_const)
 
     print(stringr::str_c(Sys.time(), " - done!"))
 
@@ -279,7 +293,7 @@ coverage_norm <- function(junctions, ref, unannot_width = 20, coverage_paths_cas
 #'
 #' @keywords internal
 #' @noRd
-.coverage_case_control_load <- function(coverage_regions, coverage_paths_case, coverage_paths_control, coverage_chr_control) {
+.coverage_case_control_load <- function(coverage_regions, coverage_paths_case, coverage_paths_control, coverage_chr_control, load_func = .coverage_load) {
     case_control_coverage <- list()
 
     for (case_control in c("case", "control")) {
@@ -311,7 +325,7 @@ coverage_norm <- function(junctions, ref, unannot_width = 20, coverage_paths_cas
                     " for ", case_control, " ", j, "/", length(coverage_paths), "..."
                 ))
 
-                coverage_mat[, j] <- .coverage_load(
+                coverage_mat[, j] <- load_func(
                     regions = coverage_regions[[i]],
                     coverage_path = coverage_paths[j],
                     chr_format = chr_format,

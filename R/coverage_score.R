@@ -63,8 +63,8 @@ coverage_score <- function(junctions, coverage, score_func = .zscore, ...) {
 
     ##### Store output #####
 
-    names(coverage_region_scores_max[["regions"]]) <- dimnames(junctions)[[2]]
-    names(coverage_region_scores_max[["scores"]]) <- dimnames(junctions)[[2]]
+    colnames(coverage_region_scores_max[["regions"]]) <- dimnames(junctions)[[2]]
+    colnames(coverage_region_scores_max[["scores"]]) <- dimnames(junctions)[[2]]
     assays(junctions)[["coverage_region"]] <- coverage_region_scores_max[["regions"]]
     assays(junctions)[["coverage_score"]] <- coverage_region_scores_max[["scores"]]
 
@@ -85,7 +85,6 @@ coverage_score <- function(junctions, coverage, score_func = .zscore, ...) {
 #' @keywords internal
 #' @noRd
 .coverage_score <- function(coverage, score_func, ...) {
-
     regions <- c("exon_coverage_start", "exon_coverage_end", "intron_coverage")
     coverage_scores <- vector(mode = "list", length = length(regions))
     names(coverage_scores) <- regions
@@ -109,7 +108,7 @@ coverage_score <- function(junctions, coverage, score_func = .zscore, ...) {
     }
 
     names(coverage_scores) <- names(coverage_scores) %>%
-      stringr::str_replace("coverage", "coverage_score")
+        stringr::str_replace("coverage", "coverage_score")
 
     return(coverage_scores)
 }
@@ -126,11 +125,14 @@ coverage_score <- function(junctions, coverage, score_func = .zscore, ...) {
 #' @keywords internal
 #' @noRd
 .coverage_score_max <- function(coverage_scores) {
-
-  stopifnot(identical(names(coverage_scores),
-                      c("exon_coverage_score_start",
-                        "exon_coverage_score_end",
-                        "intron_coverage_score")))
+    stopifnot(identical(
+        names(coverage_scores),
+        c(
+            "exon_coverage_score_start",
+            "exon_coverage_score_end",
+            "intron_coverage_score"
+        )
+    ))
 
     coverage_scores_max <- matrix(
         ncol = ncol(coverage_scores[[1]]),

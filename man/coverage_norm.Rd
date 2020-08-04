@@ -11,7 +11,9 @@ coverage_norm(
   unannot_width = 20,
   coverage_paths_case,
   coverage_paths_control,
-  coverage_chr_control = NULL
+  coverage_chr_control = NULL,
+  load_func = .coverage_load,
+  norm_const = 1
 )
 }
 \arguments{
@@ -36,6 +38,9 @@ rows of the assays in \code{junctions}.}
 chromosome format of control coverage data. To be used if you know the
 chromosome format of the control BigWig/BAM files is different to that of
 your junctions.}
+
+\item{load_func}{a function to use to load coverage. Currently only for
+internal use to increase testing speed.}
 }
 \value{
 list containing sublists, one for cases and the other controls. Each
