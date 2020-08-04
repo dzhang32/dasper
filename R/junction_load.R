@@ -59,7 +59,7 @@
 junction_load <- function(junction_paths,
     metadata = dplyr::tibble(samp_id = stringr::str_c("samp_", seq_along(junction_paths))),
     controls = rep(FALSE, length(junction_paths)),
-    load_func = .load_STAR,
+    load_func = .STAR_load,
     chrs = NULL,
     coord_system = "ensembl") {
 
@@ -145,7 +145,7 @@ junction_load <- function(junction_paths,
 
 #' Load raw junction data
 #'
-#' \code{.load_STAR} will load raw junction data that is outputted from STAR
+#' \code{.STAR_load} will load raw junction data that is outputted from STAR
 #' (SJ.out) into R. This will format the junction data, retaining only chr,
 #' start, end, strand and count (uniq_map_read_count) columns.
 #'
@@ -155,7 +155,7 @@ junction_load <- function(junction_paths,
 #'
 #' @keywords internal
 #' @noRd
-.load_STAR <- function(junction_path) {
+.STAR_load <- function(junction_path) {
     junctions <-
         readr::read_delim(junction_path,
             delim = "\t",
