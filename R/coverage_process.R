@@ -26,8 +26,11 @@
 #'         load_func = load_rand,
 #'         norm_const = 2,
 #'         score_func = .zscore,
-#'         sd_const = 0.02)
+#'         sd_const = 0.02
+#'     )
+#' junctions_w_coverage_2
 #' }
+#'
 #' @export
 coverage_process <- function(junctions,
     ref,
