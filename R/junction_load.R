@@ -261,15 +261,7 @@ junction_load <- function(junction_paths,
         " - Downloading and importing ", controls_df[["control"]], " junction data..."
     ))
 
-    # suppress the tidyverse depracated functions (select_() used over select()) used in BiocFileCashe warning
-    suppressWarnings(
-
-        # BiocFileCashe will cache the file locally for faster repeated retrival
-        file_path <- BiocFileCache::bfcrpath(BiocFileCache::BiocFileCache(ask = FALSE),
-            controls_df[["dropbox_path"]],
-            exact = TRUE
-        ) # exact match required, if F then uses regex search
-    )
+    file_path <- .file_cache(controls_df[["dropbox_path"]])
 
     load(file = file_path)
 
