@@ -237,6 +237,18 @@ jobs:
           pkgs <- installed.packages()[, "Package"]
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
+      
+      - name: test running megadepth
+        run: |
+          echo $PATH
+          megadepth
+        shell: bash {0}
+          
+      - name: test running megadepth (R)
+        run: |
+          Sys.getenv()[["PATH"]]
+          system(command = "megadepth")
+        shell: Rscript {0}
 
       - name: Check
         env:
