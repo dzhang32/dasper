@@ -41,6 +41,9 @@ your junctions.}
 
 \item{load_func}{a function to use to load coverage. Currently only for
 internal use to increase testing speed.}
+
+\item{norm_const}{numeric to add to the normalised coverage to avoid dividing
+by 0s and resulting NaN or Inf values.}
 }
 \value{
 list containing sublists, one for cases and the other controls. Each

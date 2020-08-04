@@ -43,6 +43,9 @@ your junctions.}
 \item{load_func}{a function to use to load coverage. Currently only for
 internal use to increase testing speed.}
 
+\item{norm_const}{numeric to add to the normalised coverage to avoid dividing
+by 0s and resulting NaN or Inf values.}
+
 \item{score_func}{function to score junctions by abnromality. By default,
 will use a z-score. But this can be switched dependent on the format of the
 user's junction data. Function must take as input an x and y argument. x
@@ -62,5 +65,20 @@ object containing junction data with coverage scores.
 for those familiar or uninterested with the intermediates.
 }
 \examples{
+
+ref <-
+    "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+junctions_w_coverage_2 <-
+    coverage_process(
+        junctions_example[, 1:2],
+        ref,
+        unannot_width = 20,
+        coverage_paths_case,
+        coverage_paths_control,
+        coverage_chr_control = NULL,
+        load_func = load_rand,
+        norm_const = 2,
+        score_func = .zscore,
+        sd_const = 0.02)
 
 }
