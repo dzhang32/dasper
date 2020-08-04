@@ -55,6 +55,34 @@
     return(x)
 }
 
+#' Cache a file if it is not found locally
+#'
+#' \code{.file_cache} \code{\link[BiocFileCache](BiocFileCache)} will cache the
+#' file for faster repeated retrival, if it not found locally (i.e. a URL).
+#'
+#' @param file_path a path to file of interest.
+#'
+#' @return \code{file_path} of cached file or unchanged \code{file_path} if
+#'   found locally.
+#'
+#' @keywords internal
+#' @noRd
+.file_cache <- function(file_path) {
+    if (!file.exists(file_path)) {
+
+        # suppress warning for tidyverse deprecated funs (select_() used over select()) in BiocFileCache
+        # exact = TRUE means exact match required, if F then uses regex search
+        suppressWarnings(
+            file_path <- BiocFileCache::bfcrpath(BiocFileCache::BiocFileCache(ask = FALSE),
+                file_path,
+                exact = TRUE
+            )
+        )
+    }
+
+    return(file_path)
+}
+
 #' Load reference annotation
 #'
 #' \code{.ref_load} loads reference annotation using
@@ -74,6 +102,9 @@
 
     if (class(ref) == "character") {
         print(stringr::str_c(Sys.time(), " - Importing gtf/gff3 as a TxDb..."))
+
+        # cache the gtf/gff3 for faster repeated retrieval
+        ref <- .file_cache(ref)
 
         # import gtf using refGenome, needed to obtain the annotated splice junctions easily
         ref <- GenomicFeatures::makeTxDbFromGFF(ref)
@@ -116,10 +147,10 @@
 #' in \code{x} that fall into the same group will be merged/concatenated
 #' together to form a vector in the resulting list. Empty groups will be not be
 #' dropped and filled with vectors of length = 0. Based on the function
-#' \code{\link{[S4Vectors](split)}}).
+#' \code{\link[S4Vectors](split)}).
 #'
 #' @param x an atomic vector or list (only tested on character and
-#'   \code{\link{[IRanges](CharacterList)}}).
+#'   \code{\link[IRanges](CharacterList)}).
 #' @param groups vector of the same length as \code{x} indicating which group
 #'   each corresponding element of \code{x} is assigned.
 #' @param all_groups vector with values all groups and the order that they
