@@ -1,4 +1,6 @@
-context("Testing the annotation of junctions")
+context("Testing junction processing")
+
+# Annotating junctions ----------------------------------------------------
 
 ##### .junction_annot_tidy #####
 
@@ -15,9 +17,8 @@ test_that(".junction_annot_tidy correctly infers strand", {
 ##### junction_annot #####
 
 ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
-
 suppressWarnings(expr = {
-  ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+  ref <- .ref_load(ref)
 })
 
 junctions <- junction_annot(junctions_example, ref)
@@ -196,4 +197,190 @@ test_that("exon annotation has been correctly retreived", {
     expect_true(annot_check(novel_combo, ref_exons, 5))
     expect_true(annot_check(ambig_gene, ref_exons, 5))
     expect_true(annot_check(unannotated, ref_exons, 10))
+})
+
+# Normalise junctions -----------------------------------------------------
+
+##### junction_norm #####
+
+junctions <- junction_norm(junctions)
+
+test_that("junction_norm general output looks correct", {
+    expect_true(methods::isClass(junctions, "RangedSummarizedExperiment"))
+    expect_equal(
+        colnames(assays(junctions)[["raw"]]),
+        colnames(assays(junctions)[["norm"]])
+    )
+    expect_equal(
+        nrow(assays(junctions)[["raw"]]),
+        nrow(assays(junctions)[["norm"]])
+    )
+    expect_false(any(lengths(mcols(junctions)[["clusters"]]) == 0))
+    expect_identical(
+        names(mcols(junctions)[["clusters"]]),
+        mcols(junctions)[["index"]] %>% as.character()
+    )
+})
+
+# all clusters with only a single junction should have a value of 1 or 0
+mono_cluster <- which(lengths(mcols(junctions)[["clusters"]]) == 1)
+mono_cluster_counts <- assays(junctions)[["norm"]][mono_cluster, ]
+
+test_that("normalised counts have expected values", {
+    expect_false(any(is.na(assays(junctions)[["norm"]])))
+    expect_true(all(assays(junctions)[["norm"]] <= 1))
+    expect_true(all(assays(junctions)[["norm"]] >= 0))
+    expect_identical(
+        which(assays(junctions)[["raw"]] == 0),
+        which(assays(junctions)[["norm"]] == 0)
+    )
+    expect_true(all(unlist(mono_cluster_counts) %in% c(0, 1)))
+})
+
+norm_check <- function(junctions, n) {
+    check <- TRUE
+
+    junctions_start_end <- .get_start_end(junctions)
+
+    # only check clusters that contain at least 2 junctions
+    polt_cluster <- which(lengths(mcols(junctions)[["clusters"]]) > 1)
+
+    for (i in sample(polt_cluster, n)) {
+        junction_start_end_to_test <- junctions_start_end %>%
+            lapply(FUN = function(x) {
+                x[i]
+            })
+
+        start_hits <- findOverlaps(
+            junctions_start_end[["start"]],
+            junction_start_end_to_test[["start"]]
+        )
+
+        end_hits <- findOverlaps(
+            junctions_start_end[["end"]],
+            junction_start_end_to_test[["end"]]
+        )
+
+        expect_cluster <- c(queryHits(start_hits), queryHits(end_hits)) %>%
+            unique() %>%
+            sort()
+
+        # if the cluster only has 1 junction, we don't need to sum
+        if (length(expect_cluster) >= 2) {
+            expect_cluster_sum_counts <- assays(junctions)[["raw"]][expect_cluster, ] %>%
+                apply(MARGIN = 2, FUN = sum)
+        } else {
+            expect_cluster_sum_counts <- assays(junctions)[["raw"]][expect_cluster, ]
+        }
+
+        expect_norm_counts <- assays(junction_start_end_to_test[["start"]])[["raw"]] / expect_cluster_sum_counts
+        expect_norm_counts[is.na(expect_norm_counts)] <- 0
+
+        check <- all(check, identical(
+            expect_cluster,
+            mcols(junctions)[["clusters"]][[i]]
+        ))
+
+        check <- all(check, identical(
+            expect_norm_counts[1, ],
+            assays(junctions)[["norm"]][i, ]
+        ))
+    }
+
+    return(check)
+}
+
+test_that("raw counts have been correctly normalised", {
+    expect_true(norm_check(junctions, 50))
+})
+
+# Score junctions ---------------------------------------------------------
+
+##### junction_score #####
+
+junctions_w_score <- junction_score(junctions,
+    score_func = .zscore,
+    sd_const = 0.02
+) # try an sd_const other than default
+
+test_that("junction_score has correct output", {
+    expect_true(is(junctions_w_score, "RangedSummarizedExperiment"))
+    expect_identical(dim(junctions_w_score)[1], dim(junctions)[1])
+    expect_identical(dim(junctions_w_score)[2], sum(colData(junctions)[["case_control"]] == "case"))
+    expect_identical(names(assays(junctions_w_score)), c("raw", "norm", "score"))
+    expect_false(any(is.na(assays(junctions_w_score)[["score"]])))
+    expect_false(any(!is.finite(assays(junctions_w_score)[["score"]])))
+})
+
+junctions_no_colData <- junctions_example
+SummarizedExperiment::colData(junctions_no_colData)[["case_control"]] <- NULL
+
+test_that("junction_score catches user-input errors", {
+    expect_error(
+        junction_score(junctions_no_colData),
+        "must include the column 'case_control'"
+    )
+
+    expect_error(
+        junction_score(junctions_example),
+        "Junctions must include the 'norm' assay"
+    )
+})
+
+# vectorised method of performing z-score
+# test whether this produces equivalent output to junction_score
+case_count <- assays(junctions)[["norm"]][, colData(junctions)[["case_control"]] == "case"]
+control_count <- assays(junctions)[["norm"]][, colData(junctions)[["case_control"]] == "control"]
+
+control_mean <-
+    control_count %>%
+    apply(MARGIN = 1, FUN = mean)
+
+control_sd <-
+    control_count %>%
+    apply(MARGIN = 1, FUN = sd)
+
+case_score <- (case_count - control_mean) / (control_sd + 0.02)
+
+test_that("zscore has been calculated correctly", {
+    expect_equivalent(
+        assays(junctions_w_score)[["score"]] %>% unlist(),
+        case_score %>% unlist()
+    )
+})
+
+# Process junctions -------------------------------------------------------
+
+##### junction_process #####
+
+# double check all functions fit easily with the pipe
+# also that the order of junction_filter/junction_annot
+# does not impact result (diff order to junction_process)
+junctions_processed <- junctions_example %>%
+    junction_annot(ref) %>%
+    junction_filter(
+        count_thresh = c("raw" = 5),
+        n_samp = c("raw" = 1),
+        width_range = c(25, 1000000),
+        types = c("ambig_gene", "unannotated"),
+        regions = GRanges(seqnames = "21", ranges = "1-10000000", strand = "*")
+    ) %>%
+    junction_norm() %>%
+    junction_score(sd_const = 0.02)
+
+junctions_processed_2 <-
+    junction_process(
+        junctions_example,
+        ref,
+        count_thresh = c("raw" = 5),
+        n_samp = c("raw" = 1),
+        width_range = c(25, 1000000),
+        types = c("ambig_gene", "unannotated"),
+        regions = GRanges(seqnames = "21", ranges = "1-10000000", strand = "*"),
+        score_func = .zscore,
+        sd_const = 0.02
+    )
+
+test_that("junction_process has been correct output", {
+    expect_equivalent(junctions_processed, junctions_processed_2)
 })
