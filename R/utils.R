@@ -1,3 +1,29 @@
+#' Check chromosomes are correctly formatted
+#'
+#' \code{.chr_filter} will check whether the object \code{x} is matches the
+#' format of chr_format. If not, will convert to the chromosome format.
+#'
+#' @param x object of [GRangesList-class][GenomicRanges::GRangesList-class] or
+#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#'   class.
+#' @param chr_format one of "chr" or "no_chr".
+#'
+#' @return \code{x} with chromosomes matching \code{chr_format}.
+#'
+#' @keywords internal
+#' @noRd
+.chr_check <- function(x, chr_format) {
+  if (chr_format == "chr" & !any(stringr::str_detect(GenomeInfoDb::seqlevels(x), "chr"))) {
+    GenomeInfoDb::seqlevels(x) <- GenomeInfoDb::seqlevels(x) %>%
+      stringr::str_c("chr", .)
+  } else if (chr_format == "no_chr" & any(stringr::str_detect(seqnames(x), "chr"))) {
+    GenomeInfoDb::seqlevels(x) <- GenomeInfoDb::seqlevels(x) %>%
+      stringr::str_replace("chr", "")
+  }
+
+  return(x)
+}
+
 #' Filter a df for chromosomes to keep
 #'
 #' \code{.chr_filter} will filter a df, keeping only chromosomes listed in the
@@ -29,30 +55,82 @@
     return(x)
 }
 
-#' Check chromosomes are correctly formatted
+#' Load coverage for set of genomic regions
 #'
-#' \code{.chr_filter} will check whether the object \code{x} is matches the
-#' format of chr_format. If not, will convert to the chromosome format.
+#' \code{.coverage_load} loads coverage across a set of genomic regions from a
+#' BigWig file using \url{https://github.com/ChristopherWilks/megadepth}
 #'
-#' @param x object of [GRangesList-class][GenomicRanges::GRangesList-class] or
-#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
-#'   class.
-#' @param chr_format one of "chr" or "no_chr".
+#' @param regions [GRangesList-class][GenomicRanges::GRangesList-class] object.
+#' @param coverage_path path to BigWig (or BAM - STILL UNTESTED) file.
+#' @param chr_format NULL or one of "chr" or "no_chr", indicating the chromsome
+#'   format used in the \code{coverage_path}. Will convert the \code{regions} to
+#'   this format if they are not already.
+#' @param sum_fun "mean", "sum", "max", "min" indicating the summary function to
+#'   perform across the coverage for each region.
+#' @param out_dir directory to save the the outputs for running \code{megadepth}.
 #'
-#' @return \code{x} with chromosomes matching \code{chr_format}.
+#' @return numeric vector of equal length to \code{regions} with each value
+#'   corresponding to the coverage across one genomic interval in
+#'   \code{regions}.
 #'
 #' @keywords internal
 #' @noRd
-.chr_check <- function(x, chr_format) {
-    if (chr_format == "chr" & !any(stringr::str_detect(GenomeInfoDb::seqlevels(x), "chr"))) {
-        GenomeInfoDb::seqlevels(x) <- GenomeInfoDb::seqlevels(x) %>%
-            stringr::str_c("chr", .)
-    } else if (chr_format == "no_chr" & any(stringr::str_detect(seqnames(x), "chr"))) {
-        GenomeInfoDb::seqlevels(x) <- GenomeInfoDb::seqlevels(x) %>%
-            stringr::str_replace("chr", "")
-    }
+.coverage_load <- function(regions, coverage_path, chr_format = NULL, sum_fun, out_dir = tempdir()) {
 
-    return(x)
+  ##### check user input #####
+
+  if (!sum_fun %in% c("mean", "sum", "max", "min")) {
+    stop("sum_fun must be one of: 'mean', 'sum', 'max' or 'min'")
+  }
+
+  ##### check chr format #####
+
+  if (!is.null(chr_format)) {
+    regions <- .chr_check(regions, chr_format)
+  }
+
+  ##### load coverage #####
+
+  temp_regions_path <- stringr::str_c(out_dir, "/regions.bed")
+  temp_coverage_prefix <- stringr::str_c(out_dir, "/coverage")
+
+  regions %>%
+    as.data.frame() %>%
+    dplyr::select(seqnames, start, end, strand) %>%
+    dplyr::mutate(
+      start = start - 1, # megadepth uses python indexing, -1 here to match rtracklayer
+      dummy_1 = ".",
+      dummy_2 = "."
+    ) %>%
+    readr::write_delim(temp_regions_path, delim = "\t", col_names = FALSE)
+
+  # check <- rtracklayer::import(coverage_path, which = regions, as = "NumericList")
+
+  system(
+    command = stringr::str_c(
+      "megadepth ", coverage_path,
+      " --op ", sum_fun,
+      " --annotation ", temp_regions_path,
+      " ", temp_coverage_prefix
+    ), ignore.stdout = T
+  )
+
+  suppressMessages(
+    coverage <- readr::read_delim(stringr::str_c(temp_coverage_prefix, ".all.tsv"),
+                                  delim = "\t",
+                                  col_names = c("chr", "start", "end", "cov"),
+                                  col_types = readr::cols(chr = "c", start = "i", end = "i", cov = "n"),
+                                  progress = FALSE
+    )
+  )
+
+  coverage <- coverage[["cov"]]
+
+  if (sum(coverage, na.rm = TRUE) == 0) {
+    warning("Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.")
+  }
+
+  return(coverage)
 }
 
 #' Cache a file if it is not found locally
@@ -83,6 +161,72 @@
     return(file_path)
 }
 
+#' Splits a \code{GRanges} object by it's start and end.
+#'
+#' \code{.get_gr_for_start_end} takes a \code{GRanges} object and generates 2,
+#' one containing only the start co-ordinate and the other, the end.
+#'
+#' @param gr Any \code{GRanges} object.
+#'
+#' @return list of 2 grs, each with 1 range corresponding to every range in the
+#'   input. One contains start positions, the other ends.
+#'
+#' @keywords internal
+#' @noRd
+.get_start_end <- function(x) {
+  x_start <- x
+  end(x_start) <- start(x_start)
+
+  x_end <- x
+  start(x_end) <- end(x_end)
+
+  x_start_end <- list(
+    start = x_start,
+    end = x_end
+  )
+
+  return(x_start_end)
+}
+
+#' Merges two \code{\link{[IRanges](CharacterList)}}s into one through the
+#' element-wise concatenation of the vectors inside each list
+#'
+#' \code{.merge_lists}
+#'
+#' @param x \code{\link{[IRanges](CharacterList)}}
+#' @param y \code{\link{[IRanges](CharacterList)}}
+#'
+#' @return \code{\link{[IRanges](CharacterList)}} the identical length to x and
+#'   y. The elements of this output being the concantenation (\code{c()}) of the
+#'   correponding elements in x and y.
+#'
+#' @keywords internal
+#' @noRd
+.merge_CharacterList <- function(x, y) {
+  if ((length(x) != length(y))) {
+    stop("lengths of x and y should be identical!")
+  }
+
+  # set all groups to equal to the indexes of x/y
+  all_groups <- seq_along(x) %>%
+    as.character()
+  names(x) <- all_groups
+  names(y) <- all_groups
+
+  # unlist x_y into a vector
+  # obtain the names which are the original groups of each elements
+  x_y <- c(x, y) %>% unlist()
+  groups <- names(x_y)
+
+  x_y_merged <-
+    x_y %>%
+    unname() %>%
+    split(f = groups %>% factor(all_groups)) %>%
+    CharacterList()
+
+  return(x_y_merged)
+}
+
 #' Load reference annotation
 #'
 #' \code{.ref_load} loads reference annotation using
@@ -111,33 +255,6 @@
     }
 
     return(ref)
-}
-
-#' Splits a \code{GRanges} object by it's start and end.
-#'
-#' \code{.get_gr_for_start_end} takes a \code{GRanges} object and generates 2,
-#' one containing only the start co-ordinate and the other, the end.
-#'
-#' @param gr Any \code{GRanges} object.
-#'
-#' @return list of 2 grs, each with 1 range corresponding to every range in the
-#'   input. One contains start positions, the other ends.
-#'
-#' @keywords internal
-#' @noRd
-.get_start_end <- function(x) {
-    x_start <- x
-    end(x_start) <- start(x_start)
-
-    x_end <- x
-    start(x_end) <- end(x_end)
-
-    x_start_end <- list(
-        start = x_start,
-        end = x_end
-    )
-
-    return(x_start_end)
 }
 
 #' Re-groups values in vector or list
@@ -189,45 +306,6 @@
     return(x_regrouped)
 }
 
-#' Merges two \code{\link{[IRanges](CharacterList)}}s into one through the
-#' element-wise concatenation of the vectors inside each list
-#'
-#' \code{.merge_lists}
-#'
-#' @param x \code{\link{[IRanges](CharacterList)}}
-#' @param y \code{\link{[IRanges](CharacterList)}}
-#'
-#' @return \code{\link{[IRanges](CharacterList)}} the identical length to x and
-#'   y. The elements of this output being the concantenation (\code{c()}) of the
-#'   correponding elements in x and y.
-#'
-#' @keywords internal
-#' @noRd
-.merge_CharacterList <- function(x, y) {
-    if ((length(x) != length(y))) {
-        stop("lengths of x and y should be identical!")
-    }
-
-    # set all groups to equal to the indexes of x/y
-    all_groups <- seq_along(x) %>%
-        as.character()
-    names(x) <- all_groups
-    names(y) <- all_groups
-
-    # unlist x_y into a vector
-    # obtain the names which are the original groups of each elements
-    x_y <- c(x, y) %>% unlist()
-    groups <- names(x_y)
-
-    x_y_merged <-
-        x_y %>%
-        unname() %>%
-        split(f = groups %>% factor(all_groups)) %>%
-        CharacterList()
-
-    return(x_y_merged)
-}
-
 #' Calculate z-score for x from the distribution y
 #'
 #' \code{.zscore} calculates a z-score for each junction count from a patient
@@ -248,82 +326,4 @@
 .zscore <- function(x, y, sd_const = 0.01) {
     x_score <- (x - mean(y)) / (sd(y) + sd_const)
     return(x_score)
-}
-
-#' Load coverage for set of genomic regions
-#'
-#' \code{.coverage_load} loads coverage across a set of genomic regions from a
-#' BigWig file using \url{https://github.com/ChristopherWilks/megadepth}
-#'
-#' @param regions [GRangesList-class][GenomicRanges::GRangesList-class] object.
-#' @param coverage_path path to BigWig (or BAM - STILL UNTESTED) file.
-#' @param chr_format NULL or one of "chr" or "no_chr", indicating the chromsome
-#'   format used in the \code{coverage_path}. Will convert the \code{regions} to
-#'   this format if they are not already.
-#' @param sum_fun "mean", "sum", "max", "min" indicating the summary function to
-#'   perform across the coverage for each region.
-#' @param out_dir directory to save the the outputs for running \code{megadepth}.
-#'
-#' @return numeric vector of equal length to \code{regions} with each value
-#'   corresponding to the coverage across one genomic interval in
-#'   \code{regions}.
-#'
-#' @keywords internal
-#' @noRd
-.coverage_load <- function(regions, coverage_path, chr_format = NULL, sum_fun, out_dir = tempdir()) {
-
-    ##### check user input #####
-
-    if (!sum_fun %in% c("mean", "sum", "max", "min")) {
-        stop("sum_fun must be one of: 'mean', 'sum', 'max' or 'min'")
-    }
-
-    ##### check chr format #####
-
-    if (!is.null(chr_format)) {
-        regions <- .chr_check(regions, chr_format)
-    }
-
-    ##### load coverage #####
-
-    temp_regions_path <- stringr::str_c(out_dir, "/regions.bed")
-    temp_coverage_prefix <- stringr::str_c(out_dir, "/coverage")
-
-    regions %>%
-        as.data.frame() %>%
-        dplyr::select(seqnames, start, end, strand) %>%
-        dplyr::mutate(
-            start = start - 1, # megadepth uses python indexing, -1 here to match rtracklayer
-            dummy_1 = ".",
-            dummy_2 = "."
-        ) %>%
-        readr::write_delim(temp_regions_path, delim = "\t", col_names = FALSE)
-
-    # check <- rtracklayer::import(coverage_path, which = regions, as = "NumericList")
-
-    system(
-        command = stringr::str_c(
-            "megadepth ", coverage_path,
-            " --op ", sum_fun,
-            " --annotation ", temp_regions_path,
-            " ", temp_coverage_prefix
-        ), ignore.stdout = T
-    )
-
-    suppressMessages(
-        coverage <- readr::read_delim(stringr::str_c(temp_coverage_prefix, ".all.tsv"),
-            delim = "\t",
-            col_names = c("chr", "start", "end", "cov"),
-            col_types = readr::cols(chr = "c", start = "i", end = "i", cov = "n"),
-            progress = FALSE
-        )
-    )
-
-    coverage <- coverage[["cov"]]
-
-    if (sum(coverage, na.rm = TRUE) == 0) {
-        warning("Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.")
-    }
-
-    return(coverage)
 }
