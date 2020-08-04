@@ -9,7 +9,7 @@ junction_load(
   metadata = dplyr::tibble(samp_id = stringr::str_c("samp_",
     seq_along(junction_paths))),
   controls = rep(FALSE, length(junction_paths)),
-  load_func = .load_STAR,
+  load_func = .STAR_load,
   chrs = NULL,
   coord_system = "ensembl"
 )

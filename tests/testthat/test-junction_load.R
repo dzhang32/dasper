@@ -3,11 +3,11 @@ context("Test the loading of junctions data")
 junctions_example_1_path <- system.file("extdata", "junctions_example_1.txt", package = "dasper", mustWork = TRUE)
 junctions_example_2_path <- system.file("extdata", "junctions_example_2.txt", package = "dasper", mustWork = TRUE)
 
-##### .load_STAR #####
+##### .STAR_load #####
 
-junctions_example_1 <- .load_STAR(junctions_example_1_path)
+junctions_example_1 <- .STAR_load(junctions_example_1_path)
 
-test_that(".load_STAR has the correct output", {
+test_that(".STAR_load has the correct output", {
     expect_equal(nrow(junctions_example_1), 10000)
     expect_equal(ncol(junctions_example_1), 5)
     expect_true(tibble::is_tibble(junctions_example_1))
