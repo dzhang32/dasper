@@ -13,15 +13,15 @@
 #' @keywords internal
 #' @noRd
 .chr_check <- function(x, chr_format) {
-  if (chr_format == "chr" & !any(stringr::str_detect(GenomeInfoDb::seqlevels(x), "chr"))) {
-    GenomeInfoDb::seqlevels(x) <- GenomeInfoDb::seqlevels(x) %>%
-      stringr::str_c("chr", .)
-  } else if (chr_format == "no_chr" & any(stringr::str_detect(seqnames(x), "chr"))) {
-    GenomeInfoDb::seqlevels(x) <- GenomeInfoDb::seqlevels(x) %>%
-      stringr::str_replace("chr", "")
-  }
+    if (chr_format == "chr" & !any(stringr::str_detect(GenomeInfoDb::seqlevels(x), "chr"))) {
+        GenomeInfoDb::seqlevels(x) <- GenomeInfoDb::seqlevels(x) %>%
+            stringr::str_c("chr", .)
+    } else if (chr_format == "no_chr" & any(stringr::str_detect(seqnames(x), "chr"))) {
+        GenomeInfoDb::seqlevels(x) <- GenomeInfoDb::seqlevels(x) %>%
+            stringr::str_replace("chr", "")
+    }
 
-  return(x)
+    return(x)
 }
 
 #' Filter a df for chromosomes to keep
@@ -77,60 +77,60 @@
 #' @noRd
 .coverage_load <- function(regions, coverage_path, chr_format = NULL, sum_fun, out_dir = tempdir()) {
 
-  ##### check user input #####
+    ##### check user input #####
 
-  if (!sum_fun %in% c("mean", "sum", "max", "min")) {
-    stop("sum_fun must be one of: 'mean', 'sum', 'max' or 'min'")
-  }
+    if (!sum_fun %in% c("mean", "sum", "max", "min")) {
+        stop("sum_fun must be one of: 'mean', 'sum', 'max' or 'min'")
+    }
 
-  ##### check chr format #####
+    ##### check chr format #####
 
-  if (!is.null(chr_format)) {
-    regions <- .chr_check(regions, chr_format)
-  }
+    if (!is.null(chr_format)) {
+        regions <- .chr_check(regions, chr_format)
+    }
 
-  ##### load coverage #####
+    ##### load coverage #####
 
-  temp_regions_path <- stringr::str_c(out_dir, "/regions.bed")
-  temp_coverage_prefix <- stringr::str_c(out_dir, "/coverage")
+    temp_regions_path <- stringr::str_c(out_dir, "/regions.bed")
+    temp_coverage_prefix <- stringr::str_c(out_dir, "/coverage")
 
-  regions %>%
-    as.data.frame() %>%
-    dplyr::select(seqnames, start, end, strand) %>%
-    dplyr::mutate(
-      start = start - 1, # megadepth uses python indexing, -1 here to match rtracklayer
-      dummy_1 = ".",
-      dummy_2 = "."
-    ) %>%
-    readr::write_delim(temp_regions_path, delim = "\t", col_names = FALSE)
+    regions %>%
+        as.data.frame() %>%
+        dplyr::select(seqnames, start, end, strand) %>%
+        dplyr::mutate(
+            start = start - 1, # megadepth uses python indexing, -1 here to match rtracklayer
+            dummy_1 = ".",
+            dummy_2 = "."
+        ) %>%
+        readr::write_delim(temp_regions_path, delim = "\t", col_names = FALSE)
 
-  # check <- rtracklayer::import(coverage_path, which = regions, as = "NumericList")
+    # check <- rtracklayer::import(coverage_path, which = regions, as = "NumericList")
 
-  system(
-    command = stringr::str_c(
-      "megadepth ", coverage_path,
-      " --op ", sum_fun,
-      " --annotation ", temp_regions_path,
-      " ", temp_coverage_prefix
-    ), ignore.stdout = T
-  )
-
-  suppressMessages(
-    coverage <- readr::read_delim(stringr::str_c(temp_coverage_prefix, ".all.tsv"),
-                                  delim = "\t",
-                                  col_names = c("chr", "start", "end", "cov"),
-                                  col_types = readr::cols(chr = "c", start = "i", end = "i", cov = "n"),
-                                  progress = FALSE
+    system(
+        command = stringr::str_c(
+            "megadepth ", coverage_path,
+            " --op ", sum_fun,
+            " --annotation ", temp_regions_path,
+            " ", temp_coverage_prefix
+        ), ignore.stdout = T
     )
-  )
 
-  coverage <- coverage[["cov"]]
+    suppressMessages(
+        coverage <- readr::read_delim(stringr::str_c(temp_coverage_prefix, ".all.tsv"),
+            delim = "\t",
+            col_names = c("chr", "start", "end", "cov"),
+            col_types = readr::cols(chr = "c", start = "i", end = "i", cov = "n"),
+            progress = FALSE
+        )
+    )
 
-  if (sum(coverage, na.rm = TRUE) == 0) {
-    warning("Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.")
-  }
+    coverage <- coverage[["cov"]]
 
-  return(coverage)
+    if (sum(coverage, na.rm = TRUE) == 0) {
+        warning("Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.")
+    }
+
+    return(coverage)
 }
 
 #' Cache a file if it is not found locally
@@ -174,18 +174,18 @@
 #' @keywords internal
 #' @noRd
 .get_start_end <- function(x) {
-  x_start <- x
-  end(x_start) <- start(x_start)
+    x_start <- x
+    end(x_start) <- start(x_start)
 
-  x_end <- x
-  start(x_end) <- end(x_end)
+    x_end <- x
+    start(x_end) <- end(x_end)
 
-  x_start_end <- list(
-    start = x_start,
-    end = x_end
-  )
+    x_start_end <- list(
+        start = x_start,
+        end = x_end
+    )
 
-  return(x_start_end)
+    return(x_start_end)
 }
 
 #' Merges two \code{\link{[IRanges](CharacterList)}}s into one through the
@@ -203,28 +203,28 @@
 #' @keywords internal
 #' @noRd
 .merge_CharacterList <- function(x, y) {
-  if ((length(x) != length(y))) {
-    stop("lengths of x and y should be identical!")
-  }
+    if ((length(x) != length(y))) {
+        stop("lengths of x and y should be identical!")
+    }
 
-  # set all groups to equal to the indexes of x/y
-  all_groups <- seq_along(x) %>%
-    as.character()
-  names(x) <- all_groups
-  names(y) <- all_groups
+    # set all groups to equal to the indexes of x/y
+    all_groups <- seq_along(x) %>%
+        as.character()
+    names(x) <- all_groups
+    names(y) <- all_groups
 
-  # unlist x_y into a vector
-  # obtain the names which are the original groups of each elements
-  x_y <- c(x, y) %>% unlist()
-  groups <- names(x_y)
+    # unlist x_y into a vector
+    # obtain the names which are the original groups of each elements
+    x_y <- c(x, y) %>% unlist()
+    groups <- names(x_y)
 
-  x_y_merged <-
-    x_y %>%
-    unname() %>%
-    split(f = groups %>% factor(all_groups)) %>%
-    CharacterList()
+    x_y_merged <-
+        x_y %>%
+        unname() %>%
+        split(f = groups %>% factor(all_groups)) %>%
+        CharacterList()
 
-  return(x_y_merged)
+    return(x_y_merged)
 }
 
 #' Load reference annotation

@@ -1,7 +1,5 @@
 context("Test utility functions")
 
-github <- TRUE
-
 ##### .chr_filter #####
 
 x <- dplyr::tibble(chr = c("1", "2", "3"))
@@ -14,6 +12,81 @@ test_that(".chr_filter has correct output", {
 test_that(".chr_filter catches user-input errors", {
     expect_error(.chr_filter(x, "chr1"), "No chromosomes in chrs match those of the junction data.")
     expect_warning(.chr_filter(x, c("3", "4", "MT")), "junction data: 4, MT")
+})
+
+##### .coverage_load #####
+
+# only perform test if OS is linux
+# as megadepth testing not ready for windows/mac
+linux <- ifelse(Sys.info()[["sysname"]] == "Linux", TRUE, FALSE)
+
+##### Set up coverage paths #####
+
+local <- file.exists("/data/RNA_seq_diag/mito/bw//ION176.all.bw")
+
+if (local) {
+    coverage_paths <-
+        c(list.files("/data/RNA_seq_diag/mito/bw/", full.names = T)[1])
+    chr_format <- c("no_chr")
+} else {
+    coverage_paths <-
+        list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/")[c(3)] %>%
+        stringr::str_c("http://duffel.rail.bio/recount/SRP012682/bw/", .)
+    chr_format <- c("chr")
+}
+
+# take 5 junctions from the end and 5 from the top to test in that order
+# to make sure order returned by .coverage_load() matches input ranges rather than
+# chromosome order
+junctions_to_use <- c(length(junctions_example):(length(junctions_example) - 4), 1:5)
+junctions <- junctions_example[junctions_to_use] %>%
+    SummarizedExperiment::rowRanges()
+
+junctions_sorted <- junctions %>% sort()
+
+test_that(".coverage_load has correct output", {
+    if (!linux) {
+        skip("not testing loading coverage on windows/mac yet")
+    }
+
+    mcols(junctions)[["coverage"]] <-
+        .coverage_load(
+            regions = junctions,
+            coverage_path = coverage_paths[1],
+            sum_fun = "mean",
+            chr_format = chr_format
+        )
+
+    mcols(junctions_sorted)[["coverage"]] <-
+        .coverage_load(
+            regions = junctions_sorted,
+            coverage_path = coverage_paths[1],
+            sum_fun = "mean",
+            chr_format = chr_format
+        )
+
+    # make sure the order of returned coverage is same as inputted regions
+    expect_identical(
+        mcols(sort(junctions))[["coverage"]],
+        mcols(junctions_sorted)[["coverage"]]
+    )
+
+    junctions_rt <- junctions
+    if (chr_format == "chr") {
+        GenomeInfoDb::seqlevels(junctions_rt) <- GenomeInfoDb::seqlevels(junctions_rt) %>%
+            stringr::str_c("chr", .)
+    }
+
+    rt_cov <- rtracklayer::import(
+        con = coverage_paths[1],
+        which = junctions_rt,
+        as = "NumericList"
+    ) %>%
+        lapply(FUN = mean) %>%
+        unlist() %>%
+        round(3) # ensure same rounding accuracy as megadepth
+
+    expect_equivalent(rt_cov, mcols(junctions)[["coverage"]])
 })
 
 ##### .chr_check #####
@@ -41,22 +114,6 @@ test_that(".get_start_end has correct output", {
     expect_identical(end(x_start_end$end), end(x))
 })
 
-##### .regroup #####
-
-x <- c("A", "B", "C", "D")
-groups <- c("1", "1", "3", "4")
-all_groups <- 1:5 %>% as.character()
-x_regrouped <- .regroup(x, groups, all_groups)
-
-test_that(".regroup has correct output", {
-    expect_match(class(x_regrouped), "list")
-    expect_identical(x_regrouped[["1"]], c("A", "B"))
-    expect_identical(length(x_regrouped[["2"]]), 0L)
-    expect_identical(x_regrouped[["3"]], "C")
-    expect_identical(x_regrouped[["4"]], "D")
-    expect_identical(length(x_regrouped[["5"]]), 0L)
-})
-
 ##### .merge_CharacterList #####
 
 x <- CharacterList(c("A", "B"), "1")
@@ -75,74 +132,18 @@ test_that(".merge_CharacterList catches user-input errors", {
     )
 })
 
-##### .coverage_load #####
+##### .regroup #####
 
-test_that(".coverage_load has correct output", {
+x <- c("A", "B", "C", "D")
+groups <- c("1", "1", "3", "4")
+all_groups <- 1:5 %>% as.character()
+x_regrouped <- .regroup(x, groups, all_groups)
 
-    # skip on github for now to save time ...
-    # and need to test remote coverage loading
-    if (github) {
-        skip("skipping as not testing loading coverage from remote files yet")
-    }
-
-    coverage_paths_case <- list.files("/data/RNA_seq_diag/mito/bw/", full.names = TRUE)[1]
-    coverage_paths_control <- list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/", full.names = TRUE)[1]
-
-    junctions <- junctions_example[c(
-        length(junctions_example):(length(junctions_example) - 4),
-        1:5
-    )] %>%
-        SummarizedExperiment::rowRanges()
-    junctions_sorted <- junctions %>% sort()
-
-    mcols(junctions)[["coverage"]] <- .coverage_load(junctions,
-        coverage_path = coverage_paths_case,
-        sum_fun = "mean",
-        chr_format = NULL
-    )
-
-    mcols(junctions_sorted)[["coverage"]] <- .coverage_load(
-        regions = junctions_sorted,
-        coverage_path = coverage_paths_case,
-        sum_fun = "mean",
-        chr_format = NULL
-    )
-
-    # make sure the order of returned coverage is same as inputted regions
-    expect_identical(
-        mcols(sort(junctions))[["coverage"]],
-        mcols(junctions_sorted)[["coverage"]]
-    )
-
-    mcols(junctions)[["coverage_control"]] <- .coverage_load(junctions,
-        coverage_path = coverage_paths_control,
-        sum_fun = "sum",
-        chr_format = "chr"
-    )
-
-    # megadepth matches rtracklayer output
-    expect_equivalent(
-        mcols(junctions)[["coverage"]],
-        rtracklayer::import(
-            con = coverage_paths_case,
-            which = junctions,
-            as = "NumericList"
-        ) %>%
-            lapply(FUN = mean) %>%
-            unlist() %>%
-            round(3)
-    ) # ensure same rounding accuracy as megadepth
-
-    expect_true(sum(mcols(junctions)[["coverage"]]) != 0)
-    expect_true(sum(mcols(junctions)[["coverage_control"]]) != 0)
-
-    # highlight is total coverage is 0 (potentially due to different chr formats)
-    expect_warning(
-        .coverage_load(junctions,
-            coverage_path = coverage_paths_control,
-            sum_fun = "sum",
-            chr_format = NULL
-        ),
-        "Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file."
-    )
+test_that(".regroup has correct output", {
+    expect_match(class(x_regrouped), "list")
+    expect_identical(x_regrouped[["1"]], c("A", "B"))
+    expect_identical(length(x_regrouped[["2"]]), 0L)
+    expect_identical(x_regrouped[["3"]], "C")
+    expect_identical(x_regrouped[["4"]], "D")
+    expect_identical(length(x_regrouped[["5"]]), 0L)
 })
