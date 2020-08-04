@@ -144,7 +144,7 @@ snaptron (<a href='http://snaptron.cs.jhu.edu/'>http://snaptron.cs.jhu.edu/</a>)
   metadata = <span class='kw'>dplyr</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(samp_id = <span class='kw'>stringr</span>::<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_c.html'>str_c</a></span>(<span class='st'>"samp_"</span>,
     <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_along</a></span>(<span class='kw'>junction_paths</span>))),
   controls = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>FALSE</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>junction_paths</span>)),
-  load_func = <span class='kw'>.load_STAR</span>,
+  load_func = <span class='kw'>.STAR_load</span>,
   chrs = <span class='kw'>NULL</span>,
   coord_system = <span class='st'>"ensembl"</span>
 )</pre>

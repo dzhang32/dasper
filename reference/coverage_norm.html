@@ -144,7 +144,9 @@ are used as the region to normalise to.</p>
   unannot_width = <span class='fl'>20</span>,
   <span class='kw'>coverage_paths_case</span>,
   <span class='kw'>coverage_paths_control</span>,
-  coverage_chr_control = <span class='kw'>NULL</span>
+  coverage_chr_control = <span class='kw'>NULL</span>,
+  load_func = <span class='kw'>.coverage_load</span>,
+  norm_const = <span class='fl'>1</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -183,6 +185,16 @@ rows of the assays in <code>junctions</code>.</p></td>
 chromosome format of control coverage data. To be used if you know the
 chromosome format of the control BigWig/BAM files is different to that of
 your junctions.</p></td>
+    </tr>
+    <tr>
+      <th>load_func</th>
+      <td><p>a function to use to load coverage. Currently only for
+internal use to increase testing speed.</p></td>
+    </tr>
+    <tr>
+      <th>norm_const</th>
+      <td><p>numeric to add to the normalised coverage to avoid dividing
+by 0s and resulting NaN or Inf values.</p></td>
     </tr>
     </table>
 
