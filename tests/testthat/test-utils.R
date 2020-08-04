@@ -54,7 +54,8 @@ test_that(".coverage_load has correct output", {
             regions = junctions,
             coverage_path = coverage_paths[1],
             sum_fun = "mean",
-            chr_format = chr_format
+            chr_format = chr_format,
+            out_dir = "~/"
         )
 
     mcols(junctions_sorted)[["coverage"]] <-
@@ -62,7 +63,8 @@ test_that(".coverage_load has correct output", {
             regions = junctions_sorted,
             coverage_path = coverage_paths[1],
             sum_fun = "mean",
-            chr_format = chr_format
+            chr_format = chr_format,
+            out_dir = "~/"
         )
 
     # make sure the order of returned coverage is same as inputted regions
