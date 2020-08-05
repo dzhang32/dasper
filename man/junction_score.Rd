@@ -35,7 +35,9 @@ left as the default z-score.
 }
 \examples{
 
-junctions <- junction_norm(junctions_example)
-junctions <- junction_score(junctions)
-junctions
+if (!exists("junctions_normed")) {
+    junctions_normed <- junction_norm(junctions_example)
+}
+junctions_scored <- junction_score(junctions_normed)
+junctions_scored
 }

@@ -25,6 +25,8 @@ number of counts in it's associated cluster.
 }
 \examples{
 
-junctions <- junction_norm(junctions_example)
-junctions
+if (!exists("junctions_normed")) {
+    junctions_normed <- junction_norm(junctions_example)
+}
+junctions_normed
 }

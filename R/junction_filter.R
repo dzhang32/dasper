@@ -34,8 +34,8 @@
 #'
 #' @examples
 #'
-#' junctions <- junction_filter(junctions_example)
-#' junctions
+#' junctions_filtered <- junction_filter(junctions_example)
+#' junctions_filtered
 #' @export
 junction_filter <- function(junctions,
     count_thresh = c("raw" = 5),

@@ -14,8 +14,10 @@
 #'
 #' @examples
 #'
-#' junctions <- junction_norm(junctions_example)
-#' junctions
+#' if (!exists("junctions_normed")) {
+#'     junctions_normed <- junction_norm(junctions_example)
+#' }
+#' junctions_normed
 #' @export
 junction_norm <- function(junctions) {
 

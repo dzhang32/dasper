@@ -75,4 +75,5 @@ junctions_processed <-
         width_range = c(25, 1000000),
         types = c("ambig_gene", "unannotated"),
     )
+junctions_processed
 }

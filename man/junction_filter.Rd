@@ -49,8 +49,8 @@ width of junctions, annotation category of the junction returned from
 }
 \examples{
 
-junctions <- junction_filter(junctions_example)
-junctions
+junctions_filtered <- junction_filter(junctions_example)
+junctions_filtered
 }
 \seealso{
 ENCODE blacklist regions recommended to  be included as
