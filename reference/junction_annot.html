@@ -160,16 +160,20 @@ genes/transcripts/exons and junction categories.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'>junctions</span> <span class='op'>&lt;-</span>
-    <span class='fu'>junction_annot</span>(
-        <span class='kw'>junctions_example</span>,
-        <span class='st'>"ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"</span>
-    )</div><div class='output co'>#&gt; [1] "2020-08-05 14:24:36 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-08-05 14:24:36 - Importing gtf/gff3 as a TxDb..."</div><div class='output co'>#&gt; <span class='message'>Import genomic features from the file as a GRanges object ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Prepare the 'metadata' data frame ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Make the TxDb object ... </span></div><div class='output co'>#&gt; <span class='warning'>Warning: The "phase" metadata column contains non-NA values for features of type</span>
-#&gt; <span class='warning'>  stop_codon. This information was ignored.</span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; [1] "2020-08-05 14:26:19 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-08-05 14:26:21 - Tidying junction annotation..."
-#&gt; [1] "2020-08-05 14:26:22 - Deriving junction categories..."
-#&gt; [1] "2020-08-05 14:26:28 - done!"</div><div class='input'><span class='kw'>junctions</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
+<span class='kw'>ref</span> <span class='op'>&lt;-</span>
+    <span class='st'>"ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"</span>
+<span class='co'>if</span> (<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span>(<span class='st'>"junctions_annoted"</span>)) {
+    <span class='kw'>junctions_annoted</span> <span class='op'>&lt;-</span>
+        <span class='fu'>junction_annot</span>(
+            <span class='kw'>junctions_example</span>,
+            <span class='kw'>ref</span>
+        )
+}</div><div class='output co'>#&gt; [1] "2020-08-05 17:10:39 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-08-05 17:10:39 - Importing gtf/gff3 as a TxDb..."</div><div class='output co'>#&gt; <span class='message'>Import genomic features from the file as a GRanges object ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Prepare the 'metadata' data frame ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Make the TxDb object ... </span></div><div class='output co'>#&gt; <span class='warning'>Warning: The "phase" metadata column contains non-NA values for features of type</span>
+#&gt; <span class='warning'>  stop_codon. This information was ignored.</span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; [1] "2020-08-05 17:12:16 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-08-05 17:12:17 - Tidying junction annotation..."
+#&gt; [1] "2020-08-05 17:12:18 - Deriving junction categories..."
+#&gt; [1] "2020-08-05 17:12:23 - done!"</div><div class='input'><span class='kw'>junctions_annoted</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
 #&gt; dim: 97671 5 
 #&gt; metadata(0):
 #&gt; assays(1): raw

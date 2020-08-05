@@ -152,9 +152,11 @@ additional <code>assay</code> containing the normalised counts.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_norm</span>(<span class='kw'>junctions_example</span>)</div><div class='output co'>#&gt; [1] "2020-08-05 14:26:30 - Clustering junctions..."
-#&gt; [1] "2020-08-05 14:26:30 - Normalising junction counts..."
-#&gt; [1] "2020-08-05 14:26:32 - done!"</div><div class='input'><span class='kw'>junctions</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
+<span class='co'>if</span> (<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span>(<span class='st'>"junctions_normed"</span>)) {
+    <span class='kw'>junctions_normed</span> <span class='op'>&lt;-</span> <span class='fu'>junction_norm</span>(<span class='kw'>junctions_example</span>)
+}</div><div class='output co'>#&gt; [1] "2020-08-05 17:12:25 - Clustering junctions..."
+#&gt; [1] "2020-08-05 17:12:26 - Normalising junction counts..."
+#&gt; [1] "2020-08-05 17:12:27 - done!"</div><div class='input'><span class='kw'>junctions_normed</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
 #&gt; dim: 97671 5 
 #&gt; metadata(0):
 #&gt; assays(2): raw norm
