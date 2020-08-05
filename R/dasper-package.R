@@ -7,6 +7,7 @@
 NULL
 
 #' @import S4Vectors
+#' @importFrom methods is
 #' @importFrom magrittr %>%
 #' @importFrom dplyr count
 #' @importFrom GenomicRanges seqnames start end strand width

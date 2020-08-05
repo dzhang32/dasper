@@ -14,8 +14,7 @@
 #' @noRd
 .chr_check <- function(x, chr_format) {
     if (chr_format == "chr" & !any(stringr::str_detect(GenomeInfoDb::seqlevels(x), "chr"))) {
-        GenomeInfoDb::seqlevels(x) <- GenomeInfoDb::seqlevels(x) %>%
-            stringr::str_c("chr", .)
+        GenomeInfoDb::seqlevels(x) <- stringr::str_c("chr", GenomeInfoDb::seqlevels(x))
     } else if (chr_format == "no_chr" & any(stringr::str_detect(seqnames(x), "chr"))) {
         GenomeInfoDb::seqlevels(x) <- GenomeInfoDb::seqlevels(x) %>%
             stringr::str_replace("chr", "")
@@ -39,6 +38,9 @@
 #' @keywords internal
 #' @noRd
 .chr_filter <- function(x, chrs) {
+
+    # For R CMD check
+    chr <- NULL
 
     # check if different chromosome formats
     if ((!any(chrs %in% x[["chr"]]))) {
@@ -112,7 +114,7 @@
             " --op ", sum_fun,
             " --annotation ", temp_regions_path,
             " ", temp_coverage_prefix
-        ), ignore.stdout = T
+        ), ignore.stdout = TRUE
     )
 
     suppressMessages(
@@ -244,7 +246,7 @@
         stop("ref must either be a path to the .gtf/gff3 file or a pre-loaded TxDb object")
     }
 
-    if (class(ref) == "character") {
+    if (is(ref, "character")) {
         print(stringr::str_c(Sys.time(), " - Importing gtf/gff3 as a TxDb..."))
 
         # cache the gtf/gff3 for faster repeated retrieval

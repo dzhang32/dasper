@@ -120,8 +120,9 @@ junction_filter <- function(junctions,
         # how many samples for each junction have a count above count_thresh
         count_filter <-
             junctions %>%
-            assays() %>%
-            .[[names(count_thresh)[i]]] %>%
+            assays()
+
+        count_filter <- count_filter[[names(count_thresh)[i]]] %>%
             apply(
                 MARGIN = 1,
                 FUN = function(x, count_thresh) {

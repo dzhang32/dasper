@@ -63,6 +63,9 @@ junction_load <- function(junction_paths,
     chrs = NULL,
     coord_system = "ensembl") {
 
+    # for R CMD Check
+    chr <- NULL
+
     ##### Read in and merge junction data #####
 
     junctions_all <- NULL
@@ -156,6 +159,9 @@ junction_load <- function(junction_paths,
 #' @keywords internal
 #' @noRd
 .STAR_load <- function(junction_path) {
+    # for R CMD Check
+    chr <- `:=` <- uniq_map_read_count <- NULL
+
     junctions <-
         readr::read_delim(junction_path,
             delim = "\t",
@@ -190,6 +196,10 @@ junction_load <- function(junction_paths,
 #' @keywords internal
 #' @noRd
 .junction_merge <- function(junctions_all, junctions) {
+
+    # for R CMD Check
+    `:=` <- NULL
+
     if (is.null(junctions_all)) {
         junctions_all <- junctions
     } else {
@@ -245,6 +255,9 @@ junction_load <- function(junction_paths,
 #' @noRd
 .junction_dl_controls <- function(controls) {
 
+    # for R CMD check
+    control <- GTEx_junctions_tidy <- NULL
+
     # generate details of controls to download
     controls_df <-
         dplyr::tibble(
@@ -282,6 +295,10 @@ junction_load <- function(junction_paths,
 #' @keywords internal
 #' @noRd
 .control_coord_convert <- function(junctions_controls, coord_system) {
+
+    # for R CMD check
+    chr <- NULL
+
     if (!any(coord_system %in% c("ensembl", "ucsc"))) {
         stop("coord_system must be one of 'ensembl' or 'ucsc'")
     }

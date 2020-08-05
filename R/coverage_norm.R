@@ -205,6 +205,10 @@ coverage_norm <- function(junctions,
 #' @keywords internal
 #' @noRd
 .coverage_norm_region <- function(junctions, ref, coverage_regions) {
+
+    # for R CMD check
+    index <- NULL
+
     ref_genes <- ref %>%
         GenomicFeatures::genes(columns = c("gene_id", "exon_name")) %>%
         as.data.frame()
@@ -295,7 +299,12 @@ coverage_norm <- function(junctions,
 #'
 #' @keywords internal
 #' @noRd
-.coverage_case_control_load <- function(coverage_regions, coverage_paths_case, coverage_paths_control, coverage_chr_control, load_func = .coverage_load) {
+.coverage_case_control_load <-
+  function(coverage_regions,
+           coverage_paths_case,
+           coverage_paths_control,
+           coverage_chr_control,
+           load_func = .coverage_load) {
     case_control_coverage <- list()
 
     for (case_control in c("case", "control")) {

@@ -1,21 +1,5 @@
 context("Testing coverage processing")
 
-##### Set up coverage paths #####
-
-if (file.exists("/data/RNA_seq_diag/mito/bw//ION176.all.bw")) {
-    coverage_paths_case <-
-        list.files("/data/RNA_seq_diag/mito/bw/", full.names = T)[1:2]
-    coverage_paths_control <-
-        list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/", full.names = T)[1]
-} else {
-    coverage_paths <-
-        list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/")[1:3] %>%
-        stringr::str_c("http://duffel.rail.bio/recount/SRP012682/bw/", .)
-
-    coverage_paths_case <- coverage_paths[1:2]
-    coverage_paths_control <- coverage_paths[3]
-}
-
 # Loading and normalising coverage ---------------------------------------------
 
 ##### .coverage_exon_intron #####

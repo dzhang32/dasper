@@ -108,12 +108,9 @@ junction_norm <- function(junctions) {
 #' @keywords internal
 #' @noRd
 .junction_norm_count <- function(junctions) {
-    n_junctions <- nrow(assays(junctions)[["raw"]])
-    n_samps <- ncol(assays(junctions)[["raw"]])
-
-    norm_counts <- matrix(
-        nrow = n_junctions,
-        ncol = n_samps
+  norm_counts <- matrix(
+        nrow = nrow(assays(junctions)[["raw"]]),
+        ncol = ncol(assays(junctions)[["raw"]])
     )
 
     # unlisted values are the junction indexes in each cluster
@@ -121,8 +118,8 @@ junction_norm <- function(junctions) {
     clusters_unlisted <- mcols(junctions)[["clusters"]] %>%
         unlist()
 
-    # for every sample
-    for (i in 1:n_samps) {
+    # for every sample/column
+    for (i in seq_along(norm_counts[1,])) {
 
         # 1. index the raw counts by the contents of every cluster
         # 2. then split() this into a list with each element as a vector
@@ -131,7 +128,7 @@ junction_norm <- function(junctions) {
         cluster_sum_counts <-
             .regroup(
                 x = assays(junctions)[["raw"]][, i][clusters_unlisted],
-                group = names(clusters_unlisted),
+                groups = names(clusters_unlisted),
                 all_groups = seq_along(junctions)
             ) %>%
             lapply(FUN = sum) %>%

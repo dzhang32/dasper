@@ -24,7 +24,7 @@ local <- file.exists("/data/RNA_seq_diag/mito/bw//ION176.all.bw")
 
 if (local) {
     coverage_paths <-
-        c(list.files("/data/RNA_seq_diag/mito/bw/", full.names = T)[1])
+        c(list.files("/data/RNA_seq_diag/mito/bw/", full.names = TRUE)[1])
     chr_format <- c("no_chr")
 } else {
     coverage_paths <-
