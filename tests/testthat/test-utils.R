@@ -22,6 +22,8 @@ linux <- ifelse(Sys.info()[["sysname"]] == "Linux", TRUE, FALSE)
 
 local <- file.exists("/data/RNA_seq_diag/mito/bw//ION176.all.bw")
 
+system("megadepth")
+
 if (local) {
     coverage_paths <-
         c(list.files("/data/RNA_seq_diag/mito/bw/", full.names = TRUE)[1])
