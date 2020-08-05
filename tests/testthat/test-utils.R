@@ -30,7 +30,6 @@ if (local) {
     # coverage_paths <-
     #     list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/")[c(3)] %>%
     #     stringr::str_c("http://duffel.rail.bio/recount/SRP012682/bw/", .)
-
     coverage_paths <- "http://duffel.rail.bio/recount/SRP012682/bw/SRR1068808_SRS524197_SRX404706_male_cells.transformed.fibroblasts.bw"
     chr_format <- c("chr")
 }
@@ -45,7 +44,7 @@ junctions <- junctions_example[junctions_to_use] %>%
 junctions_sorted <- junctions %>% sort()
 
 test_that(".coverage_load has correct output", {
-    if (!(linux & local)) {
+    if (!(linux)) {
         skip("not testing loading coverage on windows/mac or from remote bws")
     }
 
