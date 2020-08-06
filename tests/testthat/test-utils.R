@@ -22,8 +22,6 @@ linux <- ifelse(Sys.info()[["sysname"]] == "Linux", TRUE, FALSE)
 
 local <- file.exists("/data/RNA_seq_diag/mito/bw//ION176.all.bw")
 
-system("megadepth")
-
 if (local) {
     coverage_paths <-
         c(list.files("/data/RNA_seq_diag/mito/bw/", full.names = TRUE)[1])
@@ -46,7 +44,7 @@ junctions <- junctions_example[junctions_to_use] %>%
 junctions_sorted <- junctions %>% sort()
 
 test_that(".coverage_load has correct output", {
-    if (!(linux)) {
+    if (!(linux & local)) {
         skip("not testing loading coverage on windows/mac or from remote bws")
     }
 
