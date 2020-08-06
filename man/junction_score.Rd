@@ -31,7 +31,10 @@ abnormality scores.
 \code{\link[SummarizedExperiment]{assay}} to calculate a deviation of each
 patient junction from the expected distribution of controls counts. The
 function used to calculate this abnormality score can be user-inputted or
-left as the default z-score.
+left as the default z-score. Junctions will also be labelled based on whether
+they are up-regulated (+1) or down-regulated (-1) with respect to controls
+junction and this information is stored in the
+\code{\link[SummarizedExperiment]{assay}} 'direction'.
 }
 \examples{
 

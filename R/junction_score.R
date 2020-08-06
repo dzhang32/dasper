@@ -4,7 +4,10 @@
 #' \code{\link[SummarizedExperiment]{assay}} to calculate a deviation of each
 #' patient junction from the expected distribution of controls counts. The
 #' function used to calculate this abnormality score can be user-inputted or
-#' left as the default z-score.
+#' left as the default z-score. Junctions will also be labelled based on whether
+#' they are up-regulated (+1) or down-regulated (-1) with respect to controls
+#' junction and this information is stored in the
+#' \code{\link[SummarizedExperiment]{assay}} 'direction'.
 #'
 #' @inheritParams junction_annot
 #'
@@ -41,10 +44,72 @@ junction_score <- function(junctions, score_func = .zscore, ...) {
         stop("Junctions must include the 'norm' assay")
     }
 
+    ##### Obtaining junction direction #####
+
+    print(stringr::str_c(Sys.time(), " - Calculating the direction of change of junctions..."))
+
+    junctions <- .junction_direction(junctions)
+
     ##### Calculate junction abnormality score #####
 
     print(stringr::str_c(Sys.time(), " - Generating junction abnormality score..."))
 
+    junctions <- .junction_score(
+        junctions = junctions,
+        score_func = score_func,
+        ...
+    )
+
+    print(stringr::str_c(Sys.time(), " - done!"))
+
+    return(junctions)
+}
+
+#' Obtain the direction of change junctions
+#'
+#' \code{.junction_direction} will label whether junction's counts are
+#' up-regulated (+1) or down-regulated (-1) with respect to average controls.
+#'
+#' @inheritParams dasper
+#' @param ave_func the function to perform on control junctions to obtain their
+#'   average. This is currently by default the mean, however can be replaced.
+#'
+#' @return junctions with additional \code{\link[SummarizedExperiment]{assay}}
+#'   'direction'.
+#'
+#' @keywords internal
+#' @noRd
+.junction_direction <- function(junctions, ave_func = mean) {
+    control_count <- assays(junctions)[["norm"]][, colData(junctions)[["case_control"]] == "control"]
+
+    control_average <- apply(control_count,
+        MARGIN = 1,
+        FUN = function(x) ave_func(x)
+    )
+
+    # perform this across all junctions as the controls needed for
+    # .junction_score and yet not removed
+    direction <- assays(junctions)[["norm"]] - control_average
+    direction <- ifelse(direction > 0, 1, -1)
+
+    assays(junctions)[["direction"]] <- direction
+
+    return(junctions)
+}
+
+#' Score each junction
+#'
+#' \code{.junction_score} will use \code{score_func} to score each junction
+#' based on how much it's counts deviate from controls.
+#'
+#' @inheritParams dasper
+#'
+#' @return junctions with additional \code{\link[SummarizedExperiment]{assay}}
+#'   'score'.
+#'
+#' @keywords internal
+#' @noRd
+.junction_score <- function(junctions, score_func = .zscore, ...) {
     case_count <- assays(junctions)[["norm"]][, colData(junctions)[["case_control"]] == "case"]
     control_count <- assays(junctions)[["norm"]][, colData(junctions)[["case_control"]] == "control"]
 
@@ -74,8 +139,6 @@ junction_score <- function(junctions, score_func = .zscore, ...) {
     # otherwise score would have a diff number of columns to junction
     junctions <- junctions[, colData(junctions)[["case_control"]] == "case"]
     assays(junctions)[["score"]] <- case_score
-
-    print(stringr::str_c(Sys.time(), " - done!"))
 
     return(junctions)
 }

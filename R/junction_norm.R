@@ -108,7 +108,7 @@ junction_norm <- function(junctions) {
 #' @keywords internal
 #' @noRd
 .junction_norm_count <- function(junctions) {
-  norm_counts <- matrix(
+    norm_counts <- matrix(
         nrow = nrow(assays(junctions)[["raw"]]),
         ncol = ncol(assays(junctions)[["raw"]])
     )
@@ -119,7 +119,7 @@ junction_norm <- function(junctions) {
         unlist()
 
     # for every sample/column
-    for (i in seq_along(norm_counts[1,])) {
+    for (i in seq_along(norm_counts[1, ])) {
 
         # 1. index the raw counts by the contents of every cluster
         # 2. then split() this into a list with each element as a vector
