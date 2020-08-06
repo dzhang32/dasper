@@ -177,13 +177,28 @@ region with the greatest disruption.</p>
     <pre class="examples"><div class='input'>
 <span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># leave this as not run for now to save time for R CMD check</span>
-<span class='kw'>ref</span> <span class='op'>&lt;-</span> <span class='st'>"ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"</span>
-<span class='kw'>ref</span> <span class='op'>&lt;-</span> <span class='kw'>GenomicFeatures</span>::<span class='fu'><a href='https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html'>makeTxDbFromGFF</a></span>(<span class='kw'>ref</span>)
-<span class='kw'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'><a href='junction_norm.html'>junction_norm</a></span>(<span class='kw'>junctions_annot_example</span>)
-<span class='kw'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'><a href='junction_score.html'>junction_score</a></span>(<span class='kw'>junctions</span>)
-<span class='kw'>coverage_paths_case</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='st'>"/data/RNA_seq_diag/mito/bw/"</span>, full.names = <span class='kw'>T</span>)[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>]
-<span class='kw'>coverage_paths_control</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='st'>"/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/"</span>, full.names = <span class='kw'>T</span>)[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>]
-<span class='kw'>coverage</span> <span class='op'>&lt;-</span> <span class='fu'><a href='coverage_norm.html'>coverage_norm</a></span>(<span class='kw'>junctions</span>, <span class='kw'>ref</span>, unannot_width = <span class='fl'>20</span>, <span class='kw'>coverage_paths_case</span>, <span class='kw'>coverage_paths_control</span>, coverage_chr_control = <span class='st'>"chr"</span>)
+<span class='kw'>ref</span> <span class='op'>&lt;-</span>
+    <span class='st'>"ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"</span>
+<span class='kw'>ref</span> <span class='op'>&lt;-</span>
+    <span class='kw'>GenomicFeatures</span>::<span class='fu'><a href='https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html'>makeTxDbFromGFF</a></span>(<span class='kw'>ref</span>)
+<span class='kw'>junctions</span> <span class='op'>&lt;-</span>
+    <span class='fu'><a href='junction_norm.html'>junction_norm</a></span>(<span class='kw'>junctions_annot_example</span>)
+<span class='kw'>junctions</span> <span class='op'>&lt;-</span>
+    <span class='fu'><a href='junction_score.html'>junction_score</a></span>(<span class='kw'>junctions</span>)
+<span class='kw'>coverage_paths_case</span> <span class='op'>&lt;-</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='st'>"/data/RNA_seq_diag/mito/bw/"</span>, full.names = <span class='kw'>T</span>)[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>]
+<span class='kw'>coverage_paths_control</span> <span class='op'>&lt;-</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='st'>"/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/"</span>,
+        full.names = <span class='kw'>T</span>
+    )[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>]
+<span class='kw'>coverage</span> <span class='op'>&lt;-</span> <span class='fu'><a href='coverage_norm.html'>coverage_norm</a></span>(
+    <span class='kw'>junctions</span>,
+    <span class='kw'>ref</span>,
+    unannot_width = <span class='fl'>20</span>,
+    <span class='kw'>coverage_paths_case</span>,
+    <span class='kw'>coverage_paths_control</span>,
+    coverage_chr_control = <span class='st'>"chr"</span>
+)
 
 <span class='kw'>junctions</span>
 }

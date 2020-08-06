@@ -44,7 +44,10 @@
 assay to calculate a deviation of each
 patient junction from the expected distribution of controls counts. The
 function used to calculate this abnormality score can be user-inputted or
-left as the default z-score." />
+left as the default z-score. Junctions will also be labelled based on whether
+they are up-regulated (+1) or down-regulated (-1) with respect to controls
+junction and this information is stored in the
+assay 'direction'." />
 
 
 
@@ -128,7 +131,10 @@ left as the default z-score." />
 <code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a></code> to calculate a deviation of each
 patient junction from the expected distribution of controls counts. The
 function used to calculate this abnormality score can be user-inputted or
-left as the default z-score.</p>
+left as the default z-score. Junctions will also be labelled based on whether
+they are up-regulated (+1) or down-regulated (-1) with respect to controls
+junction and this information is stored in the
+<code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a></code> 'direction'.</p>
     </div>
 
     <pre class="usage"><span class='fu'>junction_score</span>(<span class='kw'>junctions</span>, score_func = <span class='kw'>.zscore</span>, <span class='kw'>...</span>)</pre>
@@ -168,13 +174,14 @@ abnormality scores.</p>
     <pre class="examples"><div class='input'>
 <span class='co'>if</span> (<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span>(<span class='st'>"junctions_normed"</span>)) {
     <span class='kw'>junctions_normed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='junction_norm.html'>junction_norm</a></span>(<span class='kw'>junctions_example</span>)
-}</div><div class='output co'>#&gt; [1] "2020-08-06 10:26:01 - Clustering junctions..."
-#&gt; [1] "2020-08-06 10:26:02 - Normalising junction counts..."
-#&gt; [1] "2020-08-06 10:26:03 - done!"</div><div class='input'><span class='kw'>junctions_scored</span> <span class='op'>&lt;-</span> <span class='fu'>junction_score</span>(<span class='kw'>junctions_normed</span>)</div><div class='output co'>#&gt; [1] "2020-08-06 10:26:03 - Generating junction abnormality score..."
-#&gt; [1] "2020-08-06 10:26:05 - done!"</div><div class='input'><span class='kw'>junctions_scored</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
+}</div><div class='output co'>#&gt; [1] "2020-08-06 14:39:22 - Clustering junctions..."
+#&gt; [1] "2020-08-06 14:39:23 - Normalising junction counts..."
+#&gt; [1] "2020-08-06 14:39:24 - done!"</div><div class='input'><span class='kw'>junctions_scored</span> <span class='op'>&lt;-</span> <span class='fu'>junction_score</span>(<span class='kw'>junctions_normed</span>)</div><div class='output co'>#&gt; [1] "2020-08-06 14:39:24 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-08-06 14:39:25 - Generating junction abnormality score..."
+#&gt; [1] "2020-08-06 14:39:28 - done!"</div><div class='input'><span class='kw'>junctions_scored</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
 #&gt; dim: 97671 2 
 #&gt; metadata(0):
-#&gt; assays(3): raw norm score
+#&gt; assays(4): raw norm direction score
 #&gt; rownames: NULL
 #&gt; rowData names(2): index clusters
 #&gt; colnames(2): count_1 count_2
