@@ -36,7 +36,8 @@
 #'     list.files("/data/RNA_seq_diag/mito/bw/", full.names = T)[1:2]
 #' coverage_paths_control <-
 #'     list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/",
-#'                full.names = T)[1:2]
+#'         full.names = T
+#'     )[1:2]
 #' coverage <- coverage_norm(
 #'     junctions,
 #'     ref,
@@ -44,7 +45,7 @@
 #'     coverage_paths_case,
 #'     coverage_paths_control,
 #'     coverage_chr_control = "chr"
-#'  )
+#' )
 #'
 #' junctions
 #' }
@@ -110,7 +111,7 @@ coverage_score <- function(junctions, coverage, score_func = .zscore, ...) {
         )
 
         # for every junction/row score coverage
-        for (i in seq_along(coverage_score_mat[,1])) {
+        for (i in seq_along(coverage_score_mat[, 1])) {
             coverage_score_mat[i, ] <-
                 score_func(
                     x = coverage[["case"]][[region]][i, ],
@@ -160,7 +161,7 @@ coverage_score <- function(junctions, coverage, score_func = .zscore, ...) {
     )
 
     # loop across samples/cols
-    for (i in seq_along(coverage_scores[["exon_coverage_score_start"]][1,])) {
+    for (i in seq_along(coverage_scores[["exon_coverage_score_start"]][1, ])) {
 
         ##### Obtain the most dysregulated region #####
 

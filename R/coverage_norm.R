@@ -99,7 +99,7 @@ coverage_norm <- function(junctions,
 
     print(stringr::str_c(Sys.time(), " - Loading coverage..."))
 
-    case_control_coverage <- .coverage_case_control_load(
+    case_control_coverage <- .coverage_load_samp(
         coverage_regions,
         coverage_paths_case,
         coverage_paths_control,
@@ -136,7 +136,7 @@ coverage_norm <- function(junctions,
 #' @keywords internal
 #' @noRd
 .coverage_exon_intron <- function(junctions, unannot_width) {
-    coverage_regions <- GenomicRanges::GenomicRangesList()
+    coverage_regions <- GenomicRanges::GRangesList(compress = FALSE)
 
     ##### Get exonic regions of interest #####
 
@@ -213,7 +213,7 @@ coverage_norm <- function(junctions,
         GenomicFeatures::genes(columns = c("gene_id", "exon_name")) %>%
         as.data.frame()
 
-    coverage_norm_regions <- GenomicRanges::GenomicRangesList()
+    coverage_norm_regions <- GenomicRanges::GRangesList(compress = FALSE)
 
     ##### no gene #####
 
@@ -286,7 +286,7 @@ coverage_norm <- function(junctions,
 
 #' Loads coverage from case and control BigWig/BAM files
 #'
-#' \code{.coverage_case_control_load} uses \code{dasper:::.coverage_load} to
+#' \code{.coverage_load_samp} uses \code{dasper:::.coverage_load} to
 #' load coverage from BigWig/BAM files. It does this for both case and controls
 #' and for each set of ranges in \code{coverage_regions}.
 #'
@@ -299,63 +299,63 @@ coverage_norm <- function(junctions,
 #'
 #' @keywords internal
 #' @noRd
-.coverage_case_control_load <-
-  function(coverage_regions,
-           coverage_paths_case,
-           coverage_paths_control,
-           coverage_chr_control,
-           load_func = .coverage_load) {
-    case_control_coverage <- list()
+.coverage_load_samp <-
+    function(coverage_regions,
+    coverage_paths_case,
+    coverage_paths_control,
+    coverage_chr_control,
+    load_func = .coverage_load) {
+        case_control_coverage <- list()
 
-    for (case_control in c("case", "control")) {
-        if (case_control == "case") {
-            coverage_paths <- coverage_paths_case
-            chr_format <- NULL # assume case coverage paths always same chr as junctions
-        } else {
-            coverage_paths <- coverage_paths_control
-            chr_format <- coverage_chr_control
-        }
-
-        coverage_mats <- list()
-
-        for (i in seq_along(coverage_regions)) {
-
-            # sum to obtain total AUC for normalisation
-            # mean for exon/intron regions
-            sum_fun <- ifelse(names(coverage_regions)[i] == "norm_coords", "sum", "mean")
-
-            coverage_mat <-
-                matrix(
-                    nrow = length(coverage_regions[[i]]),
-                    ncol = length(coverage_paths)
-                )
-
-            for (j in seq_along(coverage_paths)) {
-                print(stringr::str_c(
-                    Sys.time(), " - Loading coverage across ", names(coverage_regions)[i],
-                    " for ", case_control, " ", j, "/", length(coverage_paths), "..."
-                ))
-
-                coverage_mat[, j] <- load_func(
-                    regions = coverage_regions[[i]],
-                    coverage_path = coverage_paths[j],
-                    chr_format = chr_format,
-                    sum_fun = sum_fun
-                )
+        for (case_control in c("case", "control")) {
+            if (case_control == "case") {
+                coverage_paths <- coverage_paths_case
+                chr_format <- NULL # assume case coverage paths always same chr as junctions
+            } else {
+                coverage_paths <- coverage_paths_control
+                chr_format <- coverage_chr_control
             }
 
-            coverage_mats[[i]] <- coverage_mat
+            coverage_mats <- list()
+
+            for (i in seq_along(coverage_regions)) {
+
+                # sum to obtain total AUC for normalisation
+                # mean for exon/intron regions
+                sum_fun <- ifelse(names(coverage_regions)[i] == "norm_coords", "sum", "mean")
+
+                coverage_mat <-
+                    matrix(
+                        nrow = length(coverage_regions[[i]]),
+                        ncol = length(coverage_paths)
+                    )
+
+                for (j in seq_along(coverage_paths)) {
+                    print(stringr::str_c(
+                        Sys.time(), " - Loading coverage across ", names(coverage_regions)[i],
+                        " for ", case_control, " ", j, "/", length(coverage_paths), "..."
+                    ))
+
+                    coverage_mat[, j] <- load_func(
+                        regions = coverage_regions[[i]],
+                        coverage_path = coverage_paths[j],
+                        chr_format = chr_format,
+                        sum_fun = sum_fun
+                    )
+                }
+
+                coverage_mats[[i]] <- coverage_mat
+            }
+
+            case_control_coverage[[case_control]] <- coverage_mats
+
+            # convert names from coords to coverage to represent contents
+            names(case_control_coverage[[case_control]]) <- names(coverage_regions) %>%
+                stringr::str_replace("coords", "coverage")
         }
 
-        case_control_coverage[[case_control]] <- coverage_mats
-
-        # convert names from coords to coverage to represent contents
-        names(case_control_coverage[[case_control]]) <- names(coverage_regions) %>%
-            stringr::str_replace("coords", "coverage")
+        return(case_control_coverage)
     }
-
-    return(case_control_coverage)
-}
 
 #' Normalises coverage across the exons/intron associated with each junction
 #'
@@ -363,7 +363,7 @@ coverage_norm <- function(junctions,
 #' their coverage by the total AUC across the norm region.
 #'
 #' @param case_control_coverage list containing coverage for case and controls
-#'   returned by \link{.coverage_case_control_load}
+#'   returned by \link{.coverage_load_samp}
 #' @param norm_const integer to add to the normalisation coverages. This
 #'   prevents dividing by 0 and NaN/Inf values resulting.
 #'

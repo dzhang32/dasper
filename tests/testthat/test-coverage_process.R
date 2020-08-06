@@ -97,7 +97,7 @@ test_that(".coverage_norm_region output looks correct", {
     expect_true(coverage_norm_region_check(junctions, coverage_regions, ref_genes, n = 50))
 })
 
-##### .coverage_case_control_load #####
+##### .coverage_load_samp #####
 
 # set up a load function avoid having to actually load coverage
 # as this is tested itself in test-utils.R for .load_coverage
@@ -127,14 +127,14 @@ load_rand <- function(regions, coverage_path, chr_format, sum_fun) {
 coverage_paths_case <- c(1, 2)
 coverage_paths_control <- c(3, 4, 5)
 
-coverage <- .coverage_case_control_load(coverage_regions,
+coverage <- .coverage_load_samp(coverage_regions,
     coverage_paths_case,
     coverage_paths_control,
     coverage_chr_control = "chr",
     load_func = load_rand
 )
 
-test_that(".coverage_case_control_load output looks correct", {
+test_that(".coverage_load_samp output looks correct", {
     expect_true(is(coverage, "list"))
     expect_identical(names(coverage), c("case", "control"))
     expect_identical(
