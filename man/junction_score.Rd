@@ -22,9 +22,9 @@ a abnormality of a junction in each case sample.}
 }
 \value{
 junctions as a
-\code{\link[SummarizedExperiment]{SummarizedExperiment}} object filtered
-for only "case" samples with an additional \code{assay} containing junction
-abnormality scores.
+\link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
+object filtered for only "case" samples with an additional \code{assay}
+containing junction abnormality scores.
 }
 \description{
 \code{junction_score} will use the counts contained within the "norm"

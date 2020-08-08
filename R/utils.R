@@ -229,6 +229,43 @@
     return(x_y_merged)
 }
 
+#' Generate outlier scores
+#'
+#' \code{.outlier_score} will use an isolation forest to score junctions by how
+#' abnormal they look based on disruptions to junction count and associated
+#' regions of coverage.
+#'
+#' @inheritParams junction_outlier_score
+#' @param features data.frame with columns detailing features to be inputted
+#'   into an outlier detection model.
+#'
+#' @return outlier scores for each junction.
+#'
+#' @keywords internal
+#' @noRd
+.outlier_score <- function(features, ...) {
+
+    # sklearn should be loaded in using .onLoad()
+    od_model <- sklearn$ensemble$IsolationForest()
+
+    # set parameters of
+    od_model <- od_model$set_params(...)
+    od_model_params <- od_model$get_params()
+
+    suppressWarnings(
+        print(stringr::str_c(
+            Sys.time(), " - fitting outlier detection model with parameters: ",
+            stringr::str_c(names(od_model_params), "=", unname(od_model_params)) %>%
+                stringr::str_c(collapse = ", ")
+        ))
+    )
+
+    od_model <- od_model$fit(features)
+    outlier_scores <- od_model$decision_function(features)
+
+    return(outlier_scores)
+}
+
 #' Load reference annotation
 #'
 #' \code{.ref_load} loads reference annotation using

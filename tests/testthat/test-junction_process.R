@@ -479,6 +479,6 @@ junctions_processed_2 <-
         sd_const = 0.02
     )
 
-test_that("junction_process has been correct output", {
+test_that("junction_process has the correct output", {
     expect_equivalent(junctions_processed, junctions_processed_2)
 })
