@@ -2,8 +2,21 @@ context("Testing dasper")
 
 ##### reticulate set-up #####
 
+# based on https://stackoverflow.com/questions/34030087/how-to-find-correct-executable-with-sys-which-on-windows
+# obtain correct path to python for windows 
+Sys.which2 <- function(cmd) {
+    stopifnot(length(cmd) == 1)
+    if (.Platform$OS.type == "windows") {
+        suppressWarnings({
+            pathname <- shell(sprintf("where %s 2> NUL", cmd), intern=TRUE)[1]
+        })
+        if (!is.na(pathname)) return(setNames(pathname, cmd))
+    }
+    Sys.which(cmd)
+}
+
 # force reticulate to use the python3 install
-reticulate::use_python(Sys.which("python3"), required = TRUE)
+reticulate::use_python(Sys.which2("python3"), required = TRUE)
 
 ##### Set up random score data #####
 
