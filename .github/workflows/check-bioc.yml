@@ -114,30 +114,6 @@ jobs:
         - /home/runner/work/_temp/Library:/usr/local/lib/R/host-site-library
 
     steps:
-    
-      ##### megadepth ------------------------------------------------------------      
-      - name: download megadepth
-        run: |
-          cd ~
-          pwd
-          mkdir /home/rstudio/tools
-          wget -P /home/rstudio/tools https://github.com/ChristopherWilks/megadepth/releases/download/1.0.3/megadepth.libcurl4
-          mv /home/rstudio/tools/megadepth.libcurl4 /home/rstudio/tools/megadepth
-          echo $(ls /home/rstudio/tools)
-          chmod u+x /home/rstudio/tools/megadepth
-        shell: bash {0}
-      
-      - name: add megadepth to PATH
-        run: |
-          # based off of the example in 
-          # https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions
-          # in particular to change PATH: 
-          # echo "::add-path::/path/to/dir"
-          echo "::add-path::/home/rstudio/tools"
-          # R PATH not updated with megadepth so let's append a line to .Rprofile
-          echo "Sys.setenv(PATH = paste('/home/rstudio/tools', Sys.getenv('PATH'), sep = ':'))" >> ~/.Rprofile
-        shell: bash {0} 
-      ##### --------------------------------------------------------------------
       
       - name: Install latest git
         run: |
@@ -239,18 +215,35 @@ jobs:
           pkgs <- installed.packages()[, "Package"]
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
-      
-      - name: test running megadepth
+        
+      ##### dasper specific dependencies ---------------------------------------
+      - name: download megadepth
         run: |
-          echo $PATH
-          megadepth
+          cd ~
+          pwd
+          mkdir /home/rstudio/tools
+          wget -P /home/rstudio/tools https://github.com/ChristopherWilks/megadepth/releases/download/1.0.3/megadepth.libcurl4
+          mv /home/rstudio/tools/megadepth.libcurl4 /home/rstudio/tools/megadepth
+          echo $(ls /home/rstudio/tools)
+          chmod u+x /home/rstudio/tools/megadepth
         shell: bash {0}
-          
-      - name: test running megadepth (R)
+      
+      - name: add megadepth to PATH
         run: |
-          Sys.getenv()[["PATH"]]
-          system(command = "megadepth")
-        shell: Rscript {0}
+          # based off of the example in 
+          # https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions
+          # in particular to change PATH: 
+          # echo "::add-path::/path/to/dir"
+          echo "::add-path::/home/rstudio/tools"
+          # R PATH not updated with megadepth so let's append a line to .Rprofile
+          echo "Sys.setenv(PATH = paste('/home/rstudio/tools', Sys.getenv('PATH'), sep = ':'))" >> ~/.Rprofile
+        shell: bash {0} 
+        
+      - name: install scikit-learn and pandas
+        run: |
+          pip3 install scikit-learn pandas
+        shell: bash {0}
+      ##### --------------------------------------------------------------------
 
       - name: Check
         env:
@@ -450,6 +443,13 @@ jobs:
           pkgs <- installed.packages()[, "Package"]
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
+
+      ##### dasper specific dependencies ---------------------------------------
+      - name: install scikit-learn and pandas
+        run: |
+          pip3 install scikit-learn pandas
+        shell: bash {0}
+      ##### --------------------------------------------------------------------
 
       - name: Check
         env:

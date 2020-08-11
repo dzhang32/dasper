@@ -1,15 +1,9 @@
 context("Testing dasper")
 
-##### Install scikit-learn if not available #####
+##### reticulate set-up #####
 
-reticulate::use_python(Sys.which("python"))
-
-# installs miniconda environment which isn't always robust it seems
-# if(!reticulate::py_module_available("scikit-learn")){
-#
-#   reticulate::py_install("scikit-learn", "pandas")
-#
-# }
+# force reticulate to use the python3 install
+reticulate::use_python(Sys.which("python3"), required = TRUE)
 
 ##### Set up random score data #####
 
@@ -88,4 +82,20 @@ test_that("junction_outlier_score has the correct output", {
         outlier_down %>% as.numeric(),
         assays(junctions_w_outlier_score)[["outlier_score"]][, 1][down_indexes]
     )
+})
+
+test_that("junction_outlier_score catches user-input errors", {
+    
+    expect_error(
+        junction_outlier_score(junctions, feature_names = c("not_an_assay")), 
+        "Assays does not contain the following: "
+    )
+    
+    assays(junctions)[["direction"]] <- NULL
+    
+    expect_error(
+        junction_outlier_score(junctions), 
+        "junctions must contain a 'direction' assay"
+    )
+   
 })
