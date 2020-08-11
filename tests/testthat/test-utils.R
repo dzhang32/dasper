@@ -131,6 +131,27 @@ test_that(".merge_CharacterList catches user-input errors", {
     )
 })
 
+##### .outlier_score #####
+
+features <- data.frame(index = 1:10, 
+                       feat_1 = 1:10, 
+                       feat_2 = 1:10)
+
+features_desc <- features %>% 
+    dplyr::arrange(desc(index))
+
+features[["score"]] <- .outlier_score(features, random_state = 32L)
+features_desc[["score"]] <- .outlier_score(features_desc, random_state = 32L)
+
+test_that(".outlier_score has correct output", {
+    
+    # check order not changed
+    expect_identical(features[["score"]], 
+                     features_desc %>% dplyr::arrange(index) %>% .[["score"]])
+    
+})
+
+
 ##### .regroup #####
 
 x <- c("A", "B", "C", "D")
