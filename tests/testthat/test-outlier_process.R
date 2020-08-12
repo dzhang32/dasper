@@ -14,9 +14,9 @@ if (.Platform$OS.type != "windows") {
 # needs annotation and normalisation for
 # aggregation of outlier scores
 suppressWarnings(expr = {
-junctions <- junctions_example[, colData(junctions_example)[["case_control"]] == "case"] %>%
-    junction_annot(ref = "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz") %>%
-    junction_norm()
+    junctions <- junctions_example[, colData(junctions_example)[["case_control"]] == "case"] %>%
+        junction_annot(ref = "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz") %>%
+        junction_norm()
 })
 
 # add random scoress and direction to save time
