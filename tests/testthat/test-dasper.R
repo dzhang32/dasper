@@ -2,21 +2,12 @@ context("Testing dasper")
 
 ##### reticulate set-up #####
 
-# based on https://stackoverflow.com/questions/34030087/how-to-find-correct-executable-with-sys-which-on-windows
-# obtain correct path to python for windows 
-Sys.which2 <- function(cmd) {
-    stopifnot(length(cmd) == 1)
-    if (.Platform$OS.type == "windows") {
-        suppressWarnings({
-            pathname <- shell(sprintf("where %s 2> NUL", cmd), intern=TRUE)[1]
-        })
-        if (!is.na(pathname)) return(setNames(pathname, cmd))
-    }
-    Sys.which(cmd)
-}
+if (.Platform$OS.type != "windows") {
 
-# force reticulate to use the python3 install
-reticulate::use_python(Sys.which2("python3"), required = TRUE)
+    # force reticulate to use the python3 install
+    # if windows skip this step
+    reticulate::use_python(Sys.which("python3"), required = TRUE)
+}
 
 ##### Set up random score data #####
 
@@ -50,9 +41,9 @@ assays(junctions)[["direction"]] <- direction
 assays(junctions)[["score"]] <- score
 assays(junctions)[["coverage_score"]] <- coverage_score
 
-##### junction_outlier_score #####
+##### outlier_detect #####
 
-junctions_w_outlier_score <- junction_outlier_score(junctions,
+junctions_w_outlier_score <- outlier_detect(junctions,
     feature_names = c("score", "coverage_score"),
     random_state = 32L
 )
@@ -77,7 +68,7 @@ outlier_down <- .outlier_score(
     random_state = 32L
 )
 
-test_that("junction_outlier_score has the correct output", {
+test_that("outlier_detect has the correct output", {
 
     # if junctions have been reordered either one of the direction
     # or scores of up/down would not match
@@ -97,18 +88,16 @@ test_that("junction_outlier_score has the correct output", {
     )
 })
 
-test_that("junction_outlier_score catches user-input errors", {
-    
+test_that("outlier_detect catches user-input errors", {
     expect_error(
-        junction_outlier_score(junctions, feature_names = c("not_an_assay")), 
+        outlier_detect(junctions, feature_names = c("not_an_assay")),
         "Assays does not contain the following: "
     )
-    
+
     assays(junctions)[["direction"]] <- NULL
-    
+
     expect_error(
-        junction_outlier_score(junctions), 
+        outlier_detect(junctions),
         "junctions must contain a 'direction' assay"
     )
-   
 })
