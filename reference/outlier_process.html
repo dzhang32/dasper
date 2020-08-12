@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Score patient junctions in terms of abnormality in relation to controls — junction_score • dasper</title>
+<title>Wrapper function for processing outliers — outlier_process • dasper</title>
 
 
 <!-- jquery -->
@@ -39,15 +39,10 @@
 
 
 
-<meta property="og:title" content="Score patient junctions in terms of abnormality in relation to controls — junction_score" />
-<meta property="og:description" content="junction_score will use the counts contained within the &quot;norm&quot;
-assay to calculate a deviation of each
-patient junction from the expected distribution of controls counts. The
-function used to calculate this abnormality score can be user-inputted or
-left as the default z-score. Junctions will also be labelled based on whether
-they are up-regulated (+1) or down-regulated (-1) with respect to controls
-junction and this information is stored in the
-assay 'direction'." />
+<meta property="og:title" content="Wrapper function for processing outliers — outlier_process" />
+<meta property="og:description" content="outlier_process wraps all &quot;outlier_&quot; prefixed functions in
+dasper. This is designed to simplify processing of the detecting
+outlier junctions for those familiar or uninterested with the intermediates." />
 
 
 
@@ -121,23 +116,23 @@ assay 'direction'." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Score patient junctions in terms of abnormality in relation to controls</h1>
-    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/junction_score.R'><code>R/junction_score.R</code></a></small>
-    <div class="hidden name"><code>junction_score.Rd</code></div>
+    <h1>Wrapper function for processing outliers</h1>
+    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/outlier_process.R'><code>R/outlier_process.R</code></a></small>
+    <div class="hidden name"><code>outlier_process.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>junction_score</code> will use the counts contained within the "norm"
-<code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a></code> to calculate a deviation of each
-patient junction from the expected distribution of controls counts. The
-function used to calculate this abnormality score can be user-inputted or
-left as the default z-score. Junctions will also be labelled based on whether
-they are up-regulated (+1) or down-regulated (-1) with respect to controls
-junction and this information is stored in the
-<code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a></code> 'direction'.</p>
+    <p><code>outlier_process</code> wraps all "outlier_" prefixed functions in
+<code>dasper</code>. This is designed to simplify processing of the detecting
+outlier junctions for those familiar or uninterested with the intermediates.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>junction_score</span>(<span class='kw'>junctions</span>, score_func = <span class='kw'>.zscore</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>outlier_process</span>(
+  <span class='kw'>junctions</span>,
+  feature_names = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"score"</span>, <span class='st'>"coverage_score"</span>),
+  samp_id_col = <span class='st'>"samp_id"</span>,
+  <span class='kw'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,43 +144,27 @@ junction and this information is stored in the
 object.</p></td>
     </tr>
     <tr>
-      <th>score_func</th>
-      <td><p>function to score junctions by abnromality. By default,
-will use a z-score. But this can be switched dependent on the format of the
-user's junction data. Function must take as input an x and y argument. x
-being the case junctions and y being the controls. This must return a
-numeric vector equal to the length of x with each element corresponding to
-a abnormality of a junction in each case sample.</p></td>
+      <th>feature_names</th>
+      <td><p>names of assays in <code>junctions</code> that are to be used
+as input into the outlier detection model.</p></td>
+    </tr>
+    <tr>
+      <th>samp_id_col</th>
+      <td><p>name of the column in the
+<code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>colData</a></code> that details the sample ids.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to <code>score_func</code>.</p></td>
+      <td><p>additional arguments passed to the outlier detection model
+(isolation forest) for setting parameters.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>junctions as a
-<a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>RangedSummarizedExperiment-class</a>
-object filtered for only "case" samples with an additional <code>assay</code>
-containing junction abnormality scores.</p>
+    <p><code>DataFrame</code> with one row per cluster detailing each cluster's
+associated junctions, outlier scores, ranks and genes.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'>if</span> (<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span>(<span class='st'>"junctions_normed"</span>)) {
-    <span class='kw'>junctions_normed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='junction_norm.html'>junction_norm</a></span>(<span class='kw'>junctions_example</span>)
-}</div><div class='output co'>#&gt; [1] "2020-08-12 22:03:49 - Clustering junctions..."
-#&gt; [1] "2020-08-12 22:03:49 - Normalising junction counts..."
-#&gt; [1] "2020-08-12 22:03:51 - done!"</div><div class='input'><span class='kw'>junctions_scored</span> <span class='op'>&lt;-</span> <span class='fu'>junction_score</span>(<span class='kw'>junctions_normed</span>)</div><div class='output co'>#&gt; [1] "2020-08-12 22:03:51 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-08-12 22:03:51 - Generating junction abnormality score..."
-#&gt; [1] "2020-08-12 22:03:54 - done!"</div><div class='input'><span class='kw'>junctions_scored</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
-#&gt; dim: 97671 2 
-#&gt; metadata(0):
-#&gt; assays(4): raw norm direction score
-#&gt; rownames: NULL
-#&gt; rowData names(2): index clusters
-#&gt; colnames(2): count_1 count_2
-#&gt; colData names(2): samp_id case_control</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

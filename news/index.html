@@ -127,8 +127,14 @@
 <li>Added <code><a href="../reference/junction_annot.html">junction_annot()</a></code>, which uses information from reference annotation and the strand of a junction to classify junctions as “annotated”, “novel_acceptor”, “novel_donor”, “novel_exon_skip”, “novel_combo”, “ambig_gene” and “unannotated”.</li>
 <li>Added <code><a href="../reference/junction_filter.html">junction_filter()</a></code>, which filters junctions by their count, width, annotation or if they overlap a set of user-defined regions.</li>
 <li>Added <code><a href="../reference/junction_norm.html">junction_norm()</a></code>, which normalises raw junction counts in a proportion-spliced-in by dividing the counts of each junction by the total number of counts in it’s associated cluster.</li>
+<li>Added <code><a href="../reference/junction_process.html">junction_process()</a></code>, a wrapper function for all “junction_” prefixed functions except <code><a href="../reference/junction_load.html">junction_load()</a></code>.</li>
 <li>Added <code><a href="../reference/junction_score.html">junction_score()</a></code>, which scores patient junctions based on the extent their counts deviate from the control count distribution of the same junction.</li>
-<li>Added <code>junction_cov_norm()</code>, which will load in coverage for exonic/intronic regions corresponding to each junction, then normalise this to the coverage across the gene associated with each junction.</li>
+<li>Added <code><a href="../reference/coverage_norm.html">coverage_norm()</a></code>, which will load in coverage for exonic/intronic regions corresponding to each junction, then normalise this to the coverage across the gene associated with each junction.</li>
+<li>Added <code><a href="../reference/coverage_score.html">coverage_score()</a></code>, which scores coverage associated with each junction based on it’s deviation from control coverage distributions.</li>
+<li>Added <code><a href="../reference/coverage_process.html">coverage_process()</a></code>, a wrapper function for all “coverage_” prefixed functions.</li>
+<li>Added <code>outlier_detect</code>, which uses the junction scores and coverage scores to find the most outlier-looking junctions in each sample.</li>
+<li>Added <code>outlier_aggregate</code>, summarises the junction-level outlier data to a cluster-level.</li>
+<li>Added <code>outlier_process</code>, a wrapper function for all “outlier_” prefixed functions.</li>
 </ul>
 </div>
   </div>
