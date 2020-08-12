@@ -48,7 +48,8 @@ Imports:
     methods,
     GenomeInfoDb,
     GenomicFeatures,
-    plyranges, 
-    reticulate
+    plyranges,
+    reticulate,
+    tidyr
 Depends: 
     R (>= 2.10)
