@@ -4,7 +4,7 @@
 #' \code{\link[SummarizedExperiment]{assays}} named \code{feature_names} as
 #' input into an unsupervised outlier detection algorithm to score each junction
 #' based on how outlier-y it looks in relation to other junctions in the
-#' patient. The default \code{score} and \coverage{outlier_scores} can be
+#' patient. The default \code{score} and \code{outlier_scores} can be
 #' calculated using the \code{\link{junction_process}} and
 #' \code{\link{coverage_process}} respectively.
 #'
