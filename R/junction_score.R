@@ -20,9 +20,9 @@
 #' @param ... additional arguments passed to \code{score_func}.
 #'
 #' @return junctions as a
-#'   \code{\link[SummarizedExperiment]{SummarizedExperiment}} object filtered
-#'   for only "case" samples with an additional \code{assay} containing junction
-#'   abnormality scores.
+#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#'   object filtered for only "case" samples with an additional \code{assay}
+#'   containing junction abnormality scores.
 #'
 #' @examples
 #'
