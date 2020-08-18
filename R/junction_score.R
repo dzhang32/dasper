@@ -81,8 +81,9 @@ junction_score <- function(junctions, score_func = .zscore, ...) {
 #' @noRd
 .junction_direction <- function(junctions, ave_func = mean) {
     # drop = FALSE forces return of matrix
-    control_count <- assays(junctions)[["norm"]][, colData(junctions)[["case_control"]] == "control", 
-                                                 drop = FALSE]
+    control_count <- assays(junctions)[["norm"]][, colData(junctions)[["case_control"]] == "control",
+        drop = FALSE
+    ]
 
     control_average <- apply(control_count,
         MARGIN = 1,
@@ -112,8 +113,8 @@ junction_score <- function(junctions, score_func = .zscore, ...) {
 #' @keywords internal
 #' @noRd
 .junction_score <- function(junctions, score_func = .zscore, ...) {
-  
-    # drop = FALSE to force return of matrix 
+
+    # drop = FALSE to force return of matrix
     case_count <- assays(junctions)[["norm"]][, colData(junctions)[["case_control"]] == "case", drop = FALSE]
     control_count <- assays(junctions)[["norm"]][, colData(junctions)[["case_control"]] == "control", drop = FALSE]
 
