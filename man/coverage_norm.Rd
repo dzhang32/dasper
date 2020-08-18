@@ -13,6 +13,7 @@ coverage_norm(
   coverage_paths_control,
   coverage_chr_control = NULL,
   load_func = .coverage_load,
+  bp_param = BiocParallel::SerialParam(),
   norm_const = 1
 )
 }
@@ -41,6 +42,10 @@ your junctions.}
 
 \item{load_func}{a function to use to load coverage. Currently only for
 internal use to increase testing speed.}
+
+\item{bp_param}{a
+\link[BiocParallel:BiocParallelParam-class]{BiocParallelParam-class} instance
+denoting whether to parrallelise the loading of coverage across BigWigs.}
 
 \item{norm_const}{numeric to add to the normalised coverage to avoid dividing
 by 0s and resulting NaN or Inf values.}

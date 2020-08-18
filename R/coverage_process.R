@@ -39,6 +39,7 @@ coverage_process <- function(junctions,
     coverage_paths_control,
     coverage_chr_control = NULL,
     load_func = .coverage_load,
+    bp_param = BiocParallel::SerialParam(),
     norm_const = 1,
     score_func = .zscore,
     ...) {
@@ -51,6 +52,7 @@ coverage_process <- function(junctions,
         coverage_paths_control = coverage_paths_control,
         coverage_chr_control = NULL,
         load_func = load_func,
+        bp_param = bp_param,
         norm_const = norm_const
     )
 

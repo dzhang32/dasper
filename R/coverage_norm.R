@@ -24,6 +24,9 @@
 #'   your junctions.
 #' @param load_func a function to use to load coverage. Currently only for
 #'   internal use to increase testing speed.
+#' @param bp_param a
+#'   [BiocParallelParam-class][BiocParallel::BiocParallelParam-class] instance
+#'   denoting whether to parrallelise the loading of coverage across BigWigs.
 #' @param norm_const numeric to add to the normalised coverage to avoid dividing
 #'   by 0s and resulting NaN or Inf values.
 #'
@@ -62,6 +65,7 @@ coverage_norm <- function(junctions,
     coverage_paths_control,
     coverage_chr_control = NULL,
     load_func = .coverage_load,
+    bp_param = BiocParallel::SerialParam(),
     norm_const = 1) {
 
     ##### Check user-input #####
@@ -100,11 +104,12 @@ coverage_norm <- function(junctions,
     print(stringr::str_c(Sys.time(), " - Loading coverage..."))
 
     case_control_coverage <- .coverage_load_samp(
-        coverage_regions,
-        coverage_paths_case,
-        coverage_paths_control,
-        coverage_chr_control,
-        load_func
+        coverage_regions = coverage_regions,
+        coverage_paths_case = coverage_paths_case,
+        coverage_paths_control = coverage_paths_control,
+        coverage_chr_control = coverage_chr_control,
+        load_func = load_func,
+        bp_param = bp_param
     )
 
     ##### Normalise coverage #####
@@ -304,7 +309,8 @@ coverage_norm <- function(junctions,
     coverage_paths_case,
     coverage_paths_control,
     coverage_chr_control,
-    load_func = .coverage_load) {
+    load_func = .coverage_load,
+    bp_param = BiocParallel::SerialParam()) {
         case_control_coverage <- list()
 
         for (case_control in c("case", "control")) {
@@ -324,25 +330,20 @@ coverage_norm <- function(junctions,
                 # mean for exon/intron regions
                 sum_fun <- ifelse(names(coverage_regions)[i] == "norm_coords", "sum", "mean")
 
+                # parrallelise across coverage_paths
                 coverage_mat <-
-                    matrix(
-                        nrow = length(coverage_regions[[i]]),
-                        ncol = length(coverage_paths)
-                    )
-
-                for (j in seq_along(coverage_paths)) {
-                    print(stringr::str_c(
-                        Sys.time(), " - Loading coverage across ", names(coverage_regions)[i],
-                        " for ", case_control, " ", j, "/", length(coverage_paths), "..."
-                    ))
-
-                    coverage_mat[, j] <- load_func(
+                    BiocParallel::bplapply(coverage_paths,
+                        FUN = load_func,
+                        BPPARAM = bp_param,
                         regions = coverage_regions[[i]],
-                        coverage_path = coverage_paths[j],
                         chr_format = chr_format,
                         sum_fun = sum_fun
+                    ) %>%
+                    unlist() %>%
+                    matrix(
+                        ncol = length(coverage_paths),
+                        nrow = length(coverage_regions[[i]])
                     )
-                }
 
                 coverage_mats[[i]] <- coverage_mat
             }

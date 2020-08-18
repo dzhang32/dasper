@@ -131,7 +131,8 @@ coverage <- .coverage_load_samp(coverage_regions,
     coverage_paths_case,
     coverage_paths_control,
     coverage_chr_control = "chr",
-    load_func = load_rand
+    load_func = load_rand,
+    bp_param = BiocParallel::SerialParam()
 )
 
 test_that(".coverage_load_samp output looks correct", {
@@ -344,6 +345,7 @@ junctions_w_coverage_2 <-
         coverage_chr_control = NULL,
         load_func = load_rand,
         norm_const = 2,
+        bp_param = BiocParallel::MulticoreParam(workers = 2),
         score_func = .zscore,
         sd_const = 0.02
     )

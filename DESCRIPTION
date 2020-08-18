@@ -50,6 +50,7 @@ Imports:
     GenomicFeatures,
     plyranges,
     reticulate,
-    tidyr
+    tidyr,
+    BiocParallel
 Depends: 
     R (>= 2.10)

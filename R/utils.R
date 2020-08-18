@@ -62,8 +62,8 @@
 #' \code{.coverage_load} loads coverage across a set of genomic regions from a
 #' BigWig file using \url{https://github.com/ChristopherWilks/megadepth}
 #'
-#' @param regions [GRangesList-class][GenomicRanges::GRangesList-class] object.
 #' @param coverage_path path to BigWig (or BAM - STILL UNTESTED) file.
+#' @param regions [GRangesList-class][GenomicRanges::GRangesList-class] object.
 #' @param chr_format NULL or one of "chr" or "no_chr", indicating the chromsome
 #'   format used in the \code{coverage_path}. Will convert the \code{regions} to
 #'   this format if they are not already.
@@ -77,7 +77,7 @@
 #'
 #' @keywords internal
 #' @noRd
-.coverage_load <- function(regions, coverage_path, chr_format = NULL, sum_fun, out_dir = tempdir()) {
+.coverage_load <- function(coverage_path, regions, chr_format = NULL, sum_fun, out_dir = tempdir()) {
 
     ##### check user input #####
 
