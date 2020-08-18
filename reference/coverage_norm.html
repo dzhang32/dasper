@@ -146,6 +146,7 @@ are used as the region to normalise to.</p>
   <span class='kw'>coverage_paths_control</span>,
   coverage_chr_control = <span class='kw'>NULL</span>,
   load_func = <span class='kw'>.coverage_load</span>,
+  bp_param = <span class='kw'>BiocParallel</span>::<span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span>(),
   norm_const = <span class='fl'>1</span>
 )</pre>
 
@@ -190,6 +191,12 @@ your junctions.</p></td>
       <th>load_func</th>
       <td><p>a function to use to load coverage. Currently only for
 internal use to increase testing speed.</p></td>
+    </tr>
+    <tr>
+      <th>bp_param</th>
+      <td><p>a
+<a href='https://rdrr.io/pkg/BiocParallel/man/BiocParallelParam-class.html'>BiocParallelParam-class</a> instance
+denoting whether to parrallelise the loading of coverage across BigWigs.</p></td>
     </tr>
     <tr>
       <th>norm_const</th>
