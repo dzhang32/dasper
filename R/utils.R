@@ -77,7 +77,7 @@
 #'
 #' @keywords internal
 #' @noRd
-.coverage_load <- function(coverage_path, regions, chr_format = NULL, sum_fun, out_dir = tempdir()) {
+.coverage_load <- function(coverage_path, regions, chr_format = NULL, sum_fun, out_file = tempfile()) {
 
     ##### check user input #####
 
@@ -93,8 +93,8 @@
 
     ##### load coverage #####
 
-    temp_regions_path <- stringr::str_c(out_dir, "/regions.bed")
-    temp_coverage_prefix <- stringr::str_c(out_dir, "/coverage")
+    temp_regions_path <- stringr::str_c(out_file, ".bed")
+    temp_coverage_prefix <- stringr::str_c(out_file, "_coverage")
 
     regions %>%
         as.data.frame() %>%
