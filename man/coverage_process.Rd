@@ -2,7 +2,7 @@
 % Please edit documentation in R/coverage_process.R
 \name{coverage_process}
 \alias{coverage_process}
-\title{Wrapper function for processing coverage}
+\title{Wrapper for processing coverage}
 \usage{
 coverage_process(
   junctions,
@@ -23,22 +23,21 @@ coverage_process(
 \link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
 object.}
 
-\item{ref}{either path to gtf/gff3 or object of class \code{TxDb} imported using
-\code{\link[GenomicFeatures]{makeTxDbFromGFF}}.}
+\item{ref}{either path to gtf/gff3 or object of class \link[GenomicFeatures:TxDb-class]{TxDb-class}.}
 
 \item{unannot_width}{integer scalar determining the width of the region to
 obtain coverage from when the end of of a junction does not overlap an
 existing exon.}
 
-\item{coverage_paths_case}{paths to the BigWig/BAM files containing the
+\item{coverage_paths_case}{paths to the BigWig files containing the
 coverage of your case samples. Must be the same length and order to the
-rows of the assays in \code{junctions}.}
+samples in \code{junctions}.}
 
-\item{coverage_paths_control}{paths to the BigWig/BAM files}
+\item{coverage_paths_control}{paths to the BigWig files}
 
 \item{coverage_chr_control}{either "chr" or "no_chr", indicating the
-chromosome format of control coverage data. To be used if you know the
-chromosome format of the control BigWig/BAM files is different to that of
+chromosome format of control coverage data. Only used if you know the
+chromosome format of the control BigWig files is different to that of
 your junctions.}
 
 \item{load_func}{a function to use to load coverage. Currently only for
@@ -46,17 +45,16 @@ internal use to increase testing speed.}
 
 \item{bp_param}{a
 \link[BiocParallel:BiocParallelParam-class]{BiocParallelParam-class} instance
-denoting whether to parrallelise the loading of coverage across BigWigs.}
+denoting whether to parallelise the loading of coverage across BigWig files.}
 
-\item{norm_const}{numeric to add to the normalised coverage to avoid dividing
+\item{norm_const}{numeric scaler to add to the normalisation coverage to avoid dividing
 by 0s and resulting NaN or Inf values.}
 
-\item{score_func}{function to score junctions by abnromality. By default,
-will use a z-score. But this can be switched dependent on the format of the
-user's junction data. Function must take as input an x and y argument. x
-being the case junctions and y being the controls. This must return a
-numeric vector equal to the length of x with each element corresponding to
-a abnormality of a junction in each case sample.}
+\item{score_func}{function to score junctions by their abnormality. By default,
+will use a z-score but can be switched to a user-defined function. This
+function must take as input an \code{x} and \code{y} argument, containing case and
+control counts respectively. This must return a numeric vector equal to the
+length of \code{x} with elements corresponding to a abnormality of each junction.}
 
 \item{...}{additional arguments passed to \code{score_func}.}
 }
@@ -65,11 +63,12 @@ a abnormality of a junction in each case sample.}
 object containing junction data with coverage scores.
 }
 \description{
-\code{junction_process} wraps all "coverage_" prefixed functions in
-\code{dasper}. This is designed to simplify processing of the covearge data
+\code{coverage_process} wraps all "coverage_" prefixed functions in
+\link{dasper}. This is designed to simplify processing of the coverage data
 for those familiar or uninterested with the intermediates.
 }
 \examples{
+
 \dontrun{
 ref <-
     "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
@@ -90,3 +89,9 @@ junctions_w_coverage_2
 }
 
 }
+\seealso{
+Coverage processing functions
+\code{\link{coverage_norm}()},
+\code{\link{coverage_score}()}
+}
+\concept{coverage}

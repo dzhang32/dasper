@@ -2,7 +2,7 @@
 % Please edit documentation in R/junction_filter.R
 \name{junction_filter}
 \alias{junction_filter}
-\title{Filter junctions}
+\title{Filter junctions by count, width, annotation or region}
 \usage{
 junction_filter(
   junctions,
@@ -19,11 +19,11 @@ junction_filter(
 object.}
 
 \item{count_thresh}{named vector with names matching the names of the
-\code{\link[SummarizedExperiment]{assays}} in \code{junctions}. Values
+\link[SummarizedExperiment:SummarizedExperiment-class]{assays} in \code{junctions}. Values
 denote the number of counts below which a junction will be filtered out.}
 
 \item{n_samp}{named vector with names matching the names of the
-\code{\link[SummarizedExperiment]{assays}} in \code{junctions}. Values
+\link[SummarizedExperiment:SummarizedExperiment-class]{assays} in \code{junctions}. Values
 denotes number of samples that have to express the junction above the
 \code{count_thresh} in order for that junction to not be filtered.}
 
@@ -32,10 +32,10 @@ lower limit of junction width and the second the upper limit. Junctions
 with widths outside this range will be filtered out.}
 
 \item{types}{any junctions matching these types, derived form
-\code{\link{junction_annot}} e.g. "unannotated" will be filtered out.}
+\link{junction_annot} will be filtered out.}
 
 \item{regions}{any junctions overlapping this set of regions (in a
-\code{\link[GenomicRanges]{GRanges}} format) will be filtered out.}
+\link[GenomicRanges:GRanges-class]{GRanges-class} format) will be filtered out.}
 }
 \value{
 \link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
@@ -44,7 +44,7 @@ containing filtered set of junctions.
 \description{
 \code{junction_filter} filters out "noisy" junctions based on counts, the
 width of junctions, annotation category of the junction returned from
-\code{\link{junction_annot}} and whether the junction overlaps with a set of
+\link{junction_annot} and whether the junction overlaps with a set of
 (blacklist) regions.
 }
 \examples{
@@ -58,4 +58,12 @@ ENCODE blacklist regions recommended to  be included as
 \url{https://github.com/Boyle-Lab/Blacklist/blob/master/lists/hg38-blacklist.v2.bed.gz}.
 Further information can be found via the publication
 \url{https://www.nature.com/articles/s41598-019-45839-z}.
+
+Junction processing functions
+\code{\link{junction_annot}()},
+\code{\link{junction_load}()},
+\code{\link{junction_norm}()},
+\code{\link{junction_process}()},
+\code{\link{junction_score}()}
 }
+\concept{junction}

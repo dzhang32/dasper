@@ -2,7 +2,7 @@
 % Please edit documentation in R/junction_process.R
 \name{junction_process}
 \alias{junction_process}
-\title{Wrapper function for processing junctions}
+\title{Wrapper for processing junctions}
 \usage{
 junction_process(
   junctions,
@@ -21,15 +21,14 @@ junction_process(
 \link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
 object.}
 
-\item{ref}{either path to gtf/gff3 or object of class \code{TxDb} imported using
-\code{\link[GenomicFeatures]{makeTxDbFromGFF}}.}
+\item{ref}{either path to gtf/gff3 or object of class \link[GenomicFeatures:TxDb-class]{TxDb-class}.}
 
 \item{count_thresh}{named vector with names matching the names of the
-\code{\link[SummarizedExperiment]{assays}} in \code{junctions}. Values
+\link[SummarizedExperiment:SummarizedExperiment-class]{assays} in \code{junctions}. Values
 denote the number of counts below which a junction will be filtered out.}
 
 \item{n_samp}{named vector with names matching the names of the
-\code{\link[SummarizedExperiment]{assays}} in \code{junctions}. Values
+\link[SummarizedExperiment:SummarizedExperiment-class]{assays} in \code{junctions}. Values
 denotes number of samples that have to express the junction above the
 \code{count_thresh} in order for that junction to not be filtered.}
 
@@ -38,27 +37,26 @@ lower limit of junction width and the second the upper limit. Junctions
 with widths outside this range will be filtered out.}
 
 \item{types}{any junctions matching these types, derived form
-\code{\link{junction_annot}} e.g. "unannotated" will be filtered out.}
+\link{junction_annot} will be filtered out.}
 
 \item{regions}{any junctions overlapping this set of regions (in a
-\code{\link[GenomicRanges]{GRanges}} format) will be filtered out.}
+\link[GenomicRanges:GRanges-class]{GRanges-class} format) will be filtered out.}
 
-\item{score_func}{function to score junctions by abnromality. By default,
-will use a z-score. But this can be switched dependent on the format of the
-user's junction data. Function must take as input an x and y argument. x
-being the case junctions and y being the controls. This must return a
-numeric vector equal to the length of x with each element corresponding to
-a abnormality of a junction in each case sample.}
+\item{score_func}{function to score junctions by their abnormality. By default,
+will use a z-score but can be switched to a user-defined function. This
+function must take as input an \code{x} and \code{y} argument, containing case and
+control counts respectively. This must return a numeric vector equal to the
+length of \code{x} with elements corresponding to a abnormality of each junction.}
 
 \item{...}{additional arguments passed to \code{score_func}.}
 }
 \value{
 \link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
-object containing filtered, annotated, normalised junction data with scores.
+object containing filtered, annotated, normalised junction data with abnormality scores.
 }
 \description{
 \code{junction_process} wraps all "junction_" prefixed functions in
-\code{dasper} except \link{junction_load}. This is designed to simplify
+\link[=dasper]{dasper} except \link{junction_load}. This is designed to simplify
 processing of the junction data for those familiar or uninterested with the
 intermediates.
 }
@@ -77,3 +75,12 @@ junctions_processed <-
     )
 junctions_processed
 }
+\seealso{
+Junction processing functions
+\code{\link{junction_annot}()},
+\code{\link{junction_filter}()},
+\code{\link{junction_load}()},
+\code{\link{junction_norm}()},
+\code{\link{junction_score}()}
+}
+\concept{junction}

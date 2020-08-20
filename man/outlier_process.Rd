@@ -2,7 +2,7 @@
 % Please edit documentation in R/outlier_process.R
 \name{outlier_process}
 \alias{outlier_process}
-\title{Wrapper function for processing outliers}
+\title{Wrapper for processing outliers}
 \usage{
 outlier_process(
   junctions,
@@ -20,7 +20,7 @@ object.}
 as input into the outlier detection model.}
 
 \item{samp_id_col}{name of the column in the
-\code{\link[SummarizedExperiment]{colData}} that details the sample ids.}
+\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment}  that details the sample ids.}
 
 \item{...}{additional arguments passed to the outlier detection model
 (isolation forest) for setting parameters.}
@@ -31,6 +31,12 @@ associated junctions, outlier scores, ranks and genes.
 }
 \description{
 \code{outlier_process} wraps all "outlier_" prefixed functions in
-\code{dasper}. This is designed to simplify processing of the detecting
+\link{dasper}. This is designed to simplify processing of the detecting
 outlier junctions for those familiar or uninterested with the intermediates.
 }
+\seealso{
+Outlier processing functions
+\code{\link{outlier_aggregate}()},
+\code{\link{outlier_detect}()}
+}
+\concept{outlier}

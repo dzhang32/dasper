@@ -1,16 +1,15 @@
-#' Normalise junction counts
+#' Normalise junction counts by cluster
 #'
-#' \code{junction_norm} normalises the junction counts for each sample. First,
-#' each junction is clustered by finding all other junctions that share with it
-#' an acceptor or donor position. Then, a proportion-spliced-in (PSI) is
-#' calculated for each junction by dividing the raw junction count by the total
-#' number of counts in it's associated cluster.
+#' `junction_norm` normalises the raw junction counts by 1. building junction
+#' clusters by finding junctions that share an acceptor or donor position and 2.
+#' calculating a proportion-spliced-in (PSI) for each junction by dividing the
+#' raw junction count by the total number of counts in it's associated cluster.
 #'
 #' @inheritParams junction_annot
 #'
 #' @return junctions as a
-#'   \code{\link[SummarizedExperiment]{SummarizedExperiment}} object with an
-#'   additional \code{assay} containing the normalised counts.
+#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#'   object with an additional `assay`` containing the normalised counts.
 #'
 #' @examples
 #'
@@ -18,6 +17,7 @@
 #'     junctions_normed <- junction_norm(junctions_example)
 #' }
 #' junctions_normed
+#' @family junction
 #' @export
 junction_norm <- function(junctions) {
 
@@ -38,12 +38,12 @@ junction_norm <- function(junctions) {
     return(junctions)
 }
 
-#' Obtain junction clusters
+#' Cluster junctions
 #'
-#' \code{.get_junc_cluster} defines a cluster for each junction. Each junction
-#' is used as a seed to find other junctions that share it's acceptor or donor
-#' position. Each cluster is comprised by it's seed junction along with any
-#' junctions matching with a acceptor/donor position.
+#' `.get_junc_cluster` defines a cluster for each junction. Each junction is
+#' used as a seed to find other junctions that share an acceptor or donor
+#' position with it. Each cluster is comprised by it's seed junction along with
+#' any junctions matching with a acceptor/donor position.
 #'
 #' @inheritParams junction_annot
 #'
@@ -96,14 +96,15 @@ junction_norm <- function(junctions) {
 
 #' Normalise junction counts
 #'
-#' \code{..junction_norm_count} normalises the junction counts for each sample
-#' by dividing the counts for each junction by the total number of counts in
-#' it's associated cluster.
+#' `.junction_norm_count` normalises the junction counts for each sample by
+#' dividing the counts for each junction by the total number of counts in it's
+#' associated cluster.
 #'
 #' @inheritParams junction_annot
 #'
 #' @return junctions with an additional
-#'   \code{\link[SummarizedExperiment]{assay}} containing normalised counts.
+#'   [assay][SummarizedExperiment::SummarizedExperiment-class] containing
+#'   normalised counts.
 #'
 #' @keywords internal
 #' @noRd

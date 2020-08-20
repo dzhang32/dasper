@@ -20,19 +20,24 @@ as input into the outlier detection model.}
 \value{
 junctions as a
 \link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
-object with additional assays named \code{outlier_scores}. The lower the
+object with additional assays named \code{outlier_score}. The lower the
 outlier score, the more of an outlier a junction is observed to be.
 }
 \description{
 \code{outlier_detect} will use the features in
-\code{\link[SummarizedExperiment]{assays}} named \code{feature_names} as
+\link[SummarizedExperiment:SummarizedExperiment-class]{assays} named \code{feature_names} as
 input into an unsupervised outlier detection algorithm to score each junction
 based on how outlier-y it looks in relation to other junctions in the
-patient. The default \code{score} and \code{outlier_scores} can be
-calculated using the \code{\link{junction_process}} and
-\code{\link{coverage_process}} respectively.
+patient. The default expected \code{score} and \code{coverage_score} features can be
+calculated using the \link{junction_process} and
+\link{coverage_process} respectively.
 }
 \seealso{
 for more details on the isolation forest model used:
 https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html
+
+Outlier processing functions
+\code{\link{outlier_aggregate}()},
+\code{\link{outlier_process}()}
 }
+\concept{outlier}

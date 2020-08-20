@@ -2,7 +2,7 @@
 % Please edit documentation in R/junction_load.R
 \name{junction_load}
 \alias{junction_load}
-\title{Load junctions from patient and control RNA-seq data}
+\title{Load junctions from RNA-sequencing data}
 \usage{
 junction_load(
   junction_paths,
@@ -15,52 +15,49 @@ junction_load(
 )
 }
 \arguments{
-\item{junction_paths}{file path(s) to junction data.}
+\item{junction_paths}{path(s) to junction data.}
 
-\item{metadata}{dataframe containing sample metadata with rows in the same
-order and corresponding to file path(s). Will be used as the \code{colData}
-of the
-\link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
-object.}
+\item{metadata}{data.frame containing sample metadata with rows in the same
+order as \code{junction_paths}.}
 
 \item{controls}{either a logical vector of the same length as
-\code{junction_paths} with TRUEs labelling controls Or, "fibroblasts"
-representing the samples of which GTEx tissue to use as controls. If left
-unchanged, by default will assume all samples are patients.}
+\code{junction_paths} with TRUE representing controls. Or, "fibroblasts"
+representing the samples of which GTEx tissue to use as controls. By
+default, will assume all samples are patients.}
 
 \item{load_func}{function to load in junctions. By default, requires STAR
 formatted junctions (SJ.out). But this can be switched dependent on the
 format of the user's junction data. Function must take as input a junction
-path then return a dataframe with the columns "chr", "start", "end",
+path then return a data.frame with the columns "chr", "start", "end",
 "strand" and "count".}
 
-\item{chrs}{chromosomes to keep. If NULL, no filter is applied.}
+\item{chrs}{chromosomes to keep. By default, no filter is applied.}
 
 \item{coord_system}{One of "ensembl" (1-based) or "ucsc" (0-based) denoting
 the co-ordinate system corresponding to the user junctions from
-\code{junction_paths}. Only used when controls is set to "fibroblasts".
-This is used ensure control data is harmonised to user's junctions when
-merging. The outputted junctions will always follow the user's co-ordinate
-system.}
+\code{junction_paths}. Only used when controls is set to "fibroblasts" to ensure
+GTEx data is harmonised to match the co-ordinate system of the user's
+junctions.}
 }
 \value{
 \link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
 object containing junction data.
 }
 \description{
-\code{junction_load} loads in raw patient and control junction data and
-formats it into a
+\code{junction_load} loads in raw patient and control junction data and formats it
+into a
 \link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
-object. Control samples can be user-inputted or selected from GTEx data
-publicly released through the recount2 project
-(\url{https://jhubiostatistics.shinyapps.io/recount/}) and downloaded through
-snaptron (\url{http://snaptron.cs.jhu.edu/}). By default,
+object. Control samples can be the user's in-house samples or selected from
+GTEx v6 data publicly released through the
+\href{https://jhubiostatistics.shinyapps.io/recount/}{recount2} and
+downloaded through \href{http://snaptron.cs.jhu.edu/}{snaptron}. By default,
 \code{junction_load} expects the junction data to be in STAR aligned format
-(SJ.out).
+(SJ.out) but this can be modified via the argument \code{load_func}.
 }
 \examples{
 
 \dontrun{
+# TO DO - figure out how to use system.file in examples
 junctions_example_1_path <-
     system.file("extdata", "junctions_example_1.txt",
         "dasper",
@@ -77,3 +74,12 @@ junctions
 }
 
 }
+\seealso{
+Junction processing functions
+\code{\link{junction_annot}()},
+\code{\link{junction_filter}()},
+\code{\link{junction_norm}()},
+\code{\link{junction_process}()},
+\code{\link{junction_score}()}
+}
+\concept{junction}

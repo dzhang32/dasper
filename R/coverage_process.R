@@ -1,7 +1,7 @@
-#' Wrapper function for processing coverage
+#' Wrapper for processing coverage
 #'
-#' \code{junction_process} wraps all "coverage_" prefixed functions in
-#' \code{dasper}. This is designed to simplify processing of the covearge data
+#' `coverage_process` wraps all "coverage_" prefixed functions in
+#' [dasper]. This is designed to simplify processing of the coverage data
 #' for those familiar or uninterested with the intermediates.
 #'
 #' @inheritParams coverage_norm
@@ -12,6 +12,7 @@
 #'   object containing junction data with coverage scores.
 #'
 #' @examples
+#'
 #' \dontrun{
 #' ref <-
 #'     "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
@@ -31,8 +32,10 @@
 #' junctions_w_coverage_2
 #' }
 #'
+#' @family coverage
 #' @export
-coverage_process <- function(junctions,
+coverage_process <- function(
+    junctions,
     ref,
     unannot_width = 20,
     coverage_paths_case,

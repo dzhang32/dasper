@@ -1,6 +1,6 @@
 #' Check chromosomes are correctly formatted
 #'
-#' \code{.chr_filter} will check whether the object \code{x} is matches the
+#' `.chr_filter` will check whether the object `x` is matches the
 #' format of chr_format. If not, will convert to the chromosome format.
 #'
 #' @param x object of [GRangesList-class][GenomicRanges::GRangesList-class] or
@@ -8,7 +8,7 @@
 #'   class.
 #' @param chr_format one of "chr" or "no_chr".
 #'
-#' @return \code{x} with chromosomes matching \code{chr_format}.
+#' @return `x` with chromosomes matching `chr_format`.
 #'
 #' @keywords internal
 #' @noRd
@@ -23,17 +23,18 @@
     return(x)
 }
 
-#' Filter a df for chromosomes to keep
+#' Filter a data.frame for chromosomes to keep
 #'
-#' \code{.chr_filter} will filter a df, keeping only chromosomes listed in the
-#' chrs argument. It includes a couple of checks to notify users whether some or
-#' all chrs are not found in their data. This aims to catch situations where
-#' alternative nomenclature may be used - e.g. "M" vs "MT", or "chr1" vs "1".
+#' `.chr_filter` will filter a data.frame using [filter][dplyr::filter], keeping
+#' only chromosomes listed in the chrs argument. It includes a couple of checks
+#' to notify users whether some or all chrs are not found in their data. This
+#' aims to catch situations where alternative nomenclature may be used - e.g.
+#' "M" vs "MT", or "chr1" vs "1".
 #'
-#' @param x df containing at minimum a column named "chr".
+#' @param x data.frame containing at minimum a column named "chr".
 #' @inheritParams junction_load
 #'
-#' @return df with only containing chromosomes in chrs.
+#' @return data.frame with only containing chromosomes in chrs.
 #'
 #' @keywords internal
 #' @noRd
@@ -59,21 +60,21 @@
 
 #' Load coverage for set of genomic regions
 #'
-#' \code{.coverage_load} loads coverage across a set of genomic regions from a
-#' BigWig file using \url{https://github.com/ChristopherWilks/megadepth}
+#' `.coverage_load` loads coverage across a set of genomic regions from a
+#' BigWig file using \href{https://github.com/ChristopherWilks/megadepth}{megadepth}
 #'
 #' @param coverage_path path to BigWig (or BAM - STILL UNTESTED) file.
 #' @param regions [GRangesList-class][GenomicRanges::GRangesList-class] object.
 #' @param chr_format NULL or one of "chr" or "no_chr", indicating the chromsome
-#'   format used in the \code{coverage_path}. Will convert the \code{regions} to
+#'   format used in the `coverage_path`. Will convert the `regions` to
 #'   this format if they are not already.
 #' @param sum_fun "mean", "sum", "max", "min" indicating the summary function to
 #'   perform across the coverage for each region.
-#' @param out_dir directory to save the the outputs for running \code{megadepth}.
+#' @param out_dir directory to save the the outputs for running `megadepth`.
 #'
-#' @return numeric vector of equal length to \code{regions} with each value
+#' @return numeric vector of equal length to `regions` with each value
 #'   corresponding to the coverage across one genomic interval in
-#'   \code{regions}.
+#'   `regions`.
 #'
 #' @keywords internal
 #' @noRd
@@ -137,13 +138,13 @@
 
 #' Cache a file if it is not found locally
 #'
-#' \code{.file_cache} \code{\link[BiocFileCache](BiocFileCache)} will cache the
-#' file for faster repeated retrival, if it not found locally (i.e. a URL).
+#' `.file_cache` will use [BiocFileCache][BiocFileCache::BiocFileCache-class]
+#' will cache the file for faster repeated retrival, if it not found locally
+#' (i.e. a URL).
 #'
 #' @param file_path a path to file of interest.
 #'
-#' @return \code{file_path} of cached file or unchanged \code{file_path} if
-#'   found locally.
+#' @return file_path of cached file or unchanged file_path if found locally.
 #'
 #' @keywords internal
 #' @noRd
@@ -163,15 +164,17 @@
     return(file_path)
 }
 
-#' Splits a \code{GRanges} object by it's start and end.
+#' Splits a GRanges object by it's start and end.
 #'
-#' \code{.get_gr_for_start_end} takes a \code{GRanges} object and generates 2,
-#' one containing only the start co-ordinate and the other, the end.
+#' `.get_gr_for_start_end` takes a [GRanges][GenomicRanges::GRanges-class]
+#' object and generates 2, one containing only the start co-ordinate and the
+#' other, the end.
 #'
-#' @param gr Any \code{GRanges} object.
+#' @param gr a [GRanges][GenomicRanges::GRanges-class] object.
 #'
-#' @return list of 2 grs, each with 1 range corresponding to every range in the
-#'   input. One contains start positions, the other ends.
+#' @return list containing 2 [GRanges][GenomicRanges::GRanges-class] objects,
+#'   each with 1 range corresponding to every range in the input. One contains
+#'   start positions, the other ends.
 #'
 #' @keywords internal
 #' @noRd
@@ -190,16 +193,16 @@
     return(x_start_end)
 }
 
-#' Merges two \code{\link{[IRanges](CharacterList)}}s into one through the
-#' element-wise concatenation of the vectors inside each list
+#' Merges [CharacterList][IRanges::AtomicList] objects
 #'
-#' \code{.merge_lists}
+#' `.merge_lists` merges two [CharacterList][IRanges::AtomicList] objects into
+#' one through the element-wise concatenation of the vectors inside each list
 #'
-#' @param x \code{\link{[IRanges](CharacterList)}}
-#' @param y \code{\link{[IRanges](CharacterList)}}
+#' @param x a [CharacterList][IRanges::AtomicList] object.
+#' @param y a [CharacterList][IRanges::AtomicList] object.
 #'
-#' @return \code{\link{[IRanges](CharacterList)}} the identical length to x and
-#'   y. The elements of this output being the concantenation (\code{c()}) of the
+#' @return [CharacterList][IRanges::AtomicList] object the identical length to x
+#'   and y. The elements of this output being the concantenation of the
 #'   correponding elements in x and y.
 #'
 #' @keywords internal
@@ -231,15 +234,16 @@
 
 #' Generate outlier scores
 #'
-#' \code{.outlier_score} will use an isolation forest to score junctions by how
-#' abnormal they look based on disruptions to junction count and associated
-#' regions of coverage.
+#' `.outlier_score` will employ an isolation forest using `sklearn` through
+#' [reticulate][reticulate::reticulate] to score junctions by how outlier-y they
+#' look based on disruptions to junction count and associated regions of
+#' coverage (or any other junction-level feature).
 #'
 #' @inheritParams junction_outlier_score
 #' @param features data.frame with columns detailing features to be inputted
 #'   into an outlier detection model.
 #'
-#' @return outlier scores for each junction.
+#' @return numeric vector containing outlier scores for each junction.
 #'
 #' @keywords internal
 #' @noRd
@@ -268,13 +272,13 @@
 
 #' Load reference annotation
 #'
-#' \code{.ref_load} loads reference annotation using
-#' \code{\link[GenomicFeatures]{makeTxDbFromGFF}} if a character or leaves
-#' \code{ref} unchanged if already a [TxDb-class][GenomicFeatures::TxDb-class].
+#' `.ref_load`` loads reference annotation using
+#' [makeTxDbFromGFF][GenomicFeatures::makeTxDbFromGFF] if a character or leaves
+#' `ref` unchanged if already a [TxDb-class][GenomicFeatures::TxDb-class].
 #'
 #' @inheritParams junction_annot
 #'
-#' @return [TxDb-class][GenomicFeatures::TxDb-class] object.
+#' @return a [TxDb-class][GenomicFeatures::TxDb-class] object.
 #'
 #' @keywords internal
 #' @noRd
@@ -298,21 +302,20 @@
 
 #' Re-groups values in vector or list
 #'
-#' \code{.regroup} takes as input a vector or list and regroups the
-#' contents. Each element in outputted list will correspond to a group. Values
-#' in \code{x} that fall into the same group will be merged/concatenated
-#' together to form a vector in the resulting list. Empty groups will be not be
-#' dropped and filled with vectors of length = 0. Based on the function
-#' \code{\link[S4Vectors](split)}).
+#' `.regroup` takes as input a vector or list and regroups the contents. Each
+#' element in outputted list will correspond to a group. Values in `x` that fall
+#' into the same group will be merged/concatenated together to form a vector in
+#' the resulting list. Empty groups will be not be dropped and filled with
+#' vectors of length = 0. Based on the function [split][S4Vectors::splitAsList].
 #'
 #' @param x an atomic vector or list (only tested on character and
-#'   \code{\link[IRanges](CharacterList)}).
-#' @param groups vector of the same length as \code{x} indicating which group
-#'   each corresponding element of \code{x} is assigned.
+#'   [CharacterList][IRanges::AtomicList]).
+#' @param groups vector of the same length as `x` indicating which group each
+#'   corresponding element of `x` is assigned.
 #' @param all_groups vector with values all groups and the order that they
 #'   should be.
 #'
-#' @return list of the same length and order as \code{all_groups}.
+#' @return list of the same length and order as `all_groups`.
 #'
 #' @keywords internal
 #' @noRd
@@ -347,9 +350,9 @@
 
 #' Calculate z-score for x from the distribution y
 #'
-#' \code{.zscore} calculates a z-score for each junction count from a patient
-#' sample (\code{x}), indicating it's deviation from the distribution of a
-#' controls counts (\code{y}) of the same junction.
+#' `.zscore` calculates a z-score for each junction count from a patient sample
+#' (`x`), indicating it's deviation from the distribution of a controls counts
+#' (`y`) of the same junction.
 #'
 #' @param x numeric vector containing case counts/coverage for 1 junction.
 #' @param y numeric vector containing control counts for 1 junction.
@@ -357,8 +360,8 @@
 #'   deviations. This is to prevent infinate/NaN values occuring when the
 #'   standard deviation of the control counts is 0.
 #'
-#' @return numeric vector of length equal to \code{x} containing the z-score for
-#'   the case junctions.
+#' @return numeric vector of length equal to `x` containing the z-score for the
+#'   case junctions.
 #'
 #' @keywords internal
 #' @noRd

@@ -1,27 +1,28 @@
 #' Detecting outlier junctions
 #'
-#' \code{outlier_detect} will use the features in
-#' \code{\link[SummarizedExperiment]{assays}} named \code{feature_names} as
+#' `outlier_detect` will use the features in
+#' [assays][SummarizedExperiment::SummarizedExperiment-class] named `feature_names` as
 #' input into an unsupervised outlier detection algorithm to score each junction
 #' based on how outlier-y it looks in relation to other junctions in the
-#' patient. The default \code{score} and \code{outlier_scores} can be
-#' calculated using the \code{\link{junction_process}} and
-#' \code{\link{coverage_process}} respectively.
+#' patient. The default expected `score` and `coverage_score` features can be
+#' calculated using the [junction_process] and
+#' [coverage_process] respectively.
 #'
 #' @inheritParams junction_annot
-#' @param feature_names names of assays in \code{junctions} that are to be used
+#' @param feature_names names of assays in `junctions` that are to be used
 #'   as input into the outlier detection model.
 #' @param ... additional arguments passed to the outlier detection model
 #'   (isolation forest) for setting parameters.
 #'
 #' @return junctions as a
 #'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
-#'    object with additional assays named \code{outlier_scores}. The lower the
+#'    object with additional assays named `outlier_score`. The lower the
 #'   outlier score, the more of an outlier a junction is observed to be.
 #'
 #' @seealso for more details on the isolation forest model used:
 #'   https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html
 #'
+#' @family outlier
 #' @export
 outlier_detect <- function(junctions, feature_names = c("score", "coverage_score"), ...) {
 

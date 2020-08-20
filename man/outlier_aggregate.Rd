@@ -2,7 +2,7 @@
 % Please edit documentation in R/outlier_aggregate.R
 \name{outlier_aggregate}
 \alias{outlier_aggregate}
-\title{Summarise outlier info per junction to cluster-level}
+\title{Aggregate outlier scores from per junction to cluster-level}
 \usage{
 outlier_aggregate(junctions, samp_id_col = "samp_id")
 }
@@ -12,15 +12,20 @@ outlier_aggregate(junctions, samp_id_col = "samp_id")
 object.}
 
 \item{samp_id_col}{name of the column in the
-\code{\link[SummarizedExperiment]{colData}} that details the sample ids.}
+\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment}  that details the sample ids.}
 }
 \value{
 \code{DataFrame} with one row per cluster detailing each cluster's
 associated junctions, outlier scores, ranks and genes.
 }
 \description{
-\code{outlier_aggregate} will aggregate the outlier scores into a
-cluster-level. It will then rank each cluster based on this aggregated score
-and annotate each cluster with it's most likely associated gene and
-transcript.
+\code{outlier_aggregate} will aggregate the outlier scores into a cluster-level.
+It will then rank each cluster based on this aggregated score and annotate
+each cluster with it's associated gene and transcript.
 }
+\seealso{
+Outlier processing functions
+\code{\link{outlier_detect}()},
+\code{\link{outlier_process}()}
+}
+\concept{outlier}

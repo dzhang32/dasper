@@ -1,17 +1,17 @@
-#' Summarise outlier info per junction to cluster-level
+#' Aggregate outlier scores from per junction to cluster-level
 #'
-#' \code{outlier_aggregate} will aggregate the outlier scores into a
-#' cluster-level. It will then rank each cluster based on this aggregated score
-#' and annotate each cluster with it's most likely associated gene and
-#' transcript.
+#' `outlier_aggregate` will aggregate the outlier scores into a cluster-level.
+#' It will then rank each cluster based on this aggregated score and annotate
+#' each cluster with it's associated gene and transcript.
 #'
 #' @inheritParams junction_annot
 #' @param samp_id_col name of the column in the
-#'   \code{\link[SummarizedExperiment]{colData}} that details the sample ids.
+#'   [SummarizedExperiment][SummarizedExperiment::SummarizedExperiment-class]  that details the sample ids.
 #'
 #' @return \code{DataFrame} with one row per cluster detailing each cluster's
 #'   associated junctions, outlier scores, ranks and genes.
 #'
+#' @family outlier
 #' @export
 outlier_aggregate <- function(junctions, samp_id_col = "samp_id") {
 
@@ -48,14 +48,13 @@ outlier_aggregate <- function(junctions, samp_id_col = "samp_id") {
 
 #' Wrangles the outlier scores into a list
 #'
-#' \code{.outlier_wrangle} will extract the outlier scores from \code{junctions}
-#' other necessary information required for \code{.outlier_cluster}.
+#' `.outlier_wrangle` will extract the outlier scores from `junctions` other
+#' necessary information in a format required for `.outlier_cluster`.
 #'
 #' @inheritParams junction_annot
 #' @inheritParams outlier_aggregate
 #'
-#' @return a list an with one element per sample, each containing a
-#'   \code{data.frame}.
+#' @return a list an with one element per sample, each containing a data.frame.
 #'
 #' @keywords internal
 #' @noRd
@@ -78,7 +77,7 @@ outlier_aggregate <- function(junctions, samp_id_col = "samp_id") {
 
 #' Aggregate the outlier scores from per junction into per cluster
 #'
-#' \code{.outlier_cluster} aggregates the scores from per junction into per
+#' `.outlier_cluster` aggregates the scores from per junction into per
 #' cluster. In order: 1. finds most dysregulated UJ and DJ 2. filters out
 #' clusters without at least 1 UJ and DJ. 3. Obtain the mean outlier score
 #' between the most dysregulated UJ/DJ. 4. Rank clusters by the mean outlier
@@ -87,7 +86,7 @@ outlier_aggregate <- function(junctions, samp_id_col = "samp_id") {
 #' @inheritParams outlier_scores_samp
 #'
 #' @return a list an with one element per sample, each containing a
-#'   \code{data.frame}.
+#'   `data.frame`.
 #'
 #' @keywords internal
 #' @noRd
@@ -156,12 +155,12 @@ outlier_aggregate <- function(junctions, samp_id_col = "samp_id") {
 
 #' Tidy the cluster-level outlier scores
 #'
-#' \code{.outlier_cluster_tidy} tidies the the cluster-level outlier scores
-#' returned by \code{.outlier_cluster} into a easily human-readable report.
+#' `.outlier_cluster_tidy` tidies the the cluster-level outlier scores
+#' returned by `.outlier_cluster` into a easily human-readable report.
 #'
 #' @inheritParams outlier_scores_samp
 #'
-#' @return \code{DataFrame} with each row corresponding to a cluster.
+#' @return `DataFrame` with each row corresponding to a cluster.
 #'
 #' @keywords internal
 #' @noRd

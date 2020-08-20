@@ -1,8 +1,8 @@
 #' Annotate junctions using reference annotation
 #'
-#' \code{junction_annot} annotates junctions by 1. Whether their start and/or
+#' `junction_annot` annotates junctions by 1. whether their start and/or
 #' end position precisely overlaps with an annotated exon boundary and 2.
-#' Whether that junction matches any intron definition from existing annotation.
+#' whether that junction matches an intron definition from existing annotation.
 #' Using this information along with the strand, junctions are categorised into
 #' "annotated", "novel_acceptor", "novel_donor", "novel_combo",
 #' "novel_exon_skip", "ambig_gene" and "unannotated".
@@ -10,8 +10,7 @@
 #' @param junctions junction data as a
 #'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
 #'   object.
-#' @param ref either path to gtf/gff3 or object of class `TxDb` imported using
-#'   \code{\link[GenomicFeatures]{makeTxDbFromGFF}}.
+#' @param ref either path to gtf/gff3 or object of class [TxDb-class][GenomicFeatures::TxDb-class].
 #'
 #' @return junctions as a
 #'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
@@ -30,6 +29,7 @@
 #'         )
 #' }
 #' junctions_annoted
+#' @family junction
 #' @export
 junction_annot <- function(junctions, ref) {
 
@@ -72,20 +72,21 @@ junction_annot <- function(junctions, ref) {
     return(junctions)
 }
 
-#' Extracts annotation from the reference gtf
+#' Finds overlap between junctions ends and reference annotation
 #'
-#' \code{.junction_ref_annot} will find whether each junctions start/end
-#' precisely matches the end/start of annotated exons. Then, for each hit will
-#' annotate the start/end of the junction with the strand/exon/transcript/gene
-#' from the reference annotation.
+#' `.junction_ref_annot` will find whether each junctions start/end precisely
+#' matches the end/start of annotated exons. Then, for each hit will annotate
+#' the start/end of the junction with the strand/exon/transcript/gene from the
+#' reference annotation.
 #'
 #' @inheritParams junction_annot
 #'
 #' @param ref_exons annotated exons obtained using
-#'   \code\link{[GenomicFeatures](exons)}.
+#'   [exons][GenomicFeatures::transcripts].
 #' @param ref_introns annotated introns obtained using
-#'   \code\link{[GenomicFeatures](intronsByTranscript)}.
-#' @param ignore.strand used by \code\link{[GenomicRanges](findOverlaps)}.
+#'   [transcriptsBy][GenomicFeatures::transcriptsBy].
+#' @param ignore.strand used by
+#'   [findOverlaps][GenomicRanges::findOverlaps-methods].
 #'
 #' @return junctions with annotation.
 #'
@@ -170,11 +171,10 @@ junction_annot <- function(junctions, ref) {
     return(junctions)
 }
 
-
 #' Tidying junction annotation
 #'
-#' \code{.junction_annot_tidy} merges the gene and strand details from the start and
-#' end into one column per junction. Then, combines strand information from the
+#' `.junction_annot_tidy` merges the gene and strand details from the start and
+#' end into one value per junction. Then, combines strand information from the
 #' original RNA-seq based and that from overlapping annotation.
 #'
 #' @inheritParams junction_annot
@@ -230,19 +230,19 @@ junction_annot <- function(junctions, ref) {
 
 #' Categorises junctions depending on reference annotation and strand
 #'
-#' \code{.junction_cat} categories junctions into "annotated", "novel_acceptor",
+#' `.junction_cat` categories junctions into "annotated", "novel_acceptor",
 #' "novel_donor", "novel_combo", "novel_exon_skip", "ambig_gene" and "none"
 #' using information from annotation and strand.
 #'
 #' @inheritParams junction_annot
 #'
-#' @return junctions with additional metadata detailling junction categories.
+#' @return junctions with additional metadata detailing junction categories.
 #'
 #' @keywords internal
 #' @noRd
 .junction_cat <- function(junctions, ref_junc) {
 
-    # store strand out for readability
+    # store strand seperately for readability
     strand_junc <- as.character(strand(junctions))
 
     mcols(junctions)[["type"]] <-

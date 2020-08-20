@@ -1,36 +1,37 @@
-#' For each junction, obtain the normalised coverage across associated
-#' exonic/intronic regions
+#' Load and normalise coverage from RNA-sequencing data
 #'
-#' \code{coverage_norm} obtains regions of interest for each junction where
-#' coverage disruptions would be expected. If ends of junctions are annotated,
-#' it will use the overlapping exon definitions, picking the shortest exon when
-#' multiple overlap one end. If unannotated, will use a user-defined width (i.e.
-#' 20bp). To compare between samples (case/controls) coverage is normalised to a
-#' set region. By default, the boundaries of each gene associated to a junction
-#' are used as the region to normalise to.
+#' `coverage_norm` obtains regions of interest for each junction where coverage
+#' disruptions would be expected. These consist of the intron itself the
+#' overlapping exon definitions (if ends of junctions are annotated), picking
+#' the shortest exon when multiple overlap one end. If ends are unannotated,
+#' `coverage_norm` will use a user-defined width set by `unannot_width`. Then,
+#' coverage will be loaded using
+#' \href{https://github.com/ChristopherWilks/megadepth}{megadepth} and
+#' normalised to a set region per junction.  By default, the boundaries of each
+#' gene associated to a junction are used as the region to normalise to.
 #'
 #' @inheritParams junction_annot
 #'
 #' @param unannot_width integer scalar determining the width of the region to
 #'   obtain coverage from when the end of of a junction does not overlap an
 #'   existing exon.
-#' @param coverage_paths_case paths to the BigWig/BAM files containing the
+#' @param coverage_paths_case paths to the BigWig files containing the
 #'   coverage of your case samples. Must be the same length and order to the
-#'   rows of the assays in \code{junctions}.
-#' @param coverage_paths_control paths to the BigWig/BAM files
+#'   samples in `junctions`.
+#' @param coverage_paths_control paths to the BigWig files
 #' @param coverage_chr_control either "chr" or "no_chr", indicating the
-#'   chromosome format of control coverage data. To be used if you know the
-#'   chromosome format of the control BigWig/BAM files is different to that of
+#'   chromosome format of control coverage data. Only used if you know the
+#'   chromosome format of the control BigWig files is different to that of
 #'   your junctions.
 #' @param load_func a function to use to load coverage. Currently only for
 #'   internal use to increase testing speed.
 #' @param bp_param a
 #'   [BiocParallelParam-class][BiocParallel::BiocParallelParam-class] instance
-#'   denoting whether to parrallelise the loading of coverage across BigWigs.
-#' @param norm_const numeric to add to the normalised coverage to avoid dividing
+#'   denoting whether to parallelise the loading of coverage across BigWig files.
+#' @param norm_const numeric scaler to add to the normalisation coverage to avoid dividing
 #'   by 0s and resulting NaN or Inf values.
 #'
-#' @return list containing sublists, one for cases and the other controls. Each
+#' @return list containing two sublists, one for cases and the other controls. Each
 #'   sublist contains 3 matrices, corresponding the coverage for each sample
 #'   across the 2 exons and intron associated with every junction.
 #'
@@ -56,9 +57,10 @@
 #' )
 #' junctions
 #' }
-#'
+#' @family coverage
 #' @export
-coverage_norm <- function(junctions,
+coverage_norm <- function(
+    junctions,
     ref,
     unannot_width = 20,
     coverage_paths_case,
@@ -123,12 +125,12 @@ coverage_norm <- function(junctions,
     return(case_control_coverage)
 }
 
-#' Obtain the co-ordinates corresponding to exons and introns for each junction
+#' Obtain the regions of interest for each junction
 #'
-#' \code{.coverage_exon_intron} obtains the exonic and intronic regions
-#' corresponding each junction. If the junctions ends are annotated, it just
+#' `.coverage_exon_intron` obtains the exonic and intronic regions
+#' corresponding each junction. If the junctions ends are annotated, it
 #' takes the exon definitions. If unannotated, then will use an arbitrary exon
-#' width defined by the user in \code{unannot_width}. If multiple exons overlap
+#' width defined by the user in `unannot_width`. If multiple exons overlap
 #' a junction end, the shortest definition is used. Intron definitions are the
 #' junction co-ordinates.
 #'
@@ -193,7 +195,7 @@ coverage_norm <- function(junctions,
 
 #' Obtain the region to normalise coverage
 #'
-#' \code{.coverage_norm_region} obtains the region to use to normalise coverage
+#' `.coverage_norm_region` obtains the region to use to normalise coverage
 #' across exons and intron for each junction. Currently, this is the gene
 #' definition associated with each junction. For junctions that are unannotated,
 #' the largest local region is taken from the start of the upstream to the end
@@ -205,7 +207,7 @@ coverage_norm <- function(junctions,
 #' @param coverage_regions
 #'
 #' @return [GRangesList-class][GenomicRanges::GRangesList-class] containing an
-#'   additional set of ranges containing regions to use to normalise.
+#'   additional set of ranges containing regions to use to normalise coverage.
 #'
 #' @keywords internal
 #' @noRd
@@ -289,18 +291,18 @@ coverage_norm <- function(junctions,
     return(coverage_regions)
 }
 
-#' Loads coverage from case and control BigWig/BAM files
+#' Loads coverage from case and control BigWig files
 #'
-#' \code{.coverage_load_samp} uses \code{dasper:::.coverage_load} to
-#' load coverage from BigWig/BAM files. It does this for both case and controls
-#' and for each set of ranges in \code{coverage_regions}.
+#' `.coverage_load_samp` uses `dasper:::.coverage_load` to load coverage from
+#' BigWig files across all samples. It does this for both case and controls and
+#' for each set of ranges in `coverage_regions`.
 #'
 #' @inheritParams coverage_norm
 #' @inheritParams .coverage_norm_region
 #'
 #' @return list containing two lists called "case" and "control", each
 #'   containing coverage matrices. The number of matrices is equal to the length
-#'   of \code{coverage_regions}.
+#'   of `coverage_regions`.
 #'
 #' @keywords internal
 #' @noRd
@@ -360,11 +362,11 @@ coverage_norm <- function(junctions,
 
 #' Normalises coverage across the exons/intron associated with each junction
 #'
-#' \code{.coverage_norm} normalises coverage across exons/introns by dividing
+#' `.coverage_norm` normalises coverage across exons/introns by dividing
 #' their coverage by the total AUC across the norm region.
 #'
 #' @param case_control_coverage list containing coverage for case and controls
-#'   returned by \link{.coverage_load_samp}
+#'   returned by `dasper:::.coverage_load_samp`
 #' @param norm_const integer to add to the normalisation coverages. This
 #'   prevents dividing by 0 and NaN/Inf values resulting.
 #'

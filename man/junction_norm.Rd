@@ -2,7 +2,7 @@
 % Please edit documentation in R/junction_norm.R
 \name{junction_norm}
 \alias{junction_norm}
-\title{Normalise junction counts}
+\title{Normalise junction counts by cluster}
 \usage{
 junction_norm(junctions)
 }
@@ -13,15 +13,14 @@ object.}
 }
 \value{
 junctions as a
-\code{\link[SummarizedExperiment]{SummarizedExperiment}} object with an
-additional \code{assay} containing the normalised counts.
+\link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
+object with an additional `assay`` containing the normalised counts.
 }
 \description{
-\code{junction_norm} normalises the junction counts for each sample. First,
-each junction is clustered by finding all other junctions that share with it
-an acceptor or donor position. Then, a proportion-spliced-in (PSI) is
-calculated for each junction by dividing the raw junction count by the total
-number of counts in it's associated cluster.
+\code{junction_norm} normalises the raw junction counts by 1. building junction
+clusters by finding junctions that share an acceptor or donor position and 2.
+calculating a proportion-spliced-in (PSI) for each junction by dividing the
+raw junction count by the total number of counts in it's associated cluster.
 }
 \examples{
 
@@ -30,3 +29,12 @@ if (!exists("junctions_normed")) {
 }
 junctions_normed
 }
+\seealso{
+Junction processing functions
+\code{\link{junction_annot}()},
+\code{\link{junction_filter}()},
+\code{\link{junction_load}()},
+\code{\link{junction_process}()},
+\code{\link{junction_score}()}
+}
+\concept{junction}

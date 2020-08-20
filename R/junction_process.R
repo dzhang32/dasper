@@ -1,7 +1,7 @@
-#' Wrapper function for processing junctions
+#' Wrapper for processing junctions
 #'
-#' \code{junction_process} wraps all "junction_" prefixed functions in
-#' \code{dasper} except \link{junction_load}. This is designed to simplify
+#' `junction_process` wraps all "junction_" prefixed functions in
+#' [dasper][dasper::dasper] except [junction_load]. This is designed to simplify
 #' processing of the junction data for those familiar or uninterested with the
 #' intermediates.
 #'
@@ -12,7 +12,7 @@
 #'
 #' @return
 #'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
-#'   object containing filtered, annotated, normalised junction data with scores.
+#'   object containing filtered, annotated, normalised junction data with abnormality scores.
 #'
 #' @examples
 #'
@@ -28,8 +28,10 @@
 #'         types = c("ambig_gene", "unannotated"),
 #'     )
 #' junctions_processed
+#' @family junction
 #' @export
-junction_process <- function(junctions,
+junction_process <- function(
+    junctions,
     ref,
     count_thresh = c("raw" = 5),
     n_samp = c("raw" = 1),

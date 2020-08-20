@@ -1,45 +1,42 @@
-#' Load junctions from patient and control RNA-seq data
+#' Load junctions from RNA-sequencing data
 #'
-#' \code{junction_load} loads in raw patient and control junction data and
-#' formats it into a
+#' `junction_load` loads in raw patient and control junction data and formats it
+#' into a
 #' [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
-#' object. Control samples can be user-inputted or selected from GTEx data
-#' publicly released through the recount2 project
-#' (\url{https://jhubiostatistics.shinyapps.io/recount/}) and downloaded through
-#' snaptron (\url{http://snaptron.cs.jhu.edu/}). By default,
-#' \code{junction_load} expects the junction data to be in STAR aligned format
-#' (SJ.out).
+#' object. Control samples can be the user's in-house samples or selected from
+#' GTEx v6 data publicly released through the
+#' \href{https://jhubiostatistics.shinyapps.io/recount/}{recount2} and
+#' downloaded through \href{http://snaptron.cs.jhu.edu/}{snaptron}. By default,
+#' `junction_load` expects the junction data to be in STAR aligned format
+#' (SJ.out) but this can be modified via the argument `load_func`.
 #'
-#' @param junction_paths file path(s) to junction data.
-#' @param metadata dataframe containing sample metadata with rows in the same
-#'   order and corresponding to file path(s). Will be used as the \code{colData}
-#'   of the
-#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
-#'   object.
+#' @param junction_paths path(s) to junction data.
+#' @param metadata data.frame containing sample metadata with rows in the same
+#'   order as `junction_paths`.
 #' @param controls either a logical vector of the same length as
-#'   \code{junction_paths} with TRUEs labelling controls Or, "fibroblasts"
-#'   representing the samples of which GTEx tissue to use as controls. If left
-#'   unchanged, by default will assume all samples are patients.
+#'   `junction_paths` with TRUE representing controls. Or, "fibroblasts"
+#'   representing the samples of which GTEx tissue to use as controls. By
+#'   default, will assume all samples are patients.
 #' @param load_func function to load in junctions. By default, requires STAR
 #'   formatted junctions (SJ.out). But this can be switched dependent on the
 #'   format of the user's junction data. Function must take as input a junction
-#'   path then return a dataframe with the columns "chr", "start", "end",
+#'   path then return a data.frame with the columns "chr", "start", "end",
 #'   "strand" and "count".
-#' @param chrs chromosomes to keep. If NULL, no filter is applied.
+#' @param chrs chromosomes to keep. By default, no filter is applied.
 #' @param coord_system One of "ensembl" (1-based) or "ucsc" (0-based) denoting
 #'   the co-ordinate system corresponding to the user junctions from
-#'   \code{junction_paths}. Only used when controls is set to "fibroblasts".
-#'   This is used ensure control data is harmonised to user's junctions when
-#'   merging. The outputted junctions will always follow the user's co-ordinate
-#'   system.
+#'   `junction_paths`. Only used when controls is set to "fibroblasts" to ensure
+#'   GTEx data is harmonised to match the co-ordinate system of the user's
+#'   junctions.
 #'
 #' @return
-#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
-#'   object containing junction data.
+#' [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#' object containing junction data.
 #'
 #' @examples
 #'
 #' \dontrun{
+#' # TO DO - figure out how to use system.file in examples
 #' junctions_example_1_path <-
 #'     system.file("extdata", "junctions_example_1.txt",
 #'         "dasper",
@@ -55,14 +52,15 @@
 #' junctions
 #' }
 #'
+#' @family junction
 #' @export
-junction_load <- function(junction_paths,
+junction_load <- function(
+    junction_paths,
     metadata = dplyr::tibble(samp_id = stringr::str_c("samp_", seq_along(junction_paths))),
     controls = rep(FALSE, length(junction_paths)),
     load_func = .STAR_load,
     chrs = NULL,
     coord_system = "ensembl") {
-
     # for R CMD Check
     chr <- NULL
 
@@ -76,7 +74,7 @@ junction_load <- function(junction_paths,
         junctions <- load_func(junction_paths[i])
 
         if (!all(colnames(junctions) %in% c("chr", "start", "end", "strand", "count"))) {
-            stop("load_func must return a dataframe with the columns 'chr', 'start', 'end', 'strand' and 'count'")
+            stop("load_func must return a data.frame with the columns 'chr', 'start', 'end', 'strand' and 'count'")
         }
 
         if (!is.null(chrs)) {
@@ -146,15 +144,15 @@ junction_load <- function(junction_paths,
     return(junctions)
 }
 
-#' Load raw junction data
+#' Load STAR-formatted junctions
 #'
-#' \code{.STAR_load} will load raw junction data that is outputted from STAR
-#' (SJ.out) into R. This will format the junction data, retaining only chr,
-#' start, end, strand and count (uniq_map_read_count) columns.
+#' `.STAR_load` will load raw junction data that is outputted from STAR
+#' (SJ.out) and format it, retaining only chr, start, end, strand and count
+#' (uniq_map_read_count) columns.
 #'
 #' @param junction_path path to the junction data.
 #'
-#' @return df detailing junction co-ordinates and counts.
+#' @return data.frame detailing junction co-ordinates and counts.
 #'
 #' @keywords internal
 #' @noRd
@@ -183,15 +181,17 @@ junction_load <- function(junction_paths,
 
 #' Merge two junction datasets together
 #'
-#' \code{.junction_merge} will merge two sets of junction data together. It uses a
-#' full_join so will keep all rows from both datasets. It will also ensure
-#' ambiguous strands ("*") are allowed to match with forward ("+") and reverse
-#' ("-") strands.
+#' `.junction_merge` will merge two sets of junction data together. It uses a
+#' [full_join][dplyr::mutate-joins] so will keep all rows from both datasets. It
+#' will also ensure ambiguous strands ("*") are allowed to match with forward
+#' ("+") and reverse ("-") strands.
 #'
-#' @param junctions_all df that will contain info on junctions from all samples.
-#' @param junctions df containing the the info of junctions to be added.
+#' @param junctions_all data.frame that will contain data on junctions from all
+#'   samples.
+#' @param junctions data.frame containing the data of junctions from one sample.
 #'
-#' @return df with the junctions from junctions incoporated into junctions_all.
+#' @return data.frame with the data `junctions` incoporated into
+#'   `junctions_all`.
 #'
 #' @keywords internal
 #' @noRd
@@ -228,7 +228,6 @@ junction_load <- function(junction_paths,
     }
 
     # convert count to count_X only if count exists as a column
-    #
     if (any(colnames(junctions_all) == "count")) {
 
         # number of cols should equal the number of samples
@@ -250,6 +249,8 @@ junction_load <- function(junction_paths,
 #' Dropbox using \code{\link[BiocFileCache]{BiocFileCache}}.
 #'
 #' @inheritParams junction_load
+#'
+#' @return data.frame containing GTEx junctions.
 #'
 #' @keywords internal
 #' @noRd
@@ -281,16 +282,17 @@ junction_load <- function(junction_paths,
     return(GTEx_junctions_tidy)
 }
 
-#' Make sure that control junctions use the same coordinate system as the user's
+#' Harmonise the control junction co-ordinates
 #'
-#' \code{.control_coord_convert} will convert control junctions to match users
-#' junctions. If user's co-ordinate system set to "ensembl",  "chrM" will be
-#' converted to "MT", the "chr" will be removed from chromosomes, and 1 will be
-#' added to both "start" and "end". If user's co-ordinate system set to "ucsc",
-#' 1 will be taken off from the start and end to convert from 1-based to 0-based
-#' co-ordinates.
+#' `.control_coord_convert` will convert control junctions to match users
+#' junctions. If `coord_system` set to "ensembl", "chrM" will be converted to
+#' "MT", the "chr" will be removed from chromosomes. If `coord_system` set to
+#' "ucsc", 1 will be taken off from the start and end to convert from 1-based to
+#' 0-based co-ordinates.
 #'
 #' @inheritParams junction_load
+#'
+#' @return data.frame containing control junctions with harmonised co-ordinates.
 #'
 #' @keywords internal
 #' @noRd

@@ -2,8 +2,7 @@
 % Please edit documentation in R/coverage_norm.R
 \name{coverage_norm}
 \alias{coverage_norm}
-\title{For each junction, obtain the normalised coverage across associated
-exonic/intronic regions}
+\title{Load and normalise coverage from RNA-sequencing data}
 \usage{
 coverage_norm(
   junctions,
@@ -22,22 +21,21 @@ coverage_norm(
 \link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
 object.}
 
-\item{ref}{either path to gtf/gff3 or object of class \code{TxDb} imported using
-\code{\link[GenomicFeatures]{makeTxDbFromGFF}}.}
+\item{ref}{either path to gtf/gff3 or object of class \link[GenomicFeatures:TxDb-class]{TxDb-class}.}
 
 \item{unannot_width}{integer scalar determining the width of the region to
 obtain coverage from when the end of of a junction does not overlap an
 existing exon.}
 
-\item{coverage_paths_case}{paths to the BigWig/BAM files containing the
+\item{coverage_paths_case}{paths to the BigWig files containing the
 coverage of your case samples. Must be the same length and order to the
-rows of the assays in \code{junctions}.}
+samples in \code{junctions}.}
 
-\item{coverage_paths_control}{paths to the BigWig/BAM files}
+\item{coverage_paths_control}{paths to the BigWig files}
 
 \item{coverage_chr_control}{either "chr" or "no_chr", indicating the
-chromosome format of control coverage data. To be used if you know the
-chromosome format of the control BigWig/BAM files is different to that of
+chromosome format of control coverage data. Only used if you know the
+chromosome format of the control BigWig files is different to that of
 your junctions.}
 
 \item{load_func}{a function to use to load coverage. Currently only for
@@ -45,24 +43,26 @@ internal use to increase testing speed.}
 
 \item{bp_param}{a
 \link[BiocParallel:BiocParallelParam-class]{BiocParallelParam-class} instance
-denoting whether to parrallelise the loading of coverage across BigWigs.}
+denoting whether to parallelise the loading of coverage across BigWig files.}
 
-\item{norm_const}{numeric to add to the normalised coverage to avoid dividing
+\item{norm_const}{numeric scaler to add to the normalisation coverage to avoid dividing
 by 0s and resulting NaN or Inf values.}
 }
 \value{
-list containing sublists, one for cases and the other controls. Each
+list containing two sublists, one for cases and the other controls. Each
 sublist contains 3 matrices, corresponding the coverage for each sample
 across the 2 exons and intron associated with every junction.
 }
 \description{
-\code{coverage_norm} obtains regions of interest for each junction where
-coverage disruptions would be expected. If ends of junctions are annotated,
-it will use the overlapping exon definitions, picking the shortest exon when
-multiple overlap one end. If unannotated, will use a user-defined width (i.e.
-20bp). To compare between samples (case/controls) coverage is normalised to a
-set region. By default, the boundaries of each gene associated to a junction
-are used as the region to normalise to.
+\code{coverage_norm} obtains regions of interest for each junction where coverage
+disruptions would be expected. These consist of the intron itself the
+overlapping exon definitions (if ends of junctions are annotated), picking
+the shortest exon when multiple overlap one end. If ends are unannotated,
+\code{coverage_norm} will use a user-defined width set by \code{unannot_width}. Then,
+coverage will be loaded using
+\href{https://github.com/ChristopherWilks/megadepth}{megadepth} and
+normalised to a set region per junction.  By default, the boundaries of each
+gene associated to a junction are used as the region to normalise to.
 }
 \examples{
 
@@ -86,5 +86,10 @@ coverage <- coverage_norm(
 )
 junctions
 }
-
 }
+\seealso{
+Coverage processing functions
+\code{\link{coverage_process}()},
+\code{\link{coverage_score}()}
+}
+\concept{coverage}

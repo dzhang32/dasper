@@ -1,33 +1,33 @@
-#' Filter junctions
+#' Filter junctions by count, width, annotation or region
 #'
-#' \code{junction_filter} filters out "noisy" junctions based on counts, the
+#' `junction_filter` filters out "noisy" junctions based on counts, the
 #' width of junctions, annotation category of the junction returned from
-#' \code{\link{junction_annot}} and whether the junction overlaps with a set of
+#' [junction_annot] and whether the junction overlaps with a set of
 #' (blacklist) regions.
 #'
 #' @inheritParams junction_annot
 #'
 #' @param count_thresh named vector with names matching the names of the
-#'   \code{\link[SummarizedExperiment]{assays}} in \code{junctions}. Values
+#'   [assays][SummarizedExperiment::SummarizedExperiment-class] in `junctions`. Values
 #'   denote the number of counts below which a junction will be filtered out.
 #' @param n_samp named vector with names matching the names of the
-#'   \code{\link[SummarizedExperiment]{assays}} in \code{junctions}. Values
+#'   [assays][SummarizedExperiment::SummarizedExperiment-class] in `junctions`. Values
 #'   denotes number of samples that have to express the junction above the
-#'   \code{count_thresh} in order for that junction to not be filtered.
+#'   `count_thresh` in order for that junction to not be filtered.
 #' @param width_range numeric vector of length 2. The first element denoting the
 #'   lower limit of junction width and the second the upper limit. Junctions
 #'   with widths outside this range will be filtered out.
 #' @param types any junctions matching these types, derived form
-#'   \code{\link{junction_annot}} e.g. "unannotated" will be filtered out.
+#'   [junction_annot] will be filtered out.
 #' @param regions any junctions overlapping this set of regions (in a
-#'   \code{\link[GenomicRanges]{GRanges}} format) will be filtered out.
+#'   [GRanges-class][GenomicRanges::GRanges-class] format) will be filtered out.
 #'
 #' @return
 #'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
 #'   containing filtered set of junctions.
 #'
 #' @seealso ENCODE blacklist regions recommended to  be included as
-#'   \code{regions} can be downloaded from
+#'   `regions` can be downloaded from
 #'   \url{https://github.com/Boyle-Lab/Blacklist/blob/master/lists/hg38-blacklist.v2.bed.gz}.
 #'    Further information can be found via the publication
 #'   \url{https://www.nature.com/articles/s41598-019-45839-z}.
@@ -36,8 +36,10 @@
 #'
 #' junctions_filtered <- junction_filter(junctions_example)
 #' junctions_filtered
+#' @family junction
 #' @export
-junction_filter <- function(junctions,
+junction_filter <- function(
+    junctions,
     count_thresh = c("raw" = 5),
     n_samp = c("raw" = 1),
     width_range = NULL,
@@ -100,15 +102,15 @@ junction_filter <- function(junctions,
     return(junctions)
 }
 
-#' Filter junctions
+#' Obtain junction count filter
 #'
-#' \code{.junction_filter_count} obtains a logical vector with TRUE marking the
+#' `.junction_filter_count` obtains a logical vector with TRUE marking the
 #' junctions that are above the count filter specified.
 #'
 #' @inheritParams junction_filter
 #'
-#' @return logical vector with length equal to the number of \code{junctions}
-#'   with TRUE meaning the junction has passed the count filter.
+#' @return logical vector with length equal to the length of `junctions` with
+#'   TRUE denoting junctions above the count filter.
 #'
 #' @keywords internal
 #' @noRd
