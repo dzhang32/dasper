@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Filter junctions — junction_filter • dasper</title>
+<title>Filter junctions by count, width, annotation or region — junction_filter • dasper</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Filter junctions — junction_filter" />
+<meta property="og:title" content="Filter junctions by count, width, annotation or region — junction_filter" />
 <meta property="og:description" content="junction_filter filters out &quot;noisy&quot; junctions based on counts, the
 width of junctions, annotation category of the junction returned from
 junction_annot and whether the junction overlaps with a set of
@@ -117,7 +117,7 @@ junction_annot and whether the junction overlaps with a set of
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Filter junctions</h1>
+    <h1>Filter junctions by count, width, annotation or region</h1>
     <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/junction_filter.R'><code>R/junction_filter.R</code></a></small>
     <div class="hidden name"><code>junction_filter.Rd</code></div>
     </div>
@@ -125,7 +125,7 @@ junction_annot and whether the junction overlaps with a set of
     <div class="ref-description">
     <p><code>junction_filter</code> filters out "noisy" junctions based on counts, the
 width of junctions, annotation category of the junction returned from
-<code><a href='junction_annot.html'>junction_annot</a></code> and whether the junction overlaps with a set of
+<a href='junction_annot.html'>junction_annot</a> and whether the junction overlaps with a set of
 (blacklist) regions.</p>
     </div>
 
@@ -150,13 +150,13 @@ object.</p></td>
     <tr>
       <th>count_thresh</th>
       <td><p>named vector with names matching the names of the
-<code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a></code> in <code>junctions</code>. Values
+<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a> in <code>junctions</code>. Values
 denote the number of counts below which a junction will be filtered out.</p></td>
     </tr>
     <tr>
       <th>n_samp</th>
       <td><p>named vector with names matching the names of the
-<code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a></code> in <code>junctions</code>. Values
+<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a> in <code>junctions</code>. Values
 denotes number of samples that have to express the junction above the
 <code>count_thresh</code> in order for that junction to not be filtered.</p></td>
     </tr>
@@ -169,12 +169,12 @@ with widths outside this range will be filtered out.</p></td>
     <tr>
       <th>types</th>
       <td><p>any junctions matching these types, derived form
-<code><a href='junction_annot.html'>junction_annot</a></code> e.g. "unannotated" will be filtered out.</p></td>
+<a href='junction_annot.html'>junction_annot</a> will be filtered out.</p></td>
     </tr>
     <tr>
       <th>regions</th>
       <td><p>any junctions overlapping this set of regions (in a
-<code><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></code> format) will be filtered out.</p></td>
+<a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges-class</a> format) will be filtered out.</p></td>
     </tr>
     </table>
 
@@ -188,13 +188,19 @@ containing filtered set of junctions.</p>
 <code>regions</code> can be downloaded from
 <a href='https://github.com/Boyle-Lab/Blacklist/blob/master/lists/hg38-blacklist.v2.bed.gz'>https://github.com/Boyle-Lab/Blacklist/blob/master/lists/hg38-blacklist.v2.bed.gz</a>.
 Further information can be found via the publication
-<a href='https://www.nature.com/articles/s41598-019-45839-z'>https://www.nature.com/articles/s41598-019-45839-z</a>.</p></div>
+<a href='https://www.nature.com/articles/s41598-019-45839-z'>https://www.nature.com/articles/s41598-019-45839-z</a>.</p>
+<p>Junction processing functions
+<code><a href='junction_annot.html'>junction_annot</a>()</code>,
+<code><a href='junction_load.html'>junction_load</a>()</code>,
+<code><a href='junction_norm.html'>junction_norm</a>()</code>,
+<code><a href='junction_process.html'>junction_process</a>()</code>,
+<code><a href='junction_score.html'>junction_score</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'>junctions_filtered</span> <span class='op'>&lt;-</span> <span class='fu'>junction_filter</span>(<span class='kw'>junctions_example</span>)</div><div class='output co'>#&gt; [1] "2020-08-19 10:50:19 - Filtering junctions..."
-#&gt; [1] "2020-08-19 10:50:19 - by count..."
-#&gt; [1] "2020-08-19 10:50:19 - done!"</div><div class='input'><span class='kw'>junctions_filtered</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
+<span class='kw'>junctions_filtered</span> <span class='op'>&lt;-</span> <span class='fu'>junction_filter</span>(<span class='kw'>junctions_example</span>)</div><div class='output co'>#&gt; [1] "2020-08-20 20:37:55 - Filtering junctions..."
+#&gt; [1] "2020-08-20 20:37:55 - by count..."
+#&gt; [1] "2020-08-20 20:37:55 - done!"</div><div class='input'><span class='kw'>junctions_filtered</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
 #&gt; dim: 4873 5 
 #&gt; metadata(0):
 #&gt; assays(1): raw

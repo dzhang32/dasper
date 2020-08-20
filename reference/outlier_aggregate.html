@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Summarise outlier info per junction to cluster-level — outlier_aggregate • dasper</title>
+<title>Aggregate outlier scores from per junction to cluster-level — outlier_aggregate • dasper</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,10 @@
 
 
 
-<meta property="og:title" content="Summarise outlier info per junction to cluster-level — outlier_aggregate" />
-<meta property="og:description" content="outlier_aggregate will aggregate the outlier scores into a
-cluster-level. It will then rank each cluster based on this aggregated score
-and annotate each cluster with it's most likely associated gene and
-transcript." />
+<meta property="og:title" content="Aggregate outlier scores from per junction to cluster-level — outlier_aggregate" />
+<meta property="og:description" content="outlier_aggregate will aggregate the outlier scores into a cluster-level.
+It will then rank each cluster based on this aggregated score and annotate
+each cluster with it's associated gene and transcript." />
 
 
 
@@ -117,16 +116,15 @@ transcript." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Summarise outlier info per junction to cluster-level</h1>
+    <h1>Aggregate outlier scores from per junction to cluster-level</h1>
     <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/outlier_aggregate.R'><code>R/outlier_aggregate.R</code></a></small>
     <div class="hidden name"><code>outlier_aggregate.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>outlier_aggregate</code> will aggregate the outlier scores into a
-cluster-level. It will then rank each cluster based on this aggregated score
-and annotate each cluster with it's most likely associated gene and
-transcript.</p>
+    <p><code>outlier_aggregate</code> will aggregate the outlier scores into a cluster-level.
+It will then rank each cluster based on this aggregated score and annotate
+each cluster with it's associated gene and transcript.</p>
     </div>
 
     <pre class="usage"><span class='fu'>outlier_aggregate</span>(<span class='kw'>junctions</span>, samp_id_col = <span class='st'>"samp_id"</span>)</pre>
@@ -143,7 +141,7 @@ object.</p></td>
     <tr>
       <th>samp_id_col</th>
       <td><p>name of the column in the
-<code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>colData</a></code> that details the sample ids.</p></td>
+<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>SummarizedExperiment</a>  that details the sample ids.</p></td>
     </tr>
     </table>
 
@@ -151,6 +149,11 @@ object.</p></td>
 
     <p><code>DataFrame</code> with one row per cluster detailing each cluster's
 associated junctions, outlier scores, ranks and genes.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Outlier processing functions
+<code><a href='outlier_detect.html'>outlier_detect</a>()</code>,
+<code><a href='outlier_process.html'>outlier_process</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wrapper function for processing junctions — junction_process • dasper</title>
+<title>Wrapper for processing junctions — junction_process • dasper</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Wrapper function for processing junctions — junction_process" />
+<meta property="og:title" content="Wrapper for processing junctions — junction_process" />
 <meta property="og:description" content="junction_process wraps all &quot;junction_&quot; prefixed functions in
 dasper except junction_load. This is designed to simplify
 processing of the junction data for those familiar or uninterested with the
@@ -117,14 +117,14 @@ intermediates." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Wrapper function for processing junctions</h1>
+    <h1>Wrapper for processing junctions</h1>
     <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/junction_process.R'><code>R/junction_process.R</code></a></small>
     <div class="hidden name"><code>junction_process.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p><code>junction_process</code> wraps all "junction_" prefixed functions in
-<code>dasper</code> except <a href='junction_load.html'>junction_load</a>. This is designed to simplify
+<a href='dasper.html'>dasper</a> except <a href='junction_load.html'>junction_load</a>. This is designed to simplify
 processing of the junction data for those familiar or uninterested with the
 intermediates.</p>
     </div>
@@ -152,19 +152,18 @@ object.</p></td>
     </tr>
     <tr>
       <th>ref</th>
-      <td><p>either path to gtf/gff3 or object of class <code>TxDb</code> imported using
-<code><a href='https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html'>makeTxDbFromGFF</a></code>.</p></td>
+      <td><p>either path to gtf/gff3 or object of class <a href='https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html'>TxDb-class</a>.</p></td>
     </tr>
     <tr>
       <th>count_thresh</th>
       <td><p>named vector with names matching the names of the
-<code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a></code> in <code>junctions</code>. Values
+<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a> in <code>junctions</code>. Values
 denote the number of counts below which a junction will be filtered out.</p></td>
     </tr>
     <tr>
       <th>n_samp</th>
       <td><p>named vector with names matching the names of the
-<code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a></code> in <code>junctions</code>. Values
+<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a> in <code>junctions</code>. Values
 denotes number of samples that have to express the junction above the
 <code>count_thresh</code> in order for that junction to not be filtered.</p></td>
     </tr>
@@ -177,21 +176,20 @@ with widths outside this range will be filtered out.</p></td>
     <tr>
       <th>types</th>
       <td><p>any junctions matching these types, derived form
-<code><a href='junction_annot.html'>junction_annot</a></code> e.g. "unannotated" will be filtered out.</p></td>
+<a href='junction_annot.html'>junction_annot</a> will be filtered out.</p></td>
     </tr>
     <tr>
       <th>regions</th>
       <td><p>any junctions overlapping this set of regions (in a
-<code><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></code> format) will be filtered out.</p></td>
+<a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges-class</a> format) will be filtered out.</p></td>
     </tr>
     <tr>
       <th>score_func</th>
-      <td><p>function to score junctions by abnromality. By default,
-will use a z-score. But this can be switched dependent on the format of the
-user's junction data. Function must take as input an x and y argument. x
-being the case junctions and y being the controls. This must return a
-numeric vector equal to the length of x with each element corresponding to
-a abnormality of a junction in each case sample.</p></td>
+      <td><p>function to score junctions by their abnormality. By default,
+will use a z-score but can be switched to a user-defined function. This
+function must take as input an <code>x</code> and <code>y</code> argument, containing case and
+control counts respectively. This must return a numeric vector equal to the
+length of <code>x</code> with elements corresponding to a abnormality of each junction.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -202,7 +200,15 @@ a abnormality of a junction in each case sample.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>RangedSummarizedExperiment-class</a>
-object containing filtered, annotated, normalised junction data with scores.</p>
+object containing filtered, annotated, normalised junction data with abnormality scores.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Junction processing functions
+<code><a href='junction_annot.html'>junction_annot</a>()</code>,
+<code><a href='junction_filter.html'>junction_filter</a>()</code>,
+<code><a href='junction_load.html'>junction_load</a>()</code>,
+<code><a href='junction_norm.html'>junction_norm</a>()</code>,
+<code><a href='junction_score.html'>junction_score</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -217,29 +223,29 @@ object containing filtered, annotated, normalised junction data with scores.</p>
         width_range = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>25</span>, <span class='fl'>1000000</span>),
         types = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span>),
     )</div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-08-19 10:50:23 - Filtering junctions..."
-#&gt; [1] "2020-08-19 10:50:23 - by count..."
-#&gt; [1] "2020-08-19 10:50:23 - by width..."
-#&gt; [1] "2020-08-19 10:50:23 - done!"
+#&gt; [1] "2020-08-20 20:37:58 - Filtering junctions..."
+#&gt; [1] "2020-08-20 20:37:58 - by count..."
+#&gt; [1] "2020-08-20 20:37:58 - by width..."
+#&gt; [1] "2020-08-20 20:37:58 - done!"
 #&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-08-19 10:50:23 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-08-19 10:50:23 - Importing gtf/gff3 as a TxDb..."</div><div class='output co'>#&gt; <span class='message'>Import genomic features from the file as a GRanges object ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Prepare the 'metadata' data frame ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Make the TxDb object ... </span></div><div class='output co'>#&gt; <span class='warning'>Warning: The "phase" metadata column contains non-NA values for features of type</span>
-#&gt; <span class='warning'>  stop_codon. This information was ignored.</span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; [1] "2020-08-19 10:51:39 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-08-19 10:51:39 - Tidying junction annotation..."
-#&gt; [1] "2020-08-19 10:51:39 - Deriving junction categories..."
-#&gt; [1] "2020-08-19 10:51:39 - done!"
+#&gt; [1] "2020-08-20 20:37:58 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-08-20 20:37:58 - Importing gtf/gff3 as a TxDb..."</div><div class='output co'>#&gt; <span class='message'>Import genomic features from the file as a GRanges object ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Prepare the 'metadata' data frame ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Make the TxDb object ... </span></div><div class='output co'>#&gt; <span class='warning'>Warning: The "phase" metadata column contains non-NA values for features of type</span>
+#&gt; <span class='warning'>  stop_codon. This information was ignored.</span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; [1] "2020-08-20 20:39:25 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-08-20 20:39:26 - Tidying junction annotation..."
+#&gt; [1] "2020-08-20 20:39:26 - Deriving junction categories..."
+#&gt; [1] "2020-08-20 20:39:26 - done!"
 #&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-08-19 10:51:39 - Filtering junctions..."
-#&gt; [1] "2020-08-19 10:51:39 - by type..."
-#&gt; [1] "2020-08-19 10:51:39 - done!"
+#&gt; [1] "2020-08-20 20:39:26 - Filtering junctions..."
+#&gt; [1] "2020-08-20 20:39:26 - by type..."
+#&gt; [1] "2020-08-20 20:39:26 - done!"
 #&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-08-19 10:51:39 - Clustering junctions..."
-#&gt; [1] "2020-08-19 10:51:40 - Normalising junction counts..."
-#&gt; [1] "2020-08-19 10:51:40 - done!"
+#&gt; [1] "2020-08-20 20:39:26 - Clustering junctions..."
+#&gt; [1] "2020-08-20 20:39:26 - Normalising junction counts..."
+#&gt; [1] "2020-08-20 20:39:27 - done!"
 #&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-08-19 10:51:40 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-08-19 10:51:40 - Generating junction abnormality score..."
-#&gt; [1] "2020-08-19 10:51:40 - done!"</div><div class='input'><span class='kw'>junctions_processed</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
+#&gt; [1] "2020-08-20 20:39:27 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-08-20 20:39:27 - Generating junction abnormality score..."
+#&gt; [1] "2020-08-20 20:39:27 - done!"</div><div class='input'><span class='kw'>junctions_processed</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
 #&gt; dim: 4706 2 
 #&gt; metadata(0):
 #&gt; assays(4): raw norm direction score

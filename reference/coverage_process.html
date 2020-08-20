@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wrapper function for processing coverage — coverage_process • dasper</title>
+<title>Wrapper for processing coverage — coverage_process • dasper</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,9 @@
 
 
 
-<meta property="og:title" content="Wrapper function for processing coverage — coverage_process" />
-<meta property="og:description" content="junction_process wraps all &quot;coverage_&quot; prefixed functions in
-dasper. This is designed to simplify processing of the covearge data
+<meta property="og:title" content="Wrapper for processing coverage — coverage_process" />
+<meta property="og:description" content="coverage_process wraps all &quot;coverage_&quot; prefixed functions in
+dasper. This is designed to simplify processing of the coverage data
 for those familiar or uninterested with the intermediates." />
 
 
@@ -116,14 +116,14 @@ for those familiar or uninterested with the intermediates." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Wrapper function for processing coverage</h1>
+    <h1>Wrapper for processing coverage</h1>
     <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/coverage_process.R'><code>R/coverage_process.R</code></a></small>
     <div class="hidden name"><code>coverage_process.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>junction_process</code> wraps all "coverage_" prefixed functions in
-<code>dasper</code>. This is designed to simplify processing of the covearge data
+    <p><code>coverage_process</code> wraps all "coverage_" prefixed functions in
+<a href='dasper.html'>dasper</a>. This is designed to simplify processing of the coverage data
 for those familiar or uninterested with the intermediates.</p>
     </div>
 
@@ -152,8 +152,7 @@ object.</p></td>
     </tr>
     <tr>
       <th>ref</th>
-      <td><p>either path to gtf/gff3 or object of class <code>TxDb</code> imported using
-<code><a href='https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html'>makeTxDbFromGFF</a></code>.</p></td>
+      <td><p>either path to gtf/gff3 or object of class <a href='https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html'>TxDb-class</a>.</p></td>
     </tr>
     <tr>
       <th>unannot_width</th>
@@ -163,19 +162,19 @@ existing exon.</p></td>
     </tr>
     <tr>
       <th>coverage_paths_case</th>
-      <td><p>paths to the BigWig/BAM files containing the
+      <td><p>paths to the BigWig files containing the
 coverage of your case samples. Must be the same length and order to the
-rows of the assays in <code>junctions</code>.</p></td>
+samples in <code>junctions</code>.</p></td>
     </tr>
     <tr>
       <th>coverage_paths_control</th>
-      <td><p>paths to the BigWig/BAM files</p></td>
+      <td><p>paths to the BigWig files</p></td>
     </tr>
     <tr>
       <th>coverage_chr_control</th>
       <td><p>either "chr" or "no_chr", indicating the
-chromosome format of control coverage data. To be used if you know the
-chromosome format of the control BigWig/BAM files is different to that of
+chromosome format of control coverage data. Only used if you know the
+chromosome format of the control BigWig files is different to that of
 your junctions.</p></td>
     </tr>
     <tr>
@@ -187,21 +186,20 @@ internal use to increase testing speed.</p></td>
       <th>bp_param</th>
       <td><p>a
 <a href='https://rdrr.io/pkg/BiocParallel/man/BiocParallelParam-class.html'>BiocParallelParam-class</a> instance
-denoting whether to parrallelise the loading of coverage across BigWigs.</p></td>
+denoting whether to parallelise the loading of coverage across BigWig files.</p></td>
     </tr>
     <tr>
       <th>norm_const</th>
-      <td><p>numeric to add to the normalised coverage to avoid dividing
+      <td><p>numeric scaler to add to the normalisation coverage to avoid dividing
 by 0s and resulting NaN or Inf values.</p></td>
     </tr>
     <tr>
       <th>score_func</th>
-      <td><p>function to score junctions by abnromality. By default,
-will use a z-score. But this can be switched dependent on the format of the
-user's junction data. Function must take as input an x and y argument. x
-being the case junctions and y being the controls. This must return a
-numeric vector equal to the length of x with each element corresponding to
-a abnormality of a junction in each case sample.</p></td>
+      <td><p>function to score junctions by their abnormality. By default,
+will use a z-score but can be switched to a user-defined function. This
+function must take as input an <code>x</code> and <code>y</code> argument, containing case and
+control counts respectively. This must return a numeric vector equal to the
+length of <code>x</code> with elements corresponding to a abnormality of each junction.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -213,9 +211,15 @@ a abnormality of a junction in each case sample.</p></td>
 
     <p><a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>RangedSummarizedExperiment-class</a>
 object containing junction data with coverage scores.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Coverage processing functions
+<code><a href='coverage_norm.html'>coverage_norm</a>()</code>,
+<code><a href='coverage_score.html'>coverage_score</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'>
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='kw'>ref</span> <span class='op'>&lt;-</span>
     <span class='st'>"ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"</span>
 <span class='kw'>junctions_w_coverage_2</span> <span class='op'>&lt;-</span>

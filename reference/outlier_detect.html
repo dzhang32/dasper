@@ -44,7 +44,7 @@
 assays named feature_names as
 input into an unsupervised outlier detection algorithm to score each junction
 based on how outlier-y it looks in relation to other junctions in the
-patient. The default score and outlier_scores can be
+patient. The default expected score and coverage_score features can be
 calculated using the junction_process and
 coverage_process respectively." />
 
@@ -127,12 +127,12 @@ coverage_process respectively." />
 
     <div class="ref-description">
     <p><code>outlier_detect</code> will use the features in
-<code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a></code> named <code>feature_names</code> as
+<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a> named <code>feature_names</code> as
 input into an unsupervised outlier detection algorithm to score each junction
 based on how outlier-y it looks in relation to other junctions in the
-patient. The default <code>score</code> and <code>outlier_scores</code> can be
-calculated using the <code><a href='junction_process.html'>junction_process</a></code> and
-<code><a href='coverage_process.html'>coverage_process</a></code> respectively.</p>
+patient. The default expected <code>score</code> and <code>coverage_score</code> features can be
+calculated using the <a href='junction_process.html'>junction_process</a> and
+<a href='coverage_process.html'>coverage_process</a> respectively.</p>
     </div>
 
     <pre class="usage"><span class='fu'>outlier_detect</span>(<span class='kw'>junctions</span>, feature_names = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"score"</span>, <span class='st'>"coverage_score"</span>), <span class='kw'>...</span>)</pre>
@@ -162,12 +162,15 @@ as input into the outlier detection model.</p></td>
 
     <p>junctions as a
 <a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>RangedSummarizedExperiment-class</a>
-object with additional assays named <code>outlier_scores</code>. The lower the
+object with additional assays named <code>outlier_score</code>. The lower the
 outlier score, the more of an outlier a junction is observed to be.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>for more details on the isolation forest model used:
-https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html</p></div>
+https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html</p>
+<p>Outlier processing functions
+<code><a href='outlier_aggregate.html'>outlier_aggregate</a>()</code>,
+<code><a href='outlier_process.html'>outlier_process</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>For each junction, obtain the normalised coverage across associated
-exonic/intronic regions — coverage_norm • dasper</title>
+<title>Load and normalise coverage from RNA-sequencing data — coverage_norm • dasper</title>
 
 
 <!-- jquery -->
@@ -40,15 +39,16 @@ exonic/intronic regions — coverage_norm • dasper</title>
 
 
 
-<meta property="og:title" content="For each junction, obtain the normalised coverage across associated
-exonic/intronic regions — coverage_norm" />
-<meta property="og:description" content="coverage_norm obtains regions of interest for each junction where
-coverage disruptions would be expected. If ends of junctions are annotated,
-it will use the overlapping exon definitions, picking the shortest exon when
-multiple overlap one end. If unannotated, will use a user-defined width (i.e.
-20bp). To compare between samples (case/controls) coverage is normalised to a
-set region. By default, the boundaries of each gene associated to a junction
-are used as the region to normalise to." />
+<meta property="og:title" content="Load and normalise coverage from RNA-sequencing data — coverage_norm" />
+<meta property="og:description" content="coverage_norm obtains regions of interest for each junction where coverage
+disruptions would be expected. These consist of the intron itself the
+overlapping exon definitions (if ends of junctions are annotated), picking
+the shortest exon when multiple overlap one end. If ends are unannotated,
+coverage_norm will use a user-defined width set by unannot_width. Then,
+coverage will be loaded using
+megadepth and
+normalised to a set region per junction.  By default, the boundaries of each
+gene associated to a junction are used as the region to normalise to." />
 
 
 
@@ -122,20 +122,21 @@ are used as the region to normalise to." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>For each junction, obtain the normalised coverage across associated
-exonic/intronic regions</h1>
+    <h1>Load and normalise coverage from RNA-sequencing data</h1>
     <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/coverage_norm.R'><code>R/coverage_norm.R</code></a></small>
     <div class="hidden name"><code>coverage_norm.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>coverage_norm</code> obtains regions of interest for each junction where
-coverage disruptions would be expected. If ends of junctions are annotated,
-it will use the overlapping exon definitions, picking the shortest exon when
-multiple overlap one end. If unannotated, will use a user-defined width (i.e.
-20bp). To compare between samples (case/controls) coverage is normalised to a
-set region. By default, the boundaries of each gene associated to a junction
-are used as the region to normalise to.</p>
+    <p><code>coverage_norm</code> obtains regions of interest for each junction where coverage
+disruptions would be expected. These consist of the intron itself the
+overlapping exon definitions (if ends of junctions are annotated), picking
+the shortest exon when multiple overlap one end. If ends are unannotated,
+<code>coverage_norm</code> will use a user-defined width set by <code>unannot_width</code>. Then,
+coverage will be loaded using
+<a href='https://github.com/ChristopherWilks/megadepth'>megadepth</a> and
+normalised to a set region per junction.  By default, the boundaries of each
+gene associated to a junction are used as the region to normalise to.</p>
     </div>
 
     <pre class="usage"><span class='fu'>coverage_norm</span>(
@@ -161,8 +162,7 @@ object.</p></td>
     </tr>
     <tr>
       <th>ref</th>
-      <td><p>either path to gtf/gff3 or object of class <code>TxDb</code> imported using
-<code><a href='https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html'>makeTxDbFromGFF</a></code>.</p></td>
+      <td><p>either path to gtf/gff3 or object of class <a href='https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html'>TxDb-class</a>.</p></td>
     </tr>
     <tr>
       <th>unannot_width</th>
@@ -172,19 +172,19 @@ existing exon.</p></td>
     </tr>
     <tr>
       <th>coverage_paths_case</th>
-      <td><p>paths to the BigWig/BAM files containing the
+      <td><p>paths to the BigWig files containing the
 coverage of your case samples. Must be the same length and order to the
-rows of the assays in <code>junctions</code>.</p></td>
+samples in <code>junctions</code>.</p></td>
     </tr>
     <tr>
       <th>coverage_paths_control</th>
-      <td><p>paths to the BigWig/BAM files</p></td>
+      <td><p>paths to the BigWig files</p></td>
     </tr>
     <tr>
       <th>coverage_chr_control</th>
       <td><p>either "chr" or "no_chr", indicating the
-chromosome format of control coverage data. To be used if you know the
-chromosome format of the control BigWig/BAM files is different to that of
+chromosome format of control coverage data. Only used if you know the
+chromosome format of the control BigWig files is different to that of
 your junctions.</p></td>
     </tr>
     <tr>
@@ -196,20 +196,25 @@ internal use to increase testing speed.</p></td>
       <th>bp_param</th>
       <td><p>a
 <a href='https://rdrr.io/pkg/BiocParallel/man/BiocParallelParam-class.html'>BiocParallelParam-class</a> instance
-denoting whether to parrallelise the loading of coverage across BigWigs.</p></td>
+denoting whether to parallelise the loading of coverage across BigWig files.</p></td>
     </tr>
     <tr>
       <th>norm_const</th>
-      <td><p>numeric to add to the normalised coverage to avoid dividing
+      <td><p>numeric scaler to add to the normalisation coverage to avoid dividing
 by 0s and resulting NaN or Inf values.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list containing sublists, one for cases and the other controls. Each
+    <p>list containing two sublists, one for cases and the other controls. Each
 sublist contains 3 matrices, corresponding the coverage for each sample
 across the 2 exons and intron associated with every junction.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Coverage processing functions
+<code><a href='coverage_process.html'>coverage_process</a>()</code>,
+<code><a href='coverage_score.html'>coverage_score</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -232,8 +237,7 @@ across the 2 exons and intron associated with every junction.</p>
     coverage_chr_control = <span class='st'>"chr"</span>
 )
 <span class='kw'>junctions</span>
-}
-</div></pre>
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

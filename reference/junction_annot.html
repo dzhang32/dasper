@@ -40,9 +40,9 @@
 
 
 <meta property="og:title" content="Annotate junctions using reference annotation — junction_annot" />
-<meta property="og:description" content="junction_annot annotates junctions by 1. Whether their start and/or
+<meta property="og:description" content="junction_annot annotates junctions by 1. whether their start and/or
 end position precisely overlaps with an annotated exon boundary and 2.
-Whether that junction matches any intron definition from existing annotation.
+whether that junction matches an intron definition from existing annotation.
 Using this information along with the strand, junctions are categorised into
 &quot;annotated&quot;, &quot;novel_acceptor&quot;, &quot;novel_donor&quot;, &quot;novel_combo&quot;,
 &quot;novel_exon_skip&quot;, &quot;ambig_gene&quot; and &quot;unannotated&quot;." />
@@ -125,9 +125,9 @@ Using this information along with the strand, junctions are categorised into
     </div>
 
     <div class="ref-description">
-    <p><code>junction_annot</code> annotates junctions by 1. Whether their start and/or
+    <p><code>junction_annot</code> annotates junctions by 1. whether their start and/or
 end position precisely overlaps with an annotated exon boundary and 2.
-Whether that junction matches any intron definition from existing annotation.
+whether that junction matches an intron definition from existing annotation.
 Using this information along with the strand, junctions are categorised into
 "annotated", "novel_acceptor", "novel_donor", "novel_combo",
 "novel_exon_skip", "ambig_gene" and "unannotated".</p>
@@ -146,8 +146,7 @@ object.</p></td>
     </tr>
     <tr>
       <th>ref</th>
-      <td><p>either path to gtf/gff3 or object of class <code>TxDb</code> imported using
-<code><a href='https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html'>makeTxDbFromGFF</a></code>.</p></td>
+      <td><p>either path to gtf/gff3 or object of class <a href='https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html'>TxDb-class</a>.</p></td>
     </tr>
     </table>
 
@@ -157,6 +156,14 @@ object.</p></td>
 <a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>RangedSummarizedExperiment-class</a>
 object with additional <code>rowData</code> detailing overlapping
 genes/transcripts/exons and junction categories.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Junction processing functions
+<code><a href='junction_filter.html'>junction_filter</a>()</code>,
+<code><a href='junction_load.html'>junction_load</a>()</code>,
+<code><a href='junction_norm.html'>junction_norm</a>()</code>,
+<code><a href='junction_process.html'>junction_process</a>()</code>,
+<code><a href='junction_score.html'>junction_score</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -168,12 +175,12 @@ genes/transcripts/exons and junction categories.</p>
             <span class='kw'>junctions_example</span>,
             <span class='kw'>ref</span>
         )
-}</div><div class='output co'>#&gt; [1] "2020-08-19 10:48:40 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-08-19 10:48:40 - Importing gtf/gff3 as a TxDb..."</div><div class='output co'>#&gt; <span class='message'>Import genomic features from the file as a GRanges object ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Prepare the 'metadata' data frame ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Make the TxDb object ... </span></div><div class='output co'>#&gt; <span class='warning'>Warning: The "phase" metadata column contains non-NA values for features of type</span>
-#&gt; <span class='warning'>  stop_codon. This information was ignored.</span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; [1] "2020-08-19 10:50:11 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-08-19 10:50:13 - Tidying junction annotation..."
-#&gt; [1] "2020-08-19 10:50:14 - Deriving junction categories..."
-#&gt; [1] "2020-08-19 10:50:19 - done!"</div><div class='input'><span class='kw'>junctions_annoted</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
+}</div><div class='output co'>#&gt; [1] "2020-08-20 20:36:07 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-08-20 20:36:07 - Importing gtf/gff3 as a TxDb..."</div><div class='output co'>#&gt; <span class='message'>Import genomic features from the file as a GRanges object ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Prepare the 'metadata' data frame ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Make the TxDb object ... </span></div><div class='output co'>#&gt; <span class='warning'>Warning: The "phase" metadata column contains non-NA values for features of type</span>
+#&gt; <span class='warning'>  stop_codon. This information was ignored.</span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; [1] "2020-08-20 20:37:47 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-08-20 20:37:49 - Tidying junction annotation..."
+#&gt; [1] "2020-08-20 20:37:49 - Deriving junction categories..."
+#&gt; [1] "2020-08-20 20:37:55 - done!"</div><div class='input'><span class='kw'>junctions_annoted</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
 #&gt; dim: 97671 5 
 #&gt; metadata(0):
 #&gt; assays(1): raw
