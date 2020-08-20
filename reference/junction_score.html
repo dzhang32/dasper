@@ -183,11 +183,11 @@ containing junction abnormality scores.</p>
     <pre class="examples"><div class='input'>
 <span class='co'>if</span> (<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span>(<span class='st'>"junctions_normed"</span>)) {
     <span class='kw'>junctions_normed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='junction_norm.html'>junction_norm</a></span>(<span class='kw'>junctions_example</span>)
-}</div><div class='output co'>#&gt; [1] "2020-08-20 20:39:27 - Clustering junctions..."
-#&gt; [1] "2020-08-20 20:39:28 - Normalising junction counts..."
-#&gt; [1] "2020-08-20 20:39:30 - done!"</div><div class='input'><span class='kw'>junctions_scored</span> <span class='op'>&lt;-</span> <span class='fu'>junction_score</span>(<span class='kw'>junctions_normed</span>)</div><div class='output co'>#&gt; [1] "2020-08-20 20:39:30 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-08-20 20:39:30 - Generating junction abnormality score..."
-#&gt; [1] "2020-08-20 20:39:33 - done!"</div><div class='input'><span class='kw'>junctions_scored</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
+}</div><div class='output co'>#&gt; [1] "2020-08-20 21:55:53 - Clustering junctions..."
+#&gt; [1] "2020-08-20 21:55:53 - Normalising junction counts..."
+#&gt; [1] "2020-08-20 21:55:55 - done!"</div><div class='input'><span class='kw'>junctions_scored</span> <span class='op'>&lt;-</span> <span class='fu'>junction_score</span>(<span class='kw'>junctions_normed</span>)</div><div class='output co'>#&gt; [1] "2020-08-20 21:55:55 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-08-20 21:55:56 - Generating junction abnormality score..."
+#&gt; [1] "2020-08-20 21:55:58 - done!"</div><div class='input'><span class='kw'>junctions_scored</span></div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
 #&gt; dim: 97671 2 
 #&gt; metadata(0):
 #&gt; assays(4): raw norm direction score
