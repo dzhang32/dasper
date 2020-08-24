@@ -53,7 +53,8 @@ assays(junctions)[["coverage_score"]] <- coverage_scores
 
 junctions_w_outlier_scores <- outlier_detect(junctions,
     feature_names = c("score", "coverage_score"),
-    random_state = 32L
+    random_state = 32L,
+    bp_param = BiocParallel::MulticoreParam(2)
 )
 
 up_indexes <- which(assays(junctions)[["direction"]][, 1] == 1)
@@ -141,7 +142,20 @@ test_that(".outlier_wrangle has the correct output", {
 
 ##### .outlier_cluster #####
 
-outlier_scores_samp <- .outlier_cluster(junctions_w_outlier_scores, outlier_scores_samp)
+# Generate key of cluster indexes vs junction indexes
+clusters <- SummarizedExperiment::rowData(junctions)[["clusters"]]
+names(clusters) <- seq_len(dim(junctions)[1])
+clusters <- unlist(clusters)
+clusters <- dplyr::tibble(
+    cluster_index = names(clusters),
+    junction_index = unname(clusters)
+)
+
+outlier_scores_samp <- BiocParallel::bplapply(outlier_scores_samp,
+    FUN = .outlier_cluster,
+    BPPARAM = BiocParallel::SerialParam(),
+    clusters = clusters
+)
 
 outlier_cluster_check <- function(junctions_w_outlier_scores, outlier_scores_samp) {
     clusters <- unlist(SummarizedExperiment::rowData(junctions_w_outlier_scores)[["clusters"]])
@@ -192,7 +206,12 @@ test_that(".outlier_cluster has the correct output", {
     ))
 })
 
-##### .outlier_cluster_tidy #####
+##### .outlier_cluster_annot & .outlier_cluster_tidy #####
+
+outlier_scores_samp <- BiocParallel::bplapply(outlier_scores_samp,
+    FUN = .outlier_cluster_annot,
+    BPPARAM = BiocParallel::SerialParam()
+)
 
 outlier_scores_tidy <- .outlier_cluster_tidy(outlier_scores_samp)
 
@@ -228,7 +247,10 @@ test_that("outlier_aggregate catches user input errors", {
 
 # Process outliers --------------------------------------------------------
 
-outlier_scores_tidy_2 <- outlier_process(junctions, random_state = 32L)
+outlier_scores_tidy_2 <- outlier_process(junctions,
+    random_state = 32L,
+    bp_param = BiocParallel::MulticoreParam(2)
+)
 
 test_that(".outlier_cluster_tidy has the correct output", {
     expect_equivalent(outlier_scores_tidy, outlier_scores_tidy_2)

@@ -4,7 +4,11 @@
 \alias{outlier_aggregate}
 \title{Aggregate outlier scores from per junction to cluster-level}
 \usage{
-outlier_aggregate(junctions, samp_id_col = "samp_id")
+outlier_aggregate(
+  junctions,
+  samp_id_col = "samp_id",
+  bp_param = BiocParallel::SerialParam()
+)
 }
 \arguments{
 \item{junctions}{junction data as a
@@ -12,7 +16,13 @@ outlier_aggregate(junctions, samp_id_col = "samp_id")
 object.}
 
 \item{samp_id_col}{name of the column in the
-\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment}  that details the sample ids.}
+\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment}
+that details the sample ids.}
+
+\item{bp_param}{a
+\link[BiocParallel:BiocParallelParam-class]{BiocParallelParam-class} instance
+denoting whether to parallelise the calculating of outlier scores across
+samples.}
 }
 \value{
 \code{DataFrame} with one row per cluster detailing each cluster's

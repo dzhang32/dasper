@@ -8,6 +8,7 @@ outlier_process(
   junctions,
   feature_names = c("score", "coverage_score"),
   samp_id_col = "samp_id",
+  bp_param = BiocParallel::SerialParam(),
   ...
 )
 }
@@ -16,11 +17,17 @@ outlier_process(
 \link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
 object.}
 
-\item{feature_names}{names of assays in \code{junctions} that are to be used
-as input into the outlier detection model.}
+\item{feature_names}{names of assays in \code{junctions} that are to be used as
+input into the outlier detection model.}
 
 \item{samp_id_col}{name of the column in the
-\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment}  that details the sample ids.}
+\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment}
+that details the sample ids.}
+
+\item{bp_param}{a
+\link[BiocParallel:BiocParallelParam-class]{BiocParallelParam-class} instance
+denoting whether to parallelise the calculating of outlier scores across
+samples.}
 
 \item{...}{additional arguments passed to the outlier detection model
 (isolation forest) for setting parameters.}

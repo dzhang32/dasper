@@ -5,15 +5,20 @@
 #' each cluster with it's associated gene and transcript.
 #'
 #' @inheritParams junction_annot
+#' @inheritParams outlier_detect
+#'
 #' @param samp_id_col name of the column in the
-#'   [SummarizedExperiment][SummarizedExperiment::SummarizedExperiment-class]  that details the sample ids.
+#'   [SummarizedExperiment][SummarizedExperiment::SummarizedExperiment-class]
+#'   that details the sample ids.
 #'
 #' @return \code{DataFrame} with one row per cluster detailing each cluster's
 #'   associated junctions, outlier scores, ranks and genes.
 #'
 #' @family outlier
 #' @export
-outlier_aggregate <- function(junctions, samp_id_col = "samp_id") {
+outlier_aggregate <- function(junctions,
+    samp_id_col = "samp_id",
+    bp_param = BiocParallel::SerialParam()) {
 
     ##### Check user input #####
 
@@ -35,7 +40,31 @@ outlier_aggregate <- function(junctions, samp_id_col = "samp_id") {
 
     ##### Aggregate scores to a cluster-level #####
 
-    outlier_scores_samp <- .outlier_cluster(junctions, outlier_scores_samp)
+    print(stringr::str_c(Sys.time(), " - Aggregating outlier scores to cluster level... "))
+
+    # Generate key of cluster indexes vs junction indexes
+    clusters <- SummarizedExperiment::rowData(junctions)[["clusters"]]
+    names(clusters) <- seq_len(dim(junctions)[1])
+    clusters <- unlist(clusters)
+    clusters <- dplyr::tibble(
+        cluster_index = names(clusters),
+        junction_index = unname(clusters)
+    )
+
+    outlier_scores_samp <- BiocParallel::bplapply(outlier_scores_samp,
+        FUN = .outlier_cluster,
+        BPPARAM = bp_param,
+        clusters = clusters
+    )
+
+    ##### Annotate clusters with gene details #####
+
+    print(stringr::str_c(Sys.time(), " - Annotating clusters with gene details..."))
+
+    outlier_scores_samp <- BiocParallel::bplapply(outlier_scores_samp,
+        FUN = .outlier_cluster_annot,
+        BPPARAM = bp_param
+    )
 
     ##### Tidy cluster-level scores #####
 
@@ -77,110 +106,103 @@ outlier_aggregate <- function(junctions, samp_id_col = "samp_id") {
 
 #' Aggregate the outlier scores from per junction into per cluster
 #'
-#' `.outlier_cluster` aggregates the scores from per junction into per
-#' cluster. In order: 1. finds most dysregulated UJ and DJ 2. filters out
-#' clusters without at least 1 UJ and DJ. 3. Obtain the mean outlier score
-#' between the most dysregulated UJ/DJ. 4. Rank clusters by the mean outlier
-#' score.
+#' `.outlier_cluster` aggregates the scores from per junction into per cluster.
+#' In order: 1. finds most dysregulated UJ and DJ 2. filters out clusters
+#' without at least 1 UJ and DJ. 3. Obtain the mean outlier score between the
+#' most dysregulated UJ/DJ. 4. Rank clusters by the mean outlier score.
 #'
-#' @inheritParams outlier_scores_samp
+#' @param outlier_scores data.frame containing details including outlier scores
+#'   per junction for each sample.
+#' @param clusters data.frame containing a key between cluster indexes vs
+#'   junction indexes.
 #'
 #' @return a list an with one element per sample, each containing a
 #'   `data.frame`.
 #'
 #' @keywords internal
 #' @noRd
-.outlier_cluster <- function(junctions, outlier_scores_samp) {
+.outlier_cluster <- function(outlier_scores, clusters) {
+    outlier_clusters <- clusters %>%
+        dplyr::left_join(outlier_scores, by = "junction_index")
 
-    ##### Generate key of cluster indexes vs junction indexes #####
+    # for each cluster, obtain most dysregulated UJs/DJs
+    # remove duplicated scores so clusters are forced to contain
+    # 1 or 2 junctions after this
+    outlier_clusters <- outlier_clusters %>%
+        dplyr::group_by(cluster_index, direction) %>%
+        dplyr::filter(
+            !duplicated(outlier_score),
+            outlier_score == min(outlier_score)
+        ) %>%
+        dplyr::ungroup()
 
-    clusters <- SummarizedExperiment::rowData(junctions)[["clusters"]]
-    names(clusters) <- seq_len(dim(junctions)[1])
-    clusters <- unlist(clusters)
-    clusters <- dplyr::tibble(
-        cluster_index = names(clusters),
-        junction_index = unname(clusters)
-    )
+    # keep only clusters that have at least 1 UJ and DJ
+    outlier_clusters <- outlier_clusters %>%
+        dplyr::group_by(cluster_index) %>%
+        dplyr::filter(dplyr::n() == 2) %>%
+        dplyr::ungroup()
 
-    for (i in seq_along(outlier_scores_samp)) {
-        print(stringr::str_c(
-            Sys.time(), " - Aggregating outlier scores to cluster level for sample ",
-            i, "/", length(outlier_scores_samp), "..."
-        ))
+    # obtain mean outlier score between most dysregulated UJ/DJ
+    outlier_clusters <- outlier_clusters %>%
+        dplyr::arrange(cluster_index, junction_index) %>% # makes sure indexes are in same order for different clusters
+        dplyr::group_by(cluster_index) %>%
+        dplyr::mutate(mean_outlier_score = mean(outlier_score)) %>%
+        dplyr::ungroup()
 
-        outlier_clusters <- clusters %>%
-            dplyr::left_join(outlier_scores_samp[[i]], by = "junction_index")
+    # nest junction details into a list and
+    # remove clusters with duplicated most dysregulated UJs and DJs
+    outlier_clusters <- outlier_clusters %>%
+        tidyr::nest(junctions = dplyr::one_of(c(
+            "junction_index",
+            "direction",
+            "outlier_score",
+            "gene_id_junction"
+        ))) %>%
+        dplyr::filter(!duplicated(junctions)) %>%
+        dplyr::mutate(rank = rank(mean_outlier_score))
 
-        # for each cluster, obtain most dysregulated UJs/DJs
-        # remove duplicated scores so clusters are forced to contain
-        # 1 or 2 junctions after this
-        outlier_clusters <- outlier_clusters %>%
-            dplyr::group_by(cluster_index, direction) %>%
-            dplyr::filter(
-                !duplicated(outlier_score),
-                outlier_score == min(outlier_score)
-            ) %>%
-            dplyr::ungroup()
+    return(outlier_clusters)
+}
 
-        # keep only clusters that have at least 1 UJ and DJ
-        outlier_clusters <- outlier_clusters %>%
-            dplyr::group_by(cluster_index) %>%
-            dplyr::filter(dplyr::n() == 2) %>%
-            dplyr::ungroup()
+#' Annotates cluster-level data with gene ids
+#'
+#' `.outlier_cluster_annot` uses the gene information from junctions to annotate
+#' the clusters with their associated gene id(s).
+#'
+#' @inheritParams .outlier_cluster
+#'
+#' @return a list an with one element per sample, each containing a
+#'   `data.frame`.
+#'
+#' @keywords internal
+#' @noRd
+.outlier_cluster_annot <- function(outlier_scores) {
+    gene_id_cluster <-
+        outlier_scores[["junctions"]] %>%
+        lapply(FUN = function(x) {
+            x[["gene_id_junction"]] %>%
+                unlist() %>%
+                unique()
+        })
 
-        # obtain mean outlier score between most dysregulated UJ/DJ
-        outlier_clusters <- outlier_clusters %>%
-            dplyr::arrange(cluster_index, junction_index) %>% # makes sure indexes are in same order for different clusters
-            dplyr::group_by(cluster_index) %>%
-            dplyr::mutate(mean_outlier_score = mean(outlier_score)) %>%
-            dplyr::ungroup()
+    outlier_scores[["gene_id_cluster"]] <- gene_id_cluster
 
-        # nest junction details into a list and
-        # remove clusters with duplicated most dysregulated UJs and DJs
-        outlier_clusters <- outlier_clusters %>%
-            tidyr::nest(junctions = dplyr::one_of(c(
-                "junction_index",
-                "direction",
-                "outlier_score",
-                "gene_id_junction"
-            ))) %>%
-            dplyr::filter(!duplicated(junctions)) %>%
-            dplyr::mutate(rank = rank(mean_outlier_score))
-
-        outlier_scores_samp[[i]] <- outlier_clusters
-    }
-
-    return(outlier_scores_samp)
+    return(outlier_scores)
 }
 
 #' Tidy the cluster-level outlier scores
 #'
-#' `.outlier_cluster_tidy` tidies the the cluster-level outlier scores
-#' returned by `.outlier_cluster` into a easily human-readable report.
+#' `.outlier_cluster_tidy` tidies the the cluster-level outlier scores into a
+#' easily human-readable report.
 #'
-#' @inheritParams outlier_scores_samp
+#' @param outlier_scores_samp list of length the number of samples, with each
+#'   element containing a data.frame with the cluster-level outlier scores for each junction.
 #'
 #' @return `DataFrame` with each row corresponding to a cluster.
 #'
 #' @keywords internal
 #' @noRd
 .outlier_cluster_tidy <- function(outlier_scores_samp) {
-    for (i in seq_along(outlier_scores_samp)) {
-        print(stringr::str_c(
-            Sys.time(), " - Tidying cluster-level outlier scores for sample ",
-            i, "/", length(outlier_scores_samp), "..."
-        ))
-
-        gene_id_cluster <-
-            outlier_scores_samp[[i]][["junctions"]] %>%
-            lapply(FUN = function(x) {
-                x[["gene_id_junction"]] %>%
-                    unlist() %>%
-                    unique()
-            })
-
-        outlier_scores_samp[[i]][["gene_id_cluster"]] <- gene_id_cluster
-    }
 
     # bind all samples together
     # then convert to Dataframe to allow CharacterList column

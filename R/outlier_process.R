@@ -16,20 +16,23 @@
 outlier_process <- function(junctions,
     feature_names = c("score", "coverage_score"),
     samp_id_col = "samp_id",
+    bp_param = BiocParallel::SerialParam(),
     ...) {
     print("# Detecting outliers using an isolation forest ------------------------------")
 
     junctions <- outlier_detect(
-        junctions,
-        feature_names,
+        junctions = junctions,
+        feature_names = feature_names,
+        bp_param = bp_param,
         ...
     )
 
     print("# Aggregating outlier scores to cluster-level -----------------------------")
 
     outlier_scores_tidy <- outlier_aggregate(
-        junctions,
-        samp_id_col
+        junctions = junctions,
+        samp_id_col = samp_id_col,
+        bp_param = bp_param
     )
 
     return(outlier_scores_tidy)

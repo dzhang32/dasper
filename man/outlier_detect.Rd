@@ -4,15 +4,25 @@
 \alias{outlier_detect}
 \title{Detecting outlier junctions}
 \usage{
-outlier_detect(junctions, feature_names = c("score", "coverage_score"), ...)
+outlier_detect(
+  junctions,
+  feature_names = c("score", "coverage_score"),
+  bp_param = BiocParallel::SerialParam(),
+  ...
+)
 }
 \arguments{
 \item{junctions}{junction data as a
 \link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
 object.}
 
-\item{feature_names}{names of assays in \code{junctions} that are to be used
-as input into the outlier detection model.}
+\item{feature_names}{names of assays in \code{junctions} that are to be used as
+input into the outlier detection model.}
+
+\item{bp_param}{a
+\link[BiocParallel:BiocParallelParam-class]{BiocParallelParam-class} instance
+denoting whether to parallelise the calculating of outlier scores across
+samples.}
 
 \item{...}{additional arguments passed to the outlier detection model
 (isolation forest) for setting parameters.}
@@ -20,16 +30,16 @@ as input into the outlier detection model.}
 \value{
 junctions as a
 \link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
-object with additional assays named \code{outlier_score}. The lower the
-outlier score, the more of an outlier a junction is observed to be.
+object with additional assays named \code{outlier_score}. The lower the outlier
+score, the more of an outlier a junction is observed to be.
 }
 \description{
 \code{outlier_detect} will use the features in
-\link[SummarizedExperiment:SummarizedExperiment-class]{assays} named \code{feature_names} as
-input into an unsupervised outlier detection algorithm to score each junction
-based on how outlier-y it looks in relation to other junctions in the
-patient. The default expected \code{score} and \code{coverage_score} features can be
-calculated using the \link{junction_process} and
+\link[SummarizedExperiment:SummarizedExperiment-class]{assays} named
+\code{feature_names} as input into an unsupervised outlier detection algorithm to
+score each junction based on how outlier-y it looks in relation to other
+junctions in the patient. The default expected \code{score} and \code{coverage_score}
+features can be calculated using the \link{junction_process} and
 \link{coverage_process} respectively.
 }
 \seealso{
