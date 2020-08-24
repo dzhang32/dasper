@@ -131,6 +131,7 @@ outlier junctions for those familiar or uninterested with the intermediates.</p>
   <span class='kw'>junctions</span>,
   feature_names = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"score"</span>, <span class='st'>"coverage_score"</span>),
   samp_id_col = <span class='st'>"samp_id"</span>,
+  bp_param = <span class='kw'>BiocParallel</span>::<span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span>(),
   <span class='kw'>...</span>
 )</pre>
 
@@ -145,13 +146,21 @@ object.</p></td>
     </tr>
     <tr>
       <th>feature_names</th>
-      <td><p>names of assays in <code>junctions</code> that are to be used
-as input into the outlier detection model.</p></td>
+      <td><p>names of assays in <code>junctions</code> that are to be used as
+input into the outlier detection model.</p></td>
     </tr>
     <tr>
       <th>samp_id_col</th>
       <td><p>name of the column in the
-<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>SummarizedExperiment</a>  that details the sample ids.</p></td>
+<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>SummarizedExperiment</a>
+that details the sample ids.</p></td>
+    </tr>
+    <tr>
+      <th>bp_param</th>
+      <td><p>a
+<a href='https://rdrr.io/pkg/BiocParallel/man/BiocParallelParam-class.html'>BiocParallelParam-class</a> instance
+denoting whether to parallelise the calculating of outlier scores across
+samples.</p></td>
     </tr>
     <tr>
       <th>...</th>

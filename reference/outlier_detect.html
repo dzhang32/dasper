@@ -41,11 +41,11 @@
 
 <meta property="og:title" content="Detecting outlier junctions — outlier_detect" />
 <meta property="og:description" content="outlier_detect will use the features in
-assays named feature_names as
-input into an unsupervised outlier detection algorithm to score each junction
-based on how outlier-y it looks in relation to other junctions in the
-patient. The default expected score and coverage_score features can be
-calculated using the junction_process and
+assays named
+feature_names as input into an unsupervised outlier detection algorithm to
+score each junction based on how outlier-y it looks in relation to other
+junctions in the patient. The default expected score and coverage_score
+features can be calculated using the junction_process and
 coverage_process respectively." />
 
 
@@ -127,15 +127,20 @@ coverage_process respectively." />
 
     <div class="ref-description">
     <p><code>outlier_detect</code> will use the features in
-<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a> named <code>feature_names</code> as
-input into an unsupervised outlier detection algorithm to score each junction
-based on how outlier-y it looks in relation to other junctions in the
-patient. The default expected <code>score</code> and <code>coverage_score</code> features can be
-calculated using the <a href='junction_process.html'>junction_process</a> and
+<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a> named
+<code>feature_names</code> as input into an unsupervised outlier detection algorithm to
+score each junction based on how outlier-y it looks in relation to other
+junctions in the patient. The default expected <code>score</code> and <code>coverage_score</code>
+features can be calculated using the <a href='junction_process.html'>junction_process</a> and
 <a href='coverage_process.html'>coverage_process</a> respectively.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>outlier_detect</span>(<span class='kw'>junctions</span>, feature_names = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"score"</span>, <span class='st'>"coverage_score"</span>), <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>outlier_detect</span>(
+  <span class='kw'>junctions</span>,
+  feature_names = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"score"</span>, <span class='st'>"coverage_score"</span>),
+  bp_param = <span class='kw'>BiocParallel</span>::<span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span>(),
+  <span class='kw'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -148,8 +153,15 @@ object.</p></td>
     </tr>
     <tr>
       <th>feature_names</th>
-      <td><p>names of assays in <code>junctions</code> that are to be used
-as input into the outlier detection model.</p></td>
+      <td><p>names of assays in <code>junctions</code> that are to be used as
+input into the outlier detection model.</p></td>
+    </tr>
+    <tr>
+      <th>bp_param</th>
+      <td><p>a
+<a href='https://rdrr.io/pkg/BiocParallel/man/BiocParallelParam-class.html'>BiocParallelParam-class</a> instance
+denoting whether to parallelise the calculating of outlier scores across
+samples.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -162,8 +174,8 @@ as input into the outlier detection model.</p></td>
 
     <p>junctions as a
 <a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>RangedSummarizedExperiment-class</a>
-object with additional assays named <code>outlier_score</code>. The lower the
-outlier score, the more of an outlier a junction is observed to be.</p>
+object with additional assays named <code>outlier_score</code>. The lower the outlier
+score, the more of an outlier a junction is observed to be.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>for more details on the isolation forest model used:

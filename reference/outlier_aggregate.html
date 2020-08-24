@@ -127,7 +127,11 @@ It will then rank each cluster based on this aggregated score and annotate
 each cluster with it's associated gene and transcript.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>outlier_aggregate</span>(<span class='kw'>junctions</span>, samp_id_col = <span class='st'>"samp_id"</span>)</pre>
+    <pre class="usage"><span class='fu'>outlier_aggregate</span>(
+  <span class='kw'>junctions</span>,
+  samp_id_col = <span class='st'>"samp_id"</span>,
+  bp_param = <span class='kw'>BiocParallel</span>::<span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span>()
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,7 +145,15 @@ object.</p></td>
     <tr>
       <th>samp_id_col</th>
       <td><p>name of the column in the
-<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>SummarizedExperiment</a>  that details the sample ids.</p></td>
+<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>SummarizedExperiment</a>
+that details the sample ids.</p></td>
+    </tr>
+    <tr>
+      <th>bp_param</th>
+      <td><p>a
+<a href='https://rdrr.io/pkg/BiocParallel/man/BiocParallelParam-class.html'>BiocParallelParam-class</a> instance
+denoting whether to parallelise the calculating of outlier scores across
+samples.</p></td>
     </tr>
     </table>
 
