@@ -235,8 +235,11 @@ jobs:
           # in particular to change PATH: 
           # echo "::add-path::/path/to/dir"
           echo "::add-path::/home/rstudio/tools"
-          # R PATH not updated with megadepth so let's append a line to .Rprofile
-          echo "Sys.setenv(PATH = paste('/home/rstudio/tools', Sys.getenv('PATH'), sep = ':'))" >> ~/.Rprofile
+          # R PATH not updated with megadepth so let's append a line to .Renviron
+          echo "PATH=/home/rstudio/tools:$PATH" >> ~/.Renviron
+          # we also have to make sure the R_CHECK_ENVIRON is set
+          # otherwise R CMD CHECK won't use ~/.Renviron
+          echo "R_CHECK_ENVIRON=~/.Renviron" >> /usr/local/lib/R/etc/Renviron.site
         shell: bash {0} 
         
       - name: install scikit-learn and pandas

@@ -44,7 +44,7 @@ junctions <- junctions_example[junctions_to_use] %>%
 junctions_sorted <- junctions %>% sort()
 
 test_that(".coverage_load has correct output", {
-    if (!(linux & local)) {
+    if (!(linux)) {
         skip("not testing loading coverage on windows/mac or from remote bws")
     }
 
