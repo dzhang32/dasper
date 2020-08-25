@@ -250,8 +250,8 @@ jobs:
 
       - name: Check
         env:
-           # add R_CHECK_ENVIRON
-           R_CHECK_ENVIRON: ~/.Renviron
+          # add R_CHECK_ENVIRON
+          R_CHECK_ENVIRON: ~/.Renviron
           _R_CHECK_CRAN_INCOMING_: false
         run: |
           rcmdcheck::rcmdcheck(
