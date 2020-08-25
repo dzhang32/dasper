@@ -239,7 +239,7 @@ jobs:
           echo "PATH=/home/rstudio/tools:$PATH" >> ~/.Renviron
           # we also have to make sure the R_CHECK_ENVIRON is set
           # otherwise R CMD CHECK won't use ~/.Renviron
-          echo "R_CHECK_ENVIRON=~/.Renviron" >> /usr/local/lib/R/etc/Renviron.site
+          # echo "R_CHECK_ENVIRON=~/.Renviron" >> /usr/local/lib/R/etc/Renviron.site
         shell: bash {0} 
         
       - name: install scikit-learn and pandas
@@ -250,6 +250,8 @@ jobs:
 
       - name: Check
         env:
+           # add R_CHECK_ENVIRON
+           R_CHECK_ENVIRON : ~/.Renviron
           _R_CHECK_CRAN_INCOMING_: false
         run: |
           rcmdcheck::rcmdcheck(
