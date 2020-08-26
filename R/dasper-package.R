@@ -10,6 +10,7 @@ NULL
 #' @importFrom methods is
 #' @importFrom magrittr %>%
 #' @importFrom dplyr count
+#' @importFrom data.table :=
 #' @importFrom GenomicRanges seqnames start end strand width
 #' @importFrom GenomicRanges start<- end<- strand<-
 #' @importFrom GenomicRanges findOverlaps GRanges

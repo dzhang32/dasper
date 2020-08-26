@@ -51,6 +51,7 @@ Imports:
     plyranges,
     reticulate,
     tidyr,
-    BiocParallel
+    BiocParallel,
+    data.table
 Depends: 
     R (>= 2.10)
