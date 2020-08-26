@@ -65,19 +65,24 @@ junction_load <- function(
     chr <- NULL
 
     ##### Read in and merge junction data #####
-    ##read as a list of data.table/data.frames
-    junctions_list = lapply(junction_paths,load_func)
-    ###add a SampleID column to each df in the list
-    samp_id = stringr::str_c("samp_", seq_along(junction_paths)) ###HEADS UP not sure why metadata was a tibble??
-    ###probably that can be removed
-    junctions_list = purrr::map2(junctions_list, samp_id, ~cbind(.x, SampleID = .y))
-    ###use the data.table rbindlist to make a long format
-    junctions_all = data.table::rbindlist(junctions_list)
-    if (!is.null(chrs)) {
-      junctions_all <- .chr_filter(junctions_all, chrs) ###I think this should work fine
-    }
-    junctions_all <- .junction_merge(junctions_all) ###I think this should work fine
 
+    junctions_all <- NULL
+
+    for (i in seq_along(junction_paths)) {
+        print(stringr::str_c(Sys.time(), " - Loading junctions for sample ", i, "/", length(junction_paths), "..."))
+
+        junctions <- load_func(junction_paths[i])
+
+        if (!all(colnames(junctions) %in% c("chr", "start", "end", "strand", "count"))) {
+            stop("load_func must return a data.frame with the columns 'chr', 'start', 'end', 'strand' and 'count'")
+        }
+
+        if (!is.null(chrs)) {
+            junctions <- .chr_filter(junctions, chrs)
+        }
+
+        junctions_all <- .junction_merge(junctions_all, junctions)
+    }
 
     ##### Add control data/identifier #####
 
@@ -152,64 +157,90 @@ junction_load <- function(
 #' @keywords internal
 #' @noRd
 .STAR_load <- function(junction_path) {
-    # for R CMD Check
-    chr <- `:=` <- uniq_map_read_count <- NULL #honestly no idea what going on here?
-    ###using data.table to read in the files
-    junctions <-
-        data.table::fread(junction_path,
-                          col.names = c(
-                              "chr", "start", "end", "strand",
-                              "intron_motif", "annotation", "uniq_map_read_count", "multi_map_read_count", "max_overhang"))
-    ##data.table version of doing a case case_when
-    ###we change type here so the as.character bit is required
-    junctions[, strand := as.character(strand)][strand == "0", strand := "*"][strand == "1", strand := "+"][strand == "2", strand := "-"]
-    ### .SD is subset data, .SDcols is either by name or number
-    junctions = junctions[,.SD,.SDcols = c(1,2,3,4,7)]
-    setnames(junctions,"uniq_map_read_count","count")
 
+    # using data.table to read in the files
+    junctions <- data.table::fread(junction_path,
+        col.names = c(
+            "chr", "start", "end", "strand",
+            "intron_motif", "annotation", "uniq_map_read_count", "multi_map_read_count", "max_overhang"
+        )
+    )
+
+    # data.table version of doing a case case_when
+    # we change type here so the as.character bit is required
+    junctions[, strand := as.character(strand)][strand == "0", strand := "*"][strand == "1", strand := "+"][strand == "2", strand := "-"]
+
+    # .SD is subset data, .SDcols is either by name or number
+    junctions <- junctions[, .SD, .SDcols = c(1, 2, 3, 4, 7)]
+    data.table::setnames(junctions, "uniq_map_read_count", "count")
+
+    junctions <- junctions %>% as.data.frame()
 
     return(junctions)
 }
 
 #' Merge two junction datasets together
 #'
-#' `.junction_merge` will merge a long dataset to wide format so will keep all rows from both datasets. It
+#' `.junction_merge` will merge two sets of junction data together. It uses a
+#' [full_join][dplyr::mutate-joins] so will keep all rows from both datasets. It
 #' will also ensure ambiguous strands ("*") are allowed to match with forward
 #' ("+") and reverse ("-") strands.
 #'
-#' @param junctions_all data.table that will contain data on junctions from all in long
+#' @param junctions_all data.frame that will contain data on junctions from all
 #'   samples.
+#' @param junctions data.frame containing the data of junctions from one sample.
 #'
-#' @return data.frame with the data `junctions_all` in a wide format
+#' @return data.frame with the data `junctions` incoporated into
+#'   `junctions_all`.
 #'
 #' @keywords internal
 #' @noRd
-.junction_merge <- function(junctions_all){
-      ###wide to long not taking strand into account -- looks like this
-    setkeyv(junctions_all, c("chr",  "start", "end","SampleID"))
-    # chr start   end samp_1 samp_2 samp_3 samp_4 samp_5 samp_6 samp_7
-    # 1: GL000195.1  2967 18392     NA     NA     NA     NA     NA      0     NA
-    # 2: GL000195.1  2967 18609      1     NA     NA      1     NA     NA     NA
-    # 3: GL000195.1 13868 18321     NA     NA     NA     NA     NA      0     NA
-    junctions_counts = dcast(junctions_all, chr +  start + end ~ SampleID, value.var = c("count"))
-    ###for every unique junciton take only the chr, start,end,strand
-    strands = unique(junctions_all[,.SD,.SDcols = c(1,2,3,4)])
-    ###now to a full join on the strands and counts tables
-    setkeyv(junctions_counts, c("chr",  "start", "end"))
-    setkeyv(strands, c("chr",  "start", "end"))
-    with_strand = junctions_counts[strands,on = c("chr",  "start", "end")]
-    ###now any start and end that had either '+' or '-' in one sample but "*" in another
-    ### will be duplicated
-    # chr start   end samp_1 samp_2 samp_3 samp_4 samp_5 samp_6 samp_7 strand
-    # 1: GL000195.1  2967 18392     NA     NA     NA     NA     NA      0     NA      *
-    #     2: GL000195.1  2967 18609      1     NA     NA      1     NA     NA     NA      *
-    #     3: GL000195.1 13868 18321     NA     NA     NA     NA     NA      0     NA      *
-    ###so we addd a count
-    with_strand[,N_reps := .N, by = c("chr","start","end")]
-    with_strand = with_strand[!(N_reps > 1 & strand == "*")]
-    with_strand$N_reps = NULL
+.junction_merge <- function(junctions_all, junctions) {
 
-    return(with_strand)
+    # for R CMD Check
+    `:=` <- NULL
+
+    if (is.null(junctions_all)) {
+        junctions_all <- junctions
+    } else {
+
+        # when merging allow for * strands to match with + or -
+        junctions_all <- junctions_all %>%
+            dplyr::full_join(junctions,
+                by = c("chr", "start", "end")
+            ) %>%
+            dplyr::mutate(
+                strand = dplyr::case_when(
+                    is.na(strand.y) ~ strand.x,
+                    is.na(strand.x) ~ strand.y,
+                    strand.x == strand.y ~ strand.x,
+                    strand.x == "*" ~ strand.y,
+                    strand.y == "*" ~ strand.x,
+                    TRUE ~ NA_character_
+                ),
+                strand.x = NULL,
+                strand.y = NULL
+            )
+
+        if (any(is.na(junctions_all[["strand"]]))) {
+            stop("No strands should be left as NA after processing")
+        }
+    }
+
+    # convert count to count_X only if count exists as a column
+    if (any(colnames(junctions_all) == "count")) {
+
+        # number of cols should equal the number of samples
+        num_count_cols <- junctions_all %>%
+            colnames() %>%
+            stringr::str_detect("count") %>%
+            sum()
+
+        junctions_all <- junctions_all %>%
+            dplyr::rename(!!stringr::str_c("count_", num_count_cols) := count)
+    }
+
+    return(junctions_all)
 }
 
 #' Download and merge control data from recount2
