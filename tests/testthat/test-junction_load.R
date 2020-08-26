@@ -10,7 +10,7 @@ junctions_example_1 <- .STAR_load(junctions_example_1_path)
 test_that(".STAR_load has the correct output", {
     expect_equal(nrow(junctions_example_1), 10000)
     expect_equal(ncol(junctions_example_1), 5)
-    expect_true(tibble::is_tibble(junctions_example_1))
+    expect_true(is(junctions_example_1, "data.frame"))
     expect_identical(colnames(junctions_example_1), c("chr", "start", "end", "strand", "count"))
 })
 
