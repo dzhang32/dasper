@@ -16,9 +16,11 @@ test_that(".chr_filter catches user-input errors", {
 
 ##### .coverage_load #####
 
+megadepth::install_megadepth()
+
 # only perform test if OS is linux
 # as megadepth testing not ready for windows/mac
-linux <- ifelse(Sys.info()[["sysname"]] == "Linux", TRUE, FALSE)
+# linux <- ifelse(Sys.info()[["sysname"]] == "Linux", TRUE, FALSE)
 
 local <- file.exists("/data/RNA_seq_diag/mito/bw//ION176.all.bw")
 
@@ -44,9 +46,9 @@ junctions <- junctions_example[junctions_to_use] %>%
 junctions_sorted <- junctions %>% sort()
 
 test_that(".coverage_load has correct output", {
-    if (!(linux & local)) {
-        skip("not testing loading coverage on windows/mac or from remote bws")
-    }
+    # if (!(linux & local)) {
+    #     skip("not testing loading coverage on windows/mac or from remote bws")
+    # }
 
     mcols(junctions)[["coverage"]] <-
         .coverage_load(

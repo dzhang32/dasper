@@ -109,25 +109,14 @@
 
     # check <- rtracklayer::import(coverage_path, which = regions, as = "NumericList")
 
-    system(
-        command = stringr::str_c(
-            "megadepth ", coverage_path,
-            " --op ", sum_fun,
-            " --annotation ", temp_regions_path,
-            " ", temp_coverage_prefix
-        ), ignore.stdout = TRUE
+    coverage <- megadepth::get_coverage(
+        bigwig_file = coverage_path,
+        op = sum_fun,
+        annotation = temp_regions_path,
+        prefix = temp_coverage_prefix
     )
 
-    suppressMessages(
-        coverage <- readr::read_delim(stringr::str_c(temp_coverage_prefix, ".all.tsv"),
-            delim = "\t",
-            col_names = c("chr", "start", "end", "cov"),
-            col_types = readr::cols(chr = "c", start = "i", end = "i", cov = "n"),
-            progress = FALSE
-        )
-    )
-
-    coverage <- coverage[["cov"]]
+    coverage <- mcols(coverage)[["cov"]]
 
     if (sum(coverage, na.rm = TRUE) == 0) {
         warning("Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.")

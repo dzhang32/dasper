@@ -202,11 +202,15 @@ jobs:
           message(paste('****', Sys.time(), 'pass number 2 at installing dependencies: any remaining dependencies ****'))
           deps <- remotes::dev_package_deps(dependencies = TRUE, repos = BiocManager::repositories())
           BiocManager::install(deps$package[deps$diff != 0])
-
+          
           ## For running the checks
           message(paste('****', Sys.time(), 'installing rcmdcheck and BiocCheck ****'))
           remotes::install_cran("rcmdcheck")
           BiocManager::install("BiocCheck")
+          
+          ## install megadepth and cmdfun manually from GitHub as not on bioconductor yet
+          remotes::install_github("LieberInstitute/megadepth")
+          remotes::install_github("snystrom/cmdfun")
         shell: Rscript {0}
 
       - name: Session info
@@ -217,31 +221,6 @@ jobs:
         shell: Rscript {0}
         
       ##### dasper specific dependencies ---------------------------------------
-      - name: download megadepth
-        run: |
-          cd ~
-          pwd
-          mkdir /home/rstudio/tools
-          wget -P /home/rstudio/tools https://github.com/ChristopherWilks/megadepth/releases/download/1.0.3/megadepth.libcurl4
-          mv /home/rstudio/tools/megadepth.libcurl4 /home/rstudio/tools/megadepth
-          echo $(ls /home/rstudio/tools)
-          chmod u+x /home/rstudio/tools/megadepth
-        shell: bash {0}
-      
-      - name: add megadepth to PATH
-        run: |
-          # based off of the example in 
-          # https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions
-          # in particular to change PATH: 
-          # echo "::add-path::/path/to/dir"
-          echo "::add-path::/home/rstudio/tools"
-          # R PATH not updated with megadepth so let's append a line to .Renviron
-          echo "PATH=/home/rstudio/tools:$PATH" >> ~/.Renviron
-          # we also have to make sure the R_CHECK_ENVIRON is set
-          # otherwise R CMD CHECK won't use ~/.Renviron
-          # echo "R_CHECK_ENVIRON=~/.Renviron" >> /usr/local/lib/R/etc/Renviron.site
-        shell: bash {0} 
-        
       - name: install scikit-learn and pandas
         run: |
           pip3 install scikit-learn pandas
@@ -440,6 +419,10 @@ jobs:
           message(paste('****', Sys.time(), 'installing rcmdcheck and BiocCheck ****'))
           remotes::install_cran("rcmdcheck")
           BiocManager::install("BiocCheck")
+          
+          ## install megadepth and cmdfun manually from GitHub as not on bioconductor yet
+          remotes::install_github("LieberInstitute/megadepth")
+          remotes::install_github("snystrom/cmdfun")
         shell: Rscript {0}
 
       - name: Session info
