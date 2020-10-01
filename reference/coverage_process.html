@@ -81,12 +81,6 @@ for those familiar or uninterested with the intermediates." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/dasper.html">Get started</a>
 </li>
 <li>
@@ -127,19 +121,19 @@ for those familiar or uninterested with the intermediates." />
 for those familiar or uninterested with the intermediates.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>coverage_process</span>(
-  <span class='kw'>junctions</span>,
-  <span class='kw'>ref</span>,
-  unannot_width = <span class='fl'>20</span>,
-  <span class='kw'>coverage_paths_case</span>,
-  <span class='kw'>coverage_paths_control</span>,
-  coverage_chr_control = <span class='kw'>NULL</span>,
-  load_func = <span class='kw'>.coverage_load</span>,
-  bp_param = <span class='kw'>BiocParallel</span>::<span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span>(),
-  norm_const = <span class='fl'>1</span>,
-  score_func = <span class='kw'>.zscore</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>coverage_process</span><span class='op'>(</span>
+  <span class='va'>junctions</span>,
+  <span class='va'>ref</span>,
+  unannot_width <span class='op'>=</span> <span class='fl'>20</span>,
+  <span class='va'>coverage_paths_case</span>,
+  <span class='va'>coverage_paths_control</span>,
+  coverage_chr_control <span class='op'>=</span> <span class='cn'>NULL</span>,
+  load_func <span class='op'>=</span> <span class='va'>.coverage_load</span>,
+  bp_param <span class='op'>=</span> <span class='fu'>BiocParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span>,
+  norm_const <span class='op'>=</span> <span class='fl'>1</span>,
+  score_func <span class='op'>=</span> <span class='va'>.zscore</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -219,24 +213,25 @@ object containing junction data with coverage scores.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>ref</span> <span class='op'>&lt;-</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>ref</span> <span class='op'>&lt;-</span>
     <span class='st'>"ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"</span>
-<span class='kw'>junctions_w_coverage_2</span> <span class='op'>&lt;-</span>
-    <span class='fu'>coverage_process</span>(
-        <span class='kw'>junctions_example</span>[, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>],
-        <span class='kw'>ref</span>,
-        unannot_width = <span class='fl'>20</span>,
-        <span class='kw'>coverage_paths_case</span>,
-        <span class='kw'>coverage_paths_control</span>,
-        coverage_chr_control = <span class='kw'>NULL</span>,
-        load_func = <span class='kw'>load_rand</span>,
-        norm_const = <span class='fl'>2</span>,
-        score_func = <span class='kw'>.zscore</span>,
-        sd_const = <span class='fl'>0.02</span>
-    )
-<span class='kw'>junctions_w_coverage_2</span>
-}
+<span class='va'>junctions_w_coverage_2</span> <span class='op'>&lt;-</span>
+    <span class='fu'>coverage_process</span><span class='op'>(</span>
+        <span class='va'>junctions_example</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>,
+        <span class='va'>ref</span>,
+        unannot_width <span class='op'>=</span> <span class='fl'>20</span>,
+        <span class='va'>coverage_paths_case</span>,
+        <span class='va'>coverage_paths_control</span>,
+        coverage_chr_control <span class='op'>=</span> <span class='cn'>NULL</span>,
+        load_func <span class='op'>=</span> <span class='va'>load_rand</span>,
+        norm_const <span class='op'>=</span> <span class='fl'>2</span>,
+        score_func <span class='op'>=</span> <span class='va'>.zscore</span>,
+        sd_const <span class='op'>=</span> <span class='fl'>0.02</span>
+    <span class='op'>)</span>
+<span class='va'>junctions_w_coverage_2</span>
+<span class='op'>}</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -253,7 +248,7 @@ object containing junction data with coverage scores.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

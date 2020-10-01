@@ -87,12 +87,6 @@ junction_load expects the junction data to be in STAR aligned format
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/dasper.html">Get started</a>
 </li>
 <li>
@@ -139,15 +133,15 @@ downloaded through <a href='http://snaptron.cs.jhu.edu/'>snaptron</a>. By defaul
 (SJ.out) but this can be modified via the argument <code>load_func</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>junction_load</span>(
-  <span class='kw'>junction_paths</span>,
-  metadata = <span class='kw'>dplyr</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(samp_id = <span class='kw'>stringr</span>::<span class='fu'><a href='https://stringr.tidyverse.org/reference/str_c.html'>str_c</a></span>(<span class='st'>"samp_"</span>,
-    <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_along</a></span>(<span class='kw'>junction_paths</span>))),
-  controls = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>FALSE</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>junction_paths</span>)),
-  load_func = <span class='kw'>.STAR_load</span>,
-  chrs = <span class='kw'>NULL</span>,
-  coord_system = <span class='st'>"ensembl"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>junction_load</span><span class='op'>(</span>
+  <span class='va'>junction_paths</span>,
+  metadata <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>samp_id <span class='op'>=</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_c.html'>str_c</a></span><span class='op'>(</span><span class='st'>"samp_"</span>,
+    <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_along</a></span><span class='op'>(</span><span class='va'>junction_paths</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
+  controls <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>FALSE</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>junction_paths</span><span class='op'>)</span><span class='op'>)</span>,
+  load_func <span class='op'>=</span> <span class='va'>.STAR_load</span>,
+  chrs <span class='op'>=</span> <span class='cn'>NULL</span>,
+  coord_system <span class='op'>=</span> <span class='st'>"ensembl"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -205,22 +199,23 @@ object containing junction data.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># TO DO - figure out how to use system.file in examples</span>
-<span class='kw'>junctions_example_1_path</span> <span class='op'>&lt;-</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"junctions_example_1.txt"</span>,
+<span class='va'>junctions_example_1_path</span> <span class='op'>&lt;-</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"junctions_example_1.txt"</span>,
         <span class='st'>"dasper"</span>,
-        mustWork = <span class='fl'>TRUE</span>
-    )
+        mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
+    <span class='op'>)</span>
 
-<span class='kw'>junctions</span> <span class='op'>&lt;-</span>
-    <span class='fu'>junction_load</span>(
-        junction_paths = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>junctions_example_1_path</span>),
-        metadata = <span class='kw'>dplyr</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(samp_id = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"example_1"</span>))
-    )
+<span class='va'>junctions</span> <span class='op'>&lt;-</span>
+    <span class='fu'>junction_load</span><span class='op'>(</span>
+        junction_paths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>junctions_example_1_path</span><span class='op'>)</span>,
+        metadata <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>samp_id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"example_1"</span><span class='op'>)</span><span class='op'>)</span>
+    <span class='op'>)</span>
 
-<span class='kw'>junctions</span>
-}
+<span class='va'>junctions</span>
+<span class='op'>}</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -237,7 +232,7 @@ object containing junction data.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
