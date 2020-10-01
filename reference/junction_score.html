@@ -178,12 +178,12 @@ containing junction abnormality scores.</p>
 <span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"junctions_normed"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
     <span class='va'>junctions_normed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='junction_norm.html'>junction_norm</a></span><span class='op'>(</span><span class='va'>junctions_example</span><span class='op'>)</span>
 <span class='op'>}</span>
-</div><div class='output co'>#&gt; [1] "2020-10-01 12:06:57 - Clustering junctions..."
-#&gt; [1] "2020-10-01 12:06:58 - Normalising junction counts..."
-#&gt; [1] "2020-10-01 12:06:59 - done!"</div><div class='input'><span class='va'>junctions_scored</span> <span class='op'>&lt;-</span> <span class='fu'>junction_score</span><span class='op'>(</span><span class='va'>junctions_normed</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-10-01 12:06:59 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-10-01 12:07:00 - Generating junction abnormality score..."
-#&gt; [1] "2020-10-01 12:07:03 - done!"</div><div class='input'><span class='va'>junctions_scored</span>
+</div><div class='output co'>#&gt; [1] "2020-10-01 17:51:15 - Clustering junctions..."
+#&gt; [1] "2020-10-01 17:51:16 - Normalising junction counts..."
+#&gt; [1] "2020-10-01 17:51:17 - done!"</div><div class='input'><span class='va'>junctions_scored</span> <span class='op'>&lt;-</span> <span class='fu'>junction_score</span><span class='op'>(</span><span class='va'>junctions_normed</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2020-10-01 17:51:17 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-10-01 17:51:18 - Generating junction abnormality score..."
+#&gt; [1] "2020-10-01 17:51:20 - done!"</div><div class='input'><span class='va'>junctions_scored</span>
 </div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
 #&gt; dim: 97671 2 
 #&gt; metadata(0):
