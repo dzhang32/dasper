@@ -33,7 +33,11 @@ Suggests:
     rmarkdown,
     tibble,
     knitcitations,
-    rtracklayer
+    rtracklayer,
+    ggplot2,
+    ggpubr,
+    grid,
+    ggrepel
 VignetteBuilder: knitr
 Imports: 
     stringr,

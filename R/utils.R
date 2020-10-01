@@ -193,6 +193,18 @@
     return(x_start_end)
 }
 
+# mark the midpoints to label with the count
+.mark_mid <- function(x) {
+
+    # the point with the lowest absolute diff from the mid
+    mid_index <- which.min(abs(x - mean(x)))
+
+    mid_marked <- logical(length = length(x))
+    mid_marked[mid_index] <- TRUE
+
+    return(mid_marked)
+}
+
 #' Merges [CharacterList][IRanges::AtomicList] objects
 #'
 #' `.merge_lists` merges two [CharacterList][IRanges::AtomicList] objects into
