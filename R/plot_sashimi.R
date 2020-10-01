@@ -1,6 +1,6 @@
 #' Visualise RNA-seq data in a the form of a sashimi plot
 #'
-#' \code{sashimi_plot} plots the splicing events and coverage over a specific
+#' \code{plot_sashimi} plots the splicing events and coverage over a specific
 #' genes/transcript and/or genomic region of interest. The plotting are built
 #' from `ggplot2` functions.
 #'
