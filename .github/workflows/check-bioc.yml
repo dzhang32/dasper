@@ -209,8 +209,8 @@ jobs:
           BiocManager::install("BiocCheck")
           
           ## install megadepth and cmdfun manually from GitHub as not on bioconductor yet
-          remotes::install_github("LieberInstitute/megadepth")
           remotes::install_github("snystrom/cmdfun")
+          remotes::install_github("LieberInstitute/megadepth")
         shell: Rscript {0}
 
       - name: Session info
@@ -421,8 +421,8 @@ jobs:
           BiocManager::install("BiocCheck")
           
           ## install megadepth and cmdfun manually from GitHub as not on bioconductor yet
-          remotes::install_github("LieberInstitute/megadepth")
           remotes::install_github("snystrom/cmdfun")
+          remotes::install_github("LieberInstitute/megadepth")
         shell: Rscript {0}
 
       - name: Session info
