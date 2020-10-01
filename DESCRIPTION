@@ -2,12 +2,14 @@ Package: dasper
 Title: Detecting abberant splicing events from RNA-sequencing data
 Version: 0.99.0
 Date: 2020-07-03
-Authors@R: 
-    person(given = "David",
-           family = "Zhang",
-           role = c("aut", "cre"),
-           email = "david.zhang@ucl.ac.uk",
-           comment = c(ORCID = "0000-0003-2382-8460"))
+Authors@R: c(person(given = "David", family = "Zhang", 
+    role = c("aut", "cre"),
+    email = "dyzhang32@gmail.com",
+    comment = c(ORCID = "0000-0003-2382-8460")), 
+    person(given = "Leonardo", family = "Collado-Torres",
+    role = c("ctb"),
+    email = "lcolladotor@gmail.com",
+    comment = c(ORCID = "0000-0003-2140-308X")))
 Description: The aim of dasper is to detect aberrant splicing events 
   from RNA-seq data. dasper will use as input both junction and 
   coverage data from RNA-seq to calculate the deviation of each 
