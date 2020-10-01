@@ -222,15 +222,15 @@ test_that("coords_to_plot has the correct output", {
     ))
 })
 
-##### sashimi_plot #####
+##### plot_sashimi #####
 
-sashimi1 <- sashimi_plot(
+sashimi1 <- plot_sashimi(
     junctions = junctions,
     ref = ref,
     gene_tx_id = "ENST00000480896"
 )
 
-sashimi2 <- sashimi_plot(
+sashimi2 <- plot_sashimi(
     junctions = junctions,
     ref = ref,
     gene_tx_id = "ENSG00000241973",
@@ -240,7 +240,7 @@ sashimi2 <- sashimi_plot(
     digits = 0
 )
 
-sashimi3 <- sashimi_plot(
+sashimi3 <- plot_sashimi(
     junctions = junctions,
     ref = ref,
     gene_tx_id = "ENSG00000241973",
