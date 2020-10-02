@@ -123,38 +123,36 @@ reticulate::use_python(Sys.which("python3"), required = TRUE)
 ref <- GenomicFeatures::makeTxDbFromGFF("ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz")
 ```
 
-Junctions and BigWig files are the required input to `dasper`. For the purpose of this vignette we will obtain paths to the BigWig files of the GTEx v6 data publicly hosted by [recount2](https://jhubiostatistics.shinyapps.io/recount/). In reality, you should use the BigWig files that correspond to the same samples as those your junction data originate from. 
+Junctions and BigWig files are the required input to `dasper`. For the purpose of this vignette we will download a BigWig file from the GTEx v6 data publicly hosted by [recount2](https://jhubiostatistics.shinyapps.io/recount/). In reality, you should use the BigWig files that correspond to the same samples as those your junction data originate from. 
 
 ```{r}
 
 # Obtain the urls to the remotely hosted GTEx BigWig files
-bw_paths <- recount::download_study(project = "SRP012682", 
-                                    type = "samples", 
-                                    download = FALSE)
+url <- recount::download_study(
+  project = "SRP012682",
+  type = "samples",
+  download = FALSE
+)
 
-bw_paths <- bw_paths[1:5]
-bw_paths
+bw_path <- file.path(tempdir(), basename(url[1]))
 
+download.file(url[1], bw_path)
 ```
 
 A set of example junctions that are included within `dasper`. 
 
 ```{r}
-
 library(dasper)
 
 junctions_example
-
 ```
 
 The GTEx BigWigs have their chromosomes prefixed with a "chr". For the purpose of this example, we have to make sure the junction and reference data have the same chromosome format. 
 
 ```{r}
-
 # convert seqlevels to match the BigWig
 GenomeInfoDb::seqlevels(junctions_example) <- paste0("chr", GenomeInfoDb::seqlevels(junctions_example))
 GenomeInfoDb::seqlevels(ref) <- paste0("chr", GenomeInfoDb::seqlevels(ref))
-
 ```
 
 Now we can run the 3 wrapper functions (`junction_process`, `coverage_process` and `outlier_process`) on the example data intialised above. They are designed to be compatible with the `tidyverse` pipe and the time-limiting steps of this analysis can be parallelised using `r Biocpkg("BiocParallel")` as demonstrated. The returned `outlier_scores` object describes how aberrant each gene in each sample looks in terms of splicing. These are ranked in the `rank` column with 1 being the most aberrant looking gene. The specific junctions that look the most aberrant for each gene can be found in the `junctions` column.
@@ -166,15 +164,14 @@ library(magrittr)
 outlier_scores <-
     junction_process(junctions_example, ref) %>%
     coverage_process(ref,
-        coverage_paths_case = bw_paths[1:2],
-        coverage_paths_control = bw_paths[3:5],
-        coverage_chr_control = "chr", 
+        coverage_paths_case = rep(bw_path, 2),
+        coverage_paths_control = rep(bw_path, 3),
+        coverage_chr_control = "chr",
         bp_param = BiocParallel::MulticoreParam(5)
     ) %>%
     outlier_process(bp_param = BiocParallel::MulticoreParam(5))
 
 head(outlier_scores)
-
 ```
 
 # Comprehensive `dasper` guide
@@ -207,7 +204,7 @@ Next, we annotate our junctions using `junction_annot`. This will classify your 
 
 ```{r "junction_annot"}
 
-# take only the first 5 sample (2 cases, 3 controls)
+# take only the first 5 samples (2 cases, 3 controls)
 # to increase the speed of the vignette
 junctions <- junctions[, 1:5]
 
@@ -237,7 +234,7 @@ We can then normalise our raw junctions counts into a percentage spliced in (PSI
 
 junctions <- junction_norm(junctions)
 
-# save a separate object for plotting 
+# save a separate object for plotting
 junctions_normed <- junctions
 
 tail(SummarizedExperiment::assays(junctions)[["raw"]])
@@ -250,7 +247,6 @@ Finally, we can score out junctions by how much their counts deviate from the co
 ```{r, "junction_score"}
 
 junctions <- junction_score(junctions)
-
 ```
 
 ## Coverage processing
@@ -260,11 +256,10 @@ We then move onto loading and normalising in the coverage across regions associa
 ```{r}
 
 coverage <- coverage_norm(junctions, ref,
-    coverage_paths_case = bw_paths[1:2],
-    coverage_paths_control = bw_paths[3:5], 
+    coverage_paths_case = rep(bw_path, 2),
+    coverage_paths_control = rep(bw_path, 3),
     bp_param = BiocParallel::MulticoreParam(5)
 )
-
 ```
 
 `coverage_score` is then used to compare the coverage associated with each junction with the coverage distribution in controls. 
@@ -272,7 +267,6 @@ coverage <- coverage_norm(junctions, ref,
 ```{r}
 
 junctions <- coverage_score(junctions, coverage)
-
 ```
 
 ## Outlier processing
@@ -282,7 +276,6 @@ The last step in the `dasper` pipeline is to use the junction counts and coverag
 ```{r}
 
 junctions <- outlier_detect(junctions, bp_param = BiocParallel::MulticoreParam(2))
-
 ```
 
 Then, using `outlier_aggregate` outlier scores aggregates the outlier splicing events to a cluster level. The annotation returned by `junction_annot` is used to link each cluster to a gene and produce a useful report of all genes in a sample ranked by how abberant they look in terms of splicing. 
@@ -292,7 +285,6 @@ Then, using `outlier_aggregate` outlier scores aggregates the outlier splicing e
 outlier_scores <- outlier_aggregate(junctions, bp_param = BiocParallel::MulticoreParam(2))
 
 outlier_scores
-
 ```
 
 ## Sashimi plots
@@ -302,15 +294,30 @@ In order to help further inspection of the candidate genes with abberrant splici
 ```{r}
 
 # take gene of rank 1
-gene_id <- unlist(outlier_scores[["gene_id_cluster"]][3])
+gene_id <- unlist(outlier_scores[["gene_id_cluster"]][1])
 
-plot_sashimi(junctions, 
-             ref, 
-             case_id = list(samp_id = "samp_1"),
-             gene_tx_id = gene_id)
-
+plot_sashimi(junctions_normed,
+    ref,
+    case_id = list(samp_id = "samp_1"),
+    control_agg_func = mean,
+    gene_tx_id = gene_id
+)
 ```
 
+Often regions of splicing can be complex within a gene and you may want to consider zooming in on a specific region of interest. 
+
+```{r}
+
+plot_sashimi(junctions_normed,
+    ref,
+    case_id = list(samp_id = "samp_1"),
+    control_agg_func = mean,
+    gene_tx_id = gene_id, 
+    region = GenomicRanges::GRanges("chr22:41605000-41610000")
+    
+)
+
+```
 
 # Reproducibility
 
