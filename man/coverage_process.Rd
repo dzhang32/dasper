@@ -110,6 +110,7 @@ if (!exists("junctions_w_coverage")) {
             sd_const = 0.02
         )
 }
+
 junctions_w_coverage
 }
 \seealso{

@@ -54,12 +54,12 @@
 #'         ref,
 #'         unannot_width = 20,
 #'         coverage_paths_case = rep(bw_path, 2),
-#'         coverage_paths_control = rep(bw_path, 2),
+#'         coverage_paths_control = rep(bw_path, 3),
 #'         coverage_chr_control = "chr"
 #'     )
 #' }
 #'
-#' if (!exists(junctions_cov_scored)) {
+#' if (!exists("junctions_cov_scored")) {
 #'     junctions_cov_scored <- coverage_score(junctions_annoted, coverage)
 #' }
 #' @family coverage

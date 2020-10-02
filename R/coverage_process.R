@@ -54,6 +54,7 @@
 #'             sd_const = 0.02
 #'         )
 #' }
+#'
 #' junctions_w_coverage
 #' @family coverage
 #' @export

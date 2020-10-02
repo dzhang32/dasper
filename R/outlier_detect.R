@@ -144,6 +144,10 @@ outlier_detect <- function(junctions,
 #' @keywords internal
 #' @noRd
 .outlier_detect_samp <- function(i, junctions, feature_names, ...) {
+
+    # For R CMD Check
+    direction <- index <- NULL
+
     print(stringr::str_c(
         Sys.time(), " - generating outlier scores for sample ",
         i, "/", dim(junctions)[2]

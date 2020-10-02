@@ -348,6 +348,10 @@ plot_sashimi <- function(junctions,
 }
 
 .junctions_counts_type_get <- function(junctions_to_plot, case_id = list(samp_id = "samp_1"), control_agg_func = mean, digits = 2, assay_name = "norm") {
+
+    # for R CMD Check
+    index <- type <- . <- NULL
+
     junctions_counts <- junctions_to_plot %>%
         GenomicRanges::ranges() %>%
         as.data.frame() %>%
@@ -357,7 +361,7 @@ plot_sashimi <- function(junctions,
         )
 
     if (is.null(case_id)) {
-        samp_ids <- stringr::str_c("samp_", c(1:dim(junctions_to_plot)[2]))
+        samp_ids <- stringr::str_c("samp_", c(seq_len(dim(junctions_to_plot)[2])))
     } else {
         samp_id_col <- names(case_id)
         samp_ids <- case_id[[samp_id_col]]
@@ -395,6 +399,8 @@ plot_sashimi <- function(junctions,
 }
 
 .junctions_points_get <- function(junctions_counts, ncp = 25) {
+    # For R CMD Check
+    y <- index <- x <- . <- type <- mid_point <- samp_id <- NULL
 
     # calculate the points to plot the curve for each junction
     # without this (using ggplot2::geom_curve), there's no way of knowing the midpoint of y to add a label
@@ -470,6 +476,8 @@ plot_sashimi <- function(junctions,
     gene_track_plot = gene_track_plot,
     annot_colour = annot_colour,
     count_label = count_label) {
+    # for R CMD Check
+    samp_id <- x <- y <- index <- type <- mid_point <- NULL
     samp_ids <- unique(junctions_to_plot[["samp_id"]])
 
     sashimi_plots <- list()

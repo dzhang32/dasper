@@ -174,6 +174,10 @@ outlier_aggregate <- function(junctions,
 #' @keywords internal
 #' @noRd
 .outlier_cluster <- function(outlier_scores, clusters) {
+
+    # For R CMD Check
+    cluster_index <- direction <- outlier_score <- junction_index <- junctions <- mean_outlier_score <- NULL
+
     outlier_clusters <- clusters %>%
         dplyr::left_join(outlier_scores, by = "junction_index")
 
@@ -255,6 +259,7 @@ outlier_aggregate <- function(junctions,
 #' @keywords internal
 #' @noRd
 .outlier_cluster_tidy <- function(outlier_scores_samp) {
+    samp_id <- cluster_index <- mean_outlier_score <- rank <- gene_id_cluster <- junctions <- NULL
 
     # bind all samples together
     # then convert to Dataframe to allow CharacterList column

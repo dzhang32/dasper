@@ -56,7 +56,7 @@ downloaded through \href{http://snaptron.cs.jhu.edu/}{snaptron}. By default,
 }
 \examples{
 
-\dontrun{
+\donttest{
 # TO DO - figure out how to use system.file in examples
 junctions_example_1_path <-
     system.file("extdata", "junctions_example_1.txt",
