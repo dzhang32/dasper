@@ -111,7 +111,7 @@ test_that("junction_load has correct output", {
         c("count", "gtex")
     )
     expect_identical(
-        SummarizedExperiment::rowRanges(junctions_w_control) %>%
+        rowRanges(junctions_w_control) %>%
             GenomicRanges::seqnames() %>%
             unique() %>%
             as.character(),

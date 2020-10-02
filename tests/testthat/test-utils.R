@@ -41,7 +41,7 @@ if (local) {
 # chromosome order
 junctions_to_use <- c(length(junctions_example):(length(junctions_example) - 4), 1:5)
 junctions <- junctions_example[junctions_to_use] %>%
-    SummarizedExperiment::rowRanges()
+    rowRanges()
 
 junctions_sorted <- junctions %>% sort()
 

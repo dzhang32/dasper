@@ -9,12 +9,12 @@ plot_sashimi(
   ref,
   gene_tx_id,
   case_id = NULL,
-  control_agg_func = NULL,
+  control_agg_func = mean,
   region = NULL,
   annot_colour = c(ggpubr::get_palette("jco", 1), ggpubr::get_palette("npg", 7)[c(1, 3,
     2, 5, 6)], ggpubr::get_palette("jco", 6)[c(3)]),
   digits = 2,
-  count_label = FALSE
+  count_label = TRUE
 )
 }
 \arguments{

@@ -17,6 +17,7 @@ NULL
 #' @importFrom IRanges CharacterList
 #' @importFrom SummarizedExperiment colData assays
 #' @importFrom SummarizedExperiment assays<-
+#' @importFrom matrixStats rowRanges
 NULL
 
 ##### Using sklearn in R via reticulate #####

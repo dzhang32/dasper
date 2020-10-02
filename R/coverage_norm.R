@@ -186,7 +186,7 @@ coverage_norm <- function(
     ##### Add intron/junction coords #####
 
     coverage_regions[["intron_coords"]] <-
-        SummarizedExperiment::rowRanges(junctions)
+        rowRanges(junctions)
 
     mcols(coverage_regions[["intron_coords"]]) <- NULL
 
