@@ -30,16 +30,27 @@
 #'
 #' @examples
 #'
-#' if (!exists("junctions_normed")) {
-#'     junctions_normed <- junction_norm(junctions_example)
-#' }
 #' if (!exists("ref")) {
 #'     ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
 #'     ref <- GenomicFeatures::makeTxDbFromGFF(ref)
 #' }
 #'
+#' if (!exists("junctions_processed")) {
+#'     junctions_processed <-
+#'         junction_process(
+#'             junctions_example,
+#'             ref,
+#'             count_thresh = c("raw" = 5),
+#'             n_samp = c("raw" = 1),
+#'             width_range = c(25, 1000000),
+#'             types = c("ambig_gene", "unannotated"),
+#'         )
+#'     GenomeInfoDb::seqlevels(junctions_processed) <-
+#'         paste0("chr", GenomeInfoDb::seqlevels(junctions_processed))
+#' }
+#'
 #' sashimi_plot <- plot_sashimi(
-#'     junctions = junctions,
+#'     junctions = junctions_processed,
 #'     ref = ref,
 #'     gene_tx_id = "ENST00000480896"
 #' )
