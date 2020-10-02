@@ -10,7 +10,7 @@ NULL
 #' @importFrom methods is
 #' @importFrom magrittr %>%
 #' @importFrom dplyr count
-#' @importFrom data.table := 
+#' @importFrom data.table :=
 #' @importFrom data.table .SD
 #' @importFrom GenomicRanges seqnames start end strand width
 #' @importFrom GenomicRanges start<- end<- strand<-

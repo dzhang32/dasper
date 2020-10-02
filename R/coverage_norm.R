@@ -41,7 +41,7 @@
 #'     ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
 #'     ref <- GenomicFeatures::makeTxDbFromGFF(ref)
 #' }
-#' 
+#'
 #' if (!exists("junctions_annoted")) {
 #'     junctions_annoted <-
 #'         junction_annot(
@@ -49,10 +49,10 @@
 #'             ref
 #'         )
 #' }
-#' 
-#' GenomeInfoDb::seqlevels(junctions_annoted) <- 
+#'
+#' GenomeInfoDb::seqlevels(junctions_annoted) <-
 #'     paste0("chr", GenomeInfoDb::seqlevels(junctions_annoted))
-#' 
+#'
 #' url <- recount::download_study(
 #'     project = "SRP012682",
 #'     type = "samples",
@@ -60,8 +60,8 @@
 #' )
 #' bw_path <- file.path(tempdir(), basename(url[1]))
 #' download.file(url[1], bw_path)
-#' 
-#' if(!exists("coverage")){
+#'
+#' if (!exists("coverage")) {
 #'     coverage <- coverage_norm(
 #'         junctions_annoted,
 #'         ref,
@@ -69,10 +69,8 @@
 #'         coverage_paths_case = rep(bw_path, 2),
 #'         coverage_paths_control = rep(bw_path, 2),
 #'         coverage_chr_control = "chr"
-#' )
-#' 
+#'     )
 #' }
-#' 
 #' @family coverage
 #' @export
 coverage_norm <- function(

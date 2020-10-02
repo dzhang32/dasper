@@ -29,7 +29,7 @@
 #' if (!exists("junctions_normed")) {
 #'     junctions_normed <- junction_norm(junctions_example)
 #' }
-#' 
+#'
 #' if (!exists("junctions_scored")) {
 #'     junctions_scored <- junction_score(junctions_normed)
 #' }

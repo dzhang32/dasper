@@ -27,7 +27,7 @@
 #'     ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
 #'     ref <- GenomicFeatures::makeTxDbFromGFF(ref)
 #' }
-#' 
+#'
 #' if (!exists("junctions_annoted")) {
 #'     junctions_annoted <-
 #'         junction_annot(
@@ -35,8 +35,8 @@
 #'             ref
 #'         )
 #' }
-#'     
-#' if(!exists("coverage")){
+#'
+#' if (!exists("coverage")) {
 #'     coverage <- coverage_norm(
 #'         junctions_annoted,
 #'         ref,
@@ -44,12 +44,12 @@
 #'         coverage_paths_case = rep(bw_path, 2),
 #'         coverage_paths_control = rep(bw_path, 2),
 #'         coverage_chr_control = "chr"
-#' )
+#'     )
 #'
-#' if(!exists(junctions_cov_scored)){
-#'     junctions_cov_scored <- coverage_score(junctions_annoted, coverage)
+#'     if (!exists(junctions_cov_scored)) {
+#'         junctions_cov_scored <- coverage_score(junctions_annoted, coverage)
+#'     }
 #' }
-#'
 #' @family coverage
 #' @export
 coverage_score <- function(junctions, coverage, score_func = .zscore, ...) {

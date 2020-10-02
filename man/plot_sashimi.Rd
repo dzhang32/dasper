@@ -55,4 +55,20 @@ transcript/region of interest.
 genes/transcript and/or genomic region of interest. The plotting are built
 from \code{ggplot2} functions.
 }
+\examples{
+
+if (!exists("junctions_normed")) {
+    junctions_normed <- junction_norm(junctions_example)
+}
+if (!exists("ref")) {
+    ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+    ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+}
+
+sashimi_plot <- plot_sashimi(
+    junctions = junctions,
+    ref = ref,
+    gene_tx_id = "ENST00000480896"
+)
+}
 \concept{plotting}

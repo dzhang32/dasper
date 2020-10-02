@@ -41,7 +41,10 @@ in \link{outlier_aggregate}.
 if (!exists("junctions_normed")) {
     junctions_normed <- junction_norm(junctions_example)
 }
-junctions_scored <- junction_score(junctions_normed)
+
+if (!exists("junctions_scored")) {
+    junctions_scored <- junction_score(junctions_normed)
+}
 junctions_scored
 }
 \seealso{

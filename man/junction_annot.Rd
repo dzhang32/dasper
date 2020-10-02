@@ -29,8 +29,10 @@ Using this information along with the strand, junctions are categorised into
 }
 \examples{
 
-ref <-
-    "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+if (!exists("ref")) {
+    ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+    ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+}
 if (!exists("junctions_annoted")) {
     junctions_annoted <-
         junction_annot(

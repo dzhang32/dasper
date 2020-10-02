@@ -40,32 +40,33 @@ disruption.
 }
 \examples{
 
-\dontrun{
 # leave this as not run for now to save time for R CMD check
-ref <-
-    "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
-ref <-
-    GenomicFeatures::makeTxDbFromGFF(ref)
-junctions <-
-    junction_norm(junctions_annot_example)
-junctions <-
-    junction_score(junctions)
-coverage_paths_case <-
-    list.files("/data/RNA_seq_diag/mito/bw/", full.names = T)[1:2]
-coverage_paths_control <-
-    list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/",
-        full.names = T
-    )[1:2]
-coverage <- coverage_norm(
-    junctions,
-    ref,
-    unannot_width = 20,
-    coverage_paths_case,
-    coverage_paths_control,
-    coverage_chr_control = "chr"
-)
+if (!exists("ref")) {
+    ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+    ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+}
 
-junctions
+if (!exists("junctions_annoted")) {
+    junctions_annoted <-
+        junction_annot(
+            junctions_example,
+            ref
+        )
+}
+
+if (!exists("coverage")) {
+    coverage <- coverage_norm(
+        junctions_annoted,
+        ref,
+        unannot_width = 20,
+        coverage_paths_case = rep(bw_path, 2),
+        coverage_paths_control = rep(bw_path, 2),
+        coverage_chr_control = "chr"
+    )
+
+    if (!exists(junctions_cov_scored)) {
+        junctions_cov_scored <- coverage_score(junctions_annoted, coverage)
+    }
 }
 }
 \seealso{

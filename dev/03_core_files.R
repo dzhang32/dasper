@@ -13,7 +13,7 @@ rstudioapi::navigateToFile(usethis::proj_path("dev", "02_git_github_setup.R"))
 ## for an example.
 
 ## You'll at least want to edit the version to 0.99.0 (or lower) since that's
-## the version number you will need to use with Bioconductor.
+## the version number you will need to use with Bioconductor.libr
 
 ## You will also want to add the biocViews field, for example:
 ## biocViews: Software

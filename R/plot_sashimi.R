@@ -27,9 +27,9 @@
 #'
 #' @family plotting
 #' @export
-#' 
-#' @examples 
-#' 
+#'
+#' @examples
+#'
 #' if (!exists("junctions_normed")) {
 #'     junctions_normed <- junction_norm(junctions_example)
 #' }
@@ -37,12 +37,12 @@
 #'     ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
 #'     ref <- GenomicFeatures::makeTxDbFromGFF(ref)
 #' }
-#' 
+#'
 #' sashimi_plot <- plot_sashimi(
 #'     junctions = junctions,
 #'     ref = ref,
-#'     gene_tx_id = "ENST00000480896")
-#' 
+#'     gene_tx_id = "ENST00000480896"
+#' )
 plot_sashimi <- function(junctions,
     ref,
     gene_tx_id,
