@@ -222,7 +222,7 @@ GenomeInfoDb::seqlevels(junctions) <- paste0("chr", GenomeInfoDb::seqlevels(junc
 
 junctions <- junction_annot(junctions, ref)
 
-SummarizedExperiment::rowData(junctions) %>% head()
+head(SummarizedExperiment::rowData(junctions))
 ```
 
 We can then filter our junctions using `junction_filter`. You have the option of choosing to filter by count, width, type and whether junctions overlap a particular genomic region region. The default settings used below filter only by count and require a junction to have at least 5 reads in at least 1 sample to be kept in.
