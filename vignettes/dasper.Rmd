@@ -74,9 +74,9 @@ BiocManager::valid()
 
 ## Required knowledge
 
-The expected input of `r Biocpkg("dasper")` are junctions reads (directly outputted from an aligner such as [STAR](https://github.com/alexdobin/STAR) or extracted from a BAM file using [megadepth](https://github.com/LieberInstitute/megadepth)) and coverage in the form of BigWig files (which can be generated from BAM files using [megadepth](https://github.com/LieberInstitute/megadepth) or  [RSeQC](http://rseqc.sourceforge.net/#bam2wig-py).`r Biocpkg("dasper")` is based on many other packages and in particular in those that have implemented the infrastructure needed for dealing with RNA-sequencing data. The packages `r Biocpkg("SummarizedExperiment")` and `r Biocpkg("GenomicRanges")` are used throughout, therefore familiarity with these packages will greatly help in interpreting the output of `r Biocpkg("dasper")`. 
+The expected input of `r Biocpkg("dasper")` are junctions reads (directly outputted from an aligner such as [STAR](https://github.com/alexdobin/STAR) or extracted from a BAM file using [megadepth](https://github.com/LieberInstitute/megadepth)) and coverage in the form of BigWig files (which can be generated from BAM files using [megadepth](https://github.com/LieberInstitute/megadepth) or  [RSeQC](http://rseqc.sourceforge.net/#bam2wig-py). `r Biocpkg("dasper")` is based on many other packages and in particular in those that have implemented the infrastructure needed for dealing with RNA-sequencing data. The packages `r Biocpkg("SummarizedExperiment")` and `r Biocpkg("GenomicRanges")` are used throughout, therefore familiarity with these packages will greatly help in interpreting the output of `r Biocpkg("dasper")`. 
 
-If you are asking yourself the question "Where do I start using Bioconductor?" you might be interested in [this blog post](http://lcolladotor.github.io/2014/10/16/startbioc/#.VkOKbq6rRuU). Or if you find the structure of a `SummarizedExperiment` unclear, check out [this manual](http://master.bioconductor.org/help/course-materials/2019/BSS2019/04_Practical_CoreApproachesInBioconductor.html). 
+If you are asking yourself the question "Where do I start using Bioconductor?" you might be interested in [this blog post](http://lcolladotor.github.io/2014/10/16/startbioc/#.VkOKbq6rRuU). Or if you find the structure of a `r Biocpkg("SummarizedExperiment")` unclear, check out [this manual](http://master.bioconductor.org/help/course-materials/2019/BSS2019/04_Practical_CoreApproachesInBioconductor.html). 
 
 ## Asking for help
 
@@ -91,57 +91,64 @@ We hope that `r Biocpkg("dasper")` will be useful for your research. Please use 
 citation("dasper")
 ```
 
-# Quick start to using to `dasper`
+# Quick start guide
 
-## Workflow
+## Workflow {#workflow}
 
-```{r "dasper workflow"}
+```{r "dasper workflow", echo = FALSE}
 knitr::include_graphics("dasper_workflow.png")
 ```
 
 The above workflow diagram gives a top-level overview of the core functions within `dasper` and describes the order in which they are intended to be run. This are broadly split into 4 categories: 
 
-  1. **Process junctions** functions are prefixed with a "junction_". They will load in your junctions to an `r Biocpkg("SummarizedExperiment")`, annotate your junctions using reference annotation, filter out junctions for those that likely originate from techinical noise and normalise your junction counts to allow for comparison between samples. 
-  2. **Process coverage** functions are prefixed with a "coverage_". They annotate your junctions with coverage from nearby regions then normalise this coverage to allow for comparison between samples.
-  3. **Outlier detection** functions are prefixed with a "outlier_". They will use a outlier detection algorithm ([isolation forest](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html) to detect the most outlier/abnormal/aberrant junctions in terms (by default) their counts and assoicated coverage. 
+  1. **Process junctions** functions are prefixed with a *junction_*. They will load in your junctions into an `RangedSummarizedExperiment` object, annotate your junctions using reference annotation, filter out junctions for those that likely originate from techinical noise and normalise your junction counts to allow for comparison between samples. 
+  2. **Process coverage** functions are prefixed with a *coverage_*. They annotate your junctions with coverage from associated regions then normalise this coverage to allow for comparison between samples.
+  3. **Outlier detection** functions are prefixed with a *outlier_*. They will use a outlier detection algorithm ([isolation forest](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html)) to detect the most outlier/abnormal/aberrant junctions in terms of their counts and assoicated coverage. 
   4. **Sashimi plots** are generated using the function `plot_sashimi`. This enables you to select a gene, transcript or region of interest and plot the splicing and coverage across that region in the form of sashimi plot. 
   
 ## Example
 
-`dasper` includes wrapper functions for the 3 major analysis steps in the workflow - processing junction data, processing coverage data, then performing outlier detection. If you are familiar with `dasper` or are uninterested with the intermediates, you can go from start to finish conveniently using these wrappers. 
+`dasper` includes wrapper functions for the 3 major analysis steps in the workflow - processing junction data, processing coverage data, then performing outlier detection. If you are familiar with `dasper` or are uninterested with the intermediates, you can go from start to finish using these wrappers. 
 
-We must first initialise the Python version and data used. `dasper` uses [reticulate](https://rstudio.github.io/reticulate/) to interface to Python from R. Specifically, `dasper` uses the `sklearn` python module to run the outlier detection functions.
+We must first initialise the Python version and example data to be used. `dasper` uses [reticulate](https://rstudio.github.io/reticulate/) to interface run Python code from R. Specifically, `dasper` relies on the `sklearn` module to run the outlier detection functions.
 
-```{r}
+```{r, "set python PATH"}
 # set the python PATH to be used
 reticulate::use_python(Sys.which("python3"), required = TRUE)
 ```
 
 `dasper` requires reference annotation that either inputted as a GTF path or pre-loaded into a `TxDb` object as shown below. 
 
-```{r}
-ref <- GenomicFeatures::makeTxDbFromGFF("ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz")
+```{r, "load ref", warning = FALSE}
+# shorten gtf url for vignette
+gtf_path <- paste0(
+    "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/",
+    "Homo_sapiens.GRCh38.100.gtf.gz"
+)
+
+ref <- GenomicFeatures::makeTxDbFromGFF(gtf_path)
 ```
 
-Junctions and BigWig files are the required input to `dasper`. For the purpose of this vignette we will download a BigWig file from the GTEx v6 data publicly hosted by [recount2](https://jhubiostatistics.shinyapps.io/recount/). In reality, you should use the BigWig files that correspond to the same samples as those your junction data originate from. 
+Junctions and BigWig files are the required input to `dasper`. For the purpose of this vignette we will use a BigWig file from the GTEx v6 data publicly hosted by [recount2](https://jhubiostatistics.shinyapps.io/recount/). In reality, you should use the BigWig files that correspond to the same samples as those your junction data originate from. 
 
-```{r}
+```{r, "DL bws"}
 
 # Obtain the urls to the remotely hosted GTEx BigWig files
 url <- recount::download_study(
-  project = "SRP012682",
-  type = "samples",
-  download = FALSE
+    project = "SRP012682",
+    type = "samples",
+    download = FALSE
 )
 
+# obtain the local path t
 bw_path <- file.path(tempdir(), basename(url[1]))
 
 download.file(url[1], bw_path)
 ```
 
-A set of example junctions that are included within `dasper`. 
+A small set of example junctions are included within `dasper`. 
 
-```{r}
+```{r, "junctions_example"}
 library(dasper)
 
 junctions_example
@@ -149,15 +156,17 @@ junctions_example
 
 The GTEx BigWigs have their chromosomes prefixed with a "chr". For the purpose of this example, we have to make sure the junction and reference data have the same chromosome format. 
 
-```{r}
-# convert seqlevels to match the BigWig
-GenomeInfoDb::seqlevels(junctions_example) <- paste0("chr", GenomeInfoDb::seqlevels(junctions_example))
-GenomeInfoDb::seqlevels(ref) <- paste0("chr", GenomeInfoDb::seqlevels(ref))
+```{r, "seqlevels to match bw"}
+GenomeInfoDb::seqlevels(junctions_example) <-
+    paste0("chr", GenomeInfoDb::seqlevels(junctions_example))
+
+GenomeInfoDb::seqlevels(ref) <-
+    paste0("chr", GenomeInfoDb::seqlevels(ref))
 ```
 
-Now we can run the 3 wrapper functions (`junction_process`, `coverage_process` and `outlier_process`) on the example data intialised above. They are designed to be compatible with the `tidyverse` pipe and the time-limiting steps of this analysis can be parallelised using `r Biocpkg("BiocParallel")` as demonstrated. The returned `outlier_scores` object describes how aberrant each gene in each sample looks in terms of splicing. These are ranked in the `rank` column with 1 being the most aberrant looking gene. The specific junctions that look the most aberrant for each gene can be found in the `junctions` column.
+Now we can run the 3 wrapper functions (`junction_process`, `coverage_process` and `outlier_process`) on the example data intialised above. They are designed to be compatible with the `tidyverse` pipe and the time-limiting steps of this analysis can be parallelised using `r Biocpkg("BiocParallel")` as shown. The returned `outlier_scores` object describes how aberrant each gene in each sample looks in terms of splicing. These are ranked in the `rank` column with 1 referring to the most aberrant looking gene. The specific junctions that look the most aberrant for each gene can be found in the `junctions` column.
 
-```{r "dasper quick start", message=FALSE}
+```{r "dasper quick start", eval = FALSE, message=FALSE}
 
 library(magrittr)
 
@@ -174,15 +183,15 @@ outlier_scores <-
 head(outlier_scores)
 ```
 
-# Comprehensive `dasper` guide
+# Comprehensive usage guide
 
-Below are the details of the 
+Here, we give run each of the 1-9 functions shown in [workflow](#workflow). These can be helpful for users that want to understand or modify the intermediates of the `dasper` pipeline or are only interested in a executing a specific step (e.g. annotating junctions using `junction_annot`). 
 
 ## Junction processing
 
-The first step is to load in your patient junctions using `junction_load`. This expects as input paths to junction files in the format outputted by `STAR`. If your junctions are in a different format you can accomodate this by adjusting the `load_func` argument. This will return junctions as a `SummarizedExperiment` object. 
+The first step is to load in patient(and control junction data using `junction_load`. This expects as input the paths to junction files (by default) in the format outputted by the `STAR` aligner (SJ.out). If the user's junctions are in a different format you can accomodate this by adjusting the `load_func` argument. This will return junctions as a `RangedSummarizedExperiment` object required for the downstream `dasper` functions. 
 
-Additionally, you can choose to add a set of control junctions from GTEx to compare the patient junctions too. These are made publicly available through the [recount2](https://jhubiostatistics.shinyapps.io/recount/). In this example, we add the GTEx junctions from the fibroblast tissue. If you choose to do this, we would recommend matching the control tissue to the tissue from which your patient RNA-seq data was derived. 
+Additionally, you can choose to add a set of control junctions from GTEx to compare the patient junctions too. These are made publicly available through the [recount2](https://jhubiostatistics.shinyapps.io/recount/). In this example, we add the GTEx junctions from the fibroblast tissue. We would recommend matching the control tissue to the tissue from which your patient RNA-seq data was derived. 
 
 ```{r "junction_load"}
 
@@ -200,7 +209,7 @@ junctions <-
 junctions
 ```
 
-Next, we annotate our junctions using `junction_annot`. This will classify your junctions using reference annotation into the categories "annotated", "novel_acceptor", "novel_donor", "novel_combo", "novel_exon_skip", "ambig_gene" and "unannotated".
+Next, we annotate our junctions using `junction_annot`. This will classify your junctions using reference annotation into the categories "annotated", "novel_acceptor", "novel_donor", "novel_combo", "novel_exon_skip", "ambig_gene" and "unannotated". Additionally, the genes/transcripts/exons that each junction overlaps will be stored in the `SummarizedExperiment::rowData`. 
 
 ```{r "junction_annot"}
 
@@ -216,7 +225,7 @@ junctions <- junction_annot(junctions, ref)
 SummarizedExperiment::rowData(junctions) %>% head()
 ```
 
-We can then filter our junctions using `junction_filter`. You have the option of choosing to filter by count, width, type and whether junctions overlap a blacklist region. The default settings used below filter only by count and require a junction to have at least 5 reads in at least 1 sample to be kept in. 
+We can then filter our junctions using `junction_filter`. You have the option of choosing to filter by count, width, type and whether junctions overlap a particular genomic region region. The default settings used below filter only by count and require a junction to have at least 5 reads in at least 1 sample to be kept in.
 
 ```{r, "junction_filter"}
 
@@ -228,7 +237,7 @@ junctions <- junction_filter(junctions,
 junctions
 ```
 
-We can then normalise our raw junctions counts into a percentage spliced in (PSI) using `junction_norm`. This will first cluster junctions by finding all other junctions that share an acceptor or donor with it. Then, calculate the PSI the number of reads supporting each junction divided by the total number of reads in it's associated cluster. 
+We can then normalise our raw junctions counts into a percentage spliced in (PSI) using `junction_norm`. This will first cluster junctions by finding all other junctions that share an acceptor or donor with it. Then, calculate the PSI by dividing the number of reads supporting each junction with the total number of reads in it's associated cluster. 
 
 ```{r, "junction_norm"}
 
@@ -237,23 +246,24 @@ junctions <- junction_norm(junctions)
 # save a separate object for plotting
 junctions_normed <- junctions
 
+# show the raw counts
 tail(SummarizedExperiment::assays(junctions)[["raw"]])
 
+# and those after normalisation
 tail(SummarizedExperiment::assays(junctions)[["norm"]])
 ```
 
-Finally, we can score out junctions by how much their counts deviate from the count distribution of the same junction in your control samples using `junction_score`. By default, this scoring using a z-score however this can be modified to a user-inputted functions by adjusting the argument `score_func`. 
+Finally, we need to score each patient junction by how much it's counts deviates from the count distribution of the same junction in your control samples using `junction_score`. By default, this uses a z-score however this can be modified to a user-inputted functions by adjusting the argument `score_func`. 
 
 ```{r, "junction_score"}
-
 junctions <- junction_score(junctions)
 ```
 
 ## Coverage processing
 
-We then move onto loading and normalising in the coverage across regions associated with each junction using `coverage_norm`. Namely, these are the 2 exonic regions flanking each junction and the intron inbetween. Given that there are 3 regions for each junction and you need to obtain coverage for every junction from every sample, this step can be very computationally intensive. Here, `dasper` allows parrallelisation across samples using `r Biocpkg("BiocParallel")` and uses the tool [megadepth](https://github.com/ChristopherWilks/megadepth) developed by [Chris Wilks](https://github.com/ChristopherWilks), which is significantly faster than other tools (`rtracklayer` and `pyBigWig`) for loading coverage from BigWig files (see [runtime comparison](https://github.com/LieberInstitute/megadepth/blob/master/analysis/test_megadepth_pyBigWig_rtracklayer.Rmd). 
+We then move on to loading and normalising the coverage across regions associated with each junction using `coverage_norm`. Namely, these are the 2 exonic regions flanking each junction and the intron inbetween. Given that there are 3 regions for each junction and we need to obtain coverage for every junction from every sample, this step can be very computationally intensive. Here, `dasper` allows parrallelisation across samples using `r Biocpkg("BiocParallel")` and uses the tool [megadepth](https://github.com/ChristopherWilks/megadepth) developed by [Chris Wilks](https://github.com/ChristopherWilks), which is significantly faster than other tools (`rtracklayer` and `pyBigWig`) for loading coverage from BigWig files (see [runtime comparison](https://github.com/LieberInstitute/megadepth/blob/master/analysis/test_megadepth_pyBigWig_rtracklayer.Rmd). 
 
-```{r}
+```{r, "coverage_norm"}
 
 coverage <- coverage_norm(junctions, ref,
     coverage_paths_case = rep(bw_path, 2),
@@ -264,34 +274,36 @@ coverage <- coverage_norm(junctions, ref,
 
 `coverage_score` is then used to compare the coverage associated with each junction with the coverage distribution in controls. 
 
-```{r}
-
+```{r, "coverage_score"}
 junctions <- coverage_score(junctions, coverage)
 ```
 
 ## Outlier processing
 
-The last step in the `dasper` pipeline is to use the junction counts and coverage scores as input into an outlier detection model. This involves first using `outlier_detect` to score each junction in each sample by how aberrant it looks. 
+The last step in the `dasper` pipeline is to use the junction count scores and coverage scores as input into an outlier detection model. This involves first using `outlier_detect` to score each junction in each sample by how aberrant it looks. This step can be computational intense and can be parallelised using `r Biocpkg("BiocParallel")`. The fit of the `isolation forest` may change due to it's intial random state, to avoid this and for reproducibility you can set the parameter `random_state` to an fixed integer.  
 
-```{r}
-
-junctions <- outlier_detect(junctions, bp_param = BiocParallel::MulticoreParam(2))
+```{r, "outlier_detect"}
+junctions <- outlier_detect(junctions,
+    bp_param = BiocParallel::MulticoreParam(2),
+    random_state = 32L
+)
 ```
 
-Then, using `outlier_aggregate` outlier scores aggregates the outlier splicing events to a cluster level. The annotation returned by `junction_annot` is used to link each cluster to a gene and produce a useful report of all genes in a sample ranked by how abberant they look in terms of splicing. 
+Then, using `outlier_aggregate` outlier scores aggregates the outlier splicing events to a cluster level. The annotation returned by `junction_annot` is used to link each cluster to a gene and produce a report of all genes in a sample ranked by how abberant they look in terms of splicing. The lower the rank, the more abberant that gene looks. 
 
-```{r}
+```{r, "outlier_aggregate"}
+outlier_scores <- outlier_aggregate(junctions,
+    bp_param = BiocParallel::MulticoreParam(2)
+)
 
-outlier_scores <- outlier_aggregate(junctions, bp_param = BiocParallel::MulticoreParam(2))
-
-outlier_scores
+head(outlier_scores)
 ```
 
 ## Sashimi plots
 
-In order to help further inspection of the candidate genes with abberrant splicing returned by `dasper`, we also include functions to visualise splicing across genes/transcripts/regions of interest. For example, you could visualise the most outlier gene. 
+In order to help further inspection of the candidate genes with abberrant splicing returned by `dasper`, we also include functions to visualise splicing across genes/transcripts/regions of interest. For example, you could visualise the most aberrant gene. 
 
-```{r}
+```{r, "sashimi_1"}
 
 # take gene of rank 1
 gene_id <- unlist(outlier_scores[["gene_id_cluster"]][1])
@@ -304,19 +316,18 @@ plot_sashimi(junctions_normed,
 )
 ```
 
-Often regions of splicing can be complex within a gene and you may want to consider zooming in on a specific region of interest. 
+Often regions of splicing can be very complex within a gene and you may want to consider zooming in on a specific region of interest. Furthermore, the thickness of the lines represents the counts of each junction however in this way, it can be hard to accurately differentiate junctions that have similar counts. User's may want to add a label representing the count of each junction using the argument `count_label`. 
 
-```{r}
+```{r, "sashimi_2"}
 
 plot_sashimi(junctions_normed,
     ref,
     case_id = list(samp_id = "samp_1"),
     control_agg_func = mean,
-    gene_tx_id = gene_id, 
-    region = GenomicRanges::GRanges("chr22:41605000-41610000")
-    
+    gene_tx_id = gene_id,
+    region = GenomicRanges::GRanges("chr22:42620000-42630000"),
+    count_label = TRUE
 )
-
 ```
 
 # Reproducibility
