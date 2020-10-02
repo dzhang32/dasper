@@ -16,8 +16,10 @@
 #'
 #' @examples
 #'
-#' ref <-
-#'     "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+#' if (!exists("ref")) {
+#'     ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+#'     ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+#' }
 #'
 #' if (!exists("junctions_processed")) {
 #'     junctions_processed <-
@@ -29,6 +31,8 @@
 #'             width_range = c(25, 1000000),
 #'             types = c("ambig_gene", "unannotated"),
 #'         )
+#'     GenomeInfoDb::seqlevels(junctions_processed) <-
+#'         paste0("chr", GenomeInfoDb::seqlevels(junctions_processed))
 #' }
 #' junctions_processed
 #' @family junction

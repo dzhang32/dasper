@@ -19,6 +19,13 @@
 #'
 #' @examples
 #'
+#' if (.Platform$OS.type != "windows") {
+#'
+#'     # tell reticulate to use the python3 install
+#'     # if windows skip this step
+#'     reticulate::use_python(Sys.which("python3"), required = TRUE)
+#' }
+#'
 #' if (!exists("ref")) {
 #'     ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
 #'     ref <- GenomicFeatures::makeTxDbFromGFF(ref)
@@ -34,15 +41,15 @@
 #'             width_range = c(25, 1000000),
 #'             types = c("ambig_gene", "unannotated"),
 #'         )
+#'     GenomeInfoDb::seqlevels(junctions_processed) <-
+#'         paste0("chr", GenomeInfoDb::seqlevels(junctions_processed))
 #' }
 #'
-#' # obtain path to example bw on recount2
 #' url <- recount::download_study(
 #'     project = "SRP012682",
 #'     type = "samples",
 #'     download = FALSE
 #' )
-#'
 #' bw_path <- file.path(tempdir(), basename(url[1]))
 #'
 #' if (!file.exists(bw_path)) {
@@ -67,7 +74,7 @@
 #'     junctions_w_outliers <- outlier_detect(junctions_w_coverage)
 #' }
 #'
-#' outlier_aggregate <- outlier_aggregate(junctions_w_outliers)
+#' outlier_scores <- outlier_aggregate(junctions_w_outliers)
 outlier_aggregate <- function(junctions,
     samp_id_col = "samp_id",
     bp_param = BiocParallel::SerialParam()) {

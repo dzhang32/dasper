@@ -45,12 +45,18 @@ if (!exists("ref")) {
     ref <- GenomicFeatures::makeTxDbFromGFF(ref)
 }
 
-if (!exists("junctions_annoted")) {
-    junctions_annoted <-
-        junction_annot(
+if (!exists("junctions_processed")) {
+    junctions_processed <-
+        junction_process(
             junctions_example,
-            ref
+            ref,
+            count_thresh = c("raw" = 5),
+            n_samp = c("raw" = 1),
+            width_range = c(25, 1000000),
+            types = c("ambig_gene", "unannotated"),
         )
+    GenomeInfoDb::seqlevels(junctions_processed) <-
+        paste0("chr", GenomeInfoDb::seqlevels(junctions_processed))
 }
 
 # obtain path to example bw on recount2
@@ -68,12 +74,12 @@ if (!file.exists(bw_path)) {
 
 if (!exists("coverage")) {
     coverage <- coverage_norm(
-        junctions_annoted,
+        junctions_processed,
         ref,
         unannot_width = 20,
         coverage_paths_case = rep(bw_path, 2),
         coverage_paths_control = rep(bw_path, 3),
-        coverage_chr_control = "chr"
+        bp_param = BiocParallel::MulticoreParam(5)
     )
 }
 

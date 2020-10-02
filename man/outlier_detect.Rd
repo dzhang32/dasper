@@ -66,15 +66,15 @@ if (!exists("junctions_processed")) {
             width_range = c(25, 1000000),
             types = c("ambig_gene", "unannotated"),
         )
+    GenomeInfoDb::seqlevels(junctions_processed) <-
+        paste0("chr", GenomeInfoDb::seqlevels(junctions_processed))
 }
 
-# obtain path to example bw on recount2
 url <- recount::download_study(
     project = "SRP012682",
     type = "samples",
     download = FALSE
 )
-
 bw_path <- file.path(tempdir(), basename(url[1]))
 
 if (!file.exists(bw_path)) {

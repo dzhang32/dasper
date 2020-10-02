@@ -28,6 +28,8 @@
 #'             width_range = c(25, 1000000),
 #'             types = c("ambig_gene", "unannotated"),
 #'         )
+#'     GenomeInfoDb::seqlevels(junctions_processed) <-
+#'         paste0("chr", GenomeInfoDb::seqlevels(junctions_processed))
 #' }
 #'
 #' url <- recount::download_study(
