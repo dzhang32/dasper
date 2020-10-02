@@ -185,9 +185,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          ## first, need to downgrade existing packages to 3.11
-          BiocManager::install(version = '3.11', ask = FALSE)
-          
           ## manually install packages from GitHub
           remotes::install_github("snystrom/cmdfun")
           remotes::install_github("LieberInstitute/megadepth")
@@ -203,17 +200,17 @@ jobs:
           message(paste('****', Sys.time(), 'pass number 1 at installing dependencies: local dependencies ****'))
           local_deps <- remotes::local_package_deps(dependencies = TRUE)
           deps <- remotes::dev_package_deps(dependencies = TRUE, repos = BiocManager::repositories())
-          BiocManager::install(local_deps[local_deps %in% deps$package[deps$diff != 0]], version = "3.11")
+          BiocManager::install(local_deps[local_deps %in% deps$package[deps$diff != 0]])
 
           ## Pass #2 at installing dependencies
           message(paste('****', Sys.time(), 'pass number 2 at installing dependencies: any remaining dependencies ****'))
           deps <- remotes::dev_package_deps(dependencies = TRUE, repos = BiocManager::repositories())
-          BiocManager::install(deps$package[deps$diff != 0], version = "3.11")
+          BiocManager::install(deps$package[deps$diff != 0])
           
           ## For running the checks
           message(paste('****', Sys.time(), 'installing rcmdcheck and BiocCheck ****'))
           remotes::install_cran("rcmdcheck")
-          BiocManager::install("BiocCheck", version = "3.11")
+          BiocManager::install("BiocCheck")
         
         shell: Rscript {0}
 
