@@ -15,9 +15,8 @@ NULL
 #' @importFrom GenomicRanges start<- end<- strand<-
 #' @importFrom GenomicRanges findOverlaps GRanges
 #' @importFrom IRanges CharacterList
-#' @importFrom SummarizedExperiment colData assays
+#' @importFrom SummarizedExperiment colData rowRanges assays
 #' @importFrom SummarizedExperiment assays<-
-#' @importFrom matrixStats rowRanges
 NULL
 
 ##### Using sklearn in R via reticulate #####

@@ -59,7 +59,6 @@ Imports:
     reticulate,
     tidyr,
     BiocParallel,
-    data.table,
-    matrixStats
+    data.table
 Depends: 
     R (>= 2.10)
