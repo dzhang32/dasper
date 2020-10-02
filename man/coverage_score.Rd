@@ -76,7 +76,6 @@ if (!exists("coverage")) {
     coverage <- coverage_norm(
         junctions_processed,
         ref,
-        unannot_width = 20,
         coverage_paths_case = rep(bw_path, 2),
         coverage_paths_control = rep(bw_path, 3),
         bp_param = BiocParallel::MulticoreParam(5)

@@ -61,12 +61,8 @@
 #'         coverage_process(
 #'             junctions_processed,
 #'             ref,
-#'             unannot_width = 20,
 #'             coverage_paths_case = rep(bw_path, 2),
-#'             coverage_paths_control = rep(bw_path, 3),
-#'             norm_const = 2,
-#'             score_func = .zscore,
-#'             sd_const = 0.02
+#'             coverage_paths_control = rep(bw_path, 3)
 #'         )
 #' }
 #'
