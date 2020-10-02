@@ -117,8 +117,14 @@ We must first initialise the Python version and example data to be used. `dasper
 reticulate::use_python(Sys.which("python3"), required = TRUE)
 ```
 
-`dasper` requires reference annotation that either inputted as a GTF path or pre-loaded into a `TxDb` object as shown below. 
+We need to install the system dependency [megadepth](https://github.com/ChristopherWilks/megadepth)
 
+```{r}
+megadepth::install_megadepth()
+```
+
+
+`dasper` requires reference annotation that either inputted as a GTF path or pre-loaded into a `TxDb` object as shown below. 
 ```{r, "load ref", warning = FALSE}
 # shorten gtf url for vignette
 gtf_path <- paste0(
