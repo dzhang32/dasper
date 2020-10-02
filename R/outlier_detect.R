@@ -108,7 +108,7 @@ outlier_detect <- function(junctions,
 
         features_up_down[["outlier_score"]] <-
             features_up_down %>%
-            dplyr::select(one_of(feature_names)) %>%
+            dplyr::select(tidyr::one_of(feature_names)) %>%
             .outlier_score(...)
 
         outlier_scores_samp[[j]] <- features_up_down

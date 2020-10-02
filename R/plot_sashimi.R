@@ -27,6 +27,22 @@
 #'
 #' @family plotting
 #' @export
+#' 
+#' @examples 
+#' 
+#' if (!exists("junctions_normed")) {
+#'     junctions_normed <- junction_norm(junctions_example)
+#' }
+#' if (!exists("ref")) {
+#'     ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+#'     ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+#' }
+#' 
+#' sashimi_plot <- plot_sashimi(
+#'     junctions = junctions,
+#'     ref = ref,
+#'     gene_tx_id = "ENST00000480896")
+#' 
 plot_sashimi <- function(junctions,
     ref,
     gene_tx_id,
@@ -325,7 +341,7 @@ plot_sashimi <- function(junctions,
         plotlist = sashimi_plots,
         ncol = 1,
         nrow = length(sashimi_plots),
-        common.legend = T,
+        common.legend = TRUE,
         align = "v",
         legend = "bottom"
     )
@@ -419,7 +435,7 @@ plot_sashimi <- function(junctions,
     # mark midpoints of junction curves to add label
     junctions_points <- junctions_points %>%
         dplyr::group_by(index) %>%
-        dplyr::mutate(mid = .mark_mid(x)) %>%
+        dplyr::mutate(mid_point = .mark_mid(x)) %>%
         dplyr::ungroup()
 
     # add junction categories to colour by
@@ -440,7 +456,7 @@ plot_sashimi <- function(junctions,
         )) %>%
         tidyr::gather(
             key = "samp_id", value = "count",
-            -index, -type, -x, -y, -mid
+            -index, -type, -x, -y, -mid_point
         )
 
     junctions_points <- junctions_points %>%
@@ -507,7 +523,7 @@ plot_sashimi <- function(junctions,
         if (count_label) {
             sashimi_plot <- sashimi_plot +
                 ggrepel::geom_label_repel(
-                    data = junctions_per_sample %>% dplyr::filter(mid),
+                    data = junctions_per_sample %>% dplyr::filter(mid_point),
                     ggplot2::aes(
                         x = x, y = y,
                         label = count,
@@ -515,7 +531,7 @@ plot_sashimi <- function(junctions,
                     ),
                     min.segment.length = 0,
                     seed = 32,
-                    show.legend = F,
+                    show.legend = FALSE,
                     size = 3.5
                 )
         }
