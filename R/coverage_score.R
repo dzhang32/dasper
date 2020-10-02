@@ -66,7 +66,7 @@
 #' }
 #'
 #' if (!exists("junctions_cov_scored")) {
-#'     junctions_cov_scored <- coverage_score(junctions_annoted, coverage)
+#'     junctions_cov_scored <- coverage_score(junctions_processed, coverage)
 #' }
 #' @family coverage
 #' @export
