@@ -39,7 +39,8 @@ Suggests:
     ggplot2,
     ggpubr,
     grid,
-    ggrepel
+    ggrepel,
+    recount
 VignetteBuilder: knitr
 Imports: 
     stringr,
