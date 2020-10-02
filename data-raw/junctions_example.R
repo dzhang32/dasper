@@ -3,7 +3,7 @@ library(stringr)
 
 junctions <- read_delim("/data/RNA_seq_diag/mito/STAR/L1556-2624F_SJ.out.tab",
     delim = "\t",
-    col_names = F,
+    col_names = FALSE,
     col_types = cols(X1 = "c")
 )
 
@@ -18,7 +18,7 @@ for (i in 1:2) {
     write_delim(junctions_example,
         str_c("inst/extdata/junctions_example_", i, ".txt"),
         delim = "\t",
-        col_names = F
+        col_names = FALSE
     )
 }
 
