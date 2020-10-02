@@ -185,6 +185,9 @@ jobs:
 
       - name: Install dependencies
         run: |
+          ## first, need to downgrade existing packages to 3.12
+          BiocManager::install(version = '3.12', ask = FALSE)
+          
           ## manually install packages from GitHub
           remotes::install_github("snystrom/cmdfun")
           remotes::install_github("LieberInstitute/megadepth")
