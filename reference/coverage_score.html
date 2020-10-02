@@ -173,34 +173,81 @@ contains the abnormality scores of the region with the greatest disruption.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='co'># leave this as not run for now to save time for R CMD check</span>
-<span class='va'>ref</span> <span class='op'>&lt;-</span>
-    <span class='st'>"ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"</span>
-<span class='va'>ref</span> <span class='op'>&lt;-</span>
-    <span class='fu'>GenomicFeatures</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html'>makeTxDbFromGFF</a></span><span class='op'>(</span><span class='va'>ref</span><span class='op'>)</span>
-<span class='va'>junctions</span> <span class='op'>&lt;-</span>
-    <span class='fu'><a href='junction_norm.html'>junction_norm</a></span><span class='op'>(</span><span class='va'>junctions_annot_example</span><span class='op'>)</span>
-<span class='va'>junctions</span> <span class='op'>&lt;-</span>
-    <span class='fu'><a href='junction_score.html'>junction_score</a></span><span class='op'>(</span><span class='va'>junctions</span><span class='op'>)</span>
-<span class='va'>coverage_paths_case</span> <span class='op'>&lt;-</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span><span class='op'>(</span><span class='st'>"/data/RNA_seq_diag/mito/bw/"</span>, full.names <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>
-<span class='va'>coverage_paths_control</span> <span class='op'>&lt;-</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span><span class='op'>(</span><span class='st'>"/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/"</span>,
-        full.names <span class='op'>=</span> <span class='cn'>T</span>
-    <span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>
-<span class='va'>coverage</span> <span class='op'>&lt;-</span> <span class='fu'><a href='coverage_norm.html'>coverage_norm</a></span><span class='op'>(</span>
-    <span class='va'>junctions</span>,
-    <span class='va'>ref</span>,
-    unannot_width <span class='op'>=</span> <span class='fl'>20</span>,
-    <span class='va'>coverage_paths_case</span>,
-    <span class='va'>coverage_paths_control</span>,
-    coverage_chr_control <span class='op'>=</span> <span class='st'>"chr"</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"ref"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='st'>"ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"</span>
+    <span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicFeatures</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html'>makeTxDbFromGFF</a></span><span class='op'>(</span><span class='va'>ref</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div><div class='output co'>#&gt; <span class='message'>Import genomic features from the file as a GRanges object ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Prepare the 'metadata' data frame ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Make the TxDb object ... </span></div><div class='output co'>#&gt; <span class='warning'>Warning: The "phase" metadata column contains non-NA values for features of type</span>
+#&gt; <span class='warning'>  stop_codon. This information was ignored.</span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='input'>
+<span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"junctions_processed"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>junctions_processed</span> <span class='op'>&lt;-</span>
+        <span class='fu'><a href='junction_process.html'>junction_process</a></span><span class='op'>(</span>
+            <span class='va'>junctions_example</span>,
+            <span class='va'>ref</span>,
+            count_thresh <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
+            n_samp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
+            width_range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>25</span>, <span class='fl'>1000000</span><span class='op'>)</span>,
+            types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
+        <span class='op'>)</span>
+    <span class='fu'>GenomeInfoDb</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html'>seqlevels</a></span><span class='op'>(</span><span class='va'>junctions_processed</span><span class='op'>)</span> <span class='op'>&lt;-</span>
+        <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"chr"</span>, <span class='fu'>GenomeInfoDb</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html'>seqlevels</a></span><span class='op'>(</span><span class='va'>junctions_processed</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
+#&gt; [1] "2020-10-02 22:53:31 - Filtering junctions..."
+#&gt; [1] "2020-10-02 22:53:31 - by count..."
+#&gt; [1] "2020-10-02 22:53:31 - by width..."
+#&gt; [1] "2020-10-02 22:53:31 - done!"
+#&gt; [1] "# Annotating junctions ----------------------------------------------------"
+#&gt; [1] "2020-10-02 22:53:31 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-10-02 22:53:45 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-10-02 22:53:47 - Tidying junction annotation..."
+#&gt; [1] "2020-10-02 22:53:47 - Deriving junction categories..."
+#&gt; [1] "2020-10-02 22:53:48 - done!"
+#&gt; [1] "# Filtering junctions -----------------------------------------------------"
+#&gt; [1] "2020-10-02 22:53:48 - Filtering junctions..."
+#&gt; [1] "2020-10-02 22:53:48 - by type..."
+#&gt; [1] "2020-10-02 22:53:48 - done!"
+#&gt; [1] "# Normalise junctions -----------------------------------------------------"
+#&gt; [1] "2020-10-02 22:53:48 - Clustering junctions..."
+#&gt; [1] "2020-10-02 22:53:48 - Normalising junction counts..."
+#&gt; [1] "2020-10-02 22:53:48 - done!"
+#&gt; [1] "# Score junctions ---------------------------------------------------------"
+#&gt; [1] "2020-10-02 22:53:48 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-10-02 22:53:48 - Generating junction abnormality score..."
+#&gt; [1] "2020-10-02 22:53:48 - done!"</div><div class='input'>
+<span class='co'># obtain path to example bw on recount2</span>
+<span class='va'>url</span> <span class='op'>&lt;-</span> <span class='fu'>recount</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/recount/man/download_study.html'>download_study</a></span><span class='op'>(</span>
+    project <span class='op'>=</span> <span class='st'>"SRP012682"</span>,
+    type <span class='op'>=</span> <span class='st'>"samples"</span>,
+    download <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span>
 
-<span class='va'>junctions</span>
+<span class='va'>bw_path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span><span class='op'>(</span><span class='va'>url</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.exists</a></span><span class='op'>(</span><span class='va'>bw_path</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span><span class='va'>url</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>, <span class='va'>bw_path</span><span class='op'>)</span>
 <span class='op'>}</span>
-</div></pre>
+
+<span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"coverage"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>coverage</span> <span class='op'>&lt;-</span> <span class='fu'><a href='coverage_norm.html'>coverage_norm</a></span><span class='op'>(</span>
+        <span class='va'>junctions_processed</span>,
+        <span class='va'>ref</span>,
+        coverage_paths_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>,
+        coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>3</span><span class='op'>)</span>,
+        bp_param <span class='op'>=</span> <span class='fu'>BiocParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/MulticoreParam-class.html'>MulticoreParam</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>
+    <span class='op'>)</span>
+<span class='op'>}</span>
+</div><div class='output co'>#&gt; [1] "2020-10-02 22:53:48 - Obtaining exonic and intronic regions to load coverage from..."
+#&gt; [1] "2020-10-02 22:53:48 - Obtaining regions to use to normalise coverage..."</div><div class='output co'>#&gt; <span class='warning'>Warning: The 2 combined objects have no sequence levels in common. (Use</span>
+#&gt; <span class='warning'>  suppressWarnings() to suppress this warning.)</span></div><div class='output co'>#&gt; [1] "2020-10-02 22:53:53 - Loading coverage..."
+#&gt; [1] "2020-10-02 22:53:56 - Normalising coverage..."
+#&gt; [1] "2020-10-02 22:53:56 - done!"</div><div class='input'>
+<span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"junctions_cov_scored"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>junctions_cov_scored</span> <span class='op'>&lt;-</span> <span class='fu'>coverage_score</span><span class='op'>(</span><span class='va'>junctions_processed</span>, <span class='va'>coverage</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div><div class='output co'>#&gt; [1] "2020-10-02 22:53:56 - Generating coverage abnormality score..."
+#&gt; [1] "2020-10-02 22:53:57 - Obtaining regions with greatest coverage dysruption..."
+#&gt; [1] "2020-10-02 22:53:57 - done!"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -161,8 +161,12 @@ genes/transcripts/exons and junction categories.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='va'>ref</span> <span class='op'>&lt;-</span>
-    <span class='st'>"ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"ref"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='st'>"ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"</span>
+    <span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicFeatures</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html'>makeTxDbFromGFF</a></span><span class='op'>(</span><span class='va'>ref</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div><div class='output co'>#&gt; <span class='message'>Import genomic features from the file as a GRanges object ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Prepare the 'metadata' data frame ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Make the TxDb object ... </span></div><div class='output co'>#&gt; <span class='warning'>Warning: The "phase" metadata column contains non-NA values for features of type</span>
+#&gt; <span class='warning'>  stop_codon. This information was ignored.</span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='input'>
 <span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"junctions_annoted"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
     <span class='va'>junctions_annoted</span> <span class='op'>&lt;-</span>
         <span class='fu'>junction_annot</span><span class='op'>(</span>
@@ -170,12 +174,11 @@ genes/transcripts/exons and junction categories.</p>
             <span class='va'>ref</span>
         <span class='op'>)</span>
 <span class='op'>}</span>
-</div><div class='output co'>#&gt; [1] "2020-10-02 18:36:24 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-10-02 18:36:24 - Importing gtf/gff3 as a TxDb..."</div><div class='output co'>#&gt; <span class='message'>Import genomic features from the file as a GRanges object ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Prepare the 'metadata' data frame ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Make the TxDb object ... </span></div><div class='output co'>#&gt; <span class='warning'>Warning: The "phase" metadata column contains non-NA values for features of type</span>
-#&gt; <span class='warning'>  stop_codon. This information was ignored.</span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; [1] "2020-10-02 18:38:03 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-10-02 18:38:05 - Tidying junction annotation..."
-#&gt; [1] "2020-10-02 18:38:05 - Deriving junction categories..."
-#&gt; [1] "2020-10-02 18:38:10 - done!"</div><div class='input'><span class='va'>junctions_annoted</span>
+</div><div class='output co'>#&gt; [1] "2020-10-02 22:55:13 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-10-02 22:55:27 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-10-02 22:55:29 - Tidying junction annotation..."
+#&gt; [1] "2020-10-02 22:55:30 - Deriving junction categories..."
+#&gt; [1] "2020-10-02 22:55:35 - done!"</div><div class='input'><span class='va'>junctions_annoted</span>
 </div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
 #&gt; dim: 97671 5 
 #&gt; metadata(0):
