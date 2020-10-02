@@ -35,11 +35,10 @@
 #'
 #' @examples
 #'
-#' \donttest{
-#' # TO DO - figure out how to use system.file in examples
 #' junctions_example_1_path <-
-#'     system.file("extdata", "junctions_example_1.txt",
-#'         "dasper",
+#'     system.file("extdata",
+#'         "junctions_example_1.txt",
+#'         package = "dasper",
 #'         mustWork = TRUE
 #'     )
 #'
@@ -50,8 +49,6 @@
 #'     )
 #'
 #' junctions
-#' }
-#'
 #' @family junction
 #' @export
 junction_load <- function(
