@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 [![BioC status](http://www.bioconductor.org/shields/build/release/bioc/dasper.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/dasper)
 <!-- badges: end -->
 
-The aim of `dasper` is to **d**etect **a**berrant **sp**licing **e**vents from **R**NA-seq data. By comparing patient RNA-seq data to a set of user-defined controls, `dasper` will score each splicing event in the patient with an anomaly score representing the degree to which that splicing event looks abnormal. This package is still in the experimental stage of development currently and subject to major changes in the future.
+The aim of `dasper` is to **d**etect **a**berrant **sp**licing **e**vents from **R**NA-seq data. By comparing patient RNA-seq data to a set of controls, `dasper` will score each splicing event in the patient representing the degree to which that splicing event looks abnormal. For more information regarding, check out the vignette [here](https://dzhang32.github.io/dasper/articles/dasper.html). 
 
 ## Installation instructions
 
@@ -40,15 +40,6 @@ And the development version from [GitHub](https://github.com/) with:
 
 ```{r 'install_dev', eval = FALSE}
 BiocManager::install("dzhang32/dasper")
-```
-
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-```{r example, eval = requireNamespace('dasper')}
-library("dasper")
-## to be added
 ```
 
 ## Citation
