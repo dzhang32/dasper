@@ -64,15 +64,18 @@ intermediates.
 
 ref <-
     "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
-junctions_processed <-
-    junction_process(
-        junctions_example,
-        ref,
-        count_thresh = c("raw" = 5),
-        n_samp = c("raw" = 1),
-        width_range = c(25, 1000000),
-        types = c("ambig_gene", "unannotated"),
-    )
+
+if (!exists("junctions_processed")) {
+    junctions_processed <-
+        junction_process(
+            junctions_example,
+            ref,
+            count_thresh = c("raw" = 5),
+            n_samp = c("raw" = 1),
+            width_range = c(25, 1000000),
+            types = c("ambig_gene", "unannotated"),
+        )
+}
 junctions_processed
 }
 \seealso{

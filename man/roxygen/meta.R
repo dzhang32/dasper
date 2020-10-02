@@ -7,4 +7,4 @@ list(
                          coverage = "Coverage processing functions", 
                          outlier = "Outlier processing functions", 
                          plotting = "Plotting function")
-)
+  )

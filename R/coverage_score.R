@@ -22,7 +22,6 @@
 #'
 #' @examples
 #'
-#' # leave this as not run for now to save time for R CMD check
 #' if (!exists("ref")) {
 #'     ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
 #'     ref <- GenomicFeatures::makeTxDbFromGFF(ref)
@@ -36,6 +35,19 @@
 #'         )
 #' }
 #'
+#' # obtain path to example bw on recount2
+#' url <- recount::download_study(
+#'     project = "SRP012682",
+#'     type = "samples",
+#'     download = FALSE
+#' )
+#'
+#' bw_path <- file.path(tempdir(), basename(url[1]))
+#'
+#' if (!file.exists(bw_path)) {
+#'     download.file(url[1], bw_path)
+#' }
+#'
 #' if (!exists("coverage")) {
 #'     coverage <- coverage_norm(
 #'         junctions_annoted,
@@ -45,10 +57,10 @@
 #'         coverage_paths_control = rep(bw_path, 2),
 #'         coverage_chr_control = "chr"
 #'     )
+#' }
 #'
-#'     if (!exists(junctions_cov_scored)) {
-#'         junctions_cov_scored <- coverage_score(junctions_annoted, coverage)
-#'     }
+#' if (!exists(junctions_cov_scored)) {
+#'     junctions_cov_scored <- coverage_score(junctions_annoted, coverage)
 #' }
 #' @family coverage
 #' @export

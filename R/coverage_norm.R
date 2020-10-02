@@ -49,15 +49,17 @@
 #'             ref
 #'         )
 #' }
-#' 
+#'
+#' # obtain path to example bw on recount2
 #' url <- recount::download_study(
 #'     project = "SRP012682",
 #'     type = "samples",
 #'     download = FALSE
 #' )
+#'
 #' bw_path <- file.path(tempdir(), basename(url[1]))
-#' 
-#' if(!file.exists(bw_path)){
+#'
+#' if (!file.exists(bw_path)) {
 #'     download.file(url[1], bw_path)
 #' }
 #'

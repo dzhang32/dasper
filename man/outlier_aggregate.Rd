@@ -33,6 +33,58 @@ associated junctions, outlier scores, ranks and genes.
 It will then rank each cluster based on this aggregated score and annotate
 each cluster with it's associated gene and transcript.
 }
+\examples{
+
+if (!exists("ref")) {
+    ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+    ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+}
+
+if (!exists("junctions_processed")) {
+    junctions_processed <-
+        junction_process(
+            junctions_example,
+            ref,
+            count_thresh = c("raw" = 5),
+            n_samp = c("raw" = 1),
+            width_range = c(25, 1000000),
+            types = c("ambig_gene", "unannotated"),
+        )
+}
+
+# obtain path to example bw on recount2
+url <- recount::download_study(
+    project = "SRP012682",
+    type = "samples",
+    download = FALSE
+)
+
+bw_path <- file.path(tempdir(), basename(url[1]))
+
+if (!file.exists(bw_path)) {
+    download.file(url[1], bw_path)
+}
+
+if (!exists("junctions_w_coverage")) {
+    junctions_w_coverage <-
+        coverage_process(
+            junctions_processed,
+            ref,
+            unannot_width = 20,
+            coverage_paths_case = rep(bw_path, 2),
+            coverage_paths_control = rep(bw_path, 3),
+            norm_const = 2,
+            score_func = .zscore,
+            sd_const = 0.02
+        )
+}
+
+if (!exists(junctions_w_outliers)) {
+    junctions_w_outliers <- outlier_detect(junctions_w_coverage)
+}
+
+outlier_aggregate <- outlier_aggregate(junctions_w_outliers)
+}
 \seealso{
 Outlier processing functions
 \code{\link{outlier_detect}()},

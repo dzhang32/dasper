@@ -62,4 +62,4 @@ Imports:
     data.table,
     megadepth
 Depends: 
-    R (>= 4.0)
+    R (>= 3.6)

@@ -79,16 +79,18 @@ if (!exists("junctions_annoted")) {
         )
 }
 
-GenomeInfoDb::seqlevels(junctions_annoted) <-
-    paste0("chr", GenomeInfoDb::seqlevels(junctions_annoted))
-
+# obtain path to example bw on recount2
 url <- recount::download_study(
     project = "SRP012682",
     type = "samples",
     download = FALSE
 )
+
 bw_path <- file.path(tempdir(), basename(url[1]))
-download.file(url[1], bw_path)
+
+if (!file.exists(bw_path)) {
+    download.file(url[1], bw_path)
+}
 
 if (!exists("coverage")) {
     coverage <- coverage_norm(
