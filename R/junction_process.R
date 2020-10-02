@@ -18,6 +18,8 @@
 #'
 #' ref <-
 #'     "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+#'     
+#' if(!exists("junctions_processed")){
 #' junctions_processed <-
 #'     junction_process(
 #'         junctions_example,
@@ -27,6 +29,7 @@
 #'         width_range = c(25, 1000000),
 #'         types = c("ambig_gene", "unannotated"),
 #'     )
+#' }
 #' junctions_processed
 #' @family junction
 #' @export

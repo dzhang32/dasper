@@ -28,6 +28,28 @@
 #'
 #' @family outlier
 #' @export
+#' 
+#' @examples 
+#' 
+#' if(!exists("junctions_w_coverage")){
+#'     junctions_w_coverage <-
+#'     coverage_process(
+#'         junctions_processed,
+#'         ref,
+#'         unannot_width = 20,
+#'         coverage_paths_case = rep(bw_path, 2),
+#'         coverage_paths_control = rep(bw_path, 3),
+#'         norm_const = 2,
+#'         score_func = .zscore,
+#'         sd_const = 0.02
+#'     )
+#' }
+#' 
+#' if(!exists(junctions_w_outliers)){
+#'     junctions_w_outliers  <- outlier_detect(junctions_w_coverage)
+#' }
+#' 
+#' junctions_w_outliers
 outlier_detect <- function(junctions,
     feature_names = c("score", "coverage_score"),
     bp_param = BiocParallel::SerialParam(),
