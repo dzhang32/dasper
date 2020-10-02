@@ -113,8 +113,12 @@ The above workflow diagram gives a top-level overview of the core functions with
 We must first initialise the Python version and example data to be used. `dasper` uses [reticulate](https://rstudio.github.io/reticulate/) to interface run Python code from R. Specifically, `dasper` relies on the `sklearn` module to run the outlier detection functions.
 
 ```{r, "set python PATH"}
-# set the python PATH to be used
-reticulate::use_python(Sys.which("python3"), required = TRUE)
+if (.Platform$OS.type != "windows") {
+
+    # tell reticulate to use the python3 install
+    # if windows skip this step
+    reticulate::use_python(Sys.which("python3"), required = TRUE)
+}
 ```
 
 We need to install the system dependency [megadepth](https://github.com/ChristopherWilks/megadepth)
@@ -270,11 +274,9 @@ junctions <- junction_score(junctions)
 We then move on to loading and normalising the coverage across regions associated with each junction using `coverage_norm`. Namely, these are the 2 exonic regions flanking each junction and the intron inbetween. Given that there are 3 regions for each junction and we need to obtain coverage for every junction from every sample, this step can be very computationally intensive. Here, `dasper` allows parrallelisation across samples using `r Biocpkg("BiocParallel")` and uses the tool [megadepth](https://github.com/ChristopherWilks/megadepth) developed by [Chris Wilks](https://github.com/ChristopherWilks), which is significantly faster than other tools (`rtracklayer` and `pyBigWig`) for loading coverage from BigWig files (see [runtime comparison](https://github.com/LieberInstitute/megadepth/blob/master/analysis/test_megadepth_pyBigWig_rtracklayer.Rmd). 
 
 ```{r, "coverage_norm"}
-
 coverage <- coverage_norm(junctions, ref,
     coverage_paths_case = rep(bw_path, 2),
-    coverage_paths_control = rep(bw_path, 3),
-    bp_param = BiocParallel::MulticoreParam(5)
+    coverage_paths_control = rep(bw_path, 3)
 )
 ```
 
@@ -325,7 +327,6 @@ plot_sashimi(junctions_normed,
 Often regions of splicing can be very complex within a gene and you may want to consider zooming in on a specific region of interest. Furthermore, the thickness of the lines represents the counts of each junction however in this way, it can be hard to accurately differentiate junctions that have similar counts. User's may want to add a label representing the count of each junction using the argument `count_label`. 
 
 ```{r, "sashimi_2"}
-
 plot_sashimi(junctions_normed,
     ref,
     case_id = list(samp_id = "samp_1"),
