@@ -86,7 +86,7 @@ if (!exists("junctions_w_coverage")) {
         )
 }
 
-if (!exists(junctions_w_outliers)) {
+if (!exists("junctions_w_outliers")) {
     junctions_w_outliers <- outlier_detect(junctions_w_coverage)
 }
 
