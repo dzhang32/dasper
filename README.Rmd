@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 [![BioC status](http://www.bioconductor.org/shields/build/release/bioc/dasper.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/dasper)
 <!-- badges: end -->
 
-The aim of `dasper` is to **d**etect **a**berrant **sp**licing **e**vents from **R**NA-seq data. By comparing patient RNA-seq data to a set of controls, `dasper` will score each splicing event in the patient representing the degree to which that splicing event looks abnormal. For more information regarding, check out the vignette [here](https://dzhang32.github.io/dasper/articles/dasper.html). 
+The aim of `dasper` is to **d**etect **a**berrant **sp**licing **e**vents from **R**NA-seq data. By comparing patient RNA-seq data to a set of controls, `dasper` will score each splicing event in the patient representing the degree to which that splicing event looks abnormal. For a detailed guide on the usage of `dasper`, check out the vignette [here](https://dzhang32.github.io/dasper/articles/dasper.html). 
 
 ## Installation instructions
 
