@@ -116,7 +116,7 @@
         prefix = temp_coverage_prefix
     )
 
-    coverage <- mcols(coverage)[["cov"]]
+    coverage <- mcols(coverage)[["score"]]
 
     if (sum(coverage, na.rm = TRUE) == 0) {
         warning("Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.")
