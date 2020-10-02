@@ -59,6 +59,7 @@ Imports:
     reticulate,
     tidyr,
     BiocParallel,
-    data.table
+    data.table,
+    megadepth
 Depends: 
     R (>= 2.10)

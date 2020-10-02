@@ -188,6 +188,10 @@ jobs:
           ## first, need to downgrade existing packages to 3.11
           BiocManager::install(version = '3.11', ask = FALSE)
           
+          ## manually install packages from GitHub
+          remotes::install_github("snystrom/cmdfun")
+          remotes::install_github("LieberInstitute/megadepth")
+          
           ## Try installing the package dependencies in steps. First the local
           ## dependencies, then any remaining dependencies to avoid the
           ## issues described at
