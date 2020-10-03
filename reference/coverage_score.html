@@ -193,28 +193,28 @@ contains the abnormality scores of the region with the greatest disruption.</p>
         <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"chr"</span>, <span class='fu'>GenomeInfoDb</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html'>seqlevels</a></span><span class='op'>(</span><span class='va'>junctions_processed</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-02 22:53:31 - Filtering junctions..."
-#&gt; [1] "2020-10-02 22:53:31 - by count..."
-#&gt; [1] "2020-10-02 22:53:31 - by width..."
-#&gt; [1] "2020-10-02 22:53:31 - done!"
+#&gt; [1] "2020-10-03 14:06:56 - Filtering junctions..."
+#&gt; [1] "2020-10-03 14:06:56 - by count..."
+#&gt; [1] "2020-10-03 14:06:56 - by width..."
+#&gt; [1] "2020-10-03 14:06:56 - done!"
 #&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-10-02 22:53:31 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-10-02 22:53:45 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-10-02 22:53:47 - Tidying junction annotation..."
-#&gt; [1] "2020-10-02 22:53:47 - Deriving junction categories..."
-#&gt; [1] "2020-10-02 22:53:48 - done!"
+#&gt; [1] "2020-10-03 14:06:56 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-10-03 14:07:11 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-10-03 14:07:11 - Tidying junction annotation..."
+#&gt; [1] "2020-10-03 14:07:11 - Deriving junction categories..."
+#&gt; [1] "2020-10-03 14:07:11 - done!"
 #&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-02 22:53:48 - Filtering junctions..."
-#&gt; [1] "2020-10-02 22:53:48 - by type..."
-#&gt; [1] "2020-10-02 22:53:48 - done!"
+#&gt; [1] "2020-10-03 14:07:11 - Filtering junctions..."
+#&gt; [1] "2020-10-03 14:07:11 - by type..."
+#&gt; [1] "2020-10-03 14:07:11 - done!"
 #&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-02 22:53:48 - Clustering junctions..."
-#&gt; [1] "2020-10-02 22:53:48 - Normalising junction counts..."
-#&gt; [1] "2020-10-02 22:53:48 - done!"
+#&gt; [1] "2020-10-03 14:07:12 - Clustering junctions..."
+#&gt; [1] "2020-10-03 14:07:12 - Normalising junction counts..."
+#&gt; [1] "2020-10-03 14:07:12 - done!"
 #&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-10-02 22:53:48 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-10-02 22:53:48 - Generating junction abnormality score..."
-#&gt; [1] "2020-10-02 22:53:48 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-03 14:07:12 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-10-03 14:07:12 - Generating junction abnormality score..."
+#&gt; [1] "2020-10-03 14:07:12 - done!"</div><div class='input'>
 <span class='co'># obtain path to example bw on recount2</span>
 <span class='va'>url</span> <span class='op'>&lt;-</span> <span class='fu'>recount</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/recount/man/download_study.html'>download_study</a></span><span class='op'>(</span>
     project <span class='op'>=</span> <span class='st'>"SRP012682"</span>,
@@ -237,17 +237,17 @@ contains the abnormality scores of the region with the greatest disruption.</p>
         bp_param <span class='op'>=</span> <span class='fu'>BiocParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/MulticoreParam-class.html'>MulticoreParam</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>
     <span class='op'>)</span>
 <span class='op'>}</span>
-</div><div class='output co'>#&gt; [1] "2020-10-02 22:53:48 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-10-02 22:53:48 - Obtaining regions to use to normalise coverage..."</div><div class='output co'>#&gt; <span class='warning'>Warning: The 2 combined objects have no sequence levels in common. (Use</span>
-#&gt; <span class='warning'>  suppressWarnings() to suppress this warning.)</span></div><div class='output co'>#&gt; [1] "2020-10-02 22:53:53 - Loading coverage..."
-#&gt; [1] "2020-10-02 22:53:56 - Normalising coverage..."
-#&gt; [1] "2020-10-02 22:53:56 - done!"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "2020-10-03 14:07:12 - Obtaining exonic and intronic regions to load coverage from..."
+#&gt; [1] "2020-10-03 14:07:12 - Obtaining regions to use to normalise coverage..."</div><div class='output co'>#&gt; <span class='warning'>Warning: The 2 combined objects have no sequence levels in common. (Use</span>
+#&gt; <span class='warning'>  suppressWarnings() to suppress this warning.)</span></div><div class='output co'>#&gt; [1] "2020-10-03 14:07:16 - Loading coverage..."
+#&gt; [1] "2020-10-03 14:07:20 - Normalising coverage..."
+#&gt; [1] "2020-10-03 14:07:20 - done!"</div><div class='input'>
 <span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"junctions_cov_scored"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
     <span class='va'>junctions_cov_scored</span> <span class='op'>&lt;-</span> <span class='fu'>coverage_score</span><span class='op'>(</span><span class='va'>junctions_processed</span>, <span class='va'>coverage</span><span class='op'>)</span>
 <span class='op'>}</span>
-</div><div class='output co'>#&gt; [1] "2020-10-02 22:53:56 - Generating coverage abnormality score..."
-#&gt; [1] "2020-10-02 22:53:57 - Obtaining regions with greatest coverage dysruption..."
-#&gt; [1] "2020-10-02 22:53:57 - done!"</div></pre>
+</div><div class='output co'>#&gt; [1] "2020-10-03 14:07:20 - Generating coverage abnormality score..."
+#&gt; [1] "2020-10-03 14:07:20 - Obtaining regions with greatest coverage dysruption..."
+#&gt; [1] "2020-10-03 14:07:20 - done!"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
