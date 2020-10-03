@@ -18,22 +18,17 @@ test_that(".chr_filter catches user-input errors", {
 
 megadepth::install_megadepth()
 
-# only perform test if OS is linux
-# as megadepth testing not ready for windows/mac
-# linux <- ifelse(Sys.info()[["sysname"]] == "Linux", TRUE, FALSE)
+# obtain path to example bw on recount2
+url <- recount::download_study(
+    project = "SRP012682",
+    type = "samples",
+    download = FALSE
+)
 
-local <- file.exists("/data/RNA_seq_diag/mito/bw//ION176.all.bw")
+bw_path <- file.path(tempdir(), basename(url[1]))
 
-if (local) {
-    coverage_paths <-
-        c(list.files("/data/RNA_seq_diag/mito/bw/", full.names = TRUE)[1])
-    chr_format <- c("no_chr")
-} else {
-    # coverage_paths <-
-    #     list.files("/data/recount/GTEx_SRP012682/gtex_bigWigs/all_gtex_tissues_raw_bigWigs/")[c(3)] %>%
-    #     stringr::str_c("http://duffel.rail.bio/recount/SRP012682/bw/", .)
-    coverage_paths <- "http://duffel.rail.bio/recount/SRP012682/bw/SRR1068808_SRS524197_SRX404706_male_cells.transformed.fibroblasts.bw"
-    chr_format <- c("chr")
+if (!file.exists(bw_path)) {
+    download.file(url[1], bw_path)
 }
 
 # take 5 junctions from the end and 5 from the top to test in that order
@@ -45,26 +40,23 @@ junctions <- junctions_example[junctions_to_use] %>%
 
 junctions_sorted <- junctions %>% sort()
 
+mcols(junctions)[["coverage"]] <-
+  .coverage_load(
+    regions = junctions,
+    coverage_path = bw_path,
+    sum_fun = "mean",
+    chr_format = "chr"
+  )
+
+mcols(junctions_sorted)[["coverage"]] <-
+  .coverage_load(
+    regions = junctions_sorted,
+    coverage_path = bw_path,
+    sum_fun = "mean",
+    chr_format = "chr"
+  )
+
 test_that(".coverage_load has correct output", {
-    # if (!(linux & local)) {
-    #     skip("not testing loading coverage on windows/mac or from remote bws")
-    # }
-
-    mcols(junctions)[["coverage"]] <-
-        .coverage_load(
-            regions = junctions,
-            coverage_path = coverage_paths[1],
-            sum_fun = "mean",
-            chr_format = chr_format
-        )
-
-    mcols(junctions_sorted)[["coverage"]] <-
-        .coverage_load(
-            regions = junctions_sorted,
-            coverage_path = coverage_paths[1],
-            sum_fun = "mean",
-            chr_format = chr_format
-        )
 
     # make sure the order of returned coverage is same as inputted regions
     expect_identical(
@@ -72,22 +64,25 @@ test_that(".coverage_load has correct output", {
         mcols(junctions_sorted)[["coverage"]]
     )
 
+  if(.Platform$OS.type != "windows"){
+    
     junctions_rt <- junctions
-    if (chr_format == "chr") {
-        GenomeInfoDb::seqlevels(junctions_rt) <- GenomeInfoDb::seqlevels(junctions_rt) %>%
-            stringr::str_c("chr", .)
-    }
-
+    GenomeInfoDb::seqlevels(junctions_rt) <- GenomeInfoDb::seqlevels(junctions_rt) %>%
+      stringr::str_c("chr", .)
+    
     rt_cov <- rtracklayer::import(
-        con = coverage_paths[1],
-        which = junctions_rt,
-        as = "NumericList"
+      con = bw_path,
+      which = junctions_rt,
+      as = "NumericList"
     ) %>%
-        lapply(FUN = mean) %>%
-        unlist() %>%
-        round(3) # ensure same rounding accuracy as megadepth
-
+      lapply(FUN = mean) %>%
+      unlist() %>%
+      round(3) # ensure same rounding accuracy as megadepth
+    
     expect_equivalent(rt_cov, mcols(junctions)[["coverage"]])
+    
+  }
+
 })
 
 ##### .chr_check #####
@@ -135,6 +130,8 @@ test_that(".merge_CharacterList catches user-input errors", {
 
 ##### .outlier_score #####
 
+reticulate::use_python(Sys.which("python3"), required = TRUE)
+
 features <- data.frame(
     index = 1:10,
     feat_1 = 1:10,
@@ -155,7 +152,6 @@ test_that(".outlier_score has correct output", {
         features_desc %>% dplyr::arrange(index) %>% .[["score"]]
     )
 })
-
 
 ##### .regroup #####
 
