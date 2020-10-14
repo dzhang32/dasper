@@ -16,12 +16,17 @@ test_that(".junction_annot_tidy correctly infers strand", {
 
 ##### junction_annot #####
 
-ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
-suppressWarnings(expr = {
-    ref <- .ref_load(ref)
-})
+# use Genomic state to load txdb (GENCODE v31)
+ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
 
-junctions <- junction_annot(junctions_example, ref)
+# convert seqlevels to match junctions
+seqlevels(ref) <- seqlevels(ref) %>% stringr::str_replace("chr", "")
+
+# extract random set of 1000 junctions
+set.seed(32)
+junctions_subset <- junctions_example[sample(seq_len(dim(junctions_example)[1]), 1000), ]
+
+junctions <- junction_annot(junctions_subset, ref)
 
 test_that("junction_annot output generally looks correct", {
     expect_true(methods::isClass(junctions, "RangedSummarisedExperiment"))
@@ -451,24 +456,13 @@ test_that("direction and score have been calculated correctly", {
 
 ##### junction_process #####
 
-# double check all functions fit easily with the pipe
+# check junction_process wrapper has the same output as running
+# intermediate functions individually
 # also that the order of junction_filter/junction_annot
 # does not impact result (diff order to junction_process)
-junctions_processed <- junctions_example %>%
-    junction_annot(ref) %>%
-    junction_filter(
-        count_thresh = c("raw" = 5),
-        n_samp = c("raw" = 1),
-        width_range = c(25, 1000000),
-        types = c("ambig_gene", "unannotated"),
-        regions = GRanges(seqnames = "21", ranges = "1-10000000", strand = "*")
-    ) %>%
-    junction_norm() %>%
-    junction_score(sd_const = 0.02)
-
-junctions_processed_2 <-
+junctions_processed <-
     junction_process(
-        junctions_example,
+        junctions_subset,
         ref,
         count_thresh = c("raw" = 5),
         n_samp = c("raw" = 1),
@@ -478,6 +472,19 @@ junctions_processed_2 <-
         score_func = .zscore,
         sd_const = 0.02
     )
+
+# junction_score must be re-applied
+# as otherwise raw counts are filtered for only those originating
+# from cases
+junctions_processed_2 <- junctions %>%
+    junction_filter(
+        count_thresh = c("raw" = 5),
+        n_samp = c("raw" = 1),
+        width_range = c(25, 1000000),
+        types = c("ambig_gene", "unannotated"),
+        regions = GRanges(seqnames = "21", ranges = "1-10000000", strand = "*")
+    ) %>%
+    junction_score(sd_const = 0.02)
 
 test_that("junction_process has the correct output", {
     expect_equivalent(junctions_processed, junctions_processed_2)

@@ -28,7 +28,7 @@ url <- recount::download_study(
 bw_path <- file.path(tempdir(), basename(url[1]))
 
 if (!file.exists(bw_path)) {
-    download.file(url[1], bw_path)
+    bw_path <- dasper:::.file_cache(url[1])
 }
 
 # take 5 junctions from the end and 5 from the top to test in that order
@@ -41,20 +41,20 @@ junctions <- junctions_example[junctions_to_use] %>%
 junctions_sorted <- junctions %>% sort()
 
 mcols(junctions)[["coverage"]] <-
-  .coverage_load(
-    regions = junctions,
-    coverage_path = bw_path,
-    sum_fun = "mean",
-    chr_format = "chr"
-  )
+    .coverage_load(
+        regions = junctions,
+        coverage_path = bw_path,
+        sum_fun = "mean",
+        chr_format = "chr"
+    )
 
 mcols(junctions_sorted)[["coverage"]] <-
-  .coverage_load(
-    regions = junctions_sorted,
-    coverage_path = bw_path,
-    sum_fun = "mean",
-    chr_format = "chr"
-  )
+    .coverage_load(
+        regions = junctions_sorted,
+        coverage_path = bw_path,
+        sum_fun = "mean",
+        chr_format = "chr"
+    )
 
 test_that(".coverage_load has correct output", {
 
@@ -64,25 +64,22 @@ test_that(".coverage_load has correct output", {
         mcols(junctions_sorted)[["coverage"]]
     )
 
-  if(.Platform$OS.type != "windows"){
-    
-    junctions_rt <- junctions
-    GenomeInfoDb::seqlevels(junctions_rt) <- GenomeInfoDb::seqlevels(junctions_rt) %>%
-      stringr::str_c("chr", .)
-    
-    rt_cov <- rtracklayer::import(
-      con = bw_path,
-      which = junctions_rt,
-      as = "NumericList"
-    ) %>%
-      lapply(FUN = mean) %>%
-      unlist() %>%
-      round(3) # ensure same rounding accuracy as megadepth
-    
-    expect_equivalent(rt_cov, mcols(junctions)[["coverage"]])
-    
-  }
+    if (.Platform$OS.type != "windows") {
+        junctions_rt <- junctions
+        GenomeInfoDb::seqlevels(junctions_rt) <- GenomeInfoDb::seqlevels(junctions_rt) %>%
+            stringr::str_c("chr", .)
 
+        rt_cov <- rtracklayer::import(
+            con = bw_path,
+            which = junctions_rt,
+            as = "NumericList"
+        ) %>%
+            lapply(FUN = mean) %>%
+            unlist() %>%
+            round(3) # ensure same rounding accuracy as megadepth
+
+        expect_equivalent(rt_cov, mcols(junctions)[["coverage"]])
+    }
 })
 
 ##### .chr_check #####

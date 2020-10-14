@@ -11,11 +11,21 @@ if (.Platform$OS.type != "windows") {
 
 ##### Set up random scores data #####
 
+# use Genomic state to load txdb (GENCODE v31)
+ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
+
+# convert seqlevels to match junctions
+seqlevels(ref) <- seqlevels(ref) %>% stringr::str_replace("chr", "")
+
+# extract random set of 1000 junctions
+set.seed(32)
+junctions_subset <- junctions_example[sample(seq_len(dim(junctions_example)[1]), 1000), ]
+
 # needs annotation and normalisation for
 # aggregation of outlier scores
 suppressWarnings(expr = {
-    junctions <- junctions_example[, colData(junctions_example)[["case_control"]] == "case"] %>%
-        junction_annot(ref = "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz") %>%
+    junctions <- junctions_subset[, colData(junctions_subset)[["case_control"]] == "case"] %>%
+        junction_annot(ref) %>%
         junction_norm()
 })
 

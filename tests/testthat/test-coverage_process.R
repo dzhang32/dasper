@@ -4,15 +4,19 @@ context("Testing coverage processing")
 
 ##### .coverage_exon_intron #####
 
-ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
-suppressWarnings(expr = {
-    ref <- .ref_load(ref)
-})
+# use Genomic state to load txdb (GENCODE v31)
+ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
+
+# convert seqlevels to match junctions
+seqlevels(ref) <- seqlevels(ref) %>% stringr::str_replace("chr", "")
+
+# extract random set of 1000 junctions
+set.seed(32)
+junctions_subset <- junctions_example[sample(seq_len(dim(junctions_example)[1]), 1000), ]
 
 # filter junctions to save time for annotating
 # whilst preserving both annotated and unannotated types
-junctions <- junctions_example %>%
-    junction_filter() %>%
+junctions <- junctions_subset %>%
     junction_annot(ref)
 
 coverage_regions <- .coverage_exon_intron(junctions, unannot_width = 10)

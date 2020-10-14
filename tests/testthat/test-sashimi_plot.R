@@ -1,9 +1,10 @@
 context("Test sashimi plot functions")
 
-ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
-suppressWarnings(expr = {
-    ref <- .ref_load(ref)
-})
+# use Genomic state to load txdb (GENCODE v31)
+ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
+
+# convert seqlevels to match junctions
+seqlevels(ref) <- seqlevels(ref) %>% stringr::str_replace("chr", "")
 
 junctions <- junctions_example %>%
     junction_filter() %>%
@@ -51,7 +52,8 @@ test_that(".gene_tx_type_get catches user-input errors", {
 
 ##### .exons_to_plot_get #####
 
-gene_tx_list <- .gene_tx_type_get("ENSG00000241973")
+gene_id_to_plot <- "ENSG00000241973.10"
+gene_tx_list <- .gene_tx_type_get(gene_id_to_plot)
 region <- GRanges("22:20740000-20760000")
 
 exons_to_plot <- .exons_to_plot_get(
@@ -63,10 +65,10 @@ exons_to_plot <- .exons_to_plot_get(
 test_that(".exons_to_plot_get has the correct output", {
     expect_equal(
         .exons_to_plot_get(ref,
-            .gene_tx_type_get("ENST00000624714"),
+            .gene_tx_type_get(gene_id_to_plot),
             region = NULL
         ),
-        .gene_tx_type_get("ENST00000624714") %>%
+        .gene_tx_type_get(gene_id_to_plot) %>%
             GenomicFeatures::exons(ref, filter = .) %>%
             GenomicRanges::disjoin()
     )
@@ -109,6 +111,10 @@ test_that(".junctions_to_plot_get catches user input errors", {
 
 ##### .junctions_to_plot_get #####
 
+# select a transcript of interest
+# mcols(junctions)[["tx_name_start"]] %>% unlist() %>% table() %>% sort(decreasing = TRUE) %>% head()
+tx_name_to_plot <- "ENST00000255882.10"
+
 junctions_to_plot <- .junctions_to_plot_get(junctions, gene_tx_list, region)
 
 test_that("junctions_to_plot has the correct output", {
@@ -120,10 +126,10 @@ test_that("junctions_to_plot has the correct output", {
         length(junctions_to_plot)
     )
 
-    junctions_to_plot_2 <- .junctions_to_plot_get(junctions, list(tx_name = "ENST00000480896"), region = NULL)
+    junctions_to_plot_2 <- .junctions_to_plot_get(junctions, list(tx_name = tx_name_to_plot), region = NULL)
 
-    expect_true(all(any(mcols(junctions_to_plot_2)[["tx_name_start"]] == "ENST00000480896") |
-        any(mcols(junctions_to_plot_2)[["tx_name_end"]] == "ENST00000480896")))
+    expect_true(all(any(mcols(junctions_to_plot_2)[["tx_name_start"]] == tx_name_to_plot) |
+        any(mcols(junctions_to_plot_2)[["tx_name_end"]] == tx_name_to_plot)))
 })
 
 test_that(".junctions_to_plot_get catches user input errors", {
@@ -227,13 +233,14 @@ test_that("coords_to_plot has the correct output", {
 sashimi1 <- plot_sashimi(
     junctions = junctions,
     ref = ref,
-    gene_tx_id = "ENST00000480896"
+    gene_tx_id = gene_id_to_plot,
+    count_label = FALSE
 )
 
 sashimi2 <- plot_sashimi(
     junctions = junctions,
     ref = ref,
-    gene_tx_id = "ENSG00000241973",
+    gene_tx_id = gene_id_to_plot,
     case_id = list(samp_id = c("samp_1", "samp_2")),
     region = region,
     count_label = TRUE,
@@ -243,7 +250,7 @@ sashimi2 <- plot_sashimi(
 sashimi3 <- plot_sashimi(
     junctions = junctions,
     ref = ref,
-    gene_tx_id = "ENSG00000241973",
+    gene_tx_id = tx_name_to_plot,
     case_id = list(samp_id = c("samp_1")),
     control_agg_func = mean,
     region = region,
