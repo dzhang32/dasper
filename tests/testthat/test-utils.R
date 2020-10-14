@@ -25,11 +25,7 @@ url <- recount::download_study(
     download = FALSE
 )
 
-bw_path <- file.path(tempdir(), basename(url[1]))
-
-if (!file.exists(bw_path)) {
-    bw_path <- dasper:::.file_cache(url[1])
-}
+bw_path <- dasper:::.file_cache(url[1])
 
 # take 5 junctions from the end and 5 from the top to test in that order
 # to make sure order returned by .coverage_load() matches input ranges rather than
