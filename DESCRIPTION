@@ -40,7 +40,8 @@ Suggests:
     ggpubr,
     grid,
     ggrepel,
-    recount
+    recount,
+    GenomicState
 VignetteBuilder: knitr
 Imports: 
     stringr,
