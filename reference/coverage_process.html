@@ -233,28 +233,28 @@ object containing junction data with coverage scores.</p>
         <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"chr"</span>, <span class='fu'>GenomeInfoDb</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html'>seqlevels</a></span><span class='op'>(</span><span class='va'>junctions_processed</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-03 14:05:21 - Filtering junctions..."
-#&gt; [1] "2020-10-03 14:05:21 - by count..."
-#&gt; [1] "2020-10-03 14:05:22 - by width..."
-#&gt; [1] "2020-10-03 14:05:22 - done!"
+#&gt; [1] "2020-10-14 14:34:44 - Filtering junctions..."
+#&gt; [1] "2020-10-14 14:34:44 - by count..."
+#&gt; [1] "2020-10-14 14:34:44 - by width..."
+#&gt; [1] "2020-10-14 14:34:44 - done!"
 #&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-10-03 14:05:22 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-10-03 14:05:36 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-10-03 14:05:37 - Tidying junction annotation..."
-#&gt; [1] "2020-10-03 14:05:37 - Deriving junction categories..."
-#&gt; [1] "2020-10-03 14:05:37 - done!"
+#&gt; [1] "2020-10-14 14:34:44 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-10-14 14:34:59 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-10-14 14:34:59 - Tidying junction annotation..."
+#&gt; [1] "2020-10-14 14:34:59 - Deriving junction categories..."
+#&gt; [1] "2020-10-14 14:34:59 - done!"
 #&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-03 14:05:37 - Filtering junctions..."
-#&gt; [1] "2020-10-03 14:05:37 - by type..."
-#&gt; [1] "2020-10-03 14:05:37 - done!"
+#&gt; [1] "2020-10-14 14:34:59 - Filtering junctions..."
+#&gt; [1] "2020-10-14 14:34:59 - by type..."
+#&gt; [1] "2020-10-14 14:34:59 - done!"
 #&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-03 14:05:37 - Clustering junctions..."
-#&gt; [1] "2020-10-03 14:05:37 - Normalising junction counts..."
-#&gt; [1] "2020-10-03 14:05:37 - done!"
+#&gt; [1] "2020-10-14 14:35:00 - Clustering junctions..."
+#&gt; [1] "2020-10-14 14:35:00 - Normalising junction counts..."
+#&gt; [1] "2020-10-14 14:35:00 - done!"
 #&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-10-03 14:05:37 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-10-03 14:05:38 - Generating junction abnormality score..."
-#&gt; [1] "2020-10-03 14:05:38 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-14 14:35:00 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-10-14 14:35:00 - Generating junction abnormality score..."
+#&gt; [1] "2020-10-14 14:35:00 - done!"</div><div class='input'>
 <span class='va'>url</span> <span class='op'>&lt;-</span> <span class='fu'>recount</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/recount/man/download_study.html'>download_study</a></span><span class='op'>(</span>
     project <span class='op'>=</span> <span class='st'>"SRP012682"</span>,
     type <span class='op'>=</span> <span class='st'>"samples"</span>,
@@ -276,14 +276,14 @@ object containing junction data with coverage scores.</p>
         <span class='op'>)</span>
 <span class='op'>}</span>
 </div><div class='output co'>#&gt; [1] "# Loading and normalising coverage ---------------------------------------------"
-#&gt; [1] "2020-10-03 14:05:38 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-10-03 14:05:38 - Obtaining regions to use to normalise coverage..."</div><div class='output co'>#&gt; <span class='warning'>Warning: The 2 combined objects have no sequence levels in common. (Use</span>
-#&gt; <span class='warning'>  suppressWarnings() to suppress this warning.)</span></div><div class='output co'>#&gt; [1] "2020-10-03 14:05:42 - Loading coverage..."</div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; [1] "2020-10-03 14:05:45 - Normalising coverage..."
-#&gt; [1] "2020-10-03 14:05:45 - done!"
+#&gt; [1] "2020-10-14 14:35:00 - Obtaining exonic and intronic regions to load coverage from..."
+#&gt; [1] "2020-10-14 14:35:00 - Obtaining regions to use to normalise coverage..."</div><div class='output co'>#&gt; <span class='warning'>Warning: The 2 combined objects have no sequence levels in common. (Use</span>
+#&gt; <span class='warning'>  suppressWarnings() to suppress this warning.)</span></div><div class='output co'>#&gt; [1] "2020-10-14 14:35:05 - Loading coverage..."</div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; [1] "2020-10-14 14:35:08 - Normalising coverage..."
+#&gt; [1] "2020-10-14 14:35:08 - done!"
 #&gt; [1] "# Scoring coverage ---------------------------------------------"
-#&gt; [1] "2020-10-03 14:05:45 - Generating coverage abnormality score..."
-#&gt; [1] "2020-10-03 14:05:45 - Obtaining regions with greatest coverage dysruption..."
-#&gt; [1] "2020-10-03 14:05:45 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-14 14:35:08 - Generating coverage abnormality score..."
+#&gt; [1] "2020-10-14 14:35:08 - Obtaining regions with greatest coverage dysruption..."
+#&gt; [1] "2020-10-14 14:35:08 - done!"</div><div class='input'>
 <span class='va'>junctions_w_coverage</span>
 </div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
 #&gt; dim: 4706 2 
