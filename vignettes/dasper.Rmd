@@ -127,16 +127,11 @@ We need to install the system dependency [megadepth](https://github.com/Christop
 megadepth::install_megadepth()
 ```
 
-
 `dasper` requires reference annotation that either inputted as a GTF path or pre-loaded into a `TxDb` object as shown below. 
 ```{r, "load ref", warning = FALSE}
-# shorten gtf url for vignette
-gtf_path <- paste0(
-    "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/",
-    "Homo_sapiens.GRCh38.100.gtf.gz"
-)
 
-ref <- GenomicFeatures::makeTxDbFromGFF(gtf_path)
+# use Genomic state to load txdb (GENCODE v31)
+ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
 ```
 
 Junctions and BigWig files are the required input to `dasper`. For the purpose of this vignette we will use a BigWig file from the GTEx v6 data publicly hosted by [recount2](https://jhubiostatistics.shinyapps.io/recount/). In reality, you should use the BigWig files that correspond to the same samples as those your junction data originate from. 
@@ -150,10 +145,7 @@ url <- recount::download_study(
     download = FALSE
 )
 
-# obtain the local path t
-bw_path <- file.path(tempdir(), basename(url[1]))
-
-download.file(url[1], bw_path)
+bw_path <- dasper:::.file_cache(url[1])
 ```
 
 A small set of example junctions are included within `dasper`. 
@@ -169,9 +161,6 @@ The GTEx BigWigs have their chromosomes prefixed with a "chr". For the purpose o
 ```{r, "seqlevels to match bw"}
 GenomeInfoDb::seqlevels(junctions_example) <-
     paste0("chr", GenomeInfoDb::seqlevels(junctions_example))
-
-GenomeInfoDb::seqlevels(ref) <-
-    paste0("chr", GenomeInfoDb::seqlevels(ref))
 ```
 
 Now we can run the 3 wrapper functions (`junction_process`, `coverage_process` and `outlier_process`) on the example data intialised above. They are designed to be compatible with the `tidyverse` pipe and the time-limiting steps of this analysis can be parallelised using `r Biocpkg("BiocParallel")` as shown. The returned `outlier_scores` object describes how aberrant each gene in each sample looks in terms of splicing. These are ranked in the `rank` column with 1 referring to the most aberrant looking gene. The specific junctions that look the most aberrant for each gene can be found in the `junctions` column.
@@ -227,7 +216,8 @@ Next, we annotate our junctions using `junction_annot`. This will classify your 
 # to increase the speed of the vignette
 junctions <- junctions[, 1:5]
 
-# convert seqlevels to match the BigWig
+# convert seqlevels to to match
+# BigWig and reference annotation
 GenomeInfoDb::seqlevels(junctions) <- paste0("chr", GenomeInfoDb::seqlevels(junctions))
 
 junctions <- junction_annot(junctions, ref)
