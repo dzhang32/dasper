@@ -193,11 +193,12 @@ transcript/region of interest.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"ref"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='st'>"ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"</span>
-    <span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicFeatures</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html'>makeTxDbFromGFF</a></span><span class='op'>(</span><span class='va'>ref</span><span class='op'>)</span>
+    <span class='co'># use Genomic state to load txdb (GENCODE v31)</span>
+    <span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span>version <span class='op'>=</span> <span class='st'>"31"</span>, genome <span class='op'>=</span> <span class='st'>"hg38"</span>, filetype <span class='op'>=</span> <span class='st'>"TxDb"</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
+    <span class='co'># convert seqlevels to match junctions</span>
+    <span class='fu'>seqlevels</span><span class='op'>(</span><span class='va'>ref</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='fu'>seqlevels</span><span class='op'>(</span><span class='va'>ref</span><span class='op'>)</span>, <span class='st'>"chr"</span>, <span class='st'>""</span><span class='op'>)</span>
 <span class='op'>}</span>
-</div><div class='output co'>#&gt; <span class='message'>Import genomic features from the file as a GRanges object ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Prepare the 'metadata' data frame ... </span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='output co'>#&gt; <span class='message'>Make the TxDb object ... </span></div><div class='output co'>#&gt; <span class='warning'>Warning: The "phase" metadata column contains non-NA values for features of type</span>
-#&gt; <span class='warning'>  stop_codon. This information was ignored.</span></div><div class='output co'>#&gt; <span class='message'>OK</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-09-03</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
 <span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"junctions_processed"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
     <span class='va'>junctions_processed</span> <span class='op'>&lt;-</span>
         <span class='fu'><a href='junction_process.html'>junction_process</a></span><span class='op'>(</span>
@@ -212,34 +213,34 @@ transcript/region of interest.</p>
         <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"chr"</span>, <span class='fu'>GenomeInfoDb</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html'>seqlevels</a></span><span class='op'>(</span><span class='va'>junctions_processed</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-14 14:44:54 - Filtering junctions..."
-#&gt; [1] "2020-10-14 14:44:54 - by count..."
-#&gt; [1] "2020-10-14 14:44:55 - by width..."
-#&gt; [1] "2020-10-14 14:44:55 - done!"
+#&gt; [1] "2020-10-14 17:58:36 - Filtering junctions..."
+#&gt; [1] "2020-10-14 17:58:36 - by count..."
+#&gt; [1] "2020-10-14 17:58:36 - by width..."
+#&gt; [1] "2020-10-14 17:58:36 - done!"
 #&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-10-14 14:44:55 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-10-14 14:45:09 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-10-14 14:45:10 - Tidying junction annotation..."
-#&gt; [1] "2020-10-14 14:45:10 - Deriving junction categories..."
-#&gt; [1] "2020-10-14 14:45:10 - done!"
+#&gt; [1] "2020-10-14 17:58:36 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-10-14 17:58:52 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-10-14 17:58:53 - Tidying junction annotation..."
+#&gt; [1] "2020-10-14 17:58:53 - Deriving junction categories..."
+#&gt; [1] "2020-10-14 17:58:54 - done!"
 #&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-14 14:45:10 - Filtering junctions..."
-#&gt; [1] "2020-10-14 14:45:10 - by type..."
-#&gt; [1] "2020-10-14 14:45:10 - done!"
+#&gt; [1] "2020-10-14 17:58:54 - Filtering junctions..."
+#&gt; [1] "2020-10-14 17:58:54 - by type..."
+#&gt; [1] "2020-10-14 17:58:54 - done!"
 #&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-14 14:45:10 - Clustering junctions..."
-#&gt; [1] "2020-10-14 14:45:10 - Normalising junction counts..."
-#&gt; [1] "2020-10-14 14:45:10 - done!"
+#&gt; [1] "2020-10-14 17:58:54 - Clustering junctions..."
+#&gt; [1] "2020-10-14 17:58:54 - Normalising junction counts..."
+#&gt; [1] "2020-10-14 17:58:54 - done!"
 #&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-10-14 14:45:10 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-10-14 14:45:10 - Generating junction abnormality score..."
-#&gt; [1] "2020-10-14 14:45:10 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-14 17:58:54 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-10-14 17:58:54 - Generating junction abnormality score..."
+#&gt; [1] "2020-10-14 17:58:54 - done!"</div><div class='input'>
 <span class='va'>sashimi_plot</span> <span class='op'>&lt;-</span> <span class='fu'>plot_sashimi</span><span class='op'>(</span>
     junctions <span class='op'>=</span> <span class='va'>junctions_processed</span>,
     ref <span class='op'>=</span> <span class='va'>ref</span>,
-    gene_tx_id <span class='op'>=</span> <span class='st'>"ENST00000480896"</span>
+    gene_tx_id <span class='op'>=</span> <span class='st'>"ENSG00000241973.10"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 135 row(s) containing missing values (geom_path).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 5 rows containing missing values (geom_label_repel).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 135 row(s) containing missing values (geom_path).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 5 rows containing missing values (geom_label_repel).</span></div></pre>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 108 row(s) containing missing values (geom_path).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 4 rows containing missing values (geom_label_repel).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 108 row(s) containing missing values (geom_path).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 4 rows containing missing values (geom_label_repel).</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
