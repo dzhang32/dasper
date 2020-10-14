@@ -23,8 +23,10 @@
 #' @examples
 #'
 #' if (!exists("ref")) {
-#'     ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
-#'     ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+#'     # use Genomic state to load txdb (GENCODE v31)
+#'     ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
+#'     # convert seqlevels to match junctions
+#'     seqlevels(ref) <- stringr::str_replace(seqlevels(ref), "chr", "")
 #' }
 #'
 #' if (!exists("junctions_processed")) {
@@ -48,25 +50,20 @@
 #'     download = FALSE
 #' )
 #'
-#' bw_path <- file.path(tempdir(), basename(url[1]))
+#' bw_path <- dasper:::.file_cache(url[1])
 #'
-#' if (!file.exists(bw_path)) {
-#'     download.file(url[1], bw_path)
-#' }
-#'
-#' if (!exists("coverage")) {
-#'     coverage <- coverage_norm(
+#' if (!exists("coverage_normed")) {
+#'     coverage_normed <- coverage_norm(
 #'         junctions_processed,
 #'         ref,
+#'         unannot_width = 20,
 #'         coverage_paths_case = rep(bw_path, 2),
-#'         coverage_paths_control = rep(bw_path, 3),
-#'         bp_param = BiocParallel::MulticoreParam(5)
+#'         coverage_paths_control = rep(bw_path, 2),
+#'         coverage_chr_control = "chr"
 #'     )
 #' }
 #'
-#' if (!exists("junctions_cov_scored")) {
-#'     junctions_cov_scored <- coverage_score(junctions_processed, coverage)
-#' }
+#' junctions_cov_scored <- coverage_score(junctions_processed, coverage_normed)
 #' @family coverage
 #' @export
 coverage_score <- function(junctions, coverage, score_func = .zscore, ...) {

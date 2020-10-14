@@ -31,8 +31,10 @@
 #' @examples
 #'
 #' if (!exists("ref")) {
-#'     ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
-#'     ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+#'     # use Genomic state to load txdb (GENCODE v31)
+#'     ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
+#'     # convert seqlevels to match junctions
+#'     seqlevels(ref) <- stringr::str_replace(seqlevels(ref), "chr", "")
 #' }
 #'
 #' if (!exists("junctions_processed")) {
@@ -52,7 +54,7 @@
 #' sashimi_plot <- plot_sashimi(
 #'     junctions = junctions_processed,
 #'     ref = ref,
-#'     gene_tx_id = "ENST00000480896"
+#'     gene_tx_id = "ENSG00000241973.10"
 #' )
 plot_sashimi <- function(junctions,
     ref,
