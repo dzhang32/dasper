@@ -38,16 +38,24 @@
 #' @examples
 #'
 #' if (!exists("ref")) {
-#'     ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
-#'     ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+#'     # use Genomic state to load txdb (GENCODE v31)
+#'     ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
+#'     # convert seqlevels to match junctions
+#'     seqlevels(ref) <- seqlevels(ref) %>% stringr::str_replace("chr", "")
 #' }
 #'
-#' if (!exists("junctions_annoted")) {
-#'     junctions_annoted <-
-#'         junction_annot(
+#' if (!exists("junctions_processed")) {
+#'     junctions_processed <-
+#'         junction_process(
 #'             junctions_example,
-#'             ref
+#'             ref,
+#'             count_thresh = c("raw" = 5),
+#'             n_samp = c("raw" = 1),
+#'             width_range = c(25, 1000000),
+#'             types = c("ambig_gene", "unannotated"),
 #'         )
+#'     GenomeInfoDb::seqlevels(junctions_processed) <-
+#'         paste0("chr", GenomeInfoDb::seqlevels(junctions_processed))
 #' }
 #'
 #' # obtain path to example bw on recount2
@@ -57,15 +65,11 @@
 #'     download = FALSE
 #' )
 #'
-#' bw_path <- file.path(tempdir(), basename(url[1]))
+#' bw_path <- dasper:::.file_cache(url[1])
 #'
-#' if (!file.exists(bw_path)) {
-#'     download.file(url[1], bw_path)
-#' }
-#'
-#' if (!exists("coverage")) {
-#'     coverage <- coverage_norm(
-#'         junctions_annoted,
+#' if (!exists("coverage_normed")) {
+#'     coverage_normed <- coverage_norm(
+#'         junctions_processed,
 #'         ref,
 #'         unannot_width = 20,
 #'         coverage_paths_case = rep(bw_path, 2),

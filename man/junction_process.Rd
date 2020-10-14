@@ -63,8 +63,10 @@ intermediates.
 \examples{
 
 if (!exists("ref")) {
-    ref <- "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
-    ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+    # use Genomic state to load txdb (GENCODE v31)
+    ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
+    # convert seqlevels to match junctions
+    seqlevels(ref) <- seqlevels(ref) \%>\% stringr::str_replace("chr", "")
 }
 
 if (!exists("junctions_processed")) {

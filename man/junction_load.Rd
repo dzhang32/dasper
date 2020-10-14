@@ -62,11 +62,16 @@ junctions_example_1_path <-
         package = "dasper",
         mustWork = TRUE
     )
+junctions_example_2_path <-
+    system.file("extdata",
+        "junctions_example_2.txt",
+        package = "dasper",
+        mustWork = TRUE
+    )
 
 junctions <-
     junction_load(
-        junction_paths = c(junctions_example_1_path),
-        metadata = dplyr::tibble(samp_id = c("example_1"))
+        junction_paths = c(junctions_example_1_path, junctions_example_2_path)
     )
 
 junctions
