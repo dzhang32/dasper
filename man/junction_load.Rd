@@ -21,9 +21,10 @@ junction_load(
 order as \code{junction_paths}.}
 
 \item{controls}{either a logical vector of the same length as
-\code{junction_paths} with TRUE representing controls. Or, "fibroblasts"
-representing the samples of which GTEx tissue to use as controls. By
-default, will assume all samples are patients.}
+\code{junction_paths} with TRUE representing controls. Or, one of "fibroblasts",
+"lymphocytes", "skeletal_muscle", "whole_blood" representing the samples of
+which GTEx tissue to use as controls. By default, will assume all samples
+are patients.}
 
 \item{load_func}{function to load in junctions. By default, requires STAR
 formatted junctions (SJ.out). But this can be switched dependent on the
@@ -33,11 +34,10 @@ path then return a data.frame with the columns "chr", "start", "end",
 
 \item{chrs}{chromosomes to keep. By default, no filter is applied.}
 
-\item{coord_system}{1 (1-based) or 0 (0-based) denoting
-the co-ordinate system corresponding to the user junctions from
-\code{junction_paths}. Only used when controls is set to "fibroblasts" to ensure
-GTEx data is harmonised to match the co-ordinate system of the user's
-junctions.}
+\item{coord_system}{1 (1-based) or 0 (0-based) denoting the co-ordinate
+system corresponding to the user junctions from \code{junction_paths}. Only used
+when controls is set to "fibroblasts" to ensure GTEx data is harmonised to
+match the co-ordinate system of the user's junctions.}
 }
 \value{
 \link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}

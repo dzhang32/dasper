@@ -14,20 +14,20 @@
 #' @param metadata data.frame containing sample metadata with rows in the same
 #'   order as `junction_paths`.
 #' @param controls either a logical vector of the same length as
-#'   `junction_paths` with TRUE representing controls. Or, "fibroblasts"
-#'   representing the samples of which GTEx tissue to use as controls. By
-#'   default, will assume all samples are patients.
+#'   `junction_paths` with TRUE representing controls. Or, one of "fibroblasts",
+#'   "lymphocytes", "skeletal_muscle", "whole_blood" representing the samples of
+#'   which GTEx tissue to use as controls. By default, will assume all samples
+#'   are patients.
 #' @param load_func function to load in junctions. By default, requires STAR
 #'   formatted junctions (SJ.out). But this can be switched dependent on the
 #'   format of the user's junction data. Function must take as input a junction
 #'   path then return a data.frame with the columns "chr", "start", "end",
 #'   "strand" and "count".
 #' @param chrs chromosomes to keep. By default, no filter is applied.
-#' @param coord_system 1 (1-based) or 0 (0-based) denoting
-#'   the co-ordinate system corresponding to the user junctions from
-#'   `junction_paths`. Only used when controls is set to "fibroblasts" to ensure
-#'   GTEx data is harmonised to match the co-ordinate system of the user's
-#'   junctions.
+#' @param coord_system 1 (1-based) or 0 (0-based) denoting the co-ordinate
+#'   system corresponding to the user junctions from `junction_paths`. Only used
+#'   when controls is set to "fibroblasts" to ensure GTEx data is harmonised to
+#'   match the co-ordinate system of the user's junctions.
 #'
 #' @return
 #' [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
@@ -90,7 +90,7 @@ junction_load <- function(
 
     print(stringr::str_c(Sys.time(), " - Adding control junctions..."))
 
-    if (any(controls %in% c("fibroblasts"))) {
+    if (any(controls %in% c("fibroblasts", "lymphocytes", "skeletal_muscle", "whole_blood"))) {
         junctions_controls <- .junction_dl_controls(controls)
 
         junctions_controls <- .control_coord_convert(junctions_controls, coord_system)
@@ -264,9 +264,19 @@ junction_load <- function(
     # generate details of controls to download
     controls_df <-
         dplyr::tibble(
-            control = c("fibroblasts"),
-            gtex_tissue = c("cells_transformed_fibroblasts"),
-            dropbox_path = c("https://www.dropbox.com/s/bg54moy2qf2wnnm/GTEx_junctions_cells_transformed_fibroblasts.rda?dl=1")
+            control = c("fibroblasts", "lymphocytes", "skeletal_muscle", "whole_blood"),
+            gtex_tissue = c(
+                "cells_transformed_fibroblasts",
+                "lymphocytes",
+                "skeletal_muscle", "
+                            whole_blood"
+            ),
+            dropbox_path = c(
+                "https://www.dropbox.com/s/kh9fvknltai89fo/GTEx_v6_junctions_fibroblast.rda?dl=1",
+                "https://www.dropbox.com/s/trtexmcuw9m8whj/GTEx_v6_junctions_lymphocytes.rda?dl=1",
+                "https://www.dropbox.com/s/yo8hrqs75l4q03m/GTEx_v6_junctions_skeletal_muscle.rda?dl=1",
+                "https://www.dropbox.com/s/hfd1go6ynztsjdy/GTEx_v6_junctions_whole_blood.rda?dl=1"
+            )
         )
 
     controls_df <- controls_df %>%
