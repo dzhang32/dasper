@@ -6,7 +6,7 @@ junctions <- read_delim("/data/RNA_seq_diag/mito/STAR/L1556-2624F_SJ.out.tab",
     col_names = FALSE,
     col_types = cols(X1 = "c")
 ) %>%
-    mutate(X1 = str_c("chr", X1))
+    mutate(X1 = str_c("chr", X1)) # add chr to match GENCODE GTF
 
 # generate two sets of random 10,000 junctions for testing
 for (i in 1:2) {
@@ -36,6 +36,6 @@ junctions_example <-
     )
 
 # and first 3 GTEx control samples to save space
-raw_counts <- junctions_example[, c(1:5)]
+junctions_example <- junctions_example[, c(1:5)]
 
 usethis::use_data(junctions_example, compress = "xz", overwrite = TRUE)
