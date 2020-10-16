@@ -61,8 +61,8 @@ Imports:
     tidyr,
     BiocParallel,
     data.table,
-    megadepth
+    megadepth,
+    basilisk
 Depends: 
     R (>= 4.0)
 StagedInstall: no
-
