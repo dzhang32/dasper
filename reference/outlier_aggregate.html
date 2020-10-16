@@ -163,49 +163,45 @@ associated junctions, outlier scores, ranks and genes.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"ref"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='co'># use Genomic state to load txdb (GENCODE v31)</span>
-    <span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span>version <span class='op'>=</span> <span class='st'>"31"</span>, genome <span class='op'>=</span> <span class='st'>"hg38"</span>, filetype <span class='op'>=</span> <span class='st'>"TxDb"</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-    <span class='co'># convert seqlevels to match junctions</span>
-    <span class='fu'>seqlevels</span><span class='op'>(</span><span class='va'>ref</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='fu'>seqlevels</span><span class='op'>(</span><span class='va'>ref</span><span class='op'>)</span>, <span class='st'>"chr"</span>, <span class='st'>""</span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='va'>.Platform</span><span class='op'>$</span><span class='va'>OS.type</span> <span class='op'>!=</span> <span class='st'>"windows"</span><span class='op'>)</span> <span class='op'>{</span>
+
+    <span class='co'># tell reticulate to use the python3 install</span>
+    <span class='co'># if windows skip this step</span>
+    <span class='fu'>reticulate</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/reticulate/man/use_python.html'>use_python</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Sys.which.html'>Sys.which</a></span><span class='op'>(</span><span class='st'>"python3"</span><span class='op'>)</span>, required <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='op'>}</span>
-</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-09-03</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"junctions_processed"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='va'>junctions_processed</span> <span class='op'>&lt;-</span>
-        <span class='fu'><a href='junction_process.html'>junction_process</a></span><span class='op'>(</span>
-            <span class='va'>junctions_example</span>,
-            <span class='va'>ref</span>,
-            count_thresh <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
-            n_samp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
-            width_range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>25</span>, <span class='fl'>1000000</span><span class='op'>)</span>,
-            types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
-        <span class='op'>)</span>
-    <span class='fu'>GenomeInfoDb</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html'>seqlevels</a></span><span class='op'>(</span><span class='va'>junctions_processed</span><span class='op'>)</span> <span class='op'>&lt;-</span>
-        <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"chr"</span>, <span class='fu'>GenomeInfoDb</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html'>seqlevels</a></span><span class='op'>(</span><span class='va'>junctions_processed</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>}</span>
+
+<span class='co'># use Genomic state to load txdb (GENCODE v31)</span>
+<span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span>version <span class='op'>=</span> <span class='st'>"31"</span>, genome <span class='op'>=</span> <span class='st'>"hg38"</span>, filetype <span class='op'>=</span> <span class='st'>"TxDb"</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-10-14</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
+<span class='va'>junctions_processed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='junction_process.html'>junction_process</a></span><span class='op'>(</span>
+    <span class='va'>junctions_example</span>,
+    <span class='va'>ref</span>,
+    count_thresh <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
+    n_samp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
+    types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
+<span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-14 17:56:44 - Filtering junctions..."
-#&gt; [1] "2020-10-14 17:56:44 - by count..."
-#&gt; [1] "2020-10-14 17:56:44 - by width..."
-#&gt; [1] "2020-10-14 17:56:44 - done!"
+#&gt; [1] "2020-10-16 14:58:10 - Filtering junctions..."
+#&gt; [1] "2020-10-16 14:58:10 - by count..."
+#&gt; [1] "2020-10-16 14:58:10 - done!"
 #&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-10-14 17:56:44 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-10-14 17:57:00 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-10-14 17:57:01 - Tidying junction annotation..."
-#&gt; [1] "2020-10-14 17:57:01 - Deriving junction categories..."
-#&gt; [1] "2020-10-14 17:57:01 - done!"
+#&gt; [1] "2020-10-16 14:58:10 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-10-16 14:58:24 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-10-16 14:58:26 - Tidying junction annotation..."
+#&gt; [1] "2020-10-16 14:58:26 - Deriving junction categories..."
+#&gt; [1] "2020-10-16 14:58:26 - done!"
 #&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-14 17:57:01 - Filtering junctions..."
-#&gt; [1] "2020-10-14 17:57:01 - by type..."
-#&gt; [1] "2020-10-14 17:57:01 - done!"
+#&gt; [1] "2020-10-16 14:58:26 - Filtering junctions..."
+#&gt; [1] "2020-10-16 14:58:26 - by type..."
+#&gt; [1] "2020-10-16 14:58:26 - done!"
 #&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-14 17:57:02 - Clustering junctions..."
-#&gt; [1] "2020-10-14 17:57:02 - Normalising junction counts..."
-#&gt; [1] "2020-10-14 17:57:02 - done!"
+#&gt; [1] "2020-10-16 14:58:26 - Clustering junctions..."
+#&gt; [1] "2020-10-16 14:58:27 - Normalising junction counts..."
+#&gt; [1] "2020-10-16 14:58:27 - done!"
 #&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-10-14 17:57:02 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-10-14 17:57:02 - Generating junction abnormality score..."
-#&gt; [1] "2020-10-14 17:57:02 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-16 14:58:27 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-10-16 14:58:27 - Generating junction abnormality score..."
+#&gt; [1] "2020-10-16 14:58:27 - done!"</div><div class='input'>
 <span class='co'># obtain path to example bw on recount2</span>
 <span class='va'>url</span> <span class='op'>&lt;-</span> <span class='fu'>recount</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/recount/man/download_study.html'>download_study</a></span><span class='op'>(</span>
     project <span class='op'>=</span> <span class='st'>"SRP012682"</span>,
@@ -215,38 +211,34 @@ associated junctions, outlier scores, ranks and genes.</p>
 
 <span class='va'>bw_path</span> <span class='op'>&lt;-</span> <span class='fu'>dasper</span><span class='fu'>:::</span><span class='fu'>.file_cache</span><span class='op'>(</span><span class='va'>url</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
 
-<span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"junctions_w_coverage"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='va'>junctions_w_coverage</span> <span class='op'>&lt;-</span>
-        <span class='fu'><a href='coverage_process.html'>coverage_process</a></span><span class='op'>(</span>
-            <span class='va'>junctions_processed</span>,
-            <span class='va'>ref</span>,
-            coverage_paths_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>,
-            coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>3</span><span class='op'>)</span>
-        <span class='op'>)</span>
-<span class='op'>}</span>
+<span class='va'>junctions_w_coverage</span> <span class='op'>&lt;-</span> <span class='fu'><a href='coverage_process.html'>coverage_process</a></span><span class='op'>(</span>
+    <span class='va'>junctions_processed</span>,
+    <span class='va'>ref</span>,
+    coverage_paths_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>,
+    coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>3</span><span class='op'>)</span>
+<span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Loading and normalising coverage ---------------------------------------------"
-#&gt; [1] "2020-10-14 17:57:02 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-10-14 17:57:03 - Obtaining regions to use to normalise coverage..."</div><div class='output co'>#&gt; <span class='warning'>Warning: The 2 combined objects have no sequence levels in common. (Use</span>
-#&gt; <span class='warning'>  suppressWarnings() to suppress this warning.)</span></div><div class='output co'>#&gt; [1] "2020-10-14 17:57:09 - Loading coverage..."</div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; [1] "2020-10-14 17:57:12 - Normalising coverage..."
-#&gt; [1] "2020-10-14 17:57:12 - done!"
+#&gt; [1] "2020-10-16 14:58:27 - Obtaining exonic and intronic regions to load coverage from..."
+#&gt; [1] "2020-10-16 14:58:27 - Obtaining regions to use to normalise coverage..."
+#&gt; [1] "2020-10-16 14:58:32 - Loading coverage..."
+#&gt; [1] "2020-10-16 14:58:37 - Normalising coverage..."
+#&gt; [1] "2020-10-16 14:58:37 - done!"
 #&gt; [1] "# Scoring coverage ---------------------------------------------"
-#&gt; [1] "2020-10-14 17:57:12 - Generating coverage abnormality score..."
-#&gt; [1] "2020-10-14 17:57:12 - Obtaining regions with greatest coverage dysruption..."
-#&gt; [1] "2020-10-14 17:57:12 - done!"</div><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"junctions_w_outliers"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='va'>junctions_w_outliers</span> <span class='op'>&lt;-</span> <span class='fu'><a href='outlier_detect.html'>outlier_detect</a></span><span class='op'>(</span><span class='va'>junctions_w_coverage</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div><div class='output co'>#&gt; [1] "2020-10-14 17:57:12 - generating outlier scores for sample 1/2"
-#&gt; [1] "2020-10-14 17:57:13 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-14 17:57:14 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-14 17:57:14 - generating outlier scores for sample 2/2"
-#&gt; [1] "2020-10-14 17:57:14 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-14 17:57:15 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-14 17:57:15 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-16 14:58:37 - Generating coverage abnormality score..."
+#&gt; [1] "2020-10-16 14:58:38 - Obtaining regions with greatest coverage dysruption..."
+#&gt; [1] "2020-10-16 14:58:38 - done!"</div><div class='input'>
+<span class='va'>junctions_w_outliers</span> <span class='op'>&lt;-</span> <span class='fu'><a href='outlier_detect.html'>outlier_detect</a></span><span class='op'>(</span><span class='va'>junctions_w_coverage</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2020-10-16 14:58:38 - generating outlier scores for sample 1/2"
+#&gt; [1] "2020-10-16 14:58:38 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
+#&gt; [1] "2020-10-16 14:58:39 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
+#&gt; [1] "2020-10-16 14:58:39 - generating outlier scores for sample 2/2"
+#&gt; [1] "2020-10-16 14:58:39 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
+#&gt; [1] "2020-10-16 14:58:39 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
+#&gt; [1] "2020-10-16 14:58:40 - done!"</div><div class='input'>
 <span class='va'>outlier_scores</span> <span class='op'>&lt;-</span> <span class='fu'>outlier_aggregate</span><span class='op'>(</span><span class='va'>junctions_w_outliers</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-10-14 17:57:15 - Aggregating outlier scores to cluster level... "
-#&gt; [1] "2020-10-14 17:57:16 - Annotating clusters with gene details..."
-#&gt; [1] "2020-10-14 17:57:16 - done!"</div></pre>
+</div><div class='output co'>#&gt; [1] "2020-10-16 14:58:40 - Aggregating outlier scores to cluster level... "
+#&gt; [1] "2020-10-16 14:58:41 - Annotating clusters with gene details..."
+#&gt; [1] "2020-10-16 14:58:41 - done!"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

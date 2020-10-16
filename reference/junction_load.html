@@ -140,7 +140,7 @@ downloaded through <a href='http://snaptron.cs.jhu.edu/'>snaptron</a>. By defaul
   controls <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>FALSE</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>junction_paths</span><span class='op'>)</span><span class='op'>)</span>,
   load_func <span class='op'>=</span> <span class='va'>.STAR_load</span>,
   chrs <span class='op'>=</span> <span class='cn'>NULL</span>,
-  coord_system <span class='op'>=</span> <span class='st'>"ensembl"</span>
+  coord_system <span class='op'>=</span> <span class='fl'>1</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -158,9 +158,10 @@ order as <code>junction_paths</code>.</p></td>
     <tr>
       <th>controls</th>
       <td><p>either a logical vector of the same length as
-<code>junction_paths</code> with TRUE representing controls. Or, "fibroblasts"
-representing the samples of which GTEx tissue to use as controls. By
-default, will assume all samples are patients.</p></td>
+<code>junction_paths</code> with TRUE representing controls. Or, one of "fibroblasts",
+"lymphocytes", "skeletal_muscle", "whole_blood" representing the samples of
+which GTEx tissue to use as controls. By default, will assume all samples
+are patients.</p></td>
     </tr>
     <tr>
       <th>load_func</th>
@@ -176,11 +177,10 @@ path then return a data.frame with the columns "chr", "start", "end",
     </tr>
     <tr>
       <th>coord_system</th>
-      <td><p>One of "ensembl" (1-based) or "ucsc" (0-based) denoting
-the co-ordinate system corresponding to the user junctions from
-<code>junction_paths</code>. Only used when controls is set to "fibroblasts" to ensure
-GTEx data is harmonised to match the co-ordinate system of the user's
-junctions.</p></td>
+      <td><p>1 (1-based) or 0 (0-based) denoting the co-ordinate
+system corresponding to the user junctions from <code>junction_paths</code>. Only used
+when controls is set to "fibroblasts" to ensure GTEx data is harmonised to
+match the co-ordinate system of the user's junctions.</p></td>
     </tr>
     </table>
 
@@ -216,11 +216,11 @@ object containing junction data.</p>
     <span class='fu'>junction_load</span><span class='op'>(</span>
         junction_paths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>junctions_example_1_path</span>, <span class='va'>junctions_example_2_path</span><span class='op'>)</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-10-14 17:56:01 - Loading junctions for sample 1/2..."
-#&gt; [1] "2020-10-14 17:56:01 - Loading junctions for sample 2/2..."
-#&gt; [1] "2020-10-14 17:56:01 - Adding control junctions..."
-#&gt; [1] "2020-10-14 17:56:01 - Tidying and storing junction data as a RangedSummarizedExperiment..."
-#&gt; [1] "2020-10-14 17:56:01 - done!"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "2020-10-16 14:57:25 - Loading junctions for sample 1/2..."
+#&gt; [1] "2020-10-16 14:57:25 - Loading junctions for sample 2/2..."
+#&gt; [1] "2020-10-16 14:57:25 - Adding control junctions..."
+#&gt; [1] "2020-10-16 14:57:25 - Tidying and storing junction data as a RangedSummarizedExperiment..."
+#&gt; [1] "2020-10-16 14:57:25 - done!"</div><div class='input'>
 <span class='va'>junctions</span>
 </div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
 #&gt; dim: 19733 2 

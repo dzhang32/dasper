@@ -181,49 +181,38 @@ associated junctions, outlier scores, ranks and genes.</p>
     <span class='fu'>reticulate</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/reticulate/man/use_python.html'>use_python</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Sys.which.html'>Sys.which</a></span><span class='op'>(</span><span class='st'>"python3"</span><span class='op'>)</span>, required <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='op'>}</span>
 
-<span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"ref"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='co'># use Genomic state to load txdb (GENCODE v31)</span>
-    <span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span>version <span class='op'>=</span> <span class='st'>"31"</span>, genome <span class='op'>=</span> <span class='st'>"hg38"</span>, filetype <span class='op'>=</span> <span class='st'>"TxDb"</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-    <span class='co'># convert seqlevels to match junctions</span>
-    <span class='fu'>seqlevels</span><span class='op'>(</span><span class='va'>ref</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_replace.html'>str_replace</a></span><span class='op'>(</span><span class='fu'>seqlevels</span><span class='op'>(</span><span class='va'>ref</span><span class='op'>)</span>, <span class='st'>"chr"</span>, <span class='st'>""</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-09-03</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"junctions_processed"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='va'>junctions_processed</span> <span class='op'>&lt;-</span>
-        <span class='fu'><a href='junction_process.html'>junction_process</a></span><span class='op'>(</span>
-            <span class='va'>junctions_example</span>,
-            <span class='va'>ref</span>,
-            count_thresh <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
-            n_samp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
-            width_range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>25</span>, <span class='fl'>1000000</span><span class='op'>)</span>,
-            types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
-        <span class='op'>)</span>
-    <span class='fu'>GenomeInfoDb</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html'>seqlevels</a></span><span class='op'>(</span><span class='va'>junctions_processed</span><span class='op'>)</span> <span class='op'>&lt;-</span>
-        <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"chr"</span>, <span class='fu'>GenomeInfoDb</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html'>seqlevels</a></span><span class='op'>(</span><span class='va'>junctions_processed</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>}</span>
+<span class='co'># use Genomic state to load txdb (GENCODE v31)</span>
+<span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span>version <span class='op'>=</span> <span class='st'>"31"</span>, genome <span class='op'>=</span> <span class='st'>"hg38"</span>, filetype <span class='op'>=</span> <span class='st'>"TxDb"</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-10-14</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
+<span class='va'>junctions_processed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='junction_process.html'>junction_process</a></span><span class='op'>(</span>
+    <span class='va'>junctions_example</span>,
+    <span class='va'>ref</span>,
+    count_thresh <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
+    n_samp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
+    types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
+<span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-14 17:57:58 - Filtering junctions..."
-#&gt; [1] "2020-10-14 17:57:58 - by count..."
-#&gt; [1] "2020-10-14 17:57:58 - by width..."
-#&gt; [1] "2020-10-14 17:57:58 - done!"
+#&gt; [1] "2020-10-16 14:59:23 - Filtering junctions..."
+#&gt; [1] "2020-10-16 14:59:23 - by count..."
+#&gt; [1] "2020-10-16 14:59:23 - done!"
 #&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-10-14 17:57:58 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-10-14 17:58:15 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-10-14 17:58:15 - Tidying junction annotation..."
-#&gt; [1] "2020-10-14 17:58:16 - Deriving junction categories..."
-#&gt; [1] "2020-10-14 17:58:16 - done!"
+#&gt; [1] "2020-10-16 14:59:23 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-10-16 14:59:38 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-10-16 14:59:39 - Tidying junction annotation..."
+#&gt; [1] "2020-10-16 14:59:39 - Deriving junction categories..."
+#&gt; [1] "2020-10-16 14:59:39 - done!"
 #&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-14 17:58:16 - Filtering junctions..."
-#&gt; [1] "2020-10-14 17:58:16 - by type..."
-#&gt; [1] "2020-10-14 17:58:16 - done!"
+#&gt; [1] "2020-10-16 14:59:39 - Filtering junctions..."
+#&gt; [1] "2020-10-16 14:59:39 - by type..."
+#&gt; [1] "2020-10-16 14:59:39 - done!"
 #&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-14 17:58:16 - Clustering junctions..."
-#&gt; [1] "2020-10-14 17:58:16 - Normalising junction counts..."
-#&gt; [1] "2020-10-14 17:58:16 - done!"
+#&gt; [1] "2020-10-16 14:59:39 - Clustering junctions..."
+#&gt; [1] "2020-10-16 14:59:39 - Normalising junction counts..."
+#&gt; [1] "2020-10-16 14:59:39 - done!"
 #&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-10-14 17:58:16 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-10-14 17:58:16 - Generating junction abnormality score..."
-#&gt; [1] "2020-10-14 17:58:16 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-16 14:59:39 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-10-16 14:59:39 - Generating junction abnormality score..."
+#&gt; [1] "2020-10-16 14:59:39 - done!"</div><div class='input'>
 <span class='co'># obtain path to example bw on recount2</span>
 <span class='va'>url</span> <span class='op'>&lt;-</span> <span class='fu'>recount</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/recount/man/download_study.html'>download_study</a></span><span class='op'>(</span>
     project <span class='op'>=</span> <span class='st'>"SRP012682"</span>,
@@ -233,63 +222,61 @@ associated junctions, outlier scores, ranks and genes.</p>
 
 <span class='va'>bw_path</span> <span class='op'>&lt;-</span> <span class='fu'>dasper</span><span class='fu'>:::</span><span class='fu'>.file_cache</span><span class='op'>(</span><span class='va'>url</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
 
-<span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/exists.html'>exists</a></span><span class='op'>(</span><span class='st'>"junctions_w_coverage"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='va'>junctions_w_coverage</span> <span class='op'>&lt;-</span>
-        <span class='fu'><a href='coverage_process.html'>coverage_process</a></span><span class='op'>(</span>
-            <span class='va'>junctions_processed</span>,
-            <span class='va'>ref</span>,
-            coverage_paths_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>,
-            coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>3</span><span class='op'>)</span>
-        <span class='op'>)</span>
-<span class='op'>}</span>
+<span class='va'>junctions_w_coverage</span> <span class='op'>&lt;-</span> <span class='fu'><a href='coverage_process.html'>coverage_process</a></span><span class='op'>(</span>
+    <span class='va'>junctions_processed</span>,
+    <span class='va'>ref</span>,
+    coverage_paths_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>,
+    coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>3</span><span class='op'>)</span>
+<span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Loading and normalising coverage ---------------------------------------------"
-#&gt; [1] "2020-10-14 17:58:17 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-10-14 17:58:17 - Obtaining regions to use to normalise coverage..."</div><div class='output co'>#&gt; <span class='warning'>Warning: The 2 combined objects have no sequence levels in common. (Use</span>
-#&gt; <span class='warning'>  suppressWarnings() to suppress this warning.)</span></div><div class='output co'>#&gt; [1] "2020-10-14 17:58:23 - Loading coverage..."</div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.</span></div><div class='output co'>#&gt; [1] "2020-10-14 17:58:26 - Normalising coverage..."
-#&gt; [1] "2020-10-14 17:58:26 - done!"
+#&gt; [1] "2020-10-16 14:59:40 - Obtaining exonic and intronic regions to load coverage from..."
+#&gt; [1] "2020-10-16 14:59:40 - Obtaining regions to use to normalise coverage..."
+#&gt; [1] "2020-10-16 14:59:44 - Loading coverage..."
+#&gt; [1] "2020-10-16 14:59:49 - Normalising coverage..."
+#&gt; [1] "2020-10-16 14:59:49 - done!"
 #&gt; [1] "# Scoring coverage ---------------------------------------------"
-#&gt; [1] "2020-10-14 17:58:26 - Generating coverage abnormality score..."
-#&gt; [1] "2020-10-14 17:58:26 - Obtaining regions with greatest coverage dysruption..."
-#&gt; [1] "2020-10-14 17:58:27 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-16 14:59:49 - Generating coverage abnormality score..."
+#&gt; [1] "2020-10-16 14:59:50 - Obtaining regions with greatest coverage dysruption..."
+#&gt; [1] "2020-10-16 14:59:50 - done!"</div><div class='input'>
 <span class='fu'>outlier_process</span><span class='op'>(</span><span class='va'>junctions_w_coverage</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Detecting outliers using an isolation forest ------------------------------"
-#&gt; [1] "2020-10-14 17:58:27 - generating outlier scores for sample 1/2"
-#&gt; [1] "2020-10-14 17:58:27 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-14 17:58:27 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-14 17:58:27 - generating outlier scores for sample 2/2"
-#&gt; [1] "2020-10-14 17:58:27 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-14 17:58:28 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-14 17:58:28 - done!"
+#&gt; [1] "2020-10-16 14:59:50 - generating outlier scores for sample 1/2"
+#&gt; [1] "2020-10-16 14:59:50 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
+#&gt; [1] "2020-10-16 14:59:50 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
+#&gt; [1] "2020-10-16 14:59:51 - generating outlier scores for sample 2/2"
+#&gt; [1] "2020-10-16 14:59:51 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
+#&gt; [1] "2020-10-16 14:59:51 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
+#&gt; [1] "2020-10-16 14:59:51 - done!"
 #&gt; [1] "# Aggregating outlier scores to cluster-level -----------------------------"
-#&gt; [1] "2020-10-14 17:58:28 - Aggregating outlier scores to cluster level... "
-#&gt; [1] "2020-10-14 17:58:29 - Annotating clusters with gene details..."
-#&gt; [1] "2020-10-14 17:58:29 - done!"</div><div class='output co'>#&gt; DataFrame with 171 rows and 6 columns
+#&gt; [1] "2020-10-16 14:59:51 - Aggregating outlier scores to cluster level... "
+#&gt; [1] "2020-10-16 14:59:52 - Annotating clusters with gene details..."
+#&gt; [1] "2020-10-16 14:59:52 - done!"</div><div class='output co'>#&gt; DataFrame with 170 rows and 6 columns
 #&gt;         samp_id cluster_index mean_outlier_score      rank    gene_id_cluster
 #&gt;     &lt;character&gt;   &lt;character&gt;          &lt;numeric&gt; &lt;numeric&gt;    &lt;CharacterList&gt;
-#&gt; 1        samp_1          3857          -0.181007         1  ENSG00000100418.8
-#&gt; 2        samp_1          3984          -0.173240         2 ENSG00000100243.21
-#&gt; 3        samp_1          1243          -0.171569         3 ENSG00000142156.14
-#&gt; 4        samp_1          3680          -0.145308         4 ENSG00000100372.15
-#&gt; 5        samp_1          3992          -0.143253         5 ENSG00000128274.17
+#&gt; 1        samp_1          3984          -0.190907         1 ENSG00000100243.21
+#&gt; 2        samp_1          1243          -0.184554         2 ENSG00000142156.14
+#&gt; 3        samp_1          3857          -0.178024         3  ENSG00000100418.8
+#&gt; 4        samp_1           968          -0.151837         4  ENSG00000160213.7
+#&gt; 5        samp_1          3680          -0.143322         5 ENSG00000100372.15
 #&gt; ...         ...           ...                ...       ...                ...
-#&gt; 167      samp_2          3072          0.0694639        85 ENSG00000100320.23
-#&gt; 168      samp_2          3116          0.0694639        85 ENSG00000100345.21
-#&gt; 169      samp_2          3119          0.0694639        85 ENSG00000100345.21
-#&gt; 170      samp_2           392          0.0694639        85 ENSG00000159128.14
-#&gt; 171      samp_2          4137          0.0694639        85 ENSG00000100376.12
-#&gt;                                             junctions
-#&gt;                                                &lt;list&gt;
-#&gt; 1     3857: 1:-0.120802:...,3858:-1:-0.241211:...,...
-#&gt; 2     3984: 1:-0.177244:...,3985:-1:-0.169236:...,...
-#&gt; 3     1244:-1:-0.208329:...,1245: 1:-0.134809:...,...
-#&gt; 4   3680:-1:-0.2302716:...,3681: 1:-0.0603451:...,...
-#&gt; 5   3992: 1:-0.0626296:...,3993:-1:-0.2238766:...,...
-#&gt; ...                                               ...
-#&gt; 167   3072:-1:0.0645729:...,3073: 1:0.0743549:...,...
-#&gt; 168   3116: 1:0.0743549:...,3117:-1:0.0645729:...,...
-#&gt; 169   3119: 1:0.0743549:...,3120:-1:0.0645729:...,...
-#&gt; 170     392:-1:0.0645729:...,393: 1:0.0743549:...,...
-#&gt; 171   4137:-1:0.0645729:...,4138: 1:0.0743549:...,...</div></pre>
+#&gt; 166      samp_2          3072          0.0722241        85 ENSG00000100320.23
+#&gt; 167      samp_2          3116          0.0722241        85 ENSG00000100345.21
+#&gt; 168      samp_2          3119          0.0722241        85 ENSG00000100345.21
+#&gt; 169      samp_2           392          0.0722241        85 ENSG00000159128.14
+#&gt; 170      samp_2          4137          0.0722241        85 ENSG00000100376.12
+#&gt;                                           junctions
+#&gt;                                              &lt;list&gt;
+#&gt; 1   3984: 1:-0.176468:...,3985:-1:-0.205345:...,...
+#&gt; 2   1244:-1:-0.237611:...,1245: 1:-0.131496:...,...
+#&gt; 3   3857: 1:-0.116081:...,3858:-1:-0.239967:...,...
+#&gt; 4   968: 1:-0.0846473:...,969:-1:-0.2190258:...,...
+#&gt; 5   3680:-1:-0.232546:...,3681: 1:-0.054099:...,...
+#&gt; ...                                             ...
+#&gt; 166 3072:-1:0.0723692:...,3073: 1:0.0720790:...,...
+#&gt; 167 3116: 1:0.0720790:...,3117:-1:0.0723692:...,...
+#&gt; 168 3119: 1:0.0720790:...,3120:-1:0.0723692:...,...
+#&gt; 169   392:-1:0.0723692:...,393: 1:0.0720790:...,...
+#&gt; 170 4137:-1:0.0723692:...,4138: 1:0.0720790:...,...</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
