@@ -156,11 +156,10 @@ outlier_scores <-
     junction_process(junctions_example, ref) %>%
     coverage_process(ref,
         coverage_paths_case = rep(bw_path, 2),
-        coverage_paths_control = rep(bw_path, 3),
-        coverage_chr_control = "chr",
-        bp_param = BiocParallel::MulticoreParam(5)
+        coverage_paths_control = rep(bw_path, 2),
+        coverage_chr_control = "chr"
     ) %>%
-    outlier_process(bp_param = BiocParallel::MulticoreParam(5))
+    outlier_process()
 
 head(outlier_scores)
 ```
