@@ -214,7 +214,7 @@ across the 2 exons and intron associated with every junction.</p>
     <pre class="examples"><div class='input'>
 <span class='co'># use Genomic state to load txdb (GENCODE v31)</span>
 <span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span>version <span class='op'>=</span> <span class='st'>"31"</span>, genome <span class='op'>=</span> <span class='st'>"hg38"</span>, filetype <span class='op'>=</span> <span class='st'>"TxDb"</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; <span class='message'>using temporary cache /tmp/RtmpCaxm8D/BiocFileCache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-10-14</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomicFeatures</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: BiocGenerics</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: parallel</span></div><div class='output co'>#&gt; <span class='message'></span>
+</div><div class='output co'>#&gt; <span class='message'>using temporary cache /tmp/Rtmpy8BU4h/BiocFileCache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-10-14</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomicFeatures</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: BiocGenerics</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: parallel</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘BiocGenerics’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:parallel’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,</span>
@@ -244,27 +244,27 @@ across the 2 exons and intron associated with every junction.</p>
     types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-16 14:54:52 - Filtering junctions..."
-#&gt; [1] "2020-10-16 14:54:52 - by count..."
-#&gt; [1] "2020-10-16 14:54:53 - done!"
+#&gt; [1] "2020-10-16 15:06:15 - Filtering junctions..."
+#&gt; [1] "2020-10-16 15:06:15 - by count..."
+#&gt; [1] "2020-10-16 15:06:15 - done!"
 #&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-10-16 14:54:53 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-10-16 14:55:14 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-10-16 14:55:15 - Tidying junction annotation..."
-#&gt; [1] "2020-10-16 14:55:15 - Deriving junction categories..."
-#&gt; [1] "2020-10-16 14:55:15 - done!"
+#&gt; [1] "2020-10-16 15:06:15 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-10-16 15:06:32 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-10-16 15:06:33 - Tidying junction annotation..."
+#&gt; [1] "2020-10-16 15:06:33 - Deriving junction categories..."
+#&gt; [1] "2020-10-16 15:06:33 - done!"
 #&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-16 14:55:15 - Filtering junctions..."
-#&gt; [1] "2020-10-16 14:55:15 - by type..."
-#&gt; [1] "2020-10-16 14:55:15 - done!"
+#&gt; [1] "2020-10-16 15:06:33 - Filtering junctions..."
+#&gt; [1] "2020-10-16 15:06:33 - by type..."
+#&gt; [1] "2020-10-16 15:06:33 - done!"
 #&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-16 14:55:15 - Clustering junctions..."
-#&gt; [1] "2020-10-16 14:55:15 - Normalising junction counts..."
-#&gt; [1] "2020-10-16 14:55:16 - done!"
+#&gt; [1] "2020-10-16 15:06:33 - Clustering junctions..."
+#&gt; [1] "2020-10-16 15:06:33 - Normalising junction counts..."
+#&gt; [1] "2020-10-16 15:06:33 - done!"
 #&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-10-16 14:55:16 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-10-16 14:55:16 - Generating junction abnormality score..."
-#&gt; [1] "2020-10-16 14:55:16 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-16 15:06:33 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-10-16 15:06:33 - Generating junction abnormality score..."
+#&gt; [1] "2020-10-16 15:06:33 - done!"</div><div class='input'>
 <span class='co'># obtain path to example bw on recount2</span>
 <span class='va'>url</span> <span class='op'>&lt;-</span> <span class='fu'>recount</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/recount/man/download_study.html'>download_study</a></span><span class='op'>(</span>
     project <span class='op'>=</span> <span class='st'>"SRP012682"</span>,
@@ -282,11 +282,11 @@ across the 2 exons and intron associated with every junction.</p>
     coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>,
     coverage_chr_control <span class='op'>=</span> <span class='st'>"chr"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-10-16 14:55:19 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-10-16 14:55:19 - Obtaining regions to use to normalise coverage..."
-#&gt; [1] "2020-10-16 14:55:26 - Loading coverage..."
-#&gt; [1] "2020-10-16 14:55:30 - Normalising coverage..."
-#&gt; [1] "2020-10-16 14:55:30 - done!"</div></pre>
+</div><div class='output co'>#&gt; [1] "2020-10-16 15:06:36 - Obtaining exonic and intronic regions to load coverage from..."
+#&gt; [1] "2020-10-16 15:06:36 - Obtaining regions to use to normalise coverage..."
+#&gt; [1] "2020-10-16 15:06:42 - Loading coverage..."
+#&gt; [1] "2020-10-16 15:06:46 - Normalising coverage..."
+#&gt; [1] "2020-10-16 15:06:46 - done!"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

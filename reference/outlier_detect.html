@@ -198,27 +198,27 @@ https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationFore
     types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-16 14:58:47 - Filtering junctions..."
-#&gt; [1] "2020-10-16 14:58:47 - by count..."
-#&gt; [1] "2020-10-16 14:58:47 - done!"
+#&gt; [1] "2020-10-16 15:09:17 - Filtering junctions..."
+#&gt; [1] "2020-10-16 15:09:17 - by count..."
+#&gt; [1] "2020-10-16 15:09:17 - done!"
 #&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-10-16 14:58:47 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-10-16 14:59:03 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-10-16 14:59:03 - Tidying junction annotation..."
-#&gt; [1] "2020-10-16 14:59:04 - Deriving junction categories..."
-#&gt; [1] "2020-10-16 14:59:04 - done!"
+#&gt; [1] "2020-10-16 15:09:17 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-10-16 15:09:28 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-10-16 15:09:29 - Tidying junction annotation..."
+#&gt; [1] "2020-10-16 15:09:30 - Deriving junction categories..."
+#&gt; [1] "2020-10-16 15:09:30 - done!"
 #&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-16 14:59:04 - Filtering junctions..."
-#&gt; [1] "2020-10-16 14:59:04 - by type..."
-#&gt; [1] "2020-10-16 14:59:04 - done!"
+#&gt; [1] "2020-10-16 15:09:30 - Filtering junctions..."
+#&gt; [1] "2020-10-16 15:09:30 - by type..."
+#&gt; [1] "2020-10-16 15:09:30 - done!"
 #&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-16 14:59:04 - Clustering junctions..."
-#&gt; [1] "2020-10-16 14:59:04 - Normalising junction counts..."
-#&gt; [1] "2020-10-16 14:59:04 - done!"
+#&gt; [1] "2020-10-16 15:09:30 - Clustering junctions..."
+#&gt; [1] "2020-10-16 15:09:30 - Normalising junction counts..."
+#&gt; [1] "2020-10-16 15:09:30 - done!"
 #&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-10-16 14:59:04 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-10-16 14:59:04 - Generating junction abnormality score..."
-#&gt; [1] "2020-10-16 14:59:04 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-16 15:09:30 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-10-16 15:09:30 - Generating junction abnormality score..."
+#&gt; [1] "2020-10-16 15:09:30 - done!"</div><div class='input'>
 <span class='co'># obtain path to example bw on recount2</span>
 <span class='va'>url</span> <span class='op'>&lt;-</span> <span class='fu'>recount</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/recount/man/download_study.html'>download_study</a></span><span class='op'>(</span>
     project <span class='op'>=</span> <span class='st'>"SRP012682"</span>,
@@ -235,23 +235,23 @@ https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationFore
     coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>3</span><span class='op'>)</span>
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Loading and normalising coverage ---------------------------------------------"
-#&gt; [1] "2020-10-16 14:59:04 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-10-16 14:59:05 - Obtaining regions to use to normalise coverage..."
-#&gt; [1] "2020-10-16 14:59:10 - Loading coverage..."
-#&gt; [1] "2020-10-16 14:59:15 - Normalising coverage..."
-#&gt; [1] "2020-10-16 14:59:15 - done!"
+#&gt; [1] "2020-10-16 15:09:30 - Obtaining exonic and intronic regions to load coverage from..."
+#&gt; [1] "2020-10-16 15:09:30 - Obtaining regions to use to normalise coverage..."
+#&gt; [1] "2020-10-16 15:09:34 - Loading coverage..."
+#&gt; [1] "2020-10-16 15:09:40 - Normalising coverage..."
+#&gt; [1] "2020-10-16 15:09:40 - done!"
 #&gt; [1] "# Scoring coverage ---------------------------------------------"
-#&gt; [1] "2020-10-16 14:59:15 - Generating coverage abnormality score..."
-#&gt; [1] "2020-10-16 14:59:16 - Obtaining regions with greatest coverage dysruption..."
-#&gt; [1] "2020-10-16 14:59:16 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-16 15:09:40 - Generating coverage abnormality score..."
+#&gt; [1] "2020-10-16 15:09:40 - Obtaining regions with greatest coverage dysruption..."
+#&gt; [1] "2020-10-16 15:09:40 - done!"</div><div class='input'>
 <span class='va'>junctions_w_outliers</span> <span class='op'>&lt;-</span> <span class='fu'>outlier_detect</span><span class='op'>(</span><span class='va'>junctions_w_coverage</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-10-16 14:59:16 - generating outlier scores for sample 1/2"
-#&gt; [1] "2020-10-16 14:59:16 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-16 14:59:16 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-16 14:59:16 - generating outlier scores for sample 2/2"
-#&gt; [1] "2020-10-16 14:59:16 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-16 14:59:16 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-16 14:59:17 - done!"</div></pre>
+</div><div class='output co'>#&gt; [1] "2020-10-16 15:09:40 - generating outlier scores for sample 1/2"
+#&gt; [1] "2020-10-16 15:09:40 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
+#&gt; [1] "2020-10-16 15:09:40 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
+#&gt; [1] "2020-10-16 15:09:40 - generating outlier scores for sample 2/2"
+#&gt; [1] "2020-10-16 15:09:40 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
+#&gt; [1] "2020-10-16 15:09:41 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
+#&gt; [1] "2020-10-16 15:09:41 - done!"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
