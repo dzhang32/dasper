@@ -261,7 +261,6 @@ The last step in the `dasper` pipeline is to use the junction count scores and c
 
 ```{r, "outlier_detect"}
 junctions <- outlier_detect(junctions,
-    bp_param = BiocParallel::MulticoreParam(2),
     random_state = 32L
 )
 ```
@@ -269,9 +268,7 @@ junctions <- outlier_detect(junctions,
 Then, using `outlier_aggregate` outlier scores aggregates the outlier splicing events to a cluster level. The annotation returned by `junction_annot` is used to link each cluster to a gene and produce a report of all genes in a sample ranked by how abberant they look in terms of splicing. The lower the rank, the more abberant that gene looks. 
 
 ```{r, "outlier_aggregate"}
-outlier_scores <- outlier_aggregate(junctions,
-    bp_param = BiocParallel::MulticoreParam(2)
-)
+outlier_scores <- outlier_aggregate(junctions)
 
 head(outlier_scores)
 ```
