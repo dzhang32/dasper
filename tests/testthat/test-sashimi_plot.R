@@ -3,9 +3,6 @@ context("Test sashimi plot functions")
 # use Genomic state to load txdb (GENCODE v31)
 ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
 
-# convert seqlevels to match junctions
-seqlevels(ref) <- seqlevels(ref) %>% stringr::str_replace("chr", "")
-
 junctions <- junctions_example %>%
     junction_filter() %>%
     junction_annot(ref) %>%
@@ -54,7 +51,7 @@ test_that(".gene_tx_type_get catches user-input errors", {
 
 gene_id_to_plot <- "ENSG00000241973.10"
 gene_tx_list <- .gene_tx_type_get(gene_id_to_plot)
-region <- GRanges("22:20740000-20760000")
+region <- GRanges("chr22:20740000-20760000")
 
 exons_to_plot <- .exons_to_plot_get(
     ref = ref,
@@ -82,7 +79,7 @@ test_that(".exons_to_plot_get has the correct output", {
 test_that(".junctions_to_plot_get catches user input errors", {
     expect_error(
         .exons_to_plot_get(ref, gene_tx_list,
-            region = GRanges(c("22:1-1", "22:1-1"))
+            region = GRanges(c("chr22:1-1", "chr22:1-1"))
         ),
         "region must be a GenomicRanges object of length 1"
     )
@@ -103,7 +100,7 @@ test_that(".junctions_to_plot_get catches user input errors", {
 
     expect_error(
         .exons_to_plot_get(ref, gene_tx_list,
-            region = GRanges("22:1-1")
+            region = GRanges("chr22:1-1")
         ),
         "No exons found to plot"
     )

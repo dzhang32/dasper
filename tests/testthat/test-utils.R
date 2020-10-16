@@ -59,23 +59,6 @@ test_that(".coverage_load has correct output", {
         mcols(sort(junctions))[["coverage"]],
         mcols(junctions_sorted)[["coverage"]]
     )
-
-    if (.Platform$OS.type != "windows") {
-        junctions_rt <- junctions
-        GenomeInfoDb::seqlevels(junctions_rt) <- GenomeInfoDb::seqlevels(junctions_rt) %>%
-            stringr::str_c("chr", .)
-
-        rt_cov <- rtracklayer::import(
-            con = bw_path,
-            which = junctions_rt,
-            as = "NumericList"
-        ) %>%
-            lapply(FUN = mean) %>%
-            unlist() %>%
-            round(3) # ensure same rounding accuracy as megadepth
-
-        expect_equivalent(rt_cov, mcols(junctions)[["coverage"]])
-    }
 })
 
 ##### .chr_check #####

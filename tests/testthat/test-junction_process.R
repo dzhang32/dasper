@@ -19,9 +19,6 @@ test_that(".junction_annot_tidy correctly infers strand", {
 # use Genomic state to load txdb (GENCODE v31)
 ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
 
-# convert seqlevels to match junctions
-seqlevels(ref) <- seqlevels(ref) %>% stringr::str_replace("chr", "")
-
 # extract random set of 1000 junctions
 set.seed(32)
 junctions_subset <- junctions_example[sample(seq_len(dim(junctions_example)[1]), 1000), ]
@@ -232,7 +229,7 @@ by_region <- junction_filter(junctions,
     count_thresh = NULL,
     n_samp = NULL,
     types = NULL,
-    regions = GRanges(seqnames = "21", ranges = "1-10000000", strand = "*")
+    regions = GRanges(seqnames = "chr21", ranges = "1-10000000", strand = "*")
 )
 
 by_all <- junction_filter(junctions,
@@ -240,7 +237,7 @@ by_all <- junction_filter(junctions,
     n_samp = c("raw" = 1),
     width_range = c(20, 1000),
     types = c("ambig_gene", "unannotated"),
-    regions = GRanges(seqnames = "21", ranges = "1-10000000", strand = "*")
+    regions = GRanges(seqnames = "chr21", ranges = "1-10000000", strand = "*")
 )
 
 test_that("junction_filter has correct output", {
@@ -277,8 +274,8 @@ test_that("junction_filter has correct output", {
     expect_false(any(mcols(by_type)[["type"]] %in% c("ambig_gene", "unannotated")))
 
     # region
-    expect_true(length(findOverlaps(junctions, GRanges(seqnames = "21", ranges = "1-10000000", strand = "*"))) > 0)
-    expect_true(length(findOverlaps(by_region, GRanges(seqnames = "21", ranges = "1-10000000", strand = "*"))) == 0)
+    expect_true(length(findOverlaps(junctions, GRanges(seqnames = "chr21", ranges = "1-10000000", strand = "*"))) > 0)
+    expect_true(length(findOverlaps(by_region, GRanges(seqnames = "chr21", ranges = "1-10000000", strand = "*"))) == 0)
 
     # all
     expect_true(by_all %>%
@@ -293,7 +290,7 @@ test_that("junction_filter has correct output", {
         all())
     expect_true(all(width(by_all) <= 1000 & width(by_all) >= 20))
     expect_false(any(mcols(by_all)[["type"]] %in% c("ambig_gene", "unannotated")))
-    expect_true(length(findOverlaps(by_all, GRanges(seqnames = "21", ranges = "1-10000000", strand = "*"))) == 0)
+    expect_true(length(findOverlaps(by_all, GRanges(seqnames = "chr21", ranges = "1-10000000", strand = "*"))) == 0)
 })
 
 # Normalise junctions -----------------------------------------------------
@@ -468,7 +465,7 @@ junctions_processed <-
         n_samp = c("raw" = 1),
         width_range = c(25, 1000000),
         types = c("ambig_gene", "unannotated"),
-        regions = GRanges(seqnames = "21", ranges = "1-10000000", strand = "*"),
+        regions = GRanges(seqnames = "chr21", ranges = "1-10000000", strand = "*"),
         score_func = .zscore,
         sd_const = 0.02
     )
@@ -482,7 +479,7 @@ junctions_processed_2 <- junctions %>%
         n_samp = c("raw" = 1),
         width_range = c(25, 1000000),
         types = c("ambig_gene", "unannotated"),
-        regions = GRanges(seqnames = "21", ranges = "1-10000000", strand = "*")
+        regions = GRanges(seqnames = "chr21", ranges = "1-10000000", strand = "*")
     ) %>%
     junction_score(sd_const = 0.02)
 
