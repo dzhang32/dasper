@@ -110,17 +110,6 @@ The above workflow diagram gives a top-level overview of the core functions with
 
 `dasper` includes wrapper functions for the 3 major analysis steps in the workflow - processing junction data, processing coverage data, then performing outlier detection. If you are familiar with `dasper` or are uninterested with the intermediates, you can go from start to finish using these wrappers. 
 
-We must first initialise the Python version and example data to be used. `dasper` uses [reticulate](https://rstudio.github.io/reticulate/) to interface run Python code from R. Specifically, `dasper` relies on the `sklearn` module to run the outlier detection functions.
-
-```{r, "set python PATH"}
-if (.Platform$OS.type != "windows") {
-
-    # tell reticulate to use the python3 install
-    # if windows skip this step
-    reticulate::use_python(Sys.which("python3"), required = TRUE)
-}
-```
-
 We need to install the system dependency [megadepth](https://github.com/ChristopherWilks/megadepth)
 
 ```{r}
@@ -128,6 +117,7 @@ megadepth::install_megadepth()
 ```
 
 `dasper` requires reference annotation that either inputted as a GTF path or pre-loaded into a `TxDb` object as shown below. 
+
 ```{r, "load ref", warning = FALSE}
 
 # use Genomic state to load txdb (GENCODE v31)
