@@ -111,14 +111,14 @@ jobs:
           key: ${{ env.cache-version }}-${{ runner.os }}-biocversion-devel-r-4.0-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ env.cache-version }}-${{ runner.os }}-biocversion-devel-r-4.0-
 
-      - name: Install Linux system dependencies
-        if: runner.os == 'Linux'
-        env:
-          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
-        run: |
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
+      #- name: Install Linux system dependencies
+        #if: runner.os == 'Linux'
+        #env:
+          #RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+        #run: |
+          #Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          #sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          #sudo -s eval "$sysreqs"
       - name: Install macOS system dependencies
         if: matrix.config.os == 'macOS-latest'
         run: |
