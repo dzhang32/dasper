@@ -63,4 +63,6 @@ Imports:
     data.table,
     megadepth
 Depends: 
-    R (>= 3.6)
+    R (>= 4.0)
+StagedInstall: no
+

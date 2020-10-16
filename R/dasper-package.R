@@ -18,24 +18,7 @@ NULL
 #' @importFrom IRanges CharacterList
 #' @importFrom SummarizedExperiment colData rowRanges assays
 #' @importFrom SummarizedExperiment assays<-
+#' @importFrom basilisk BasiliskEnvironment
+#' @importFrom reticulate import
+#' @importFrom basilisk basiliskStart basiliskRun basiliskStop
 NULL
-
-##### Using sklearn in R via reticulate #####
-
-# global reference to sklearn (will be initialized in .onLoad)
-sklearn <- NULL
-
-#' Load sklearn upon initialisation of dasper
-#'
-#' \code{.onLoad} uses superassignment to update global reference to sklearn.
-#' Delay load means allows successfull load without sklearn installed. This
-#' allows users to set python environment using reticulate::use_virtualenv().
-#'
-#' @seealso https://rstudio.github.io/reticulate/articles/package.html
-#' @keywords internal
-#' @noRd
-.onLoad <- function(libname, pkgname) {
-    sklearn <<- reticulate::import("sklearn",
-        delay_load = TRUE
-    )
-}
