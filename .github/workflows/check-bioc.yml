@@ -144,6 +144,13 @@ jobs:
         run: |
           BiocManager::install(version = "devel", ask = FALSE)
         shell: Rscript {0}
+        
+      ##### dasper specific dependencies ---------------------------------------
+      - name: install scikit-learn and pandas
+        run: |
+          pip3 install scikit-learn pandas
+        shell: bash {0}
+      ##### --------------------------------------------------------------------
 
       - name: Install dependencies
         run: |
@@ -158,10 +165,10 @@ jobs:
           ## Ideally, all dependencies should get installed in the first pass.
           ## Pass #1 at installing dependencies
           message(paste('****', Sys.time(), 'pass number 1 at installing dependencies: local dependencies ****'))
-          remotes::install_local(dependencies = TRUE, repos = BiocManager::repositories(), build_vignettes = TRUE, upgrade = TRUE)
+          remotes::install_local(dependencies = TRUE, repos = BiocManager::repositories(), build_vignettes = FALSE, upgrade = FALSE)
           ## Pass #2 at installing dependencies
           message(paste('****', Sys.time(), 'pass number 2 at installing dependencies: any remaining dependencies ****'))
-          remotes::install_local(dependencies = TRUE, repos = BiocManager::repositories(), build_vignettes = TRUE, upgrade = TRUE)
+          remotes::install_local(dependencies = TRUE, repos = BiocManager::repositories(), build_vignettes = FALSE, upgrade = FALSE)
           ## For running the checks
           message(paste('****', Sys.time(), 'installing rcmdcheck and BiocCheck ****'))
           remotes::install_cran("rcmdcheck")
@@ -193,13 +200,6 @@ jobs:
           pkgs <- installed.packages()[, "Package"]
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
-
-      ##### dasper specific dependencies ---------------------------------------
-      - name: install scikit-learn and pandas
-        run: |
-          pip3 install scikit-learn pandas
-        shell: bash {0}
-      ##### --------------------------------------------------------------------
 
       - name: Run CMD check
         env:
