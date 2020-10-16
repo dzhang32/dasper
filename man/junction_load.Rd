@@ -11,7 +11,7 @@ junction_load(
   controls = rep(FALSE, length(junction_paths)),
   load_func = .STAR_load,
   chrs = NULL,
-  coord_system = "ensembl"
+  coord_system = 1
 )
 }
 \arguments{
@@ -33,7 +33,7 @@ path then return a data.frame with the columns "chr", "start", "end",
 
 \item{chrs}{chromosomes to keep. By default, no filter is applied.}
 
-\item{coord_system}{One of "ensembl" (1-based) or "ucsc" (0-based) denoting
+\item{coord_system}{1 (1-based) or 0 (0-based) denoting
 the co-ordinate system corresponding to the user junctions from
 \code{junction_paths}. Only used when controls is set to "fibroblasts" to ensure
 GTEx data is harmonised to match the co-ordinate system of the user's

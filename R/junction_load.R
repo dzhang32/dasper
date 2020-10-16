@@ -23,7 +23,7 @@
 #'   path then return a data.frame with the columns "chr", "start", "end",
 #'   "strand" and "count".
 #' @param chrs chromosomes to keep. By default, no filter is applied.
-#' @param coord_system One of "ensembl" (1-based) or "ucsc" (0-based) denoting
+#' @param coord_system 1 (1-based) or 0 (0-based) denoting
 #'   the co-ordinate system corresponding to the user junctions from
 #'   `junction_paths`. Only used when controls is set to "fibroblasts" to ensure
 #'   GTEx data is harmonised to match the co-ordinate system of the user's
@@ -62,7 +62,7 @@ junction_load <- function(
     controls = rep(FALSE, length(junction_paths)),
     load_func = .STAR_load,
     chrs = NULL,
-    coord_system = "ensembl") {
+    coord_system = 1) {
     # for R CMD Check
     chr <- NULL
 
@@ -303,17 +303,11 @@ junction_load <- function(
     # for R CMD check
     chr <- NULL
 
-    if (!any(coord_system %in% c("ensembl", "ucsc"))) {
-        stop("coord_system must be one of 'ensembl' or 'ucsc'")
+    if (!any(coord_system %in% c(1, 0))) {
+        stop("coord_system must be one 1 or 0")
     }
 
-    if (coord_system == "ensembl") {
-        junctions_controls <- junctions_controls %>%
-            dplyr::mutate(
-                chr = chr %>% stringr::str_replace("chr", ""),
-                chr = chr %>% stringr::str_replace("^M$", "MT")
-            )
-    } else if (coord_system == "ucsc") {
+    if (coord_system == 0) {
         junctions_controls <- junctions_controls %>%
             dplyr::mutate(
                 start = start - 1,
