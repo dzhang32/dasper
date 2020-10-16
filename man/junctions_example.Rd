@@ -21,7 +21,7 @@ junctions_example
 }
 \description{
 A dataset containing the example junction data for 2 case and 3 control
-samples outputted from \code{\link{junction_load}}.	The junctions have been
+samples outputted from \code{\link{junction_load}}. The junctions have been
 filtered for only those lying on chromosome 21 or 22.
 }
 \keyword{datasets}
