@@ -249,24 +249,28 @@
 #' @keywords internal
 #' @noRd
 .outlier_score <- function(features, ...) {
+    cl <- basilisk::basiliskStart(env_sklearn)
 
-    # sklearn should be loaded in using .onLoad()
-    od_model <- sklearn$ensemble$IsolationForest()
+    outlier_scores <- basilisk::basiliskRun(cl, function() {
+        sklearn <- reticulate::import("sklearn")
+        od_model <- sklearn$ensemble$IsolationForest()
+        od_model <- od_model$set_params(...)
+        od_model_params <- od_model$get_params()
+        od_model <- od_model$fit(features)
+        outlier_scores <- od_model$decision_function(features)
 
-    # set parameters of
-    od_model <- od_model$set_params(...)
-    od_model_params <- od_model$get_params()
+        suppressWarnings(
+            print(stringr::str_c(
+                Sys.time(), " - fitting outlier detection model with parameters: ",
+                stringr::str_c(names(od_model_params), "=", unname(od_model_params)) %>%
+                    stringr::str_c(collapse = ", ")
+            ))
+        )
 
-    suppressWarnings(
-        print(stringr::str_c(
-            Sys.time(), " - fitting outlier detection model with parameters: ",
-            stringr::str_c(names(od_model_params), "=", unname(od_model_params)) %>%
-                stringr::str_c(collapse = ", ")
-        ))
-    )
+        return(outlier_scores)
+    })
 
-    od_model <- od_model$fit(features)
-    outlier_scores <- od_model$decision_function(features)
+    basilisk::basiliskStop(cl)
 
     return(outlier_scores)
 }

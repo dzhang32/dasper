@@ -106,8 +106,6 @@ test_that(".merge_CharacterList catches user-input errors", {
 
 ##### .outlier_score #####
 
-reticulate::use_python(Sys.which("python3"), required = TRUE)
-
 features <- data.frame(
     index = 1:10,
     feat_1 = 1:10,

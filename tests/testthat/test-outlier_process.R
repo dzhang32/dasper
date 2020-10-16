@@ -1,14 +1,5 @@
 context("Testing outlier processing")
 
-##### reticulate set-up #####
-
-if (.Platform$OS.type != "windows") {
-
-    # force reticulate to use the python3 install
-    # if windows skip this step
-    reticulate::use_python(Sys.which("python3"), required = TRUE)
-}
-
 ##### Set up random scores data #####
 
 # use Genomic state to load txdb (GENCODE v31)

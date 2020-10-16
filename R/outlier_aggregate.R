@@ -19,13 +19,6 @@
 #'
 #' @examples
 #'
-#' if (.Platform$OS.type != "windows") {
-#'
-#'     # tell reticulate to use the python3 install
-#'     # if windows skip this step
-#'     reticulate::use_python(Sys.which("python3"), required = TRUE)
-#' }
-#'
 #' # use Genomic state to load txdb (GENCODE v31)
 #' ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
 #'
