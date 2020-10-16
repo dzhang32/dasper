@@ -37,26 +37,16 @@
 #'
 #' @examples
 #'
-#' if (!exists("ref")) {
-#'     # use Genomic state to load txdb (GENCODE v31)
-#'     ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
-#'     # convert seqlevels to match junctions
-#'     seqlevels(ref) <- stringr::str_replace(seqlevels(ref), "chr", "")
-#' }
+#' # use Genomic state to load txdb (GENCODE v31)
+#' ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
 #'
-#' if (!exists("junctions_processed")) {
-#'     junctions_processed <-
-#'         junction_process(
-#'             junctions_example,
-#'             ref,
-#'             count_thresh = c("raw" = 5),
-#'             n_samp = c("raw" = 1),
-#'             width_range = c(25, 1000000),
-#'             types = c("ambig_gene", "unannotated"),
-#'         )
-#'     GenomeInfoDb::seqlevels(junctions_processed) <-
-#'         paste0("chr", GenomeInfoDb::seqlevels(junctions_processed))
-#' }
+#' junctions_processed <- junction_process(
+#'     junctions_example,
+#'     ref,
+#'     count_thresh = c("raw" = 5),
+#'     n_samp = c("raw" = 1),
+#'     types = c("ambig_gene", "unannotated"),
+#' )
 #'
 #' # obtain path to example bw on recount2
 #' url <- recount::download_study(
@@ -67,16 +57,14 @@
 #'
 #' bw_path <- dasper:::.file_cache(url[1])
 #'
-#' if (!exists("coverage_normed")) {
-#'     coverage_normed <- coverage_norm(
-#'         junctions_processed,
-#'         ref,
-#'         unannot_width = 20,
-#'         coverage_paths_case = rep(bw_path, 2),
-#'         coverage_paths_control = rep(bw_path, 2),
-#'         coverage_chr_control = "chr"
-#'     )
-#' }
+#' coverage_normed <- coverage_norm(
+#'     junctions_processed,
+#'     ref,
+#'     unannot_width = 20,
+#'     coverage_paths_case = rep(bw_path, 2),
+#'     coverage_paths_control = rep(bw_path, 2),
+#'     coverage_chr_control = "chr"
+#' )
 #' @family coverage
 #' @export
 coverage_norm <- function(

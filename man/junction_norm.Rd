@@ -24,9 +24,8 @@ raw junction count by the total number of counts in it's associated cluster.
 }
 \examples{
 
-if (!exists("junctions_normed")) {
-    junctions_normed <- junction_norm(junctions_example)
-}
+junctions_normed <- junction_norm(junctions_example)
+
 junctions_normed
 }
 \seealso{

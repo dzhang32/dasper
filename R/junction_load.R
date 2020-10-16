@@ -304,7 +304,7 @@ junction_load <- function(
     chr <- NULL
 
     if (!any(coord_system %in% c(1, 0))) {
-        stop("coord_system must be one 1 or 0")
+        stop("coord_system must be either 1 or 0")
     }
 
     if (coord_system == 0) {

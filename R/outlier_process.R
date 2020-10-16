@@ -22,26 +22,16 @@
 #'     reticulate::use_python(Sys.which("python3"), required = TRUE)
 #' }
 #'
-#' if (!exists("ref")) {
-#'     # use Genomic state to load txdb (GENCODE v31)
-#'     ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
-#'     # convert seqlevels to match junctions
-#'     seqlevels(ref) <- stringr::str_replace(seqlevels(ref), "chr", "")
-#' }
+#' # use Genomic state to load txdb (GENCODE v31)
+#' ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
 #'
-#' if (!exists("junctions_processed")) {
-#'     junctions_processed <-
-#'         junction_process(
-#'             junctions_example,
-#'             ref,
-#'             count_thresh = c("raw" = 5),
-#'             n_samp = c("raw" = 1),
-#'             width_range = c(25, 1000000),
-#'             types = c("ambig_gene", "unannotated"),
-#'         )
-#'     GenomeInfoDb::seqlevels(junctions_processed) <-
-#'         paste0("chr", GenomeInfoDb::seqlevels(junctions_processed))
-#' }
+#' junctions_processed <- junction_process(
+#'     junctions_example,
+#'     ref,
+#'     count_thresh = c("raw" = 5),
+#'     n_samp = c("raw" = 1),
+#'     types = c("ambig_gene", "unannotated"),
+#' )
 #'
 #' # obtain path to example bw on recount2
 #' url <- recount::download_study(
@@ -52,15 +42,12 @@
 #'
 #' bw_path <- dasper:::.file_cache(url[1])
 #'
-#' if (!exists("junctions_w_coverage")) {
-#'     junctions_w_coverage <-
-#'         coverage_process(
-#'             junctions_processed,
-#'             ref,
-#'             coverage_paths_case = rep(bw_path, 2),
-#'             coverage_paths_control = rep(bw_path, 3)
-#'         )
-#' }
+#' junctions_w_coverage <- coverage_process(
+#'     junctions_processed,
+#'     ref,
+#'     coverage_paths_case = rep(bw_path, 2),
+#'     coverage_paths_control = rep(bw_path, 3)
+#' )
 #'
 #' outlier_process(junctions_w_coverage)
 outlier_process <- function(junctions,

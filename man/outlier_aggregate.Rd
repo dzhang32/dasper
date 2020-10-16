@@ -35,26 +35,23 @@ each cluster with it's associated gene and transcript.
 }
 \examples{
 
-if (!exists("ref")) {
-    # use Genomic state to load txdb (GENCODE v31)
-    ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
-    # convert seqlevels to match junctions
-    seqlevels(ref) <- stringr::str_replace(seqlevels(ref), "chr", "")
+if (.Platform$OS.type != "windows") {
+
+    # tell reticulate to use the python3 install
+    # if windows skip this step
+    reticulate::use_python(Sys.which("python3"), required = TRUE)
 }
 
-if (!exists("junctions_processed")) {
-    junctions_processed <-
-        junction_process(
-            junctions_example,
-            ref,
-            count_thresh = c("raw" = 5),
-            n_samp = c("raw" = 1),
-            width_range = c(25, 1000000),
-            types = c("ambig_gene", "unannotated"),
-        )
-    GenomeInfoDb::seqlevels(junctions_processed) <-
-        paste0("chr", GenomeInfoDb::seqlevels(junctions_processed))
-}
+# use Genomic state to load txdb (GENCODE v31)
+ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
+
+junctions_processed <- junction_process(
+    junctions_example,
+    ref,
+    count_thresh = c("raw" = 5),
+    n_samp = c("raw" = 1),
+    types = c("ambig_gene", "unannotated"),
+)
 
 # obtain path to example bw on recount2
 url <- recount::download_study(
@@ -65,19 +62,14 @@ url <- recount::download_study(
 
 bw_path <- dasper:::.file_cache(url[1])
 
-if (!exists("junctions_w_coverage")) {
-    junctions_w_coverage <-
-        coverage_process(
-            junctions_processed,
-            ref,
-            coverage_paths_case = rep(bw_path, 2),
-            coverage_paths_control = rep(bw_path, 3)
-        )
-}
+junctions_w_coverage <- coverage_process(
+    junctions_processed,
+    ref,
+    coverage_paths_case = rep(bw_path, 2),
+    coverage_paths_control = rep(bw_path, 3)
+)
 
-if (!exists("junctions_w_outliers")) {
-    junctions_w_outliers <- outlier_detect(junctions_w_coverage)
-}
+junctions_w_outliers <- outlier_detect(junctions_w_coverage)
 
 outlier_scores <- outlier_aggregate(junctions_w_outliers)
 }

@@ -13,9 +13,8 @@
 #'
 #' @examples
 #'
-#' if (!exists("junctions_normed")) {
-#'     junctions_normed <- junction_norm(junctions_example)
-#' }
+#' junctions_normed <- junction_norm(junctions_example)
+#'
 #' junctions_normed
 #' @family junction
 #' @export

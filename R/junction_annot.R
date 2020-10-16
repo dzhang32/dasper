@@ -19,21 +19,15 @@
 #'
 #' @examples
 #'
-#' if (!exists("ref")) {
-#'     # use Genomic state to load txdb (GENCODE v31)
-#'     ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
-#'     # convert seqlevels to match junctions
-#'     seqlevels(ref) <- stringr::str_replace(seqlevels(ref), "chr", "")
-#' }
+#' # use Genomic state to load txdb (GENCODE v31)
+#' ref <- GenomicState::GenomicStateHub(
+#'     version = "31",
+#'     genome = "hg38",
+#'     filetype = "TxDb"
+#' )[[1]]
 #'
-#' if (!exists("junctions_annoted")) {
-#'     junctions_annoted <-
-#'         junction_annot(
-#'             junctions_example,
-#'             ref
-#'         )
-#' }
-#' junctions_annoted
+#' junctions_annoted <-
+#'     junction_annot(junctions_example, ref)
 #' @family junction
 #' @export
 junction_annot <- function(junctions, ref) {
