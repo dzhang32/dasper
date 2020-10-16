@@ -1,6 +1,6 @@
 Package: dasper
 Title: Detecting abberant splicing events from RNA-sequencing data
-Version: 0.99.0
+Version: 0.99.1
 Date: 2020-07-03
 Authors@R: c(person(given = "David", family = "Zhang", 
     role = c("aut", "cre"),
