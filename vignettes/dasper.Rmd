@@ -156,13 +156,6 @@ library(dasper)
 junctions_example
 ```
 
-The GTEx BigWigs have their chromosomes prefixed with a "chr". For the purpose of this example, we have to make sure the junction and reference data have the same chromosome format. 
-
-```{r, "seqlevels to match bw"}
-GenomeInfoDb::seqlevels(junctions_example) <-
-    paste0("chr", GenomeInfoDb::seqlevels(junctions_example))
-```
-
 Now we can run the 3 wrapper functions (`junction_process`, `coverage_process` and `outlier_process`) on the example data intialised above. They are designed to be compatible with the `tidyverse` pipe and the time-limiting steps of this analysis can be parallelised using `r Biocpkg("BiocParallel")` as shown. The returned `outlier_scores` object describes how aberrant each gene in each sample looks in terms of splicing. These are ranked in the `rank` column with 1 referring to the most aberrant looking gene. The specific junctions that look the most aberrant for each gene can be found in the `junctions` column.
 
 ```{r "dasper quick start", eval = FALSE, message=FALSE}
@@ -202,7 +195,7 @@ junctions <-
     junction_load(
         junction_paths = c(junctions_example_1_path, junctions_example_2_path),
         controls = "fibroblasts",
-        chrs = c("21", "22")
+        chrs = c("chr21", "chr22")
     )
 
 junctions
@@ -215,10 +208,6 @@ Next, we annotate our junctions using `junction_annot`. This will classify your 
 # take only the first 5 samples (2 cases, 3 controls)
 # to increase the speed of the vignette
 junctions <- junctions[, 1:5]
-
-# convert seqlevels to to match
-# BigWig and reference annotation
-GenomeInfoDb::seqlevels(junctions) <- paste0("chr", GenomeInfoDb::seqlevels(junctions))
 
 junctions <- junction_annot(junctions, ref)
 
