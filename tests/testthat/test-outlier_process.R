@@ -51,8 +51,7 @@ assays(junctions)[["coverage_score"]] <- coverage_scores
 
 junctions_w_outlier_scores <- outlier_detect(junctions,
     feature_names = c("score", "coverage_score"),
-    random_state = 32L,
-    bp_param = BiocParallel::MulticoreParam(2)
+    random_state = 32L
 )
 
 up_indexes <- which(assays(junctions)[["direction"]][, 1] == 1)
@@ -246,8 +245,7 @@ test_that("outlier_aggregate catches user input errors", {
 # Process outliers --------------------------------------------------------
 
 outlier_scores_tidy_2 <- outlier_process(junctions,
-    random_state = 32L,
-    bp_param = BiocParallel::MulticoreParam(2)
+    random_state = 32L
 )
 
 test_that(".outlier_cluster_tidy has the correct output", {
