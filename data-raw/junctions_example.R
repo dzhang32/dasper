@@ -5,7 +5,8 @@ junctions <- read_delim("/data/RNA_seq_diag/mito/STAR/L1556-2624F_SJ.out.tab",
     delim = "\t",
     col_names = FALSE,
     col_types = cols(X1 = "c")
-)
+) %>%
+    mutate(X1 = str_c("chr", X1))
 
 # generate two sets of random 10,000 junctions for testing
 for (i in 1:2) {
@@ -31,10 +32,10 @@ junctions_example <-
     junction_load(
         junction_paths = c(junctions_example_1_path, junctions_example_2_path),
         controls = "fibroblasts",
-        chrs = c("21", "22")
+        chrs = c("chr21", "chr22")
     )
 
 # and first 3 GTEx control samples to save space
 raw_counts <- junctions_example[, c(1:5)]
 
-usethis::use_data(junctions_example, compress = "xz")
+usethis::use_data(junctions_example, compress = "xz", overwrite = TRUE)
