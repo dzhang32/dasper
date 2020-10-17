@@ -27,6 +27,8 @@
 #'
 #' @examples
 #'
+#' \donttest{
+#'
 #' # use GenomicState to load txdb (GENCODE v31)
 #' ref <- GenomicState::GenomicStateHub(
 #'     version = "31",
@@ -45,6 +47,8 @@
 #'     ref = ref,
 #'     gene_tx_id = "ENSG00000241973.10"
 #' )
+#' }
+#'
 #' @export
 plot_sashimi <- function(junctions,
     ref,

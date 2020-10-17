@@ -58,6 +58,8 @@ from \code{ggplot2} functions.
 }
 \examples{
 
+\donttest{
+
 # use GenomicState to load txdb (GENCODE v31)
 ref <- GenomicState::GenomicStateHub(
     version = "31",
@@ -76,4 +78,6 @@ sashimi_plot <- plot_sashimi(
     ref = ref,
     gene_tx_id = "ENSG00000241973.10"
 )
+}
+
 }
