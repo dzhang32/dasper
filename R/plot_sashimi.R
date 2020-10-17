@@ -34,7 +34,7 @@
 #'     filetype = "TxDb"
 #' )[[1]]
 #'
-#' junctions <- junction_process(
+#' junctions_processed <- junction_process(
 #'     junctions_example,
 #'     ref,
 #'     types = c("ambig_gene", "unannotated")
