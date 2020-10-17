@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wrapper for processing junctions — junction_process • dasper</title>
+<title>Processing junctions — junction_annot • dasper</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,13 @@
 
 
 
-<meta property="og:title" content="Wrapper for processing junctions — junction_process" />
-<meta property="og:description" content="junction_process wraps all &quot;junction_&quot; prefixed functions in
-dasper except junction_load. This is designed to simplify
-processing of the junction data for those familiar or uninterested with the
-intermediates." />
+<meta property="og:title" content="Processing junctions — junction_annot" />
+<meta property="og:description" content="The set of functions prefixed with &quot;junction_&quot; are used to
+process junction data. They are designed to be run in a sequential manner
+in the order junction_annot, junction_filter, junction_norm,
+junction_score. Or, alternatively the wrapper function junction_process
+can be used to run all 4 of the functions stated above in one go. For more
+details of the individual functions, see &quot;Details&quot;." />
 
 
 
@@ -75,13 +77,19 @@ intermediates." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../articles/dasper.html">Get started</a>
 </li>
 <li>
@@ -111,19 +119,34 @@ intermediates." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Wrapper for processing junctions</h1>
-    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/junction_process.R'><code>R/junction_process.R</code></a></small>
+    <h1>Processing junctions</h1>
+    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/junction_annot.R'><code>R/junction_annot.R</code></a>, <a href='https://github.com/dzhang32/dasper/blob/master/R/junction_filter.R'><code>R/junction_filter.R</code></a>, <a href='https://github.com/dzhang32/dasper/blob/master/R/junction_norm.R'><code>R/junction_norm.R</code></a>, and 2 more</small>
     <div class="hidden name"><code>junction_process.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>junction_process</code> wraps all "junction_" prefixed functions in
-<a href='dasper.html'>dasper</a> except <a href='junction_load.html'>junction_load</a>. This is designed to simplify
-processing of the junction data for those familiar or uninterested with the
-intermediates.</p>
+    <p>The set of functions prefixed with "junction_" are used to
+process junction data. They are designed to be run in a sequential manner
+in the order <code>junction_annot</code>, <code>junction_filter</code>, <code>junction_norm</code>,
+<code>junction_score</code>. Or, alternatively the wrapper function <code>junction_process</code>
+can be used to run all 4 of the functions stated above in one go. For more
+details of the individual functions, see "Details".</p>
     </div>
 
-    <pre class="usage"><span class='fu'>junction_process</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'>junction_annot</span><span class='op'>(</span><span class='va'>junctions</span>, <span class='va'>ref</span><span class='op'>)</span>
+
+<span class='fu'>junction_filter</span><span class='op'>(</span>
+  <span class='va'>junctions</span>,
+  count_thresh <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>raw <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
+  n_samp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>raw <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
+  width_range <span class='op'>=</span> <span class='cn'>NULL</span>,
+  types <span class='op'>=</span> <span class='cn'>NULL</span>,
+  regions <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
+
+<span class='fu'>junction_norm</span><span class='op'>(</span><span class='va'>junctions</span><span class='op'>)</span>
+
+<span class='fu'>junction_process</span><span class='op'>(</span>
   <span class='va'>junctions</span>,
   <span class='va'>ref</span>,
   count_thresh <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>raw <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
@@ -133,7 +156,9 @@ intermediates.</p>
   regions <span class='op'>=</span> <span class='cn'>NULL</span>,
   score_func <span class='op'>=</span> <span class='va'>.zscore</span>,
   <span class='va'>...</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span>
+
+<span class='fu'>junction_score</span><span class='op'>(</span><span class='va'>junctions</span>, score_func <span class='op'>=</span> <span class='va'>.zscore</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,20 +171,22 @@ object.</p></td>
     </tr>
     <tr>
       <th>ref</th>
-      <td><p>either path to gtf/gff3 or object of class <a href='https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html'>TxDb-class</a>.</p></td>
+      <td><p>either path to gtf/gff3 or object of class
+<a href='https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html'>TxDb-class</a>.</p></td>
     </tr>
     <tr>
       <th>count_thresh</th>
       <td><p>named vector with names matching the names of the
-<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a> in <code>junctions</code>. Values
-denote the number of counts below which a junction will be filtered out.</p></td>
+<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a> in <code>junctions</code>.
+Values denote the number of counts below which a junction will be filtered
+out.</p></td>
     </tr>
     <tr>
       <th>n_samp</th>
       <td><p>named vector with names matching the names of the
-<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a> in <code>junctions</code>. Values
-denotes number of samples that have to express the junction above the
-<code>count_thresh</code> in order for that junction to not be filtered.</p></td>
+<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a> in <code>junctions</code>.
+Values denotes number of samples that have to express the junction above
+the <code>count_thresh</code> in order for that junction to not be filtered.</p></td>
     </tr>
     <tr>
       <th>width_range</th>
@@ -170,7 +197,7 @@ with widths outside this range will be filtered out.</p></td>
     <tr>
       <th>types</th>
       <td><p>any junctions matching these types, derived form
-<a href='junction_annot.html'>junction_annot</a> will be filtered out.</p></td>
+junction_annot will be filtered out.</p></td>
     </tr>
     <tr>
       <th>regions</th>
@@ -179,11 +206,12 @@ with widths outside this range will be filtered out.</p></td>
     </tr>
     <tr>
       <th>score_func</th>
-      <td><p>function to score junctions by their abnormality. By default,
-will use a z-score but can be switched to a user-defined function. This
-function must take as input an <code>x</code> and <code>y</code> argument, containing case and
-control counts respectively. This must return a numeric vector equal to the
-length of <code>x</code> with elements corresponding to a abnormality of each junction.</p></td>
+      <td><p>function to score junctions by their abnormality. By
+default, will use a z-score but can be switched to a user-defined function.
+This function must take as input an <code>x</code> and <code>y</code> argument, containing case
+and control counts respectively. This must return a numeric vector equal to
+the length of <code>x</code> with elements corresponding to a abnormality of each
+junction.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -194,50 +222,106 @@ length of <code>x</code> with elements corresponding to a abnormality of each ju
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>RangedSummarizedExperiment-class</a>
-object containing filtered, annotated, normalised junction data with abnormality scores.</p>
+object containing filtered, annotated, normalised junction data with
+abnormality scores.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>junction_process</code> wraps all "junction_" prefixed functions in
+<a href='dasper.html'>dasper</a> except <a href='junction_load.html'>junction_load</a>. This is designed to
+simplify processing of the junction data for those familiar or uninterested
+with the intermediates.</p>
+<p><code>junction_annot</code> annotates junctions by 1. whether their start and/or end
+position precisely overlaps with an annotated exon boundary and 2. whether
+that junction matches an intron definition from existing annotation. Using
+this information along with the strand, junctions are categorised into
+"annotated", "novel_acceptor", "novel_donor", "novel_combo",
+"novel_exon_skip", "ambig_gene" and "unannotated".</p>
+<p><code>junction_filter</code> filters out "noisy" junctions based on counts, the width
+of junctions, annotation category of the junction returned from
+junction_annot and whether the junction overlaps with a set of
+(blacklist) regions.</p>
+<p><code>junction_norm</code> normalises the raw junction counts by 1. building junction
+clusters by finding junctions that share an acceptor or donor position and
+2. calculating a proportion-spliced-in (PSI) for each junction by dividing
+the raw junction count by the total number of counts in it's associated
+cluster.</p>
+<p><code>junction_score</code> will use the counts contained within the "norm"
+<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a> to calculate a
+deviation of each patient junction from the expected distribution of
+control junction counts. The function used to calculate this abnormality
+score can be user-inputted or left as the default z-score. Junctions will
+also be labelled based on whether they are up-regulated (+1) or
+down-regulated (-1) with respect to controls junction and this information
+is stored in the <a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a>
+"direction" for use in <a href='outlier_aggregate.html'>outlier_aggregate</a>.</p>
+    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
+
+    
+<ul>
+<li><p><code>junction_annot</code>: Annotate junctions using reference annotation</p></li>
+<li><p><code>junction_filter</code>: Filter junctions by count, width, annotation or region</p></li>
+<li><p><code>junction_norm</code>: Normalise junction counts by cluster</p></li>
+<li><p><code>junction_score</code>: Score patient junctions by their abnormality</p></li>
+</ul>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Junction processing functions
-<code><a href='junction_annot.html'>junction_annot</a>()</code>,
-<code><a href='junction_filter.html'>junction_filter</a>()</code>,
-<code><a href='junction_load.html'>junction_load</a>()</code>,
-<code><a href='junction_norm.html'>junction_norm</a>()</code>,
-<code><a href='junction_score.html'>junction_score</a>()</code></p></div>
+    <div class='dont-index'><p>ENCODE blacklist regions are recommended to be included as <code>regions</code>
+for <code>junction_filter</code> and can be downloaded from
+<a href='https://github.com/Boyle-Lab/Blacklist/blob/master/lists/hg38-blacklist.v2.bed.gz'>https://github.com/Boyle-Lab/Blacklist/blob/master/lists/hg38-blacklist.v2.bed.gz</a>.
+Further information can be found via the publication
+<a href='https://www.nature.com/articles/s41598-019-45839-z'>https://www.nature.com/articles/s41598-019-45839-z</a>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='co'># use Genomic state to load txdb (GENCODE v31)</span>
-<span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span>version <span class='op'>=</span> <span class='st'>"31"</span>, genome <span class='op'>=</span> <span class='st'>"hg38"</span>, filetype <span class='op'>=</span> <span class='st'>"TxDb"</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-10-14</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
-<span class='va'>junctions_processed</span> <span class='op'>&lt;-</span> <span class='fu'>junction_process</span><span class='op'>(</span>
+<span class='co'>##### Set up txdb #####</span>
+
+<span class='co'># use GenomicState to load txdb (GENCODE v31)</span>
+<span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span>
+    version <span class='op'>=</span> <span class='st'>"31"</span>,
+    genome <span class='op'>=</span> <span class='st'>"hg38"</span>,
+    filetype <span class='op'>=</span> <span class='st'>"TxDb"</span>
+<span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-04-27</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'><span class='co'># \donttest{</span>
+<span class='co'>##### junction_process #####</span>
+
+<span class='co'># this wrapper will generate the identical set of junctions to those</span>
+<span class='co'># obtained through running the individual wrapped functions shown below</span>
+<span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_process</span><span class='op'>(</span>
     <span class='va'>junctions_example</span>,
     <span class='va'>ref</span>,
-    count_thresh <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
-    n_samp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
-    types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
+    types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-16 15:08:21 - Filtering junctions..."
-#&gt; [1] "2020-10-16 15:08:21 - by count..."
-#&gt; [1] "2020-10-16 15:08:21 - done!"
-#&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-10-16 15:08:21 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-10-16 15:08:32 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-10-16 15:08:33 - Tidying junction annotation..."
-#&gt; [1] "2020-10-16 15:08:33 - Deriving junction categories..."
-#&gt; [1] "2020-10-16 15:08:33 - done!"
-#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-16 15:08:33 - Filtering junctions..."
-#&gt; [1] "2020-10-16 15:08:33 - by type..."
-#&gt; [1] "2020-10-16 15:08:33 - done!"
-#&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-16 15:08:33 - Clustering junctions..."
-#&gt; [1] "2020-10-16 15:08:34 - Normalising junction counts..."
-#&gt; [1] "2020-10-16 15:08:34 - done!"
-#&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-10-16 15:08:34 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-10-16 15:08:34 - Generating junction abnormality score..."
-#&gt; [1] "2020-10-16 15:08:34 - done!"</div></pre>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: restarting interrupted promise evaluation</span></div><div class='output co'>#&gt; <span class='warning'>Warning: internal error -3 in R_decompress1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): lazy-load database '/Library/Frameworks/R.framework/Versions/4.0/Resources/library/dasper/R/dasper.rdb' is corrupt</span></div><div class='input'><span class='co'># }</span>
+<span class='co'>##### junction_annot #####</span>
+
+<span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_annot</span><span class='op'>(</span><span class='va'>junctions_example</span>, <span class='va'>ref</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2020-10-17 17:24:58 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-10-17 17:25:13 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-10-17 17:25:15 - Tidying junction annotation..."
+#&gt; [1] "2020-10-17 17:25:15 - Deriving junction categories..."
+#&gt; [1] "2020-10-17 17:25:20 - done!"</div><div class='input'>
+<span class='co'>##### junction_filter #####</span>
+
+<span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_filter</span><span class='op'>(</span>
+    <span class='va'>junctions</span>,
+    types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2020-10-17 17:25:20 - Filtering junctions..."
+#&gt; [1] "2020-10-17 17:25:20 - by count..."
+#&gt; [1] "2020-10-17 17:25:20 - by type..."
+#&gt; [1] "2020-10-17 17:25:20 - done!"</div><div class='input'>
+<span class='co'>##### junction_norm #####</span>
+
+<span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_norm</span><span class='op'>(</span><span class='va'>junctions</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2020-10-17 17:25:20 - Clustering junctions..."
+#&gt; [1] "2020-10-17 17:25:20 - Normalising junction counts..."
+#&gt; [1] "2020-10-17 17:25:20 - done!"</div><div class='input'>
+<span class='co'>##### junction_score #####</span>
+
+<span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_score</span><span class='op'>(</span><span class='va'>junctions</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "2020-10-17 17:25:20 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-10-17 17:25:20 - Generating junction abnormality score..."
+#&gt; [1] "2020-10-17 17:25:21 - done!"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -253,7 +337,7 @@ object containing filtered, annotated, normalised junction data with abnormality
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

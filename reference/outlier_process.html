@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wrapper for processing outliers — outlier_process • dasper</title>
+<title>Processing outliers — outlier_aggregate • dasper</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,13 @@
 
 
 
-<meta property="og:title" content="Wrapper for processing outliers — outlier_process" />
-<meta property="og:description" content="outlier_process wraps all &quot;outlier_&quot; prefixed functions in
-dasper. This is designed to simplify processing of the detecting
-outlier junctions for those familiar or uninterested with the intermediates." />
+<meta property="og:title" content="Processing outliers — outlier_aggregate" />
+<meta property="og:description" content="The set of functions prefixed with &quot;outlier_&quot; are used to detect
+outliers. They are designed to be run after you have extracted your
+junctions and coverage based features, in the order outlier_detect,
+outlier_aggregate. Or, alternatively the wrapper function
+outlier_process can be used to run the 2 functions stated above in one
+go. For more details of the individual functions, see &quot;Details&quot;." />
 
 
 
@@ -74,13 +77,19 @@ outlier junctions for those familiar or uninterested with the intermediates." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../articles/dasper.html">Get started</a>
 </li>
 <li>
@@ -110,18 +119,34 @@ outlier junctions for those familiar or uninterested with the intermediates." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Wrapper for processing outliers</h1>
-    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/outlier_process.R'><code>R/outlier_process.R</code></a></small>
+    <h1>Processing outliers</h1>
+    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/outlier_aggregate.R'><code>R/outlier_aggregate.R</code></a>, <a href='https://github.com/dzhang32/dasper/blob/master/R/outlier_detect.R'><code>R/outlier_detect.R</code></a>, <a href='https://github.com/dzhang32/dasper/blob/master/R/outlier_process.R'><code>R/outlier_process.R</code></a></small>
     <div class="hidden name"><code>outlier_process.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>outlier_process</code> wraps all "outlier_" prefixed functions in
-<a href='dasper.html'>dasper</a>. This is designed to simplify processing of the detecting
-outlier junctions for those familiar or uninterested with the intermediates.</p>
+    <p>The set of functions prefixed with "outlier_" are used to detect
+outliers. They are designed to be run after you have extracted your
+junctions and coverage based features, in the order <code>outlier_detect</code>,
+<code>outlier_aggregate</code>. Or, alternatively the wrapper function
+<code>outlier_process</code> can be used to run the 2 functions stated above in one
+go. For more details of the individual functions, see "Details".</p>
     </div>
 
-    <pre class="usage"><span class='fu'>outlier_process</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'>outlier_aggregate</span><span class='op'>(</span>
+  <span class='va'>junctions</span>,
+  samp_id_col <span class='op'>=</span> <span class='st'>"samp_id"</span>,
+  bp_param <span class='op'>=</span> <span class='fu'>BiocParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span>
+
+<span class='fu'>outlier_detect</span><span class='op'>(</span>
+  <span class='va'>junctions</span>,
+  feature_names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"score"</span>, <span class='st'>"coverage_score"</span><span class='op'>)</span>,
+  bp_param <span class='op'>=</span> <span class='fu'>BiocParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='fu'>outlier_process</span><span class='op'>(</span>
   <span class='va'>junctions</span>,
   feature_names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"score"</span>, <span class='st'>"coverage_score"</span><span class='op'>)</span>,
   samp_id_col <span class='op'>=</span> <span class='st'>"samp_id"</span>,
@@ -139,11 +164,6 @@ outlier junctions for those familiar or uninterested with the intermediates.</p>
 object.</p></td>
     </tr>
     <tr>
-      <th>feature_names</th>
-      <td><p>names of assays in <code>junctions</code> that are to be used as
-input into the outlier detection model.</p></td>
-    </tr>
-    <tr>
       <th>samp_id_col</th>
       <td><p>name of the column in the
 <a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>SummarizedExperiment</a>
@@ -157,6 +177,11 @@ denoting whether to parallelise the calculating of outlier scores across
 samples.</p></td>
     </tr>
     <tr>
+      <th>feature_names</th>
+      <td><p>names of assays in <code>junctions</code> that are to be used as
+input into the outlier detection model.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>additional arguments passed to the outlier detection model
 (isolation forest) for setting parameters.</p></td>
@@ -167,116 +192,91 @@ samples.</p></td>
 
     <p><code>DataFrame</code> with one row per cluster detailing each cluster's
 associated junctions, outlier scores, ranks and genes.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>outlier_process</code> wraps all "outlier_" prefixed functions in
+<a href='dasper.html'>dasper</a>. This is designed to simplify processing of the detecting outlier
+junctions for those familiar or uninterested with the intermediates.</p>
+<p><code>outlier_detect</code> will use the features in
+<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assays</a> named
+<code>feature_names</code> as input into an unsupervised outlier detection algorithm
+to score each junction based on how outlier-y it looks in relation to other
+junctions in the patient. The default expected <code>score</code> and <code>coverage_score</code>
+features can be calculated using the <a href='junction_annot.html'>junction_process</a> and
+<a href='coverage_norm.html'>coverage_process</a> respectively.</p>
+<p><code>outlier_aggregate</code> will aggregate the outlier scores into a cluster-level.
+It will then rank each cluster based on this aggregated score and annotate
+each cluster with it's associated gene and transcript.</p>
+    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
+
+    
+<ul>
+<li><p><code>outlier_aggregate</code>: Aggregate outlier scores from per junction to
+cluster-level</p></li>
+<li><p><code>outlier_detect</code>: Detecting outlier junctions</p></li>
+</ul>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Outlier processing functions
-<code><a href='outlier_aggregate.html'>outlier_aggregate</a>()</code>,
-<code><a href='outlier_detect.html'>outlier_detect</a>()</code></p></div>
+    <div class='dont-index'><p>for more details on the isolation forest model used:
+https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='va'>.Platform</span><span class='op'>$</span><span class='va'>OS.type</span> <span class='op'>!=</span> <span class='st'>"windows"</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='co'># tell reticulate to use the python3 install</span>
-    <span class='co'># if windows skip this step</span>
-    <span class='fu'>reticulate</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/reticulate/man/use_python.html'>use_python</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Sys.which.html'>Sys.which</a></span><span class='op'>(</span><span class='st'>"python3"</span><span class='op'>)</span>, required <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='op'>}</span>
+<span class='co'>##### Set up txdb #####</span>
 
-<span class='co'># use Genomic state to load txdb (GENCODE v31)</span>
-<span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span>version <span class='op'>=</span> <span class='st'>"31"</span>, genome <span class='op'>=</span> <span class='st'>"hg38"</span>, filetype <span class='op'>=</span> <span class='st'>"TxDb"</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-10-14</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
-<span class='va'>junctions_processed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='junction_process.html'>junction_process</a></span><span class='op'>(</span>
-    <span class='va'>junctions_example</span>,
-    <span class='va'>ref</span>,
-    count_thresh <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
-    n_samp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
-    types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-16 15:09:46 - Filtering junctions..."
-#&gt; [1] "2020-10-16 15:09:46 - by count..."
-#&gt; [1] "2020-10-16 15:09:46 - done!"
-#&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-10-16 15:09:46 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-10-16 15:09:59 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-10-16 15:09:59 - Tidying junction annotation..."
-#&gt; [1] "2020-10-16 15:09:59 - Deriving junction categories..."
-#&gt; [1] "2020-10-16 15:10:00 - done!"
-#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-16 15:10:00 - Filtering junctions..."
-#&gt; [1] "2020-10-16 15:10:00 - by type..."
-#&gt; [1] "2020-10-16 15:10:00 - done!"
-#&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-16 15:10:00 - Clustering junctions..."
-#&gt; [1] "2020-10-16 15:10:00 - Normalising junction counts..."
-#&gt; [1] "2020-10-16 15:10:00 - done!"
-#&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-10-16 15:10:00 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-10-16 15:10:00 - Generating junction abnormality score..."
-#&gt; [1] "2020-10-16 15:10:00 - done!"</div><div class='input'>
+<span class='co'># use GenomicState to load txdb (GENCODE v31)</span>
+<span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span>
+    version <span class='op'>=</span> <span class='st'>"31"</span>,
+    genome <span class='op'>=</span> <span class='st'>"hg38"</span>,
+    filetype <span class='op'>=</span> <span class='st'>"TxDb"</span>
+<span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-04-27</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
+<span class='co'>##### Set up BigWig #####</span>
+
 <span class='co'># obtain path to example bw on recount2</span>
-<span class='va'>url</span> <span class='op'>&lt;-</span> <span class='fu'>recount</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/recount/man/download_study.html'>download_study</a></span><span class='op'>(</span>
+<span class='va'>bw_path</span> <span class='op'>&lt;-</span> <span class='fu'>recount</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/recount/man/download_study.html'>download_study</a></span><span class='op'>(</span>
     project <span class='op'>=</span> <span class='st'>"SRP012682"</span>,
     type <span class='op'>=</span> <span class='st'>"samples"</span>,
     download <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
+<span class='co'># \dontshow{</span>
+<span class='co'># cache the bw for speed in later</span>
+<span class='co'># examples/testing during R CMD Check</span>
+<span class='va'>bw_path</span> <span class='op'>&lt;-</span> <span class='fu'>dasper</span><span class='fu'>:::</span><span class='fu'>.file_cache</span><span class='op'>(</span><span class='va'>bw_path</span><span class='op'>)</span>
+<span class='co'># }</span>
+
+<span class='co'>##### junction_process #####</span>
+
+<span class='va'>junctions_processed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='junction_annot.html'>junction_process</a></span><span class='op'>(</span>
+    <span class='va'>junctions_example</span>,
+    <span class='va'>ref</span>,
+    types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
 <span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: restarting interrupted promise evaluation</span></div><div class='output co'>#&gt; <span class='warning'>Warning: internal error -3 in R_decompress1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): lazy-load database '/Library/Frameworks/R.framework/Versions/4.0/Resources/library/dasper/R/dasper.rdb' is corrupt</span></div><div class='input'>
+<span class='co'>##### coverage_process #####</span>
 
-<span class='va'>bw_path</span> <span class='op'>&lt;-</span> <span class='fu'>dasper</span><span class='fu'>:::</span><span class='fu'>.file_cache</span><span class='op'>(</span><span class='va'>url</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
-
-<span class='va'>junctions_w_coverage</span> <span class='op'>&lt;-</span> <span class='fu'><a href='coverage_process.html'>coverage_process</a></span><span class='op'>(</span>
+<span class='va'>junctions_w_coverage</span> <span class='op'>&lt;-</span> <span class='fu'><a href='coverage_norm.html'>coverage_process</a></span><span class='op'>(</span>
     <span class='va'>junctions_processed</span>,
     <span class='va'>ref</span>,
     coverage_paths_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>,
     coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>3</span><span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "# Loading and normalising coverage ---------------------------------------------"
-#&gt; [1] "2020-10-16 15:10:00 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-10-16 15:10:00 - Obtaining regions to use to normalise coverage..."
-#&gt; [1] "2020-10-16 15:10:04 - Loading coverage..."
-#&gt; [1] "2020-10-16 15:10:09 - Normalising coverage..."
-#&gt; [1] "2020-10-16 15:10:09 - done!"
-#&gt; [1] "# Scoring coverage ---------------------------------------------"
-#&gt; [1] "2020-10-16 15:10:09 - Generating coverage abnormality score..."
-#&gt; [1] "2020-10-16 15:10:09 - Obtaining regions with greatest coverage dysruption..."
-#&gt; [1] "2020-10-16 15:10:10 - done!"</div><div class='input'>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: restarting interrupted promise evaluation</span></div><div class='output co'>#&gt; <span class='warning'>Warning: internal error -3 in R_decompress1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): lazy-load database '/Library/Frameworks/R.framework/Versions/4.0/Resources/library/dasper/R/dasper.rdb' is corrupt</span></div><div class='input'><span class='co'># \donttest{</span>
+<span class='co'>##### outlier_process #####</span>
+
+<span class='co'># this wrapper will obtain outlier scores identical to those</span>
+<span class='co'># obtained through running the individual wrapped functions shown below</span>
 <span class='fu'>outlier_process</span><span class='op'>(</span><span class='va'>junctions_w_coverage</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "# Detecting outliers using an isolation forest ------------------------------"
-#&gt; [1] "2020-10-16 15:10:10 - generating outlier scores for sample 1/2"
-#&gt; [1] "2020-10-16 15:10:10 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-16 15:10:10 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-16 15:10:10 - generating outlier scores for sample 2/2"
-#&gt; [1] "2020-10-16 15:10:10 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-16 15:10:10 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-16 15:10:11 - done!"
-#&gt; [1] "# Aggregating outlier scores to cluster-level -----------------------------"
-#&gt; [1] "2020-10-16 15:10:11 - Aggregating outlier scores to cluster level... "
-#&gt; [1] "2020-10-16 15:10:11 - Annotating clusters with gene details..."
-#&gt; [1] "2020-10-16 15:10:11 - done!"</div><div class='output co'>#&gt; DataFrame with 171 rows and 6 columns
-#&gt;         samp_id cluster_index mean_outlier_score      rank    gene_id_cluster
-#&gt;     &lt;character&gt;   &lt;character&gt;          &lt;numeric&gt; &lt;numeric&gt;    &lt;CharacterList&gt;
-#&gt; 1        samp_1          3984          -0.184301         1 ENSG00000100243.21
-#&gt; 2        samp_1          1243          -0.177723         2 ENSG00000142156.14
-#&gt; 3        samp_1          3857          -0.169857         3  ENSG00000100418.8
-#&gt; 4        samp_1           968          -0.143154         4  ENSG00000160213.7
-#&gt; 5        samp_1          3333          -0.142286         5 ENSG00000100129.18
-#&gt; ...         ...           ...                ...       ...                ...
-#&gt; 167      samp_2          3072          0.0705678        85 ENSG00000100320.23
-#&gt; 168      samp_2          3116          0.0705678        85 ENSG00000100345.21
-#&gt; 169      samp_2          3119          0.0705678        85 ENSG00000100345.21
-#&gt; 170      samp_2           392          0.0705678        85 ENSG00000159128.14
-#&gt; 171      samp_2          4137          0.0705678        85 ENSG00000100376.12
-#&gt;                                             junctions
-#&gt;                                                &lt;list&gt;
-#&gt; 1     3984: 1:-0.186319:...,3985:-1:-0.182282:...,...
-#&gt; 2     1244:-1:-0.210280:...,1245: 1:-0.145166:...,...
-#&gt; 3     3857: 1:-0.106278:...,3858:-1:-0.233436:...,...
-#&gt; 4     968: 1:-0.0911094:...,969:-1:-0.1951981:...,...
-#&gt; 5   3333: 1:-0.0975892:...,3334:-1:-0.1869835:...,...
-#&gt; ...                                               ...
-#&gt; 167   3072:-1:0.0658174:...,3073: 1:0.0753181:...,...
-#&gt; 168   3116: 1:0.0753181:...,3117:-1:0.0658174:...,...
-#&gt; 169   3119: 1:0.0753181:...,3120:-1:0.0658174:...,...
-#&gt; 170     392:-1:0.0658174:...,393: 1:0.0753181:...,...
-#&gt; 171   4137:-1:0.0658174:...,4138: 1:0.0753181:...,...</div></pre>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: internal error -3 in R_decompress1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): lazy-load database '/Library/Frameworks/R.framework/Versions/4.0/Resources/library/dasper/R/dasper.rdb' is corrupt</span></div><div class='input'><span class='co'># }</span>
+
+<span class='co'>##### outlier_detect #####</span>
+
+<span class='va'>junctions_w_outliers</span> <span class='op'>&lt;-</span> <span class='fu'>outlier_detect</span><span class='op'>(</span><span class='va'>junctions_w_coverage</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: internal error -3 in R_decompress1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): lazy-load database '/Library/Frameworks/R.framework/Versions/4.0/Resources/library/dasper/R/dasper.rdb' is corrupt</span></div><div class='input'>
+<span class='co'>##### outlier_aggregate #####</span>
+
+<span class='va'>outlier_scores</span> <span class='op'>&lt;-</span> <span class='fu'>outlier_aggregate</span><span class='op'>(</span><span class='va'>junctions_w_outliers</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: internal error -3 in R_decompress1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): lazy-load database '/Library/Frameworks/R.framework/Versions/4.0/Resources/library/dasper/R/dasper.rdb' is corrupt</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -292,7 +292,7 @@ associated junctions, outlier scores, ranks and genes.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

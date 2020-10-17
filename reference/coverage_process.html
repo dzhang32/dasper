@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wrapper for processing coverage — coverage_process • dasper</title>
+<title>Processing coverage — coverage_norm • dasper</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,13 @@
 
 
 
-<meta property="og:title" content="Wrapper for processing coverage — coverage_process" />
-<meta property="og:description" content="coverage_process wraps all &quot;coverage_&quot; prefixed functions in
-dasper. This is designed to simplify processing of the coverage data
-for those familiar or uninterested with the intermediates." />
+<meta property="og:title" content="Processing coverage — coverage_norm" />
+<meta property="og:description" content="The set of functions prefixed with &quot;coverage_&quot; are used to
+process coverage data. They are designed to be run after you have processed
+your junctions in the order coverage_norm, coverage_score. Or,
+alternatively the wrapper function coverage_process can be used to run
+the 2 functions stated above in one go. For more details of the individual
+functions, see &quot;Details&quot;." />
 
 
 
@@ -74,13 +77,19 @@ for those familiar or uninterested with the intermediates." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../articles/dasper.html">Get started</a>
 </li>
 <li>
@@ -110,18 +119,33 @@ for those familiar or uninterested with the intermediates." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Wrapper for processing coverage</h1>
-    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/coverage_process.R'><code>R/coverage_process.R</code></a></small>
+    <h1>Processing coverage</h1>
+    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/coverage_norm.R'><code>R/coverage_norm.R</code></a>, <a href='https://github.com/dzhang32/dasper/blob/master/R/coverage_process.R'><code>R/coverage_process.R</code></a>, <a href='https://github.com/dzhang32/dasper/blob/master/R/coverage_score.R'><code>R/coverage_score.R</code></a></small>
     <div class="hidden name"><code>coverage_process.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>coverage_process</code> wraps all "coverage_" prefixed functions in
-<a href='dasper.html'>dasper</a>. This is designed to simplify processing of the coverage data
-for those familiar or uninterested with the intermediates.</p>
+    <p>The set of functions prefixed with "coverage_" are used to
+process coverage data. They are designed to be run after you have processed
+your junctions in the order <code>coverage_norm</code>, <code>coverage_score</code>. Or,
+alternatively the wrapper function <code>coverage_process</code> can be used to run
+the 2 functions stated above in one go. For more details of the individual
+functions, see "Details".</p>
     </div>
 
-    <pre class="usage"><span class='fu'>coverage_process</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'>coverage_norm</span><span class='op'>(</span>
+  <span class='va'>junctions</span>,
+  <span class='va'>ref</span>,
+  unannot_width <span class='op'>=</span> <span class='fl'>20</span>,
+  <span class='va'>coverage_paths_case</span>,
+  <span class='va'>coverage_paths_control</span>,
+  coverage_chr_control <span class='op'>=</span> <span class='cn'>NULL</span>,
+  load_func <span class='op'>=</span> <span class='va'>.coverage_load</span>,
+  bp_param <span class='op'>=</span> <span class='fu'>BiocParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span>,
+  norm_const <span class='op'>=</span> <span class='fl'>1</span>
+<span class='op'>)</span>
+
+<span class='fu'>coverage_process</span><span class='op'>(</span>
   <span class='va'>junctions</span>,
   <span class='va'>ref</span>,
   unannot_width <span class='op'>=</span> <span class='fl'>20</span>,
@@ -133,7 +157,9 @@ for those familiar or uninterested with the intermediates.</p>
   norm_const <span class='op'>=</span> <span class='fl'>1</span>,
   score_func <span class='op'>=</span> <span class='va'>.zscore</span>,
   <span class='va'>...</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span>
+
+<span class='fu'>coverage_score</span><span class='op'>(</span><span class='va'>junctions</span>, <span class='va'>coverage</span>, score_func <span class='op'>=</span> <span class='va'>.zscore</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,7 +172,8 @@ object.</p></td>
     </tr>
     <tr>
       <th>ref</th>
-      <td><p>either path to gtf/gff3 or object of class <a href='https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html'>TxDb-class</a>.</p></td>
+      <td><p>either path to gtf/gff3 or object of class
+<a href='https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html'>TxDb-class</a>.</p></td>
     </tr>
     <tr>
       <th>unannot_width</th>
@@ -156,9 +183,9 @@ existing exon.</p></td>
     </tr>
     <tr>
       <th>coverage_paths_case</th>
-      <td><p>paths to the BigWig files containing the
-coverage of your case samples. Must be the same length and order to the
-samples in <code>junctions</code>.</p></td>
+      <td><p>paths to the BigWig files containing the coverage
+of your case samples. Must be the same length and order to the samples in
+<code>junctions</code>.</p></td>
     </tr>
     <tr>
       <th>coverage_paths_control</th>
@@ -167,9 +194,9 @@ samples in <code>junctions</code>.</p></td>
     <tr>
       <th>coverage_chr_control</th>
       <td><p>either "chr" or "no_chr", indicating the
-chromosome format of control coverage data. Only used if you know the
-chromosome format of the control BigWig files is different to that of
-your junctions.</p></td>
+chromosome format of control coverage data. Only required if the
+chromosome format of the control BigWig files is different to that of your
+junctions.</p></td>
     </tr>
     <tr>
       <th>load_func</th>
@@ -180,96 +207,129 @@ internal use to increase testing speed.</p></td>
       <th>bp_param</th>
       <td><p>a
 <a href='https://rdrr.io/pkg/BiocParallel/man/BiocParallelParam-class.html'>BiocParallelParam-class</a> instance
-denoting whether to parallelise the loading of coverage across BigWig files.</p></td>
+denoting whether to parallelise the loading of coverage across BigWig
+files.</p></td>
     </tr>
     <tr>
       <th>norm_const</th>
-      <td><p>numeric scaler to add to the normalisation coverage to avoid dividing
-by 0s and resulting NaN or Inf values.</p></td>
+      <td><p>numeric scaler to add to the normalisation coverage to
+avoid dividing by 0s and resulting NaN or Inf values.</p></td>
     </tr>
     <tr>
       <th>score_func</th>
-      <td><p>function to score junctions by their abnormality. By default,
-will use a z-score but can be switched to a user-defined function. This
-function must take as input an <code>x</code> and <code>y</code> argument, containing case and
-control counts respectively. This must return a numeric vector equal to the
-length of <code>x</code> with elements corresponding to a abnormality of each junction.</p></td>
+      <td><p>function to score junctions by their abnormality. By
+default, will use a z-score but can be switched to a user-defined function.
+This function must take as input an <code>x</code> and <code>y</code> argument, containing case
+and control counts respectively. This must return a numeric vector equal to
+the length of <code>x</code> with elements corresponding to a abnormality of each
+junction.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>additional arguments passed to <code>score_func</code>.</p></td>
     </tr>
+    <tr>
+      <th>coverage</th>
+      <td><p>list containing normalised coverage data that is outputted
+from coverage_norm.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>RangedSummarizedExperiment-class</a>
-object containing junction data with coverage scores.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>junctions as
+<a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>SummarizedExperiment</a>
+object with additional <code>assays</code> named "coverage_region" and
+"coverage_score". "coverage_region" labels the region of greatest
+disruption (1 = exon_start, 2 = exon_end, 3 = intron) and "coverage_score"
+contains the abnormality scores of the region with the greatest disruption.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <div class='dont-index'><p>Coverage processing functions
-<code><a href='coverage_norm.html'>coverage_norm</a>()</code>,
-<code><a href='coverage_score.html'>coverage_score</a>()</code></p></div>
+    <p><code>coverage_process</code> wraps all "coverage_" prefixed functions in
+<a href='dasper.html'>dasper</a>. This is designed to simplify processing of the coverage data for
+those familiar or uninterested with the intermediates.</p>
+<p><code>coverage_norm</code> obtains regions of interest for each junction where
+coverage disruptions would be expected. These consist of the intron itself
+the overlapping exon definitions (if ends of junctions are annotated),
+picking the shortest exon when multiple overlap one end. If ends are
+unannotated, <code>coverage_norm</code> will use a user-defined width set by
+<code>unannot_width</code>. Then, coverage will be loaded using
+<a href='https://github.com/ChristopherWilks/megadepth'>megadepth</a> and
+normalised to a set region per junction.  By default, the boundaries of
+each gene associated to a junction are used as the region to normalise to.</p>
+<p><code>coverage_score</code> will score disruptions in the coverage across the
+intronic/exonic regions associated with each junction. This abnormality
+score generated by <code>score_func</code> operates by calculating the deviation of
+the coverage in patients to a coverage across the same regions in controls.
+Then, for each junction it obtains the score of the region with the
+greatest disruption.</p>
+    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
+
+    
+<ul>
+<li><p><code>coverage_norm</code>: Load and normalise coverage from RNA-sequencing data</p></li>
+<li><p><code>coverage_score</code>: Score coverage by their abnormality</p></li>
+</ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='co'># use Genomic state to load txdb (GENCODE v31)</span>
-<span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span>version <span class='op'>=</span> <span class='st'>"31"</span>, genome <span class='op'>=</span> <span class='st'>"hg38"</span>, filetype <span class='op'>=</span> <span class='st'>"TxDb"</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-10-14</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
-<span class='va'>junctions_processed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='junction_process.html'>junction_process</a></span><span class='op'>(</span>
-    <span class='va'>junctions_example</span>,
-    <span class='va'>ref</span>,
-    count_thresh <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
-    n_samp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"raw"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
-    types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-16 15:06:53 - Filtering junctions..."
-#&gt; [1] "2020-10-16 15:06:53 - by count..."
-#&gt; [1] "2020-10-16 15:06:53 - done!"
-#&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-10-16 15:06:53 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-10-16 15:07:08 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-10-16 15:07:08 - Tidying junction annotation..."
-#&gt; [1] "2020-10-16 15:07:08 - Deriving junction categories..."
-#&gt; [1] "2020-10-16 15:07:08 - done!"
-#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-16 15:07:08 - Filtering junctions..."
-#&gt; [1] "2020-10-16 15:07:08 - by type..."
-#&gt; [1] "2020-10-16 15:07:08 - done!"
-#&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-16 15:07:08 - Clustering junctions..."
-#&gt; [1] "2020-10-16 15:07:09 - Normalising junction counts..."
-#&gt; [1] "2020-10-16 15:07:09 - done!"
-#&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-10-16 15:07:09 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-10-16 15:07:09 - Generating junction abnormality score..."
-#&gt; [1] "2020-10-16 15:07:09 - done!"</div><div class='input'>
+<span class='co'>##### Set up txdb #####</span>
+
+<span class='co'># use GenomicState to load txdb (GENCODE v31)</span>
+<span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span>
+    version <span class='op'>=</span> <span class='st'>"31"</span>,
+    genome <span class='op'>=</span> <span class='st'>"hg38"</span>,
+    filetype <span class='op'>=</span> <span class='st'>"TxDb"</span>
+<span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-04-27</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
+<span class='co'>##### Set up BigWig #####</span>
+
 <span class='co'># obtain path to example bw on recount2</span>
-<span class='va'>url</span> <span class='op'>&lt;-</span> <span class='fu'>recount</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/recount/man/download_study.html'>download_study</a></span><span class='op'>(</span>
+<span class='va'>bw_path</span> <span class='op'>&lt;-</span> <span class='fu'>recount</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/recount/man/download_study.html'>download_study</a></span><span class='op'>(</span>
     project <span class='op'>=</span> <span class='st'>"SRP012682"</span>,
     type <span class='op'>=</span> <span class='st'>"samples"</span>,
     download <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
+<span class='co'># \dontshow{</span>
+<span class='co'># cache the bw for speed in later</span>
+<span class='co'># examples/testing during R CMD Check</span>
+<span class='va'>bw_path</span> <span class='op'>&lt;-</span> <span class='fu'>dasper</span><span class='fu'>:::</span><span class='fu'>.file_cache</span><span class='op'>(</span><span class='va'>bw_path</span><span class='op'>)</span>
+<span class='co'># }</span>
+
+<span class='co'>##### junction_process #####</span>
+
+<span class='va'>junctions_processed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='junction_annot.html'>junction_process</a></span><span class='op'>(</span>
+    <span class='va'>junctions_example</span>,
+    <span class='va'>ref</span>,
+    types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
 <span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: internal error -3 in R_decompress1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): lazy-load database '/Library/Frameworks/R.framework/Versions/4.0/Resources/library/dasper/R/dasper.rdb' is corrupt</span></div><div class='input'><span class='co'># \donttest{</span>
+<span class='co'>##### coverage_process #####</span>
 
-<span class='va'>bw_path</span> <span class='op'>&lt;-</span> <span class='fu'>dasper</span><span class='fu'>:::</span><span class='fu'>.file_cache</span><span class='op'>(</span><span class='va'>url</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
-
+<span class='co'># this wrapper will obtain coverage scores identical to those</span>
+<span class='co'># obtained through running the individual wrapped functions shown below</span>
 <span class='va'>junctions_w_coverage</span> <span class='op'>&lt;-</span> <span class='fu'>coverage_process</span><span class='op'>(</span>
     <span class='va'>junctions_processed</span>,
     <span class='va'>ref</span>,
     coverage_paths_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>,
     coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>3</span><span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "# Loading and normalising coverage ---------------------------------------------"
-#&gt; [1] "2020-10-16 15:07:09 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-10-16 15:07:09 - Obtaining regions to use to normalise coverage..."
-#&gt; [1] "2020-10-16 15:07:13 - Loading coverage..."
-#&gt; [1] "2020-10-16 15:07:18 - Normalising coverage..."
-#&gt; [1] "2020-10-16 15:07:18 - done!"
-#&gt; [1] "# Scoring coverage ---------------------------------------------"
-#&gt; [1] "2020-10-16 15:07:18 - Generating coverage abnormality score..."
-#&gt; [1] "2020-10-16 15:07:19 - Obtaining regions with greatest coverage dysruption..."
-#&gt; [1] "2020-10-16 15:07:19 - done!"</div></pre>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: internal error -3 in R_decompress1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): lazy-load database '/Library/Frameworks/R.framework/Versions/4.0/Resources/library/dasper/R/dasper.rdb' is corrupt</span></div><div class='input'><span class='co'># }</span>
+
+<span class='co'>##### coverage_norm #####</span>
+
+<span class='va'>coverage_normed</span> <span class='op'>&lt;-</span> <span class='fu'>coverage_norm</span><span class='op'>(</span>
+    <span class='va'>junctions_processed</span>,
+    <span class='va'>ref</span>,
+    unannot_width <span class='op'>=</span> <span class='fl'>20</span>,
+    coverage_paths_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>,
+    coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'colData': object 'junctions_processed' not found</span></div><div class='input'>
+<span class='co'>##### coverage_score #####</span>
+
+<span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>coverage_score</span><span class='op'>(</span><span class='va'>junctions_processed</span>, <span class='va'>coverage_normed</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: internal error -3 in R_decompress1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): lazy-load database '/Library/Frameworks/R.framework/Versions/4.0/Resources/library/dasper/R/dasper.rdb' is corrupt</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -285,7 +345,7 @@ object containing junction data with coverage scores.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

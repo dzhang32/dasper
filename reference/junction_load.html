@@ -80,13 +80,19 @@ junction_load expects the junction data to be in STAR aligned format
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../articles/dasper.html">Get started</a>
 </li>
 <li>
@@ -188,14 +194,6 @@ match the co-ordinate system of the user's junctions.</p></td>
 
     <p><a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>RangedSummarizedExperiment-class</a>
 object containing junction data.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Junction processing functions
-<code><a href='junction_annot.html'>junction_annot</a>()</code>,
-<code><a href='junction_filter.html'>junction_filter</a>()</code>,
-<code><a href='junction_norm.html'>junction_norm</a>()</code>,
-<code><a href='junction_process.html'>junction_process</a>()</code>,
-<code><a href='junction_score.html'>junction_score</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -216,11 +214,11 @@ object containing junction data.</p>
     <span class='fu'>junction_load</span><span class='op'>(</span>
         junction_paths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>junctions_example_1_path</span>, <span class='va'>junctions_example_2_path</span><span class='op'>)</span>
     <span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-10-16 15:08:13 - Loading junctions for sample 1/2..."
-#&gt; [1] "2020-10-16 15:08:13 - Loading junctions for sample 2/2..."
-#&gt; [1] "2020-10-16 15:08:13 - Adding control junctions..."
-#&gt; [1] "2020-10-16 15:08:13 - Tidying and storing junction data as a RangedSummarizedExperiment..."
-#&gt; [1] "2020-10-16 15:08:13 - done!"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "2020-10-17 17:24:52 - Loading junctions for sample 1/2..."
+#&gt; [1] "2020-10-17 17:24:52 - Loading junctions for sample 2/2..."
+#&gt; [1] "2020-10-17 17:24:52 - Adding control junctions..."
+#&gt; [1] "2020-10-17 17:24:52 - Tidying and storing junction data as a RangedSummarizedExperiment..."
+#&gt; [1] "2020-10-17 17:24:53 - done!"</div><div class='input'>
 <span class='va'>junctions</span>
 </div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
 #&gt; dim: 19733 2 
@@ -245,7 +243,7 @@ object containing junction data.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
