@@ -65,3 +65,4 @@ Imports:
     basilisk
 Depends: 
     R (>= 4.0)
+StagedInstall: no
