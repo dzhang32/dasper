@@ -1,5 +1,16 @@
-# dasper 0.99.0
+# dasper 0.99.2
 
+NEW FEATURES
+
+* Merge documentation into one man page for junction, coverage and outlier processing functions to reduce runtime of roxygen examples. 
+
+# dasper 0.99.1
+
+NEW FEATURES
+
+* Change `outlier_detect()` to using `basilisk` for interfacing into python replacing `reticulate`.
+
+# dasper 0.99.0
 
 NEW FEATURES
 
@@ -16,3 +27,5 @@ NEW FEATURES
 * Added `outlier_detect()`, which uses the junction scores and coverage scores as input into an unsupervised outlier detection algorithm to find the most outlier-looking junctions in each sample. 
 * Added `outlier_aggregate()`, which aggregates the junction-level outlier data to a cluster-level. 
 * Added `outlier_process()`, a wrapper function for all "outlier_" prefixed functions. 
+* Added `plot_sashimi()`, which enables the visualisation of junction data across genes/transcripts or regions of interest.
+
