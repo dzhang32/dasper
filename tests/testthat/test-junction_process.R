@@ -201,7 +201,6 @@ test_that("exon annotation has been correctly retreived", {
     expect_true(annot_check(unannotated, ref_exons, 10))
 })
 
-
 # Filter junctions --------------------------------------------------------
 
 ##### junction_filter #####

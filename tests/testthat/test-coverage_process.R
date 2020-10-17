@@ -7,12 +7,12 @@ context("Testing coverage processing")
 # use Genomic state to load txdb (GENCODE v31)
 ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
 
+# filter junctions to save time for annotating
+# whilst preserving both annotated and unannotated types
 # extract random set of 1000 junctions
 set.seed(32)
 junctions_subset <- junctions_example[sample(seq_len(dim(junctions_example)[1]), 1000), ]
 
-# filter junctions to save time for annotating
-# whilst preserving both annotated and unannotated types
 junctions <- junctions_subset %>%
     junction_annot(ref)
 
