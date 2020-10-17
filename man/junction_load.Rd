@@ -76,12 +76,3 @@ junctions <-
 
 junctions
 }
-\seealso{
-Junction processing functions
-\code{\link{junction_annot}()},
-\code{\link{junction_filter}()},
-\code{\link{junction_norm}()},
-\code{\link{junction_process}()},
-\code{\link{junction_score}()}
-}
-\concept{junction}

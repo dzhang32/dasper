@@ -1,35 +1,5 @@
-#' Score patient junctions by their abnormality
+#' @describeIn junction_process Score patient junctions by their abnormality
 #'
-#' `junction_score` will use the counts contained within the "norm"
-#' [assay][SummarizedExperiment::SummarizedExperiment-class] to calculate a
-#' deviation of each patient junction from the expected distribution of control
-#' junction counts. The function used to calculate this abnormality score can be
-#' user-inputted or left as the default z-score. Junctions will also be labelled
-#' based on whether they are up-regulated (+1) or down-regulated (-1) with
-#' respect to controls junction and this information is stored in the
-#' [assay][SummarizedExperiment::SummarizedExperiment-class] "direction" for use
-#' in [outlier_aggregate].
-#'
-#' @inheritParams junction_annot
-#'
-#' @param score_func function to score junctions by their abnormality. By default,
-#'   will use a z-score but can be switched to a user-defined function. This
-#'   function must take as input an `x` and `y` argument, containing case and
-#'   control counts respectively. This must return a numeric vector equal to the
-#'   length of `x` with elements corresponding to a abnormality of each junction.
-#' @param ... additional arguments passed to `score_func`.
-#'
-#' @return junctions as a
-#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
-#'   object filtered for only case samples with an additional `assay`
-#'   containing junction abnormality scores.
-#'
-#' @examples
-#'
-#' junctions_normed <- junction_norm(junctions_example)
-#'
-#' junctions_scored <- junction_score(junctions_normed)
-#' @family junction
 #' @export
 junction_score <- function(junctions, score_func = .zscore, ...) {
 

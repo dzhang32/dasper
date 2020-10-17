@@ -25,20 +25,19 @@
 #' @return `ggplot` displaying the splicing (and coverage) surrounding the
 #'   transcript/region of interest.
 #'
-#' @family plotting
-#' @export
-#'
 #' @examples
 #'
-#' # use Genomic state to load txdb (GENCODE v31)
-#' ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
+#' # use GenomicState to load txdb (GENCODE v31)
+#' ref <- GenomicState::GenomicStateHub(
+#'     version = "31",
+#'     genome = "hg38",
+#'     filetype = "TxDb"
+#' )[[1]]
 #'
-#' junctions_processed <- junction_process(
+#' junctions <- junction_process(
 #'     junctions_example,
 #'     ref,
-#'     count_thresh = c("raw" = 5),
-#'     n_samp = c("raw" = 1),
-#'     types = c("ambig_gene", "unannotated"),
+#'     types = c("ambig_gene", "unannotated")
 #' )
 #'
 #' sashimi_plot <- plot_sashimi(
@@ -46,6 +45,7 @@
 #'     ref = ref,
 #'     gene_tx_id = "ENSG00000241973.10"
 #' )
+#' @export
 plot_sashimi <- function(junctions,
     ref,
     gene_tx_id,

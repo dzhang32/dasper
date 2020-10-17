@@ -22,7 +22,8 @@ plot_sashimi(
 \link[SummarizedExperiment:RangedSummarizedExperiment-class]{RangedSummarizedExperiment-class}
 object.}
 
-\item{ref}{either path to gtf/gff3 or object of class \link[GenomicFeatures:TxDb-class]{TxDb-class}.}
+\item{ref}{either path to gtf/gff3 or object of class
+\link[GenomicFeatures:TxDb-class]{TxDb-class}.}
 
 \item{gene_tx_id}{gene name as ensembl id, ensembl transcript id or gene
 name.}
@@ -57,15 +58,17 @@ from \code{ggplot2} functions.
 }
 \examples{
 
-# use Genomic state to load txdb (GENCODE v31)
-ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
+# use GenomicState to load txdb (GENCODE v31)
+ref <- GenomicState::GenomicStateHub(
+    version = "31",
+    genome = "hg38",
+    filetype = "TxDb"
+)[[1]]
 
-junctions_processed <- junction_process(
+junctions <- junction_process(
     junctions_example,
     ref,
-    count_thresh = c("raw" = 5),
-    n_samp = c("raw" = 1),
-    types = c("ambig_gene", "unannotated"),
+    types = c("ambig_gene", "unannotated")
 )
 
 sashimi_plot <- plot_sashimi(
@@ -74,4 +77,3 @@ sashimi_plot <- plot_sashimi(
     gene_tx_id = "ENSG00000241973.10"
 )
 }
-\concept{plotting}

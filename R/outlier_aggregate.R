@@ -1,55 +1,9 @@
-#' Aggregate outlier scores from per junction to cluster-level
+#' @describeIn outlier_process Aggregate outlier scores from per junction to
+#'   cluster-level
 #'
-#' `outlier_aggregate` will aggregate the outlier scores into a cluster-level.
-#' It will then rank each cluster based on this aggregated score and annotate
-#' each cluster with it's associated gene and transcript.
-#'
-#' @inheritParams junction_annot
-#' @inheritParams outlier_detect
-#'
-#' @param samp_id_col name of the column in the
-#'   [SummarizedExperiment][SummarizedExperiment::SummarizedExperiment-class]
-#'   that details the sample ids.
-#'
-#' @return \code{DataFrame} with one row per cluster detailing each cluster's
-#'   associated junctions, outlier scores, ranks and genes.
-#'
-#' @family outlier
 #' @export
-#'
-#' @examples
-#'
-#' # use Genomic state to load txdb (GENCODE v31)
-#' ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
-#'
-#' junctions_processed <- junction_process(
-#'     junctions_example,
-#'     ref,
-#'     count_thresh = c("raw" = 5),
-#'     n_samp = c("raw" = 1),
-#'     types = c("ambig_gene", "unannotated"),
-#' )
-#'
-#' # obtain path to example bw on recount2
-#' url <- recount::download_study(
-#'     project = "SRP012682",
-#'     type = "samples",
-#'     download = FALSE
-#' )
-#'
-#' bw_path <- dasper:::.file_cache(url[1])
-#'
-#' junctions_w_coverage <- coverage_process(
-#'     junctions_processed,
-#'     ref,
-#'     coverage_paths_case = rep(bw_path, 2),
-#'     coverage_paths_control = rep(bw_path, 3)
-#' )
-#'
-#' junctions_w_outliers <- outlier_detect(junctions_w_coverage)
-#'
-#' outlier_scores <- outlier_aggregate(junctions_w_outliers)
-outlier_aggregate <- function(junctions,
+outlier_aggregate <- function(
+    junctions,
     samp_id_col = "samp_id",
     bp_param = BiocParallel::SerialParam()) {
 

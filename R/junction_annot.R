@@ -1,34 +1,5 @@
-#' Annotate junctions using reference annotation
+#' @describeIn junction_process Annotate junctions using reference annotation
 #'
-#' `junction_annot` annotates junctions by 1. whether their start and/or
-#' end position precisely overlaps with an annotated exon boundary and 2.
-#' whether that junction matches an intron definition from existing annotation.
-#' Using this information along with the strand, junctions are categorised into
-#' "annotated", "novel_acceptor", "novel_donor", "novel_combo",
-#' "novel_exon_skip", "ambig_gene" and "unannotated".
-#'
-#' @param junctions junction data as a
-#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
-#'   object.
-#' @param ref either path to gtf/gff3 or object of class [TxDb-class][GenomicFeatures::TxDb-class].
-#'
-#' @return junctions as a
-#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
-#'   object with additional `rowData` detailing overlapping
-#'   genes/transcripts/exons and junction categories.
-#'
-#' @examples
-#'
-#' # use Genomic state to load txdb (GENCODE v31)
-#' ref <- GenomicState::GenomicStateHub(
-#'     version = "31",
-#'     genome = "hg38",
-#'     filetype = "TxDb"
-#' )[[1]]
-#'
-#' junctions_annoted <-
-#'     junction_annot(junctions_example, ref)
-#' @family junction
 #' @export
 junction_annot <- function(junctions, ref) {
 

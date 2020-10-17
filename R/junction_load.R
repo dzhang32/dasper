@@ -54,7 +54,6 @@
 #'     )
 #'
 #' junctions
-#' @family junction
 #' @export
 junction_load <- function(
     junction_paths,

@@ -1,42 +1,5 @@
-#' Filter junctions by count, width, annotation or region
+#' @describeIn junction_process Filter junctions by count, width, annotation or region
 #'
-#' `junction_filter` filters out "noisy" junctions based on counts, the
-#' width of junctions, annotation category of the junction returned from
-#' [junction_annot] and whether the junction overlaps with a set of
-#' (blacklist) regions.
-#'
-#' @inheritParams junction_annot
-#'
-#' @param count_thresh named vector with names matching the names of the
-#'   [assays][SummarizedExperiment::SummarizedExperiment-class] in `junctions`. Values
-#'   denote the number of counts below which a junction will be filtered out.
-#' @param n_samp named vector with names matching the names of the
-#'   [assays][SummarizedExperiment::SummarizedExperiment-class] in `junctions`. Values
-#'   denotes number of samples that have to express the junction above the
-#'   `count_thresh` in order for that junction to not be filtered.
-#' @param width_range numeric vector of length 2. The first element denoting the
-#'   lower limit of junction width and the second the upper limit. Junctions
-#'   with widths outside this range will be filtered out.
-#' @param types any junctions matching these types, derived form
-#'   [junction_annot] will be filtered out.
-#' @param regions any junctions overlapping this set of regions (in a
-#'   [GRanges-class][GenomicRanges::GRanges-class] format) will be filtered out.
-#'
-#' @return
-#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
-#'   containing filtered set of junctions.
-#'
-#' @seealso ENCODE blacklist regions recommended to  be included as
-#'   `regions` can be downloaded from
-#'   \url{https://github.com/Boyle-Lab/Blacklist/blob/master/lists/hg38-blacklist.v2.bed.gz}.
-#'    Further information can be found via the publication
-#'   \url{https://www.nature.com/articles/s41598-019-45839-z}.
-#'
-#' @examples
-#'
-#' junctions_filtered <- junction_filter(junctions_example)
-#' junctions_filtered
-#' @family junction
 #' @export
 junction_filter <- function(
     junctions,

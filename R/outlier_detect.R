@@ -1,65 +1,8 @@
-#' Detecting outlier junctions
+#' @describeIn outlier_process Detecting outlier junctions
 #'
-#' `outlier_detect` will use the features in
-#' [assays][SummarizedExperiment::SummarizedExperiment-class] named
-#' `feature_names` as input into an unsupervised outlier detection algorithm to
-#' score each junction based on how outlier-y it looks in relation to other
-#' junctions in the patient. The default expected `score` and `coverage_score`
-#' features can be calculated using the [junction_process] and
-#' [coverage_process] respectively.
-#'
-#' @inheritParams junction_annot
-#' @param feature_names names of assays in `junctions` that are to be used as
-#'   input into the outlier detection model.
-#' @param bp_param a
-#'   [BiocParallelParam-class][BiocParallel::BiocParallelParam-class] instance
-#'   denoting whether to parallelise the calculating of outlier scores across
-#'   samples.
-#' @param ... additional arguments passed to the outlier detection model
-#'   (isolation forest) for setting parameters.
-#'
-#' @return junctions as a
-#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
-#'    object with additional assays named `outlier_score`. The lower the outlier
-#'   score, the more of an outlier a junction is observed to be.
-#'
-#' @seealso for more details on the isolation forest model used:
-#'   https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html
-#'
-#' @family outlier
 #' @export
-#'
-#' @examples
-#'
-#' # use Genomic state to load txdb (GENCODE v31)
-#' ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
-#'
-#' junctions_processed <- junction_process(
-#'     junctions_example,
-#'     ref,
-#'     count_thresh = c("raw" = 5),
-#'     n_samp = c("raw" = 1),
-#'     types = c("ambig_gene", "unannotated"),
-#' )
-#'
-#' # obtain path to example bw on recount2
-#' url <- recount::download_study(
-#'     project = "SRP012682",
-#'     type = "samples",
-#'     download = FALSE
-#' )
-#'
-#' bw_path <- dasper:::.file_cache(url[1])
-#'
-#' junctions_w_coverage <- coverage_process(
-#'     junctions_processed,
-#'     ref,
-#'     coverage_paths_case = rep(bw_path, 2),
-#'     coverage_paths_control = rep(bw_path, 3)
-#' )
-#'
-#' junctions_w_outliers <- outlier_detect(junctions_w_coverage)
-outlier_detect <- function(junctions,
+outlier_detect <- function(
+    junctions,
     feature_names = c("score", "coverage_score"),
     bp_param = BiocParallel::SerialParam(),
     ...) {

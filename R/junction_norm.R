@@ -1,22 +1,5 @@
-#' Normalise junction counts by cluster
+#' @describeIn junction_process Normalise junction counts by cluster
 #'
-#' `junction_norm` normalises the raw junction counts by 1. building junction
-#' clusters by finding junctions that share an acceptor or donor position and 2.
-#' calculating a proportion-spliced-in (PSI) for each junction by dividing the
-#' raw junction count by the total number of counts in it's associated cluster.
-#'
-#' @inheritParams junction_annot
-#'
-#' @return junctions as a
-#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
-#'   object with an additional `assay`` containing the normalised counts.
-#'
-#' @examples
-#'
-#' junctions_normed <- junction_norm(junctions_example)
-#'
-#' junctions_normed
-#' @family junction
 #' @export
 junction_norm <- function(junctions) {
 
