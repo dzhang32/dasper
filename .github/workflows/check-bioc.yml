@@ -51,7 +51,7 @@ name: R-CMD-check-bioc
 env:
   has_testthat: 'true'
   run_covr: 'true'
-  run_pkgdown: 'true'
+  run_pkgdown: 'false'
   has_RUnit: 'false'
   cache-version: 'cache-v1'
 
@@ -222,13 +222,6 @@ jobs:
           pkgs <- installed.packages()[, "Package"]
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
-        
-      ##### dasper specific dependencies ---------------------------------------
-      - name: install scikit-learn and pandas
-        run: |
-          pip3 install scikit-learn pandas
-        shell: bash {0}
-      ##### --------------------------------------------------------------------
 
       - name: Check
         env:
@@ -436,13 +429,6 @@ jobs:
           pkgs <- installed.packages()[, "Package"]
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
-
-      ##### dasper specific dependencies ---------------------------------------
-      - name: install scikit-learn and pandas
-        run: |
-          pip3 install scikit-learn pandas
-        shell: bash {0}
-      ##### --------------------------------------------------------------------
 
       - name: Check
         env:
