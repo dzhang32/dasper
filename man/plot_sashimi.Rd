@@ -69,11 +69,10 @@ junctions_processed <- junction_process(
     junctions_example,
     ref,
     types = c("ambig_gene", "unannotated")
-) \%>\%
-    junction_filter()
+)
 
 sashimi_plot <- plot_sashimi(
-    junctions = junctions_processed,
+    junctions = junction_filter(junctions_processed),
     ref = ref,
     gene_tx_id = "ENSG00000142156.14",
     sum_func = NULL
