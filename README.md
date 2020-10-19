@@ -54,7 +54,7 @@ print(citation("dasper"), bibtex = TRUE)
 #> dzhang32 (2020). _Detecting abberant splicing events from
 #> RNA-sequencing data_. doi: 10.18129/B9.bioc.dasper (URL:
 #> https://doi.org/10.18129/B9.bioc.dasper),
-#> https://github.com/dzhang32/dasper - R package version 0.99.7, <URL:
+#> https://github.com/dzhang32/dasper - R package version 0.99.8, <URL:
 #> http://www.bioconductor.org/packages/dasper>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -64,7 +64,7 @@ print(citation("dasper"), bibtex = TRUE)
 #>     author = {{dzhang32}},
 #>     year = {2020},
 #>     url = {http://www.bioconductor.org/packages/dasper},
-#>     note = {https://github.com/dzhang32/dasper - R package version 0.99.7},
+#>     note = {https://github.com/dzhang32/dasper - R package version 0.99.8},
 #>     doi = {10.18129/B9.bioc.dasper},
 #>   }
 #> 

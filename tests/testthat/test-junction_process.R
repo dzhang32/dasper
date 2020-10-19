@@ -5,10 +5,30 @@ context("Testing junction processing")
 # use Genomic state to load txdb (GENCODE v31)
 ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
 
-# extract random set of 1000 junctions
-# to save time
-set.seed(32)
-junctions <- junctions_example[sample(seq_len(dim(junctions_example)[1]), 1000), ]
+# Process junctions -------------------------------------------------------
+
+##### junction_process #####
+
+junctions_processed_path <- file.path(tempdir(), "junctions_processed.rda")
+
+if (file.exists(junctions_processed_path)) {
+    load(junctions_processed_path)
+} else {
+    junctions_processed <-
+        junction_process(
+            junctions_example,
+            count_thresh = NULL,
+            n_samp = NULL,
+            ref,
+            sd_const = 0.02
+        )
+
+    save(junctions_processed,
+        file = junctions_processed_path
+    )
+}
+
+junctions <- junctions_processed
 
 # Annotating junctions ----------------------------------------------------
 
@@ -25,8 +45,6 @@ test_that(".junction_annot_tidy correctly infers strand", {
 })
 
 ##### junction_annot #####
-
-junctions <- junction_annot(junctions, ref)
 
 test_that("junction_annot output generally looks correct", {
     expect_true(methods::isClass(junctions, "RangedSummarisedExperiment"))
@@ -299,8 +317,6 @@ test_that("junction_filter has correct output", {
 
 ##### junction_norm #####
 
-junctions <- junction_norm(junctions)
-
 test_that("junction_norm general output looks correct", {
     expect_true(methods::isClass(junctions, "RangedSummarizedExperiment"))
     expect_equal(
@@ -387,17 +403,21 @@ norm_check <- function(junctions, n) {
 }
 
 test_that("raw counts have been correctly normalised", {
-    expect_true(norm_check(junctions, 50))
+    expect_true(norm_check(junctions, 20))
 })
 
 # Score junctions ---------------------------------------------------------
 
-##### junction_score #####
+# generate separate junctions to test junction_score
+# as this requires the control junctions to still be present
+junctions <- junctions_example %>%
+    junction_filter() %>%
+    junction_norm()
 
-junctions_w_score <- junction_score(junctions,
-    score_func = .zscore,
-    sd_const = 0.02
-) # try an sd_const other than default
+junctions_w_score <- junctions %>%
+    junction_score(sd_const = 0.02)
+
+##### junction_score #####
 
 test_that("junction_score has correct output", {
     expect_true(is(junctions_w_score, "RangedSummarizedExperiment"))
@@ -449,45 +469,4 @@ test_that("direction and score have been calculated correctly", {
         assays(junctions_w_score)[["score"]],
         case_score %>% unlist()
     )
-})
-
-# Process junctions -------------------------------------------------------
-
-##### junction_process #####
-
-junctions_processed_path <- file.path(tempdir(), "junctions_processed.rda")
-
-if (file.exists(junctions_processed_path)) {
-    load(junctions_processed_path)
-} else {
-    junctions_processed <-
-        junction_process(
-            junctions_example,
-            count_thresh = NULL,
-            n_samp = NULL,
-            ref,
-            sd_const = 0.02
-        )
-
-    save(junctions_processed,
-        file = junctions_processed_path
-    )
-}
-
-# filter to random set of 1000 to match junctions
-set.seed(32)
-junctions_processed <-
-    junctions_processed[sample(seq_len(dim(junctions_processed)[1]), 1000), ]
-
-# junction_score must be re-applied
-# as otherwise raw counts are filtered for only those originating from cases
-junctions_processed_2 <- junctions %>%
-    junction_score(sd_const = 0.02)
-
-# check junction_process wrapper has the same output as running
-# intermediate functions individually
-# also that the order of junction_filter/junction_annot
-# does not impact result (diff order to junction_process)
-test_that("junction_process has the correct output", {
-    expect_equivalent(junctions_processed, junctions_processed_2)
 })
