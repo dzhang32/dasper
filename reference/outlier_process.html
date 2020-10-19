@@ -253,27 +253,27 @@ https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationFore
     types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-19 21:44:38 - Filtering junctions..."
-#&gt; [1] "2020-10-19 21:44:38 - by count..."
-#&gt; [1] "2020-10-19 21:44:38 - done!"
+#&gt; [1] "2020-10-19 22:08:50 - Filtering junctions..."
+#&gt; [1] "2020-10-19 22:08:50 - by count..."
+#&gt; [1] "2020-10-19 22:08:50 - done!"
 #&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-10-19 21:44:38 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-10-19 21:44:53 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-10-19 21:44:54 - Tidying junction annotation..."
-#&gt; [1] "2020-10-19 21:44:54 - Deriving junction categories..."
-#&gt; [1] "2020-10-19 21:44:54 - done!"
+#&gt; [1] "2020-10-19 22:08:50 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-10-19 22:09:04 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-10-19 22:09:05 - Tidying junction annotation..."
+#&gt; [1] "2020-10-19 22:09:05 - Deriving junction categories..."
+#&gt; [1] "2020-10-19 22:09:05 - done!"
 #&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-19 21:44:54 - Filtering junctions..."
-#&gt; [1] "2020-10-19 21:44:54 - by type..."
-#&gt; [1] "2020-10-19 21:44:54 - done!"
+#&gt; [1] "2020-10-19 22:09:05 - Filtering junctions..."
+#&gt; [1] "2020-10-19 22:09:05 - by type..."
+#&gt; [1] "2020-10-19 22:09:05 - done!"
 #&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-19 21:44:54 - Clustering junctions..."
-#&gt; [1] "2020-10-19 21:44:54 - Normalising junction counts..."
-#&gt; [1] "2020-10-19 21:44:54 - done!"
+#&gt; [1] "2020-10-19 22:09:05 - Clustering junctions..."
+#&gt; [1] "2020-10-19 22:09:06 - Normalising junction counts..."
+#&gt; [1] "2020-10-19 22:09:06 - done!"
 #&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-10-19 21:44:54 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-10-19 21:44:54 - Generating junction abnormality score..."
-#&gt; [1] "2020-10-19 21:44:54 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-19 22:09:06 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-10-19 22:09:06 - Generating junction abnormality score..."
+#&gt; [1] "2020-10-19 22:09:06 - done!"</div><div class='input'>
 <span class='co'>##### coverage_process #####</span>
 
 <span class='va'>junctions_w_coverage</span> <span class='op'>&lt;-</span> <span class='fu'><a href='coverage_norm.html'>coverage_process</a></span><span class='op'>(</span>
@@ -283,51 +283,33 @@ https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationFore
     coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>3</span><span class='op'>)</span>
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Loading and normalising coverage ---------------------------------------------"
-#&gt; [1] "2020-10-19 21:44:54 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-10-19 21:44:54 - Obtaining regions to use to normalise coverage..."
-#&gt; [1] "2020-10-19 21:45:00 - Loading coverage..."
-#&gt; [1] "2020-10-19 21:45:05 - Normalising coverage..."
-#&gt; [1] "2020-10-19 21:45:05 - done!"
+#&gt; [1] "2020-10-19 22:09:06 - Obtaining exonic and intronic regions to load coverage from..."
+#&gt; [1] "2020-10-19 22:09:06 - Obtaining regions to use to normalise coverage..."
+#&gt; [1] "2020-10-19 22:09:12 - Loading coverage..."
+#&gt; [1] "2020-10-19 22:09:17 - Normalising coverage..."
+#&gt; [1] "2020-10-19 22:09:17 - done!"
 #&gt; [1] "# Scoring coverage ---------------------------------------------"
-#&gt; [1] "2020-10-19 21:45:05 - Generating coverage abnormality score..."
-#&gt; [1] "2020-10-19 21:45:06 - Obtaining regions with greatest coverage dysruption..."
-#&gt; [1] "2020-10-19 21:45:06 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-19 22:09:17 - Generating coverage abnormality score..."
+#&gt; [1] "2020-10-19 22:09:17 - Obtaining regions with greatest coverage dysruption..."
+#&gt; [1] "2020-10-19 22:09:17 - done!"</div><div class='input'>
 <span class='co'>##### outlier_detect #####</span>
 
 <span class='va'>junctions_w_outliers</span> <span class='op'>&lt;-</span> <span class='fu'>outlier_detect</span><span class='op'>(</span><span class='va'>junctions_w_coverage</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-10-19 21:45:06 - generating outlier scores for sample 1/2"
-#&gt; [1] "2020-10-19 21:47:34 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-19 21:47:35 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-19 21:47:35 - generating outlier scores for sample 2/2"
-#&gt; [1] "2020-10-19 21:47:35 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-19 21:47:35 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-19 21:47:35 - done!"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "2020-10-19 22:09:17 - generating outlier scores for sample 1/2"</div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.2/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.2/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in makePSOCKcluster(1): Cluster setup failed. 1 worker of 1 failed to connect.</span></div><div class='input'>
 <span class='co'>##### outlier_aggregate #####</span>
 
 <span class='va'>outlier_scores</span> <span class='op'>&lt;-</span> <span class='fu'>outlier_aggregate</span><span class='op'>(</span><span class='va'>junctions_w_outliers</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-10-19 21:47:35 - Aggregating outlier scores to cluster level... "
-#&gt; [1] "2020-10-19 21:47:36 - Annotating clusters with gene details..."
-#&gt; [1] "2020-10-19 21:47:36 - done!"</div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in h(simpleError(msg, call)): error in evaluating the argument 'table' in selecting a method for function '%in%': error in evaluating the argument 'x' in selecting a method for function 'colnames': error in evaluating the argument 'x' in selecting a method for function 'rowData': object 'junctions_w_outliers' not found</span></div><div class='input'>
 <span class='co'>##### outlier_process #####</span>
 
 <span class='co'># this wrapper will obtain outlier scores identical to those</span>
 <span class='co'># obtained through running the individual wrapped functions shown below</span>
 <span class='va'>outlier_processed</span> <span class='op'>&lt;-</span> <span class='fu'>outlier_process</span><span class='op'>(</span><span class='va'>junctions_w_coverage</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Detecting outliers using an isolation forest ------------------------------"
-#&gt; [1] "2020-10-19 21:47:36 - generating outlier scores for sample 1/2"
-#&gt; [1] "2020-10-19 21:47:36 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-19 21:47:37 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-19 21:47:37 - generating outlier scores for sample 2/2"
-#&gt; [1] "2020-10-19 21:47:37 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-19 21:47:37 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-19 21:47:37 - done!"
-#&gt; [1] "# Aggregating outlier scores to cluster-level -----------------------------"
-#&gt; [1] "2020-10-19 21:47:37 - Aggregating outlier scores to cluster level... "
-#&gt; [1] "2020-10-19 21:47:38 - Annotating clusters with gene details..."
-#&gt; [1] "2020-10-19 21:47:38 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-19 22:12:28 - generating outlier scores for sample 1/2"</div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.2/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.2/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in makePSOCKcluster(1): Cluster setup failed. 1 worker of 1 failed to connect.</span></div><div class='input'>
 <span class='co'># the two objects are equivalent</span>
 <span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>outlier_processed</span>, <span class='va'>outlier_scores</span>, check.attributes <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+</div><div class='output co'>#&gt; <span class='error'>Error in all.equal(outlier_processed, outlier_scores, check.attributes = FALSE): object 'outlier_processed' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
