@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.6</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
       UCL<br><a class="author_email" href="mailto:#"></a><a href="mailto:david.zhang.12@ucl.ac.uk" class="email">david.zhang.12@ucl.ac.uk</a>
       </address>
                   
-            <h4 class="date">17 October 2020</h4>
+            <h4 class="date">19 October 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/dzhang32/dasper/blob/master/vignettes/dasper.Rmd"><code>vignettes/dasper.Rmd</code></a></small>
       <div class="hidden name"><code>dasper.Rmd</code></div>
@@ -255,65 +255,8 @@
         bp_param <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/MulticoreParam-class.html">MulticoreParam</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>
     <span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="../reference/outlier_aggregate.html">outlier_process</a></span><span class="op">(</span>bp_param <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/MulticoreParam-class.html">MulticoreParam</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] "# Filtering junctions -----------------------------------------------------"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:00 - Filtering junctions..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:00 - by count..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:01 - done!"</span>
-<span class="co">#&gt; [1] "# Annotating junctions ----------------------------------------------------"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:01 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:21 - Getting junction annotation using overlapping exons..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:22 - Tidying junction annotation..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:22 - Deriving junction categories..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:22 - done!"</span>
-<span class="co">#&gt; [1] "# Normalise junctions -----------------------------------------------------"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:22 - Clustering junctions..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:22 - Normalising junction counts..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:22 - done!"</span>
-<span class="co">#&gt; [1] "# Score junctions ---------------------------------------------------------"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:22 - Calculating the direction of change of junctions..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:22 - Generating junction abnormality score..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:23 - done!"</span>
-<span class="co">#&gt; [1] "# Loading and normalising coverage ---------------------------------------------"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:23 - Obtaining exonic and intronic regions to load coverage from..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:23 - Obtaining regions to use to normalise coverage..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:28 - Loading coverage..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:32 - Normalising coverage..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:32 - done!"</span>
-<span class="co">#&gt; [1] "# Scoring coverage ---------------------------------------------"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:32 - Generating coverage abnormality score..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:33 - Obtaining regions with greatest coverage dysruption..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:33 - done!"</span>
-<span class="co">#&gt; [1] "# Detecting outliers using an isolation forest ------------------------------"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:33 - generating outlier scores for sample 1/2"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:36 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:37 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:33 - generating outlier scores for sample 2/2"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:36 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:37 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:37 - done!"</span>
-<span class="co">#&gt; [1] "# Aggregating outlier scores to cluster-level -----------------------------"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:37 - Aggregating outlier scores to cluster level... "</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:38 - Annotating clusters with gene details..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:38 - done!"</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">outlier_scores</span><span class="op">)</span>
-<span class="co">#&gt; DataFrame with 6 rows and 6 columns</span>
-<span class="co">#&gt;       samp_id cluster_index mean_outlier_score      rank    gene_id_cluster</span>
-<span class="co">#&gt;   &lt;character&gt;   &lt;character&gt;          &lt;numeric&gt; &lt;numeric&gt;    &lt;CharacterList&gt;</span>
-<span class="co">#&gt; 1      samp_1          4123          -0.205969         1 ENSG00000100243.21</span>
-<span class="co">#&gt; 2      samp_1          3993          -0.198068         2  ENSG00000100418.8</span>
-<span class="co">#&gt; 3      samp_1          1286          -0.195354         3 ENSG00000142156.14</span>
-<span class="co">#&gt; 4      samp_1          1000          -0.167395         4  ENSG00000160213.7</span>
-<span class="co">#&gt; 5      samp_1          3813          -0.161524         5 ENSG00000100372.15</span>
-<span class="co">#&gt; 6      samp_1          3987          -0.153584         6 ENSG00000100417.12</span>
-<span class="co">#&gt;                                           junctions</span>
-<span class="co">#&gt;                                              &lt;list&gt;</span>
-<span class="co">#&gt; 1   4123: 1:-0.213005:...,4124:-1:-0.198934:...,...</span>
-<span class="co">#&gt; 2   3993: 1:-0.150074:...,3994:-1:-0.246062:...,...</span>
-<span class="co">#&gt; 3   1287:-1:-0.225218:...,1288: 1:-0.165491:...,...</span>
-<span class="co">#&gt; 4   1000: 1:-0.119066:...,1001:-1:-0.215725:...,...</span>
-<span class="co">#&gt; 5 3813:-1:-0.2258652:...,3814: 1:-0.0971834:...,...</span>
-<span class="co">#&gt; 6 3987: 1:-0.0704174:...,3988:-1:-0.2367505:...,...</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">outlier_scores</span><span class="op">)</span></pre></div>
 </div>
 </div>
 <div id="comprehensive-usage-guide" class="section level1">
@@ -352,12 +295,12 @@
         controls <span class="op">=</span> <span class="st">"fibroblasts"</span>,
         chrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr21"</span>, <span class="st">"chr22"</span><span class="op">)</span>
     <span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:38 - Loading junctions for sample 1/2..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:38 - Loading junctions for sample 2/2..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:38 - Adding control junctions..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:26:38 - Downloading and importing fibroblasts junction data..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:03 - Tidying and storing junction data as a RangedSummarizedExperiment..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:05 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-19 21:48:12 - Loading junctions for sample 1/2..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:48:12 - Loading junctions for sample 2/2..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:48:12 - Adding control junctions..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:48:12 - Downloading and importing fibroblasts junction data..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:48:37 - Tidying and storing junction data as a RangedSummarizedExperiment..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:48:40 - done!"</span>
 
 <span class="va">junctions</span>
 <span class="co">#&gt; class: RangedSummarizedExperiment </span>
@@ -376,11 +319,11 @@
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="va">junctions</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
 
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_annot.html">junction_annot</a></span><span class="op">(</span><span class="va">junctions</span>, <span class="va">ref</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:05 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:18 - Getting junction annotation using overlapping exons..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:21 - Tidying junction annotation..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:21 - Deriving junction categories..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:26 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-19 21:48:40 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:48:56 - Getting junction annotation using overlapping exons..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:48:58 - Tidying junction annotation..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:48:59 - Deriving junction categories..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:03 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">rowData</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; DataFrame with 6 rows and 14 columns</span>
@@ -439,9 +382,9 @@
     count_thresh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>raw <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,
     n_samp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>raw <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:26 - Filtering junctions..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:26 - by count..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:26 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:03 - Filtering junctions..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:03 - by count..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:03 - done!"</span>
 
 <span class="va">junctions</span>
 <span class="co">#&gt; class: RangedSummarizedExperiment </span>
@@ -456,9 +399,9 @@
 <div class="sourceCode" id="cb11"><pre class="downlit">
 
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_annot.html">junction_norm</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:26 - Clustering junctions..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:26 - Normalising junction counts..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:26 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:04 - Clustering junctions..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:04 - Normalising junction counts..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:04 - done!"</span>
 
 <span class="co"># save a separate object for plotting</span>
 <span class="va">junctions_normed</span> <span class="op">&lt;-</span> <span class="va">junctions</span>
@@ -485,9 +428,9 @@
 <p>Finally, we need to score each patient junction by how much it’s counts deviates from the count distribution of the same junction in your control samples using <code>junction_score</code>. By default, this uses a z-score however this can be modified to a user-inputted functions by adjusting the argument <code>score_func</code>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_annot.html">junction_score</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:27 - Calculating the direction of change of junctions..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:27 - Generating junction abnormality score..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:27 - done!"</span></pre></div>
+<span class="co">#&gt; [1] "2020-10-19 21:49:04 - Calculating the direction of change of junctions..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:04 - Generating junction abnormality score..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:04 - done!"</span></pre></div>
 </div>
 <div id="coverage-processing" class="section level2">
 <h2 class="hasAnchor">
@@ -498,17 +441,17 @@
     coverage_paths_case <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">bw_path</span>, <span class="fl">2</span><span class="op">)</span>,
     coverage_paths_control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">bw_path</span>, <span class="fl">3</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:27 - Obtaining exonic and intronic regions to load coverage from..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:27 - Obtaining regions to use to normalise coverage..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:32 - Loading coverage..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:38 - Normalising coverage..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:38 - done!"</span></pre></div>
+<span class="co">#&gt; [1] "2020-10-19 21:49:04 - Obtaining exonic and intronic regions to load coverage from..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:05 - Obtaining regions to use to normalise coverage..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:10 - Loading coverage..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:15 - Normalising coverage..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:15 - done!"</span></pre></div>
 <p><code>coverage_score</code> is then used to compare the coverage associated with each junction with the coverage distribution in controls.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit">
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/coverage_norm.html">coverage_score</a></span><span class="op">(</span><span class="va">junctions</span>, <span class="va">coverage</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:38 - Generating coverage abnormality score..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:38 - Obtaining regions with greatest coverage dysruption..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:38 - done!"</span></pre></div>
+<span class="co">#&gt; [1] "2020-10-19 21:49:15 - Generating coverage abnormality score..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:16 - Obtaining regions with greatest coverage dysruption..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:16 - done!"</span></pre></div>
 </div>
 <div id="outlier-processing" class="section level2">
 <h2 class="hasAnchor">
@@ -518,19 +461,19 @@
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outlier_aggregate.html">outlier_detect</a></span><span class="op">(</span><span class="va">junctions</span>,
     random_state <span class="op">=</span> <span class="fl">32L</span>
 <span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:38 - generating outlier scores for sample 1/2"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:42 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:42 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:42 - generating outlier scores for sample 2/2"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:42 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:42 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:42 - done!"</span></pre></div>
+<span class="co">#&gt; [1] "2020-10-19 21:49:16 - generating outlier scores for sample 1/2"</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:19 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:20 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:20 - generating outlier scores for sample 2/2"</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:20 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:20 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:20 - done!"</span></pre></div>
 <p>Then, using <code>outlier_aggregate</code> outlier scores aggregates the outlier splicing events to a cluster level. The annotation returned by <code>junction_annot</code> is used to link each cluster to a gene and produce a report of all genes in a sample ranked by how abberant they look in terms of splicing. The lower the rank, the more abberant that gene looks.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit">
 <span class="va">outlier_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outlier_aggregate.html">outlier_aggregate</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:43 - Aggregating outlier scores to cluster level... "</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:43 - Annotating clusters with gene details..."</span>
-<span class="co">#&gt; [1] "2020-10-17 17:27:43 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:20 - Aggregating outlier scores to cluster level... "</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:21 - Annotating clusters with gene details..."</span>
+<span class="co">#&gt; [1] "2020-10-19 21:49:21 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">outlier_scores</span><span class="op">)</span>
 <span class="co">#&gt; DataFrame with 6 rows and 6 columns</span>
@@ -563,7 +506,6 @@
 <span class="fu"><a href="../reference/plot_sashimi.html">plot_sashimi</a></span><span class="op">(</span><span class="va">junctions_normed</span>,
     <span class="va">ref</span>,
     case_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>samp_id <span class="op">=</span> <span class="st">"samp_1"</span><span class="op">)</span>,
-    control_agg_func <span class="op">=</span> <span class="va">mean</span>,
     gene_tx_id <span class="op">=</span> <span class="va">gene_id</span>
 <span class="op">)</span></pre></div>
 <p><img src="dasper_files/figure-html/sashimi_1-1.png" width="700"></p>
@@ -572,7 +514,6 @@
 <span class="fu"><a href="../reference/plot_sashimi.html">plot_sashimi</a></span><span class="op">(</span><span class="va">junctions_normed</span>,
     <span class="va">ref</span>,
     case_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>samp_id <span class="op">=</span> <span class="st">"samp_1"</span><span class="op">)</span>,
-    control_agg_func <span class="op">=</span> <span class="va">mean</span>,
     gene_tx_id <span class="op">=</span> <span class="va">gene_id</span>,
     region <span class="op">=</span> <span class="fu">GenomicRanges</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html">GRanges</a></span><span class="op">(</span><span class="st">"chr22:42620000-42630000"</span><span class="op">)</span>,
     count_label <span class="op">=</span> <span class="cn">TRUE</span>
@@ -614,21 +555,21 @@
 <span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="st">"dasper.bib"</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span></pre></div>
 <p>Date the vignette was generated.</p>
-<pre><code>#&gt; [1] "2020-10-17 17:27:49 BST"</code></pre>
+<pre><code>#&gt; [1] "2020-10-19 21:49:26 BST"</code></pre>
 <p>Wallclock time spent generating the vignette.</p>
-<pre><code>#&gt; Time difference of 2.187 mins</code></pre>
+<pre><code>#&gt; Time difference of 1.613 mins</code></pre>
 <p><code>R</code> session information.</p>
 <pre><code>#&gt; ─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────
 #&gt;  setting  value                       
 #&gt;  version  R version 4.0.2 (2020-06-22)
-#&gt;  os       macOS Catalina 10.15.6      
+#&gt;  os       macOS Catalina 10.15.7      
 #&gt;  system   x86_64, darwin17.0          
 #&gt;  ui       X11                         
 #&gt;  language (EN)                        
 #&gt;  collate  en_GB.UTF-8                 
 #&gt;  ctype    en_GB.UTF-8                 
 #&gt;  tz       Europe/London               
-#&gt;  date     2020-10-17                  
+#&gt;  date     2020-10-19                  
 #&gt; 
 #&gt; ─ Packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 #&gt;  package                * version  date       lib source                                    
@@ -733,7 +674,7 @@
 #&gt;  limma                    3.44.3   2020-06-12 [1] Bioconductor                              
 #&gt;  locfit                   1.5-9.4  2020-03-25 [1] CRAN (R 4.0.2)                            
 #&gt;  lubridate                1.7.9    2020-06-08 [1] CRAN (R 4.0.2)                            
-#&gt;  magrittr               * 1.5      2014-11-22 [1] CRAN (R 4.0.2)                            
+#&gt;  magrittr                 1.5      2014-11-22 [1] CRAN (R 4.0.2)                            
 #&gt;  Matrix                   1.2-18   2019-11-27 [1] CRAN (R 4.0.2)                            
 #&gt;  matrixStats              0.57.0   2020-09-25 [1] CRAN (R 4.0.2)                            
 #&gt;  megadepth                0.99.10  2020-10-17 [1] Github (LieberInstitute/megadepth@358abe9)
