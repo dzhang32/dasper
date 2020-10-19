@@ -93,18 +93,6 @@
 #'     ref,
 #'     types = c("ambig_gene", "unannotated"),
 #' )
-#' \donttest{
-#' ##### coverage_process #####
-#'
-#' # this wrapper will obtain coverage scores identical to those
-#' # obtained through running the individual wrapped functions shown below
-#' junctions_w_coverage <- coverage_process(
-#'     junctions_processed,
-#'     ref,
-#'     coverage_paths_case = rep(bw_path, 2),
-#'     coverage_paths_control = rep(bw_path, 3)
-#' )
-#' }
 #'
 #' ##### coverage_norm #####
 #'
@@ -119,6 +107,20 @@
 #' ##### coverage_score #####
 #'
 #' junctions <- coverage_score(junctions_processed, coverage_normed)
+#'
+#' ##### coverage_process #####
+#'
+#' # this wrapper will obtain coverage scores identical to those
+#' # obtained through running the individual wrapped functions shown below
+#' junctions_w_coverage <- coverage_process(
+#'     junctions_processed,
+#'     ref,
+#'     coverage_paths_case = rep(bw_path, 2),
+#'     coverage_paths_control = rep(bw_path, 3)
+#' )
+#'
+#' # the two objects are equivalent
+#' all.equal(junctions_w_coverage, junctions, check.attributes = FALSE)
 #' @export
 coverage_process <- function(
     junctions,

@@ -1,8 +1,6 @@
 context("Testing coverage processing")
 
-# Loading and normalising coverage ---------------------------------------------
-
-##### .coverage_exon_intron #####
+# Load data ---------------------------------------------------------------
 
 # use Genomic state to load txdb (GENCODE v31)
 ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
@@ -11,10 +9,33 @@ ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype =
 # whilst preserving both annotated and unannotated types
 # extract random set of 1000 junctions
 set.seed(32)
-junctions_subset <- junctions_example[sample(seq_len(dim(junctions_example)[1]), 1000), ]
 
-junctions <- junctions_subset %>%
-    junction_annot(ref)
+junctions_processed_path <- file.path(tempdir(), "junctions_processed.rda")
+
+if (file.exists(junctions_processed_path)) {
+    load(junctions_processed_path)
+} else {
+    set.seed(32)
+
+    junctions_processed <-
+        junction_process(
+            junctions_example[sample(seq_len(dim(junctions_example)[1]), 10000), ],
+            count_thresh = NULL,
+            n_samp = NULL,
+            ref,
+            sd_const = 0.02
+        )
+
+    save(junctions_processed,
+        file = junctions_processed_path
+    )
+}
+
+junctions <- junctions_processed
+
+# Loading and normalising coverage ---------------------------------------------
+
+##### .coverage_exon_intron #####
 
 coverage_regions <- .coverage_exon_intron(junctions, unannot_width = 10)
 
@@ -324,33 +345,4 @@ test_that("coverage_score catches user-input errors", {
         coverage_score(coverage = coverage),
         "coverage matrices should be named 'exon_coverage_start', 'exon_coverage_end', 'intron_coverage'"
     )
-})
-
-##### coverage_process #####
-
-# use only the first 2 samples (cases)
-# to emulate junctions going through junction_score
-# allowing dimensions of coverage_region_scores_max to match junctions
-junctions_w_coverage <- junctions[, 1:2]
-colnames(coverage_region_scores_max[["regions"]]) <- dimnames(junctions_w_coverage)[[2]]
-colnames(coverage_region_scores_max[["scores"]]) <- dimnames(junctions_w_coverage)[[2]]
-assays(junctions_w_coverage)[["coverage_region"]] <- coverage_region_scores_max[["regions"]]
-assays(junctions_w_coverage)[["coverage_score"]] <- coverage_region_scores_max[["scores"]]
-
-junctions_w_coverage_2 <-
-    coverage_process(junctions[, 1:2],
-        ref,
-        unannot_width = 20,
-        coverage_paths_case,
-        coverage_paths_control,
-        coverage_chr_control = NULL,
-        load_func = load_rand,
-        norm_const = 2,
-        bp_param = BiocParallel::MulticoreParam(workers = 2),
-        score_func = .zscore,
-        sd_const = 0.02
-    )
-
-test_that("coverage_score catches user-input errors", {
-    expect_equivalent(junctions_w_coverage, junctions_w_coverage_2)
 })

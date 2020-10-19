@@ -84,13 +84,6 @@
 #'     coverage_paths_case = rep(bw_path, 2),
 #'     coverage_paths_control = rep(bw_path, 3)
 #' )
-#' \donttest{
-#' ##### outlier_process #####
-#'
-#' # this wrapper will obtain outlier scores identical to those
-#' # obtained through running the individual wrapped functions shown below
-#' outlier_process(junctions_w_coverage)
-#' }
 #'
 #' ##### outlier_detect #####
 #'
@@ -99,6 +92,15 @@
 #' ##### outlier_aggregate #####
 #'
 #' outlier_scores <- outlier_aggregate(junctions_w_outliers)
+#'
+#' ##### outlier_process #####
+#'
+#' # this wrapper will obtain outlier scores identical to those
+#' # obtained through running the individual wrapped functions shown below
+#' outlier_processed <- outlier_process(junctions_w_coverage)
+#'
+#' # the two objects are equivalent
+#' all.equal(outlier_processed, outlier_scores, check.attributes = FALSE)
 #' @export
 outlier_process <- function(
     junctions,

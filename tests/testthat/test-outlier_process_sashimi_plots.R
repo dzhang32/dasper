@@ -1,50 +1,40 @@
 context("Testing outlier processing and sashimi plot functions")
 
-##### Set up random scores data #####
+# Load data ---------------------------------------------------------------
 
 # use Genomic state to load txdb (GENCODE v31)
 ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
 
-# needs annotation and normalisation for
-# aggregation of outlier scores
-# and to test sashimi plotting
-junctions_annoted_normed <- junctions_example %>%
-    junction_filter() %>%
-    junction_annot(ref) %>%
-    junction_filter(types = c("unannotated", "ambig_gene")) %>%
-    junction_norm()
+junctions_processed_path <- file.path(tempdir(), "junctions_processed.rda")
 
-# take first 100 junctions to save time
-# remove cases to simulate junction_score
-# for testing outlier scores
-junctions <- junctions_annoted_normed[1:100, colData(junctions_annoted_normed)[["case_control"]] == "case"]
+if (file.exists(junctions_processed_path)) {
+    load(junctions_processed_path)
+} else {
+    junctions_processed <-
+        junction_process(
+            junctions_example,
+            count_thresh = NULL,
+            n_samp = NULL,
+            ref,
+            sd_const = 0.02
+        )
 
-# add random scoress and direction to save time
+    save(junctions_processed,
+        file = junctions_processed_path
+    )
+}
 
-direction <- matrix(
-    data = sample(c(1, -1), dim(junctions)[1] * dim(junctions)[2], replace = TRUE),
-    nrow = dim(junctions)[1],
-    ncol = dim(junctions)[2]
-)
+# filter junctions to save time
+junctions <- junctions_processed
 
-scores <- matrix(
-    data = sample(-100:100, dim(junctions)[1] * dim(junctions)[2], replace = TRUE),
-    nrow = dim(junctions)[1],
-    ncol = dim(junctions)[2]
-)
-
+# simulate random coverage scores to save time
 coverage_scores <- matrix(
     data = sample(-100:100, dim(junctions)[1] * dim(junctions)[2], replace = TRUE),
     nrow = dim(junctions)[1],
     ncol = dim(junctions)[2]
 )
 
-colnames(direction) <- dimnames(junctions)[[2]]
-colnames(scores) <- dimnames(junctions)[[2]]
 colnames(coverage_scores) <- dimnames(junctions)[[2]]
-
-assays(junctions)[["direction"]] <- direction
-assays(junctions)[["score"]] <- scores
 assays(junctions)[["coverage_score"]] <- coverage_scores
 
 # Detecting outliers using an isolation forest ----------------------------
@@ -152,7 +142,6 @@ clusters <- dplyr::tibble(
 
 outlier_scores_samp <- BiocParallel::bplapply(outlier_scores_samp,
     FUN = .outlier_cluster,
-    BPPARAM = BiocParallel::SerialParam(),
     clusters = clusters
 )
 
@@ -244,23 +233,13 @@ test_that("outlier_aggregate catches user input errors", {
     )
 })
 
-# Process outliers --------------------------------------------------------
-
-outlier_scores_tidy_2 <- outlier_process(junctions,
-    random_state = 32L
-)
-
-test_that(".outlier_cluster_tidy has the correct output", {
-    expect_equivalent(outlier_scores_tidy, outlier_scores_tidy_2)
-})
-
 # Sashimi plot functions --------------------------------------------------
 
-SummarizedExperiment::rowData(junctions_annoted_normed)[["tx_name_start"]] %>%
-    unlist() %>%
-    table() %>%
-    sort() %>%
-    tail()
+# set one of the samples as control for testing plotting of controls
+SummarizedExperiment::colData(junctions_processed)[["case_control"]] <- "control"
+junctions_processed <-
+    junctions_processed %>%
+    junction_filter(count_thresh = c("raw" = 3))
 
 ##### .gene_tx_type_get #####
 
@@ -296,9 +275,33 @@ test_that(".gene_tx_type_get catches user-input errors", {
 
 ##### .exons_to_plot_get #####
 
-gene_id_to_plot <- "ENSG00000241973.10"
+# pick the gene with the most number of junctions
+gene_id_to_plot <-
+    SummarizedExperiment::rowData(junctions_processed)[["gene_id_junction"]] %>%
+    unlist() %>%
+    table() %>%
+    sort() %>%
+    tail(1) %>%
+    names()
+
 gene_tx_list <- .gene_tx_type_get(gene_id_to_plot)
-region <- GRanges("chr22:20740000-20760000")
+
+exons_to_plot <- .exons_to_plot_get(
+    ref = ref,
+    gene_tx_list = gene_tx_list,
+    region = NULL
+)
+
+# take half the gene as the region of interest
+region <- GRanges(
+    paste0(
+        seqnames(exons_to_plot) %>% as.character() %>% unique(),
+        ":",
+        start(exons_to_plot) %>% min(),
+        "-",
+        mean(c(min(start(exons_to_plot)), max(end(exons_to_plot))))
+    )
+)
 
 exons_to_plot <- .exons_to_plot_get(
     ref = ref,
@@ -356,10 +359,16 @@ test_that(".junctions_to_plot_get catches user input errors", {
 ##### .junctions_to_plot_get #####
 
 # select a transcript of interest
-# mcols(junctions)[["tx_name_start"]] %>% unlist() %>% table() %>% sort(decreasing = TRUE) %>% head()
-tx_name_to_plot <- "ENST00000255882.10"
+# pick the gene with the most number of junctions
+tx_name_to_plot <-
+    SummarizedExperiment::rowData(junctions_processed)[["tx_name_start"]] %>%
+    unlist() %>%
+    table() %>%
+    sort() %>%
+    tail(1) %>%
+    names()
 
-junctions_to_plot <- .junctions_to_plot_get(junctions_annoted_normed, gene_tx_list, region)
+junctions_to_plot <- .junctions_to_plot_get(junctions_processed, gene_tx_list, region)
 
 test_that("junctions_to_plot has the correct output", {
     expect_true(all(any(mcols(junctions_to_plot)[["gene_id_start"]] == gene_tx_list) |
@@ -370,7 +379,7 @@ test_that("junctions_to_plot has the correct output", {
         length(junctions_to_plot)
     )
 
-    junctions_to_plot_2 <- .junctions_to_plot_get(junctions_annoted_normed, list(tx_name = tx_name_to_plot), region = NULL)
+    junctions_to_plot_2 <- .junctions_to_plot_get(junctions_processed, list(tx_name = tx_name_to_plot), region = NULL)
 
     expect_true(all(any(mcols(junctions_to_plot_2)[["tx_name_start"]] == tx_name_to_plot) |
         any(mcols(junctions_to_plot_2)[["tx_name_end"]] == tx_name_to_plot)))
@@ -430,14 +439,14 @@ test_that("coords_to_plot has the correct output", {
 
 junctions_to_plot_1 <- .junctions_counts_type_get(junctions_to_plot,
     case_id = list(samp_id = "samp_1"),
-    control_agg_func = mean,
+    sum_func = mean,
     digits = 3,
     assay_name = "norm"
 )
 
 junctions_to_plot_2 <- .junctions_counts_type_get(junctions_to_plot,
     case_id = list(samp_id = c("samp_1", "samp_2")),
-    control_agg_func = NULL,
+    sum_func = NULL,
     digits = 0,
     assay_name = "raw"
 )
@@ -475,19 +484,19 @@ test_that("coords_to_plot has the correct output", {
 ##### plot_sashimi #####
 
 sashimi1 <- plot_sashimi(
-    junctions = junctions_annoted_normed,
+    junctions = junctions_processed,
     ref = ref,
     gene_tx_id = gene_id_to_plot,
+    region = region,
     count_label = FALSE
 )
 
 sashimi2 <- plot_sashimi(
-    junctions = junctions_annoted_normed,
+    junctions = junctions_processed,
     ref = ref,
     gene_tx_id = tx_name_to_plot,
     case_id = list(samp_id = c("samp_1")),
-    control_agg_func = mean,
-    region = region,
+    sum_func = mean,
     count_label = TRUE,
     digits = 2
 )

@@ -1,5 +1,15 @@
 context("Testing junction processing")
 
+# Load data ---------------------------------------------------------------
+
+# use Genomic state to load txdb (GENCODE v31)
+ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
+
+# extract random set of 1000 junctions
+# to save time
+set.seed(32)
+junctions <- junctions_example[sample(seq_len(dim(junctions_example)[1]), 1000), ]
+
 # Annotating junctions ----------------------------------------------------
 
 ##### .junction_annot_tidy #####
@@ -16,14 +26,7 @@ test_that(".junction_annot_tidy correctly infers strand", {
 
 ##### junction_annot #####
 
-# use Genomic state to load txdb (GENCODE v31)
-ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
-
-# extract random set of 1000 junctions
-set.seed(32)
-junctions_subset <- junctions_example[sample(seq_len(dim(junctions_example)[1]), 1000), ]
-
-junctions <- junction_annot(junctions_subset, ref)
+junctions <- junction_annot(junctions, ref)
 
 test_that("junction_annot output generally looks correct", {
     expect_true(methods::isClass(junctions, "RangedSummarisedExperiment"))
@@ -452,36 +455,39 @@ test_that("direction and score have been calculated correctly", {
 
 ##### junction_process #####
 
+junctions_processed_path <- file.path(tempdir(), "junctions_processed.rda")
+
+if (file.exists(junctions_processed_path)) {
+    load(junctions_processed_path)
+} else {
+    junctions_processed <-
+        junction_process(
+            junctions_example,
+            count_thresh = NULL,
+            n_samp = NULL,
+            ref,
+            sd_const = 0.02
+        )
+
+    save(junctions_processed,
+        file = junctions_processed_path
+    )
+}
+
+# filter to random set of 1000 to match junctions
+set.seed(32)
+junctions_processed <-
+    junctions_processed[sample(seq_len(dim(junctions_processed)[1]), 1000), ]
+
+# junction_score must be re-applied
+# as otherwise raw counts are filtered for only those originating from cases
+junctions_processed_2 <- junctions %>%
+    junction_score(sd_const = 0.02)
+
 # check junction_process wrapper has the same output as running
 # intermediate functions individually
 # also that the order of junction_filter/junction_annot
 # does not impact result (diff order to junction_process)
-junctions_processed <-
-    junction_process(
-        junctions_subset,
-        ref,
-        count_thresh = c("raw" = 5),
-        n_samp = c("raw" = 1),
-        width_range = c(25, 1000000),
-        types = c("ambig_gene", "unannotated"),
-        regions = GRanges(seqnames = "chr21", ranges = "1-10000000", strand = "*"),
-        score_func = .zscore,
-        sd_const = 0.02
-    )
-
-# junction_score must be re-applied
-# as otherwise raw counts are filtered for only those originating
-# from cases
-junctions_processed_2 <- junctions %>%
-    junction_filter(
-        count_thresh = c("raw" = 5),
-        n_samp = c("raw" = 1),
-        width_range = c(25, 1000000),
-        types = c("ambig_gene", "unannotated"),
-        regions = GRanges(seqnames = "chr21", ranges = "1-10000000", strand = "*")
-    ) %>%
-    junction_score(sd_const = 0.02)
-
 test_that("junction_process has the correct output", {
     expect_equivalent(junctions_processed, junctions_processed_2)
 })

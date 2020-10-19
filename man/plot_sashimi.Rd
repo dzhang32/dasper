@@ -9,7 +9,7 @@ plot_sashimi(
   ref,
   gene_tx_id,
   case_id = NULL,
-  control_agg_func = mean,
+  sum_func = mean,
   region = NULL,
   annot_colour = c(ggpubr::get_palette("jco", 1), ggpubr::get_palette("npg", 7)[c(1, 3,
     2, 5, 6)], ggpubr::get_palette("jco", 6)[c(3)]),
@@ -31,7 +31,7 @@ name.}
 \item{case_id}{list of one element. This must be a character vector
 containing the}
 
-\item{control_agg_func}{list of one element. This must be a character vector
+\item{sum_func}{list of one element. This must be a character vector
 containing the}
 
 \item{region}{a \link[GenomicRanges:GRanges-class]{GenomicRanges} of length 1
@@ -58,8 +58,6 @@ from \code{ggplot2} functions.
 }
 \examples{
 
-\donttest{
-
 # use GenomicState to load txdb (GENCODE v31)
 ref <- GenomicState::GenomicStateHub(
     version = "31",
@@ -71,13 +69,13 @@ junctions_processed <- junction_process(
     junctions_example,
     ref,
     types = c("ambig_gene", "unannotated")
-)
+) \%>\%
+    junction_filter()
 
 sashimi_plot <- plot_sashimi(
     junctions = junctions_processed,
     ref = ref,
-    gene_tx_id = "ENSG00000241973.10"
+    gene_tx_id = "ENSG00000142156.14",
+    sum_func = NULL
 )
-}
-
 }

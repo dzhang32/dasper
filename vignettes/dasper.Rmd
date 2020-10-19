@@ -301,7 +301,6 @@ gene_id <- unlist(outlier_scores[["gene_id_cluster"]][1])
 plot_sashimi(junctions_normed,
     ref,
     case_id = list(samp_id = "samp_1"),
-    control_agg_func = mean,
     gene_tx_id = gene_id
 )
 ```
@@ -312,7 +311,6 @@ Often regions of splicing can be very complex within a gene and you may want to 
 plot_sashimi(junctions_normed,
     ref,
     case_id = list(samp_id = "samp_1"),
-    control_agg_func = mean,
     gene_tx_id = gene_id,
     region = GenomicRanges::GRanges("chr22:42620000-42630000"),
     count_label = TRUE

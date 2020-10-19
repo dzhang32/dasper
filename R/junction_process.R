@@ -89,17 +89,7 @@
 #'     genome = "hg38",
 #'     filetype = "TxDb"
 #' )[[1]]
-#' \donttest{
-#' ##### junction_process #####
 #'
-#' # this wrapper will generate the identical set of junctions to those
-#' # obtained through running the individual wrapped functions shown below
-#' junctions <- junction_process(
-#'     junctions_example,
-#'     ref,
-#'     types = c("ambig_gene", "unannotated")
-#' )
-#' }
 #' ##### junction_annot #####
 #'
 #' junctions <- junction_annot(junctions_example, ref)
@@ -118,6 +108,17 @@
 #' ##### junction_score #####
 #'
 #' junctions <- junction_score(junctions)
+#'
+#' ##### junction_process #####
+#'
+#' junctions_processed <- junction_process(
+#'     junctions_example,
+#'     ref,
+#'     types = c("ambig_gene", "unannotated")
+#' )
+#'
+#' # the two objects are equivalent
+#' all.equal(junctions_processed, junctions, check.attributes = FALSE)
 #' @export
 junction_process <- function(
     junctions,

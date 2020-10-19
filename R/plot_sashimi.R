@@ -10,7 +10,7 @@
 #'   name.
 #' @param case_id list of one element. This must be a character vector
 #'   containing the
-#' @param control_agg_func list of one element. This must be a character vector
+#' @param sum_func list of one element. This must be a character vector
 #'   containing the
 #' @param region a [GenomicRanges][GenomicRanges::GRanges-class] of length 1
 #'   that is used to filter the exons/junctions. Only those that overlap this
@@ -27,8 +27,6 @@
 #'
 #' @examples
 #'
-#' \donttest{
-#'
 #' # use GenomicState to load txdb (GENCODE v31)
 #' ref <- GenomicState::GenomicStateHub(
 #'     version = "31",
@@ -40,21 +38,22 @@
 #'     junctions_example,
 #'     ref,
 #'     types = c("ambig_gene", "unannotated")
-#' )
+#' ) %>%
+#'     junction_filter()
 #'
 #' sashimi_plot <- plot_sashimi(
 #'     junctions = junctions_processed,
 #'     ref = ref,
-#'     gene_tx_id = "ENSG00000241973.10"
+#'     gene_tx_id = "ENSG00000142156.14",
+#'     sum_func = NULL
 #' )
-#' }
-#'
 #' @export
-plot_sashimi <- function(junctions,
+plot_sashimi <- function(
+    junctions,
     ref,
     gene_tx_id,
     case_id = NULL,
-    control_agg_func = mean,
+    sum_func = mean,
     region = NULL,
     annot_colour = c(
         ggpubr::get_palette("jco", 1),
@@ -91,7 +90,7 @@ plot_sashimi <- function(junctions,
     sashimi_plots <- .plot_sashimi_junctions(junctions_to_plot,
         gene_track_plot,
         case_id,
-        control_agg_func,
+        sum_func,
         digits,
         assay_name = "norm",
         annot_colour,
@@ -319,7 +318,7 @@ plot_sashimi <- function(junctions,
 .plot_sashimi_junctions <- function(junctions_to_plot,
     gene_track_plot,
     case_id,
-    control_agg_func,
+    sum_func,
     digits,
     assay_name,
     annot_colour,
@@ -329,7 +328,7 @@ plot_sashimi <- function(junctions,
     junctions_to_plot <- .junctions_counts_type_get(
         junctions_to_plot = junctions_to_plot,
         case_id = case_id,
-        control_agg_func = control_agg_func,
+        sum_func = sum_func,
         digits = digits,
         assay_name = assay_name
     )
@@ -354,7 +353,7 @@ plot_sashimi <- function(junctions,
     )
 }
 
-.junctions_counts_type_get <- function(junctions_to_plot, case_id = list(samp_id = "samp_1"), control_agg_func = mean, digits = 2, assay_name = "norm") {
+.junctions_counts_type_get <- function(junctions_to_plot, case_id = list(samp_id = "samp_1"), sum_func = mean, digits = 2, assay_name = "norm") {
 
     # for R CMD Check
     index <- type <- . <- NULL
@@ -387,12 +386,12 @@ plot_sashimi <- function(junctions,
     }
 
     # aggregate and add counts for control samples
-    if (!is.null(control_agg_func)) {
+    if (!is.null(sum_func)) {
         which_control <- which(colData(junctions_to_plot)[["case_control"]] == "control")
 
         junctions_counts[["control"]] <-
             assays(junctions_to_plot)[[assay_name]][, which_control] %>%
-            apply(MARGIN = 1, FUN = control_agg_func) %>%
+            apply(MARGIN = 1, FUN = sum_func) %>%
             round(digits = digits)
     }
 
