@@ -87,6 +87,8 @@ cluster-level
 
 \examples{
 
+\donttest{
+
 ##### Set up txdb #####
 
 # use GenomicState to load txdb (GENCODE v31)
@@ -104,11 +106,11 @@ bw_path <- recount::download_study(
     type = "samples",
     download = FALSE
 )[[1]]
-\dontshow{
+
 # cache the bw for speed in later
 # examples/testing during R CMD Check
 bw_path <- dasper:::.file_cache(bw_path)
-}
+
 
 ##### junction_process #####
 
@@ -143,6 +145,8 @@ outlier_processed <- outlier_process(junctions_w_coverage)
 
 # the two objects are equivalent
 all.equal(outlier_processed, outlier_scores, check.attributes = FALSE)
+}
+
 }
 \seealso{
 for more details on the isolation forest model used:

@@ -45,6 +45,8 @@
 #'
 #' @examples
 #'
+#' \donttest{
+#'
 #' ##### Set up txdb #####
 #'
 #' # use GenomicState to load txdb (GENCODE v31)
@@ -62,11 +64,11 @@
 #'     type = "samples",
 #'     download = FALSE
 #' )[[1]]
-#' \dontshow{
+#'
 #' # cache the bw for speed in later
 #' # examples/testing during R CMD Check
 #' bw_path <- dasper:::.file_cache(bw_path)
-#' }
+#'
 #'
 #' ##### junction_process #####
 #'
@@ -101,6 +103,8 @@
 #'
 #' # the two objects are equivalent
 #' all.equal(outlier_processed, outlier_scores, check.attributes = FALSE)
+#' }
+#'
 #' @export
 outlier_process <- function(
     junctions,
