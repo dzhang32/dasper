@@ -1,6 +1,6 @@
 Package: dasper
 Title: Detecting abberant splicing events from RNA-sequencing data
-Version: 0.99.8
+Version: 0.99.9
 Date: 2020-10-20
 Authors@R: c(person(given = "David", family = "Zhang", 
     role = c("aut", "cre"),
@@ -27,42 +27,42 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
-    testthat,
-    covr,
-    knitr,
     BiocStyle,
-    sessioninfo,
-    rmarkdown,
-    tibble,
-    knitcitations,
-    rtracklayer,
+    covr,
+    testthat,
+    GenomicState, 
     ggplot2,
     ggpubr,
-    grid,
     ggrepel,
+    grid,
+    knitcitations,
+    knitr,
     recount,
-    GenomicState
+    rmarkdown,
+    sessioninfo,
+    rtracklayer,
+    tibble
 VignetteBuilder: knitr
 Imports: 
-    stringr,
-    dplyr,
-    readr,
-    GenomicRanges,
-    S4Vectors,
-    IRanges,
-    magrittr,
-    SummarizedExperiment,
+    basilisk,
     BiocFileCache,
-    methods,
-    GenomeInfoDb,
-    GenomicFeatures,
-    plyranges,
-    reticulate,
-    tidyr,
     BiocParallel,
     data.table,
+    dplyr,
+    GenomeInfoDb,
+    GenomicFeatures,
+    GenomicRanges,
+    IRanges, 
+    magrittr, 
     megadepth,
-    basilisk
+    methods,
+    plyranges, 
+    readr,
+    reticulate, 
+    S4Vectors,
+    stringr, 
+    SummarizedExperiment,
+    tidyr
 Depends: 
     R (>= 4.0)
 StagedInstall: no
