@@ -77,7 +77,7 @@ go. For more details of the individual functions, see &quot;Details&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.14</span>
       </span>
     </div>
 
@@ -255,27 +255,27 @@ https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationFore
     types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-20 00:11:34 - Filtering junctions..."
-#&gt; [1] "2020-10-20 00:11:34 - by count..."
-#&gt; [1] "2020-10-20 00:11:35 - done!"
+#&gt; [1] "2020-10-26 18:01:36 - Filtering junctions..."
+#&gt; [1] "2020-10-26 18:01:36 - by count..."
+#&gt; [1] "2020-10-26 18:01:36 - done!"
 #&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-10-20 00:11:35 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-10-20 00:11:52 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-10-20 00:11:53 - Tidying junction annotation..."
-#&gt; [1] "2020-10-20 00:11:53 - Deriving junction categories..."
-#&gt; [1] "2020-10-20 00:11:54 - done!"
+#&gt; [1] "2020-10-26 18:01:36 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-10-26 18:01:55 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-10-26 18:01:56 - Tidying junction annotation..."
+#&gt; [1] "2020-10-26 18:01:57 - Deriving junction categories..."
+#&gt; [1] "2020-10-26 18:01:58 - done!"
 #&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-20 00:11:54 - Filtering junctions..."
-#&gt; [1] "2020-10-20 00:11:54 - by type..."
-#&gt; [1] "2020-10-20 00:11:54 - done!"
+#&gt; [1] "2020-10-26 18:01:58 - Filtering junctions..."
+#&gt; [1] "2020-10-26 18:01:58 - by type..."
+#&gt; [1] "2020-10-26 18:01:58 - done!"
 #&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-20 00:11:54 - Clustering junctions..."
-#&gt; [1] "2020-10-20 00:11:54 - Normalising junction counts..."
-#&gt; [1] "2020-10-20 00:11:54 - done!"
+#&gt; [1] "2020-10-26 18:01:58 - Clustering junctions..."
+#&gt; [1] "2020-10-26 18:01:58 - Normalising junction counts..."
+#&gt; [1] "2020-10-26 18:01:58 - done!"
 #&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-10-20 00:11:54 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-10-20 00:11:54 - Generating junction abnormality score..."
-#&gt; [1] "2020-10-20 00:11:54 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-26 18:01:58 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-10-26 18:01:58 - Generating junction abnormality score..."
+#&gt; [1] "2020-10-26 18:01:58 - done!"</div><div class='input'>
 <span class='co'>##### coverage_process #####</span>
 
 <span class='va'>junctions_w_coverage</span> <span class='op'>&lt;-</span> <span class='fu'><a href='coverage_norm.html'>coverage_process</a></span><span class='op'>(</span>
@@ -285,48 +285,36 @@ https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationFore
     coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>3</span><span class='op'>)</span>
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Loading and normalising coverage ---------------------------------------------"
-#&gt; [1] "2020-10-20 00:11:54 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-10-20 00:11:54 - Obtaining regions to use to normalise coverage..."
-#&gt; [1] "2020-10-20 00:12:00 - Loading coverage..."
-#&gt; [1] "2020-10-20 00:12:07 - Normalising coverage..."
-#&gt; [1] "2020-10-20 00:12:07 - done!"
+#&gt; [1] "2020-10-26 18:01:58 - Obtaining exonic and intronic regions to load coverage from..."
+#&gt; [1] "2020-10-26 18:01:59 - Obtaining regions to use to normalise coverage..."
+#&gt; [1] "2020-10-26 18:02:05 - Loading coverage..."
+#&gt; [1] "2020-10-26 18:02:13 - Normalising coverage..."
+#&gt; [1] "2020-10-26 18:02:13 - done!"
 #&gt; [1] "# Scoring coverage ---------------------------------------------"
-#&gt; [1] "2020-10-20 00:12:07 - Generating coverage abnormality score..."
-#&gt; [1] "2020-10-20 00:12:07 - Obtaining regions with greatest coverage dysruption..."
-#&gt; [1] "2020-10-20 00:12:07 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-26 18:02:13 - Generating coverage abnormality score..."
+#&gt; [1] "2020-10-26 18:02:13 - Obtaining regions with greatest coverage dysruption..."
+#&gt; [1] "2020-10-26 18:02:14 - done!"</div><div class='input'>
 <span class='co'>##### outlier_detect #####</span>
 
 <span class='va'>junctions_w_outliers</span> <span class='op'>&lt;-</span> <span class='fu'>outlier_detect</span><span class='op'>(</span><span class='va'>junctions_w_coverage</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-10-20 00:12:07 - generating outlier scores for sample 1/2"
-#&gt; [1] "2020-10-20 00:12:12 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-20 00:12:12 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-20 00:12:12 - generating outlier scores for sample 2/2"
-#&gt; [1] "2020-10-20 00:12:12 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-20 00:12:13 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-20 00:12:13 - done!"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "2020-10-26 18:02:14 - generating outlier scores for sample 1/2"</div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; [1] "2020-10-26 18:04:03 - generating outlier scores for sample 2/2"</div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; [1] "2020-10-26 18:04:20 - done!"</div><div class='input'>
 <span class='co'>##### outlier_aggregate #####</span>
 
 <span class='va'>outlier_scores</span> <span class='op'>&lt;-</span> <span class='fu'>outlier_aggregate</span><span class='op'>(</span><span class='va'>junctions_w_outliers</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-10-20 00:12:13 - Aggregating outlier scores to cluster level... "
-#&gt; [1] "2020-10-20 00:12:13 - Annotating clusters with gene details..."
-#&gt; [1] "2020-10-20 00:12:13 - done!"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "2020-10-26 18:04:20 - Aggregating outlier scores to cluster level... "
+#&gt; [1] "2020-10-26 18:04:21 - Annotating clusters with gene details..."
+#&gt; [1] "2020-10-26 18:04:21 - done!"</div><div class='input'>
 <span class='co'>##### outlier_process #####</span>
 
 <span class='co'># this wrapper will obtain outlier scores identical to those</span>
 <span class='co'># obtained through running the individual wrapped functions shown below</span>
 <span class='va'>outlier_processed</span> <span class='op'>&lt;-</span> <span class='fu'>outlier_process</span><span class='op'>(</span><span class='va'>junctions_w_coverage</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Detecting outliers using an isolation forest ------------------------------"
-#&gt; [1] "2020-10-20 00:12:13 - generating outlier scores for sample 1/2"
-#&gt; [1] "2020-10-20 00:12:14 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-20 00:12:14 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-20 00:12:14 - generating outlier scores for sample 2/2"
-#&gt; [1] "2020-10-20 00:12:14 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-20 00:12:15 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=NULL, verbose=0, warm_start=FALSE"
-#&gt; [1] "2020-10-20 00:12:15 - done!"
+#&gt; [1] "2020-10-26 18:04:21 - generating outlier scores for sample 1/2"</div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; [1] "2020-10-26 18:04:38 - generating outlier scores for sample 2/2"</div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; <span class='warning'>Warning: path[1]="/Users/DZ_laptop/Library/Caches/basilisk/1.0.2/dasper-0.99.11/env_sklearn/bin/python": No such file or directory</span></div><div class='output co'>#&gt; [1] "2020-10-26 18:04:55 - done!"
 #&gt; [1] "# Aggregating outlier scores to cluster-level -----------------------------"
-#&gt; [1] "2020-10-20 00:12:15 - Aggregating outlier scores to cluster level... "
-#&gt; [1] "2020-10-20 00:12:15 - Annotating clusters with gene details..."
-#&gt; [1] "2020-10-20 00:12:15 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-26 18:04:55 - Aggregating outlier scores to cluster level... "
+#&gt; [1] "2020-10-26 18:04:56 - Annotating clusters with gene details..."
+#&gt; [1] "2020-10-26 18:04:56 - done!"</div><div class='input'>
 <span class='co'># the two objects are equivalent</span>
 <span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>outlier_processed</span>, <span class='va'>outlier_scores</span>, check.attributes <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='co'># }</span>

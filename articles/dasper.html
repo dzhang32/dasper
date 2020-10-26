@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.14</span>
       </span>
     </div>
 
@@ -70,7 +70,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="dasper_files/header-attrs-2.4/header-attrs.js"></script><script src="dasper_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to dasper</h1>
@@ -79,7 +79,7 @@
       UCL<br><a class="author_email" href="mailto:#"></a><a href="mailto:david.zhang.12@ucl.ac.uk" class="email">david.zhang.12@ucl.ac.uk</a>
       </address>
                   
-            <h4 class="date">20 October 2020</h4>
+            <h4 class="date">26 October 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/dzhang32/dasper/blob/master/vignettes/dasper.Rmd"><code>vignettes/dasper.Rmd</code></a></small>
       <div class="hidden name"><code>dasper.Rmd</code></div>
@@ -106,11 +106,11 @@
 <span class="co">## Check that you have a valid Bioconductor installation</span>
 <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/valid.html">valid</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 </div>
-<div id="required-knowledge" class="section level2">
+<div id="required-knowledge-required_knowledge" class="section level2">
 <h2 class="hasAnchor">
-<a href="#required-knowledge" class="anchor"></a>Required knowledge</h2>
-<p>The expected input of <em><a href="https://bioconductor.org/packages/3.11/dasper">dasper</a></em> are junctions reads (directly outputted from an aligner such as <a href="https://github.com/alexdobin/STAR">STAR</a> or extracted from a BAM file using <a href="https://github.com/LieberInstitute/megadepth">megadepth</a>) and coverage in the form of BigWig files (which can be generated from BAM files using <a href="https://github.com/LieberInstitute/megadepth">megadepth</a> or <a href="http://rseqc.sourceforge.net/#bam2wig-py">RSeQC</a>. <em><a href="https://bioconductor.org/packages/3.11/dasper">dasper</a></em> is based on many other packages and in particular in those that have implemented the infrastructure needed for dealing with RNA-sequencing data. The packages <em><a href="https://bioconductor.org/packages/3.11/SummarizedExperiment">SummarizedExperiment</a></em> and <em><a href="https://bioconductor.org/packages/3.11/GenomicRanges">GenomicRanges</a></em> are used throughout, therefore familiarity with these packages will greatly help in interpreting the output of <em><a href="https://bioconductor.org/packages/3.11/dasper">dasper</a></em>.</p>
-<p>If you are asking yourself the question “Where do I start using Bioconductor?” you might be interested in <a href="http://lcolladotor.github.io/2014/10/16/startbioc/#.VkOKbq6rRuU">this blog post</a>. Or if you find the structure of a <em><a href="https://bioconductor.org/packages/3.11/SummarizedExperiment">SummarizedExperiment</a></em> unclear, check out <a href="http://master.bioconductor.org/help/course-materials/2019/BSS2019/04_Practical_CoreApproachesInBioconductor.html">this manual</a>.</p>
+<a href="#required-knowledge-required_knowledge" class="anchor"></a>Required knowledge {##required_knowledge}</h2>
+<p>The expected input of <em><a href="https://bioconductor.org/packages/3.11/dasper">dasper</a></em> are junctions reads (e.g. directly outputted from an aligner such as <a href="https://github.com/alexdobin/STAR">STAR</a> or extracted from a BAM file (e.g. using <a href="https://github.com/LieberInstitute/megadepth">megadepth</a>) and coverage in the form of BigWig files (which can be generated from BAM files using <a href="https://github.com/LieberInstitute/megadepth">megadepth</a> or <a href="http://rseqc.sourceforge.net/#bam2wig-py">RSeQC</a>). <em><a href="https://bioconductor.org/packages/3.11/dasper">dasper</a></em> is based on many other packages and in particular in those that have implemented the infrastructure needed for dealing with RNA-sequencing data. The packages <em><a href="https://bioconductor.org/packages/3.11/SummarizedExperiment">SummarizedExperiment</a></em> and <em><a href="https://bioconductor.org/packages/3.11/GenomicRanges">GenomicRanges</a></em> are used throughout, therefore familiarity with these packages will greatly help in interpreting the output of <em><a href="https://bioconductor.org/packages/3.11/dasper">dasper</a></em>.</p>
+<p>If you are asking yourself the question “Where do I start using Bioconductor?” you might be interested in <a href="http://lcolladotor.github.io/2014/10/16/startbioc/#.VkOKbq6rRuU">this blog post</a>. Or if you find the structure of a <em><a href="https://bioconductor.org/packages/3.11/SummarizedExperiment">SummarizedExperiment</a></em> unclear, you might consider checking out <a href="http://master.bioconductor.org/help/course-materials/2019/BSS2019/04_Practical_CoreApproachesInBioconductor.html">this manual</a>.</p>
 </div>
 <div id="asking-for-help" class="section level2">
 <h2 class="hasAnchor">
@@ -145,31 +145,34 @@
 <div id="quick-start-guide" class="section level1">
 <h1 class="hasAnchor">
 <a href="#quick-start-guide" class="anchor"></a>Quick start guide</h1>
-<div id="workflow" class="section level2">
+<div id="workflow-workflow" class="section level2">
 <h2 class="hasAnchor">
-<a href="#workflow" class="anchor"></a>Workflow</h2>
+<a href="#workflow-workflow" class="anchor"></a>Workflow {##workflow}</h2>
 <p><img src="dasper_workflow.png" width="2458"></p>
-<p>The above workflow diagram gives a top-level overview of the core functions within <code>dasper</code> and describes the order in which they are intended to be run. This are broadly split into 4 categories:</p>
+<p>The above workflow diagram gives a top-level overview of the available functions within <code>dasper</code> and describes the order in which they are intended to be run. This are broadly split into 4 categories:</p>
 <ol style="list-style-type: decimal">
 <li>
-<strong>Process junctions</strong> functions are prefixed with a <em>junction_</em>. They will load in your junctions into an <code>RangedSummarizedExperiment</code> object, annotate your junctions using reference annotation, filter out junctions for those that likely originate from techinical noise and normalise your junction counts to allow for comparison between samples.</li>
+<strong>Process junctions</strong> functions are prefixed with a <em>junction_</em>. They will load in your junctions into an <code>RangedSummarizedExperiment</code> object, annotate your junctions using reference annotation, filter out junctions for those that likely originate from technical noise and normalize your junction counts to allow for comparison between samples.</li>
 <li>
-<strong>Process coverage</strong> functions are prefixed with a <em>coverage_</em>. They annotate your junctions with coverage from associated regions then normalise this coverage to allow for comparison between samples.</li>
+<strong>Process coverage</strong> functions are prefixed with a <em>coverage_</em>. They annotate your junctions with coverage from associated regions then normalize this coverage to allow for comparison between samples.</li>
 <li>
-<strong>Outlier detection</strong> functions are prefixed with a <em>outlier_</em>. They will use a outlier detection algorithm (<a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html">isolation forest</a>) to detect the most outlier/abnormal/aberrant junctions in terms of their counts and assoicated coverage.</li>
+<strong>Outlier detection</strong> functions are prefixed with a <em>outlier_</em>. They will use a outlier detection algorithm (<a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html">isolation forest</a>) to detect the most outlier/abnormal/aberrant junctions in terms of their counts and associated coverage.</li>
 <li>
-<strong>Sashimi plots</strong> are generated using the function <code>plot_sashimi</code>. This enables you to select a gene, transcript or region of interest and plot the splicing and coverage across that region in the form of sashimi plot.</li>
+<strong>Sashimi plots</strong> can be generated using the function <code>plot_sashimi</code>. This enables you to select a gene, transcript or region of interest and plot the splicing and coverage across that region in the form of sashimi plot.</li>
 </ol>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<p><code>dasper</code> includes wrapper functions for the 3 major analysis steps in the workflow - processing junction data, processing coverage data, then performing outlier detection. If you are familiar with <code>dasper</code> or are uninterested with the intermediates, you can go from start to finish using these wrappers.</p>
-<p>We need to install the system dependency <a href="https://github.com/ChristopherWilks/megadepth">megadepth</a></p>
+<p><code>dasper</code> includes wrapper functions for the 3 major analysis steps in the workflow - processing junction data, processing coverage data, then performing outlier detection. If you are familiar with <code>dasper</code> or uninterested with the intermediates, you can go from start to finish using these wrappers.</p>
+<div id="setup-setup" class="section level3">
+<h3 class="hasAnchor">
+<a href="#setup-setup" class="anchor"></a>Setup {###setup}</h3>
+<p>First, we need to install the system dependency <a href="https://github.com/ChristopherWilks/megadepth">megadepth</a>, which is required for the loading of coverage from BigWig files. The easiest way to do this is to run <code>install_megadepth</code> from the <em><a href="https://bioconductor.org/packages/3.11/megadepth">megadepth</a></em></p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="fu">megadepth</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/megadepth/man/install_megadepth.html">install_megadepth</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; It seems megadepth has been installed. Use force = TRUE to reinstall or upgrade.</span></pre></div>
-<p><code>dasper</code> requires reference annotation that either inputted as a GTF path or pre-loaded into a <code>TxDb</code> object as shown below.</p>
+<p><code>dasper</code> requires reference annotation that can either be inputted as a <code>GTF</code> path or pre-loaded into a <code>TxDb</code> object as shown below.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 
 <span class="co"># use GenomicState to load txdb (GENCODE v31)</span>
@@ -214,7 +217,7 @@
 <span class="co">#&gt;     Vignettes contain introductory material; view with</span>
 <span class="co">#&gt;     'browseVignettes()'. To cite Bioconductor, see</span>
 <span class="co">#&gt;     'citation("Biobase")', and for packages 'citation("pkgname")'.</span></pre></div>
-<p>Junctions and BigWig files are the required input to <code>dasper</code>. For the purpose of this vignette we will use a BigWig file from the GTEx v6 data publicly hosted by <a href="https://jhubiostatistics.shinyapps.io/recount/">recount2</a>. In reality, you should use the BigWig files that correspond to the same samples as those your junction data originate from.</p>
+<p>RNA-seq data in the form of junctions and BigWig files are the required raw input to <code>dasper</code>. For illustration, in this vignette we will use an BigWig file from the GTEx v6 data publicly hosted by <a href="https://jhubiostatistics.shinyapps.io/recount/">recount2</a>. In reality, users should use the BigWig files that correspond to the same samples as those your junction data originate from.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 
 <span class="co"># Obtain the urls to the remotely hosted GTEx BigWig files</span>
@@ -228,7 +231,7 @@
 
 <span class="co"># cache the file using BiocFileCache for faster retrieval</span>
 <span class="va">bw_path</span> <span class="op">&lt;-</span> <span class="fu">dasper</span><span class="fu">:::</span><span class="fu">.file_cache</span><span class="op">(</span><span class="va">url</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></pre></div>
-<p>A small set of example junctions are included within <code>dasper</code>.</p>
+<p>A small set of example junctions are included within the package, which can be used for testing the functionality of <code>dasper</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dzhang32/dasper">dasper</a></span><span class="op">)</span>
 
@@ -241,7 +244,12 @@
 <span class="co">#&gt; rowData names(0):</span>
 <span class="co">#&gt; colnames(5): count_1 count_2 gtex_54020 gtex_51495 gtex_56930</span>
 <span class="co">#&gt; colData names(2): samp_id case_control</span></pre></div>
-<p>Now we can run the 3 wrapper functions (<code>junction_process</code>, <code>coverage_process</code> and <code>outlier_process</code>) on the example data intialised above. They are designed to be compatible with the <code>tidyverse</code> pipe and the time-limiting steps of this analysis can be parallelised using <em><a href="https://bioconductor.org/packages/3.11/BiocParallel">BiocParallel</a></em> as shown. The returned <code>outlier_scores</code> object describes how aberrant each gene in each sample looks in terms of splicing. These are ranked in the <code>rank</code> column with 1 referring to the most aberrant looking gene. The specific junctions that look the most aberrant for each gene can be found in the <code>junctions</code> column.</p>
+</div>
+<div id="running-dasper" class="section level3">
+<h3 class="hasAnchor">
+<a href="#running-dasper" class="anchor"></a>Running <code>dasper</code>
+</h3>
+<p>Here, we run the 3 wrapper functions (<code>junction_process</code>, <code>coverage_process</code> and <code>outlier_process</code>) on <code>junctions_example</code>. These functions are designed to be compatible with usage of the <code><a href="https://rdrr.io/pkg/magrittr/man/pipe.html">%&gt;%</a></code> pipe from <a href="https://www.tidyverse.org/">tidyverse</a>. The time-limiting steps of this analysis can be run parallel using <em><a href="https://bioconductor.org/packages/3.11/BiocParallel">BiocParallel</a></em> as shown.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
 
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">magrittr</span><span class="op">)</span>
@@ -251,23 +259,21 @@
     <span class="fu"><a href="../reference/coverage_norm.html">coverage_process</a></span><span class="op">(</span><span class="va">ref</span>,
         coverage_paths_case <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">bw_path</span>, <span class="fl">2</span><span class="op">)</span>,
         coverage_paths_control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">bw_path</span>, <span class="fl">3</span><span class="op">)</span>,
-        coverage_chr_control <span class="op">=</span> <span class="st">"chr"</span>,
         bp_param <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/MulticoreParam-class.html">MulticoreParam</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>
     <span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../reference/outlier_aggregate.html">outlier_process</a></span><span class="op">(</span>bp_param <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/MulticoreParam-class.html">MulticoreParam</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">outlier_scores</span><span class="op">)</span></pre></div>
+    <span class="fu"><a href="../reference/outlier_aggregate.html">outlier_process</a></span><span class="op">(</span>bp_param <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/MulticoreParam-class.html">MulticoreParam</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></pre></div>
+</div>
 </div>
 </div>
 <div id="comprehensive-usage-guide" class="section level1">
 <h1 class="hasAnchor">
 <a href="#comprehensive-usage-guide" class="anchor"></a>Comprehensive usage guide</h1>
-<p>Here, we give run each of the 1-9 functions shown in <a href="#workflow">workflow</a>. These can be helpful for users that want to understand or modify the intermediates of the <code>dasper</code> pipeline or are only interested in a executing a specific step (e.g. annotating junctions using <code>junction_annot</code>).</p>
+<p>In this section, we will run each of the 1-9 functions shown in <a href="##workflow">workflow</a>. This can be helpful for users that want to understand or modify the intermediates of the <code>dasper</code> pipeline or are only interested in a executing a specific step (e.g. annotating junctions using <code>junction_annot</code>). If you want to follow along and run this code in your R session, make sure you have followed the instructions in the section <a href="###setup">setup</a>.</p>
 <div id="junction-processing" class="section level2">
 <h2 class="hasAnchor">
 <a href="#junction-processing" class="anchor"></a>Junction processing</h2>
-<p>The first step is to load in patient(and control junction data using <code>junction_load</code>. This expects as input the paths to junction files (by default) in the format outputted by the <code>STAR</code> aligner (SJ.out). If the user’s junctions are in a different format you can accomodate this by adjusting the <code>load_func</code> argument. This will return junctions as a <code>RangedSummarizedExperiment</code> object required for the downstream <code>dasper</code> functions.</p>
-<p>Additionally, you can choose to add a set of control junctions from GTEx to compare the patient junctions too. These are made publicly available through the <a href="https://jhubiostatistics.shinyapps.io/recount/">recount2</a>. In this example, we add the GTEx junctions from the fibroblast tissue. We would recommend matching the control tissue to the tissue from which your patient RNA-seq data was derived.</p>
+<p>The first step is to load in patient (and control) junction data using <code>junction_load</code>. By default, this expects junction files in the format outputted by the <a href="https://github.com/alexdobin/STAR">STAR</a> aligner (SJ.out). If the user’s junctions are in a different format you can accommodate for this by adjusting the <code>load_func</code> argument. The output of this will be junctions stored in a <code>RangedSummarizedExperiment</code> object required for the downstream <code>dasper</code> functions.</p>
+<p>Additionally, users can choose to add a set of control junctions from GTEx v6 (publicly available through <a href="https://jhubiostatistics.shinyapps.io/recount/">recount2</a>) using the argument <code>controls</code>. This may be useful if the user only has RNA-seq data from only a single or small number of patients, which is often the case in a diagnostic setting. In this example, we arbitrarily chose to use the GTEx junctions from the fibroblast tissue. However, we would recommend matching the control tissue to the tissue from which your patient RNA-seq data was derived. The current available tissues that be selected via <code>controls</code> are “fibroblasts”, “lymphocytes”, “skeletal_muscle” and “whole_blood”.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
 
 <span class="va">junctions_example_1_path</span> <span class="op">&lt;-</span>
@@ -285,7 +291,7 @@
         mustWork <span class="op">=</span> <span class="cn">TRUE</span>
     <span class="op">)</span>
 
-<span class="co"># only use chromosomes 21 + 22 for vignette speed</span>
+<span class="co"># only keep chromosomes 21 + 22 for speed</span>
 <span class="va">junctions</span> <span class="op">&lt;-</span>
     <span class="fu"><a href="../reference/junction_load.html">junction_load</a></span><span class="op">(</span>
         junction_paths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
@@ -295,12 +301,12 @@
         controls <span class="op">=</span> <span class="st">"fibroblasts"</span>,
         chrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr21"</span>, <span class="st">"chr22"</span><span class="op">)</span>
     <span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-20 00:13:11 - Loading junctions for sample 1/2..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:13:11 - Loading junctions for sample 2/2..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:13:11 - Adding control junctions..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:13:11 - Downloading and importing fibroblasts junction data..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:13:40 - Tidying and storing junction data as a RangedSummarizedExperiment..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:13:43 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:05:53 - Loading junctions for sample 1/2..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:05:53 - Loading junctions for sample 2/2..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:05:53 - Adding control junctions..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:05:53 - Downloading and importing fibroblasts junction data..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:23 - Tidying and storing junction data as a RangedSummarizedExperiment..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:26 - done!"</span>
 
 <span class="va">junctions</span>
 <span class="co">#&gt; class: RangedSummarizedExperiment </span>
@@ -311,7 +317,7 @@
 <span class="co">#&gt; rowData names(0):</span>
 <span class="co">#&gt; colnames(286): count_1 count_2 ... gtex_56472 gtex_57475</span>
 <span class="co">#&gt; colData names(2): samp_id case_control</span></pre></div>
-<p>Next, we annotate our junctions using <code>junction_annot</code>. This will classify your junctions using reference annotation into the categories “annotated”, “novel_acceptor”, “novel_donor”, “novel_combo”, “novel_exon_skip”, “ambig_gene” and “unannotated”. Additionally, the genes/transcripts/exons that each junction overlaps will be stored in the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">SummarizedExperiment::rowData</a></code>.</p>
+<p>Next, we will annotate our junctions using <code>junction_annot</code>. Using reference annotation inputted via <code>ref</code>, this will classify junctions into the categories “annotated”, “novel_acceptor”, “novel_donor”, “novel_combo”, “novel_exon_skip”, “ambig_gene” and “unannotated”. Additionally, the genes/transcripts/exons that each junction overlaps will be stored in the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">SummarizedExperiment::rowData</a></code>. This information is necessary for the downstream <code>dasper</code> functions but can also be useful independently if user’s are interested in for example, only retrieving the annotated/unannotated junctions.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit">
 
 <span class="co"># take only the first 5 samples (2 cases, 3 controls)</span>
@@ -319,11 +325,11 @@
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="va">junctions</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
 
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_annot.html">junction_annot</a></span><span class="op">(</span><span class="va">junctions</span>, <span class="va">ref</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-20 00:13:43 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:13:59 - Getting junction annotation using overlapping exons..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:02 - Tidying junction annotation..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:02 - Deriving junction categories..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:07 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:26 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:43 - Getting junction annotation using overlapping exons..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:46 - Tidying junction annotation..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:46 - Deriving junction categories..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:51 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">rowData</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; DataFrame with 6 rows and 14 columns</span>
@@ -375,16 +381,16 @@
 <span class="co">#&gt; 4                                 * unannotated</span>
 <span class="co">#&gt; 5                                 * unannotated</span>
 <span class="co">#&gt; 6                                 * unannotated</span></pre></div>
-<p>We can then filter our junctions using <code>junction_filter</code>. You have the option of choosing to filter by count, width, type and whether junctions overlap a particular genomic region region. The default settings used below filter only by count and require a junction to have at least 5 reads in at least 1 sample to be kept in.</p>
+<p>We will then filter our junctions using <code>junction_filter</code>. You have the option of choosing to filter by count, width, type (annotation category) and whether junctions overlap a particular genomic region. The default settings shown below filter only by count and require a junction to have at least 5 reads in at least 1 sample to be kept in.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
 
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_annot.html">junction_filter</a></span><span class="op">(</span><span class="va">junctions</span>,
     count_thresh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>raw <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,
     n_samp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>raw <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:07 - Filtering junctions..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:07 - by count..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:08 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:52 - Filtering junctions..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:52 - by count..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:52 - done!"</span>
 
 <span class="va">junctions</span>
 <span class="co">#&gt; class: RangedSummarizedExperiment </span>
@@ -395,13 +401,13 @@
 <span class="co">#&gt; rowData names(14): in_ref gene_id_start ... strand_junction type</span>
 <span class="co">#&gt; colnames(5): count_1 count_2 gtex_54020 gtex_51495 gtex_56930</span>
 <span class="co">#&gt; colData names(2): samp_id case_control</span></pre></div>
-<p>We can then normalise our raw junctions counts into a percentage spliced in (PSI) using <code>junction_norm</code>. This will first cluster junctions by finding all other junctions that share an acceptor or donor with it. Then, calculate the PSI by dividing the number of reads supporting each junction with the total number of reads in it’s associated cluster.</p>
+<p>We can then normalize our raw junctions counts into a proportion-spliced-in using <code>junction_norm</code>. This will first cluster each junction by finding all other junctions that share an acceptor or donor site with it. Then, calculate the normalized counts by dividing the number of reads supporting each junction with the total number of reads in it’s associated cluster.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit">
 
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_annot.html">junction_norm</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:08 - Clustering junctions..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:08 - Normalising junction counts..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:08 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:52 - Clustering junctions..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:53 - Normalising junction counts..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:53 - done!"</span>
 
 <span class="co"># save a separate object for plotting</span>
 <span class="va">junctions_normed</span> <span class="op">&lt;-</span> <span class="va">junctions</span>
@@ -425,55 +431,71 @@
 <span class="co">#&gt; [4871,]       0 0.0000000 0.94252874 0.96610169 0.992063492</span>
 <span class="co">#&gt; [4872,]       0 0.4285714 0.00000000 0.00000000 0.000000000</span>
 <span class="co">#&gt; [4873,]       0 0.5714286 0.00000000 0.00000000 0.000000000</span></pre></div>
-<p>Finally, we need to score each patient junction by how much it’s counts deviates from the count distribution of the same junction in your control samples using <code>junction_score</code>. By default, this uses a z-score however this can be modified to a user-inputted functions by adjusting the argument <code>score_func</code>.</p>
+<p>Finally, we need to score each patient junction by how much it’s (normalized) counts deviate from the count distribution of the same junction in the control samples using <code>junction_score</code>. By default, this uses a z-score measure, however this can be modified to a user-inputted function by adjusting the argument <code>score_func</code>. These junction scores with be stored in the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">SummarizedExperiment::assays</a></code> “score”.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_annot.html">junction_score</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:08 - Calculating the direction of change of junctions..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:08 - Generating junction abnormality score..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:09 - done!"</span></pre></div>
+<span class="co">#&gt; [1] "2020-10-26 18:06:53 - Calculating the direction of change of junctions..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:53 - Generating junction abnormality score..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:53 - done!"</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assays</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] "raw"       "norm"      "direction" "score"</span></pre></div>
 </div>
 <div id="coverage-processing" class="section level2">
 <h2 class="hasAnchor">
 <a href="#coverage-processing" class="anchor"></a>Coverage processing</h2>
-<p>We then move on to loading and normalising the coverage across regions associated with each junction using <code>coverage_norm</code>. Namely, these are the 2 exonic regions flanking each junction and the intron inbetween. Given that there are 3 regions for each junction and we need to obtain coverage for every junction from every sample, this step can be very computationally intensive. Here, <code>dasper</code> allows parrallelisation across samples using <em><a href="https://bioconductor.org/packages/3.11/BiocParallel">BiocParallel</a></em> and uses the tool <a href="https://github.com/ChristopherWilks/megadepth">megadepth</a> developed by <a href="https://github.com/ChristopherWilks">Chris Wilks</a>, which is significantly faster than other tools (<code>rtracklayer</code> and <code>pyBigWig</code>) for loading coverage from BigWig files (see <a href="https://github.com/LieberInstitute/megadepth/blob/master/analysis/test_megadepth_pyBigWig_rtracklayer.Rmd">runtime comparison</a>.</p>
+<p>We then move on to loading and normalising the coverage across regions associated with each junction using <code>coverage_norm</code>. Namely, these are the 2 exonic regions flanking each junction and the intron inbetween. Given that there are 3 regions for each junction and we need to obtain coverage for every junction from every sample, this step can be very computationally intense to run. Here, <code>dasper</code> allows parrallelisation across samples using <em><a href="https://bioconductor.org/packages/3.11/BiocParallel">BiocParallel</a></em> and uses the tool <a href="https://github.com/ChristopherWilks/megadepth">megadepth</a> developed by <a href="https://github.com/ChristopherWilks">Chris Wilks</a>, which is significantly faster than other tools (<code>rtracklayer</code> and <code>pyBigWig</code>) for loading coverage from BigWig files (see <a href="https://github.com/LieberInstitute/megadepth/blob/master/analysis/test_megadepth_pyBigWig_rtracklayer.Rmd">runtime comparison</a>).</p>
 <div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="va">coverage</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/coverage_norm.html">coverage_norm</a></span><span class="op">(</span><span class="va">junctions</span>, <span class="va">ref</span>,
+<span class="va">coverage</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/coverage_norm.html">coverage_norm</a></span><span class="op">(</span>
+    <span class="va">junctions</span>,
+    <span class="va">ref</span>,
     coverage_paths_case <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">bw_path</span>, <span class="fl">2</span><span class="op">)</span>,
-    coverage_paths_control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">bw_path</span>, <span class="fl">3</span><span class="op">)</span>
+    coverage_paths_control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">bw_path</span>, <span class="fl">3</span><span class="op">)</span>,
+    bp_param <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html">SerialParam</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:09 - Obtaining exonic and intronic regions to load coverage from..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:09 - Obtaining regions to use to normalise coverage..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:14 - Loading coverage..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:21 - Normalising coverage..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:21 - done!"</span></pre></div>
-<p><code>coverage_score</code> is then used to compare the coverage associated with each junction with the coverage distribution in controls.</p>
+<span class="co">#&gt; [1] "2020-10-26 18:06:53 - Obtaining exonic and intronic regions to load coverage from..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:06:54 - Obtaining regions to use to normalise coverage..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:07:00 - Loading coverage..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:07:06 - Normalising coverage..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:07:06 - done!"</span></pre></div>
+<p><code>coverage_score</code> can then be used to compare the coverage associated with each junction to the coverage distribution corresponding to the same region in controls. After which, junctions should have the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">SummarizedExperiment::assays</a></code> “coverage_score”.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit">
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/coverage_norm.html">coverage_score</a></span><span class="op">(</span><span class="va">junctions</span>, <span class="va">coverage</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:21 - Generating coverage abnormality score..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:22 - Obtaining regions with greatest coverage dysruption..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:22 - done!"</span></pre></div>
+<span class="co">#&gt; [1] "2020-10-26 18:07:06 - Generating coverage abnormality score..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:07:07 - Obtaining regions with greatest coverage dysruption..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:07:07 - done!"</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assays</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] "raw"             "norm"            "direction"       "score"          </span>
+<span class="co">#&gt; [5] "coverage_region" "coverage_score"</span></pre></div>
 </div>
 <div id="outlier-processing" class="section level2">
 <h2 class="hasAnchor">
 <a href="#outlier-processing" class="anchor"></a>Outlier processing</h2>
-<p>The last step in the <code>dasper</code> pipeline is to use the junction count scores and coverage scores as input into an outlier detection model. This involves first using <code>outlier_detect</code> to score each junction in each sample by how aberrant it looks. This step can be computational intense and can be parallelised using <em><a href="https://bioconductor.org/packages/3.11/BiocParallel">BiocParallel</a></em>. The fit of the <code>isolation forest</code> may change due to it’s intial random state, to avoid this and for reproducibility you can set the parameter <code>random_state</code> to an fixed integer.</p>
+<p>The last step in the <code>dasper</code> pipeline is to use the “scores” and “coverage scores” as input into an outlier detection model. This involves using <code>outlier_detect</code> to score each junction in each sample by how aberrant it looks. The outputted scores will be stored in the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">SummarizedExperiment::assays</a></code> “outlier_score”. This step can be can be parallelised using <em><a href="https://bioconductor.org/packages/3.11/BiocParallel">BiocParallel</a></em>. The fit of the <code>isolation forest</code> may fluctuate depending on it’s intial <code>random_state</code>. For reproducibility you can avoid this by setting the parameter <code>random_state</code> to an fixed integer (for more details on the isolation forest model see <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html" class="uri">https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html</a>).</p>
 <div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outlier_aggregate.html">outlier_detect</a></span><span class="op">(</span><span class="va">junctions</span>,
+<span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outlier_aggregate.html">outlier_detect</a></span><span class="op">(</span>
+    <span class="va">junctions</span>,
+    bp_param <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html">SerialParam</a></span><span class="op">(</span><span class="op">)</span>,
     random_state <span class="op">=</span> <span class="fl">32L</span>
 <span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-20 00:14:22 - generating outlier scores for sample 1/2"</span>
-<span class="co">#&gt; [1] "2020-10-20 00:15:17 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-20 00:15:18 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-20 00:15:18 - generating outlier scores for sample 2/2"</span>
-<span class="co">#&gt; [1] "2020-10-20 00:15:18 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-20 00:15:18 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-20 00:15:18 - done!"</span></pre></div>
-<p>Then, using <code>outlier_aggregate</code> outlier scores aggregates the outlier splicing events to a cluster level. The annotation returned by <code>junction_annot</code> is used to link each cluster to a gene and produce a report of all genes in a sample ranked by how abberant they look in terms of splicing. The lower the rank, the more abberant that gene looks.</p>
+<span class="co">#&gt; [1] "2020-10-26 18:07:07 - generating outlier scores for sample 1/2"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:08:18 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:08:18 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:08:18 - generating outlier scores for sample 2/2"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:08:18 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:08:19 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:08:19 - done!"</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assays</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] "raw"             "norm"            "direction"       "score"          </span>
+<span class="co">#&gt; [5] "coverage_region" "coverage_score"  "outlier_score"</span></pre></div>
+<p>Finally, <code>outlier_aggregate</code> will aggregate the junction-level “outlier_scores” to a cluster level. The returned <code>outlier_scores</code> object contains a <code>DataFrame</code> with each row detailing a cluster in terms of how aberrant it looks. The <code>gene_id_cluster</code> column describes the gene linked to each cluster, derived from the gene annotation returned by <code>junction_annot</code>. Splicing events are ranked in the <code>rank</code> column with 1 referring to the most aberrant splicing event in that patient. Details of the specific junctions that look the most aberrant for each cluster can be found in the <code>junctions</code> column.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="va">outlier_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outlier_aggregate.html">outlier_aggregate</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-20 00:15:18 - Aggregating outlier scores to cluster level... "</span>
-<span class="co">#&gt; [1] "2020-10-20 00:15:19 - Annotating clusters with gene details..."</span>
-<span class="co">#&gt; [1] "2020-10-20 00:15:19 - done!"</span>
+<span class="va">outlier_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outlier_aggregate.html">outlier_aggregate</a></span><span class="op">(</span><span class="va">junctions</span>, samp_id_col <span class="op">=</span> <span class="st">"samp_id"</span>, <span class="op">)</span>
+<span class="co">#&gt; [1] "2020-10-26 18:08:19 - Aggregating outlier scores to cluster level... "</span>
+<span class="co">#&gt; [1] "2020-10-26 18:08:19 - Annotating clusters with gene details..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:08:19 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">outlier_scores</span><span class="op">)</span>
 <span class="co">#&gt; DataFrame with 6 rows and 6 columns</span>
@@ -497,19 +519,21 @@
 <div id="sashimi-plots" class="section level2">
 <h2 class="hasAnchor">
 <a href="#sashimi-plots" class="anchor"></a>Sashimi plots</h2>
-<p>In order to help further inspection of the candidate genes with abberrant splicing returned by <code>dasper</code>, we also include functions to visualise splicing across genes/transcripts/regions of interest. For example, you could visualise the most aberrant gene.</p>
+<p>In order to help further inspection of the candidate genes with abberrant splicing returned by <code>dasper</code>, we also include functions to visualise splicing across genes/transcripts/regions of interest. For example, you could visualise the gene with the most aberrant cluster in <code>samp_1</code>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit">
 
-<span class="co"># take gene of rank 1</span>
+<span class="co"># take gene_id of the cluster ranked 1</span>
 <span class="va">gene_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">outlier_scores</span><span class="op">[[</span><span class="st">"gene_id_cluster"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/plot_sashimi.html">plot_sashimi</a></span><span class="op">(</span><span class="va">junctions_normed</span>,
+<span class="fu"><a href="../reference/plot_sashimi.html">plot_sashimi</a></span><span class="op">(</span>
+    <span class="va">junctions_normed</span>,
     <span class="va">ref</span>,
     case_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>samp_id <span class="op">=</span> <span class="st">"samp_1"</span><span class="op">)</span>,
-    gene_tx_id <span class="op">=</span> <span class="va">gene_id</span>
+    gene_tx_id <span class="op">=</span> <span class="va">gene_id</span>,
+    count_label <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span></pre></div>
 <p><img src="dasper_files/figure-html/sashimi_1-1.png" width="700"></p>
-<p>Often regions of splicing can be very complex within a gene and you may want to consider zooming in on a specific region of interest. Furthermore, the thickness of the lines represents the counts of each junction however in this way, it can be hard to accurately differentiate junctions that have similar counts. User’s may want to add a label representing the count of each junction using the argument <code>count_label</code>.</p>
+<p>Often regions of splicing can be very complex within a gene/transcript. In which case, you may consider zooming in on a specific region of interest using the argument <code>region</code>. Furthermore, the thickness of the lines represents the normalized counts of each junction however in this way, it can be difficult to accurately differentiate junctions that have similar counts. Users may want to add a label representing the count of each junction using the argument <code>count_label</code>.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_sashimi.html">plot_sashimi</a></span><span class="op">(</span><span class="va">junctions_normed</span>,
     <span class="va">ref</span>,
@@ -555,9 +579,9 @@
 <span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="st">"dasper.bib"</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span></pre></div>
 <p>Date the vignette was generated.</p>
-<pre><code>#&gt; [1] "2020-10-20 00:15:25 BST"</code></pre>
+<pre><code>#&gt; [1] "2020-10-26 18:08:26 GMT"</code></pre>
 <p>Wallclock time spent generating the vignette.</p>
-<pre><code>#&gt; Time difference of 2.656 mins</code></pre>
+<pre><code>#&gt; Time difference of 2.959 mins</code></pre>
 <p><code>R</code> session information.</p>
 <pre><code>#&gt; ─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────
 #&gt;  setting  value                       
@@ -569,7 +593,7 @@
 #&gt;  collate  en_GB.UTF-8                 
 #&gt;  ctype    en_GB.UTF-8                 
 #&gt;  tz       Europe/London               
-#&gt;  date     2020-10-20                  
+#&gt;  date     2020-10-26                  
 #&gt; 
 #&gt; ─ Packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 #&gt;  package                * version  date       lib source                                    
@@ -597,7 +621,7 @@
 #&gt;  bitops                   1.0-6    2013-08-17 [1] CRAN (R 4.0.2)                            
 #&gt;  blob                     1.2.1    2020-01-20 [1] CRAN (R 4.0.2)                            
 #&gt;  bookdown                 0.21     2020-10-13 [1] CRAN (R 4.0.2)                            
-#&gt;  broom                    0.7.1    2020-10-02 [1] CRAN (R 4.0.2)                            
+#&gt;  broom                    0.7.2    2020-10-20 [1] CRAN (R 4.0.2)                            
 #&gt;  BSgenome                 1.56.0   2020-04-27 [1] Bioconductor                              
 #&gt;  bumphunter               1.30.0   2020-04-27 [1] Bioconductor                              
 #&gt;  car                      3.0-10   2020-09-29 [1] CRAN (R 4.0.2)                            
@@ -613,14 +637,14 @@
 #&gt;  crayon                   1.3.4    2017-09-16 [1] CRAN (R 4.0.2)                            
 #&gt;  curl                     4.3      2019-12-02 [1] CRAN (R 4.0.1)                            
 #&gt;  dasper                 * 0.99.2   2020-10-17 [1] Github (dzhang32/dasper@467a04c)          
-#&gt;  data.table               1.13.0   2020-07-24 [1] CRAN (R 4.0.2)                            
+#&gt;  data.table               1.13.2   2020-10-19 [1] CRAN (R 4.0.2)                            
 #&gt;  DBI                      1.1.0    2019-12-15 [1] CRAN (R 4.0.2)                            
 #&gt;  dbplyr                   1.4.4    2020-05-27 [1] CRAN (R 4.0.2)                            
 #&gt;  DelayedArray             0.14.1   2020-07-14 [1] Bioconductor                              
 #&gt;  derfinder                1.22.0   2020-04-27 [1] Bioconductor                              
 #&gt;  derfinderHelper          1.22.0   2020-04-27 [1] Bioconductor                              
 #&gt;  desc                     1.2.0    2018-05-01 [1] CRAN (R 4.0.2)                            
-#&gt;  digest                   0.6.25   2020-02-23 [1] CRAN (R 4.0.2)                            
+#&gt;  digest                   0.6.26   2020-10-17 [1] CRAN (R 4.0.2)                            
 #&gt;  doRNG                    1.8.2    2020-01-27 [1] CRAN (R 4.0.2)                            
 #&gt;  downloader               0.4      2015-07-09 [1] CRAN (R 4.0.2)                            
 #&gt;  dplyr                    1.0.2    2020-08-18 [1] CRAN (R 4.0.2)                            
@@ -666,7 +690,7 @@
 #&gt;  jsonlite                 1.7.1    2020-09-07 [1] CRAN (R 4.0.2)                            
 #&gt;  knitcitations          * 1.0.10   2019-09-15 [1] CRAN (R 4.0.2)                            
 #&gt;  knitr                    1.30     2020-09-22 [1] CRAN (R 4.0.2)                            
-#&gt;  labeling                 0.3      2014-08-23 [1] CRAN (R 4.0.2)                            
+#&gt;  labeling                 0.4.2    2020-10-20 [1] CRAN (R 4.0.2)                            
 #&gt;  later                    1.1.0.1  2020-06-05 [1] CRAN (R 4.0.2)                            
 #&gt;  lattice                  0.20-41  2020-04-02 [1] CRAN (R 4.0.2)                            
 #&gt;  latticeExtra             0.6-29   2019-12-19 [1] CRAN (R 4.0.2)                            
@@ -752,9 +776,9 @@
 <a href="#bibliography" class="anchor"></a>Bibliography</h1>
 <p>This vignette was generated using <em><a href="https://bioconductor.org/packages/3.11/BiocStyle">BiocStyle</a></em> (<a href="https://github.com/Bioconductor/BiocStyle">Oleś, Morgan, and Huber, 2020</a>) with <em><a href="https://CRAN.R-project.org/package=knitr">knitr</a></em> (<a href="https://yihui.org/knitr/">Xie, 2020</a>) and <em><a href="https://CRAN.R-project.org/package=rmarkdown">rmarkdown</a></em> (<a href="https://github.com/rstudio/rmarkdown">Allaire, Xie, McPherson, Luraschi, et al., 2020</a>) running behind the scenes.</p>
 <p>Citations made with <em><a href="https://CRAN.R-project.org/package=knitcitations">knitcitations</a></em> (<a href="https://CRAN.R-project.org/package=knitcitations">Boettiger, 2019</a>).</p>
-<p>[1] J. Allaire, Y. Xie, J. McPherson, J. Luraschi, et al. <em>rmarkdown: Dynamic Documents for R</em>. R package version 2.4. 2020. &lt;URL: <a href="https://github.com/rstudio/rmarkdown" class="uri">https://github.com/rstudio/rmarkdown</a>&gt;.</p>
+<p>[1] J. Allaire, Y. Xie, J. McPherson, J. Luraschi, et al. <em>rmarkdown: Dynamic Documents for R</em>. R package version 2.4. 2020. &lt;URL: <a href="https://github.com/rstudio/rmarkdown" class="uri">https://github.com/rstudio/rmarkdown</a>&gt;.</p>
 <p>[2] C. Boettiger. <em>knitcitations: Citations for ‘Knitr’ Markdown Files</em>. R package version 1.0.10. 2019. &lt;URL: <a href="https://CRAN.R-project.org/package=knitcitations" class="uri">https://CRAN.R-project.org/package=knitcitations</a>&gt;.</p>
-<p>[3] G. Csárdi, R. core, H. Wickham, W. Chang, et al. <em>sessioninfo: R Session Information</em>. R package version 1.1.1. 2018. &lt;URL: <a href="https://CRAN.R-project.org/package=sessioninfo" class="uri">https://CRAN.R-project.org/package=sessioninfo</a>&gt;.</p>
+<p>[3] G. Csárdi, R. core, H. Wickham, W. Chang, et al. <em>sessioninfo: R Session Information</em>. R package version 1.1.1. 2018. &lt;URL: <a href="https://CRAN.R-project.org/package=sessioninfo" class="uri">https://CRAN.R-project.org/package=sessioninfo</a>&gt;.</p>
 <p>[4] dzhang32. <em>Detecting abberant splicing events from RNA-sequencing data</em>. <a href="https://github.com/dzhang32/dasper" class="uri">https://github.com/dzhang32/dasper</a> - R package version 0.99.2. 2020. DOI: 10.18129/B9.bioc.dasper. &lt;URL: <a href="http://www.bioconductor.org/packages/dasper" class="uri">http://www.bioconductor.org/packages/dasper</a>&gt;.</p>
 <p>[5] A. Oleś, M. Morgan, and W. Huber. <em>BiocStyle: Standard styles for vignettes and other Bioconductor documents</em>. R package version 2.16.1. 2020. &lt;URL: <a href="https://github.com/Bioconductor/BiocStyle" class="uri">https://github.com/Bioconductor/BiocStyle</a>&gt;.</p>
 <p>[6] R Core Team. <em>R: A Language and Environment for Statistical Computing</em>. R Foundation for Statistical Computing. Vienna, Austria, 2020. &lt;URL: <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>&gt;.</p>
