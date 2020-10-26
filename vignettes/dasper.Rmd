@@ -253,7 +253,7 @@ Finally, we need to score each patient junction by how much it's (normalized) co
 ```{r "junction_score"}
 junctions <- junction_score(junctions)
 
-names(assays(junctions))
+names(SummarizedExperiment::assays(junctions))
 ```
 
 ## Coverage processing
@@ -275,7 +275,7 @@ coverage <- coverage_norm(
 ```{r, "coverage_score"}
 junctions <- coverage_score(junctions, coverage)
 
-names(assays(junctions))
+names(SummarizedExperiment::assays(junctions))
 ```
 
 ## Outlier processing
@@ -290,7 +290,7 @@ junctions <- outlier_detect(
     random_state = 32L
 )
 
-names(assays(junctions))
+names(SummarizedExperiment::assays(junctions))
 ```
 
 Finally, `outlier_aggregate` will aggregate the junction-level "outlier\_scores" to a cluster level. The returned `outlier_scores` object contains a `DataFrame` with each row detailing a cluster in terms of how aberrant it looks. The `gene_id_cluster` column describes the gene linked to each cluster, derived from the gene annotation returned by `junction_annot`. Splicing events are ranked in the `rank` column with 1 referring to the most aberrant splicing event in that patient. Details of the specific junctions that look the most aberrant for each cluster can be found in the `junctions` column.
