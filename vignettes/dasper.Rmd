@@ -285,7 +285,6 @@ The last step in the `dasper` pipeline is to use the "scores" and "coverage scor
 ```{r, "outlier_detect"}
 junctions <- outlier_detect(
     junctions,
-    samp_id_col = "samp_id",
     bp_param = BiocParallel::SerialParam(),
     random_state = 32L
 )
@@ -296,7 +295,7 @@ names(SummarizedExperiment::assays(junctions))
 Finally, `outlier_aggregate` will aggregate the junction-level "outlier\_scores" to a cluster level. The returned `outlier_scores` object contains a `DataFrame` with each row detailing a cluster in terms of how aberrant it looks. The `gene_id_cluster` column describes the gene linked to each cluster, derived from the gene annotation returned by `junction_annot`. Splicing events are ranked in the `rank` column with 1 referring to the most aberrant splicing event in that patient. Details of the specific junctions that look the most aberrant for each cluster can be found in the `junctions` column.
 
 ```{r, "outlier_aggregate"}
-outlier_scores <- outlier_aggregate(junctions)
+outlier_scores <- outlier_aggregate(junctions, samp_id_col = "samp_id", )
 
 head(outlier_scores)
 ```
