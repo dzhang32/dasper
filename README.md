@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![R build
 status](https://github.com/dzhang32/dasper/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/dzhang32/dasper/actions)
 [![Codecov test
@@ -54,7 +54,7 @@ print(citation("dasper"), bibtex = TRUE)
 #> dzhang32 (2020). _Detecting abberant splicing events from
 #> RNA-sequencing data_. doi: 10.18129/B9.bioc.dasper (URL:
 #> https://doi.org/10.18129/B9.bioc.dasper),
-#> https://github.com/dzhang32/dasper - R package version 0.99.11, <URL:
+#> https://github.com/dzhang32/dasper - R package version 0.99.12, <URL:
 #> http://www.bioconductor.org/packages/dasper>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -64,7 +64,7 @@ print(citation("dasper"), bibtex = TRUE)
 #>     author = {{dzhang32}},
 #>     year = {2020},
 #>     url = {http://www.bioconductor.org/packages/dasper},
-#>     note = {https://github.com/dzhang32/dasper - R package version 0.99.11},
+#>     note = {https://github.com/dzhang32/dasper - R package version 0.99.12},
 #>     doi = {10.18129/B9.bioc.dasper},
 #>   }
 #> 

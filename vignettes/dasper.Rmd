@@ -251,7 +251,7 @@ tail(SummarizedExperiment::assays(junctions)[["norm"]])
 Finally, we need to score each patient junction by how much it's (normalized) counts deviate from the count distribution of the same junction in the control samples using `junction_score`. By default, this uses a z-score measure, however this can be modified to a user-inputted function by adjusting the argument `score_func`. These junction scores with be stored in the `SummarizedExperiment::assays` "score".
 
 ```{r "junction_score"}
-junctions <- junction_score(junctions, score_func = .zscore)
+junctions <- junction_score(junctions)
 
 names(assays(junctions))
 ```
