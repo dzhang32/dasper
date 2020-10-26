@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.14</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.15</span>
       </span>
     </div>
 
@@ -106,9 +106,9 @@
 <span class="co">## Check that you have a valid Bioconductor installation</span>
 <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/valid.html">valid</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 </div>
-<div id="required-knowledge-required_knowledge" class="section level2">
+<div id="required-knowledge" class="section level2">
 <h2 class="hasAnchor">
-<a href="#required-knowledge-required_knowledge" class="anchor"></a>Required knowledge {##required_knowledge}</h2>
+<a href="#required-knowledge" class="anchor"></a>Required knowledge</h2>
 <p>The expected input of <em><a href="https://bioconductor.org/packages/3.11/dasper">dasper</a></em> are junctions reads (e.g. directly outputted from an aligner such as <a href="https://github.com/alexdobin/STAR">STAR</a> or extracted from a BAM file (e.g. using <a href="https://github.com/LieberInstitute/megadepth">megadepth</a>) and coverage in the form of BigWig files (which can be generated from BAM files using <a href="https://github.com/LieberInstitute/megadepth">megadepth</a> or <a href="http://rseqc.sourceforge.net/#bam2wig-py">RSeQC</a>). <em><a href="https://bioconductor.org/packages/3.11/dasper">dasper</a></em> is based on many other packages and in particular in those that have implemented the infrastructure needed for dealing with RNA-sequencing data. The packages <em><a href="https://bioconductor.org/packages/3.11/SummarizedExperiment">SummarizedExperiment</a></em> and <em><a href="https://bioconductor.org/packages/3.11/GenomicRanges">GenomicRanges</a></em> are used throughout, therefore familiarity with these packages will greatly help in interpreting the output of <em><a href="https://bioconductor.org/packages/3.11/dasper">dasper</a></em>.</p>
 <p>If you are asking yourself the question “Where do I start using Bioconductor?” you might be interested in <a href="http://lcolladotor.github.io/2014/10/16/startbioc/#.VkOKbq6rRuU">this blog post</a>. Or if you find the structure of a <em><a href="https://bioconductor.org/packages/3.11/SummarizedExperiment">SummarizedExperiment</a></em> unclear, you might consider checking out <a href="http://master.bioconductor.org/help/course-materials/2019/BSS2019/04_Practical_CoreApproachesInBioconductor.html">this manual</a>.</p>
 </div>
@@ -301,12 +301,12 @@
         controls <span class="op">=</span> <span class="st">"fibroblasts"</span>,
         chrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr21"</span>, <span class="st">"chr22"</span><span class="op">)</span>
     <span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-26 18:05:53 - Loading junctions for sample 1/2..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:05:53 - Loading junctions for sample 2/2..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:05:53 - Adding control junctions..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:05:53 - Downloading and importing fibroblasts junction data..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:23 - Tidying and storing junction data as a RangedSummarizedExperiment..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:26 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:35:45 - Loading junctions for sample 1/2..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:35:45 - Loading junctions for sample 2/2..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:35:45 - Adding control junctions..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:35:45 - Downloading and importing fibroblasts junction data..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:11 - Tidying and storing junction data as a RangedSummarizedExperiment..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:14 - done!"</span>
 
 <span class="va">junctions</span>
 <span class="co">#&gt; class: RangedSummarizedExperiment </span>
@@ -325,11 +325,11 @@
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="va">junctions</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
 
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_annot.html">junction_annot</a></span><span class="op">(</span><span class="va">junctions</span>, <span class="va">ref</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:26 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:43 - Getting junction annotation using overlapping exons..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:46 - Tidying junction annotation..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:46 - Deriving junction categories..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:51 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:14 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:29 - Getting junction annotation using overlapping exons..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:31 - Tidying junction annotation..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:32 - Deriving junction categories..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:36 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">rowData</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; DataFrame with 6 rows and 14 columns</span>
@@ -388,9 +388,9 @@
     count_thresh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>raw <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,
     n_samp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>raw <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:52 - Filtering junctions..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:52 - by count..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:52 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:37 - Filtering junctions..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:37 - by count..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:37 - done!"</span>
 
 <span class="va">junctions</span>
 <span class="co">#&gt; class: RangedSummarizedExperiment </span>
@@ -405,9 +405,9 @@
 <div class="sourceCode" id="cb11"><pre class="downlit">
 
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_annot.html">junction_norm</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:52 - Clustering junctions..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:53 - Normalising junction counts..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:53 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:37 - Clustering junctions..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:37 - Normalising junction counts..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:37 - done!"</span>
 
 <span class="co"># save a separate object for plotting</span>
 <span class="va">junctions_normed</span> <span class="op">&lt;-</span> <span class="va">junctions</span>
@@ -434,9 +434,9 @@
 <p>Finally, we need to score each patient junction by how much it’s (normalized) counts deviate from the count distribution of the same junction in the control samples using <code>junction_score</code>. By default, this uses a z-score measure, however this can be modified to a user-inputted function by adjusting the argument <code>score_func</code>. These junction scores with be stored in the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">SummarizedExperiment::assays</a></code> “score”.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_annot.html">junction_score</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:53 - Calculating the direction of change of junctions..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:53 - Generating junction abnormality score..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:53 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:38 - Calculating the direction of change of junctions..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:38 - Generating junction abnormality score..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:38 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assays</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] "raw"       "norm"      "direction" "score"</span></pre></div>
@@ -453,17 +453,17 @@
     coverage_paths_control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">bw_path</span>, <span class="fl">3</span><span class="op">)</span>,
     bp_param <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html">SerialParam</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:53 - Obtaining exonic and intronic regions to load coverage from..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:06:54 - Obtaining regions to use to normalise coverage..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:07:00 - Loading coverage..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:07:06 - Normalising coverage..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:07:06 - done!"</span></pre></div>
+<span class="co">#&gt; [1] "2020-10-26 18:36:38 - Obtaining exonic and intronic regions to load coverage from..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:38 - Obtaining regions to use to normalise coverage..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:43 - Loading coverage..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:49 - Normalising coverage..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:49 - done!"</span></pre></div>
 <p><code>coverage_score</code> can then be used to compare the coverage associated with each junction to the coverage distribution corresponding to the same region in controls. After which, junctions should have the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">SummarizedExperiment::assays</a></code> “coverage_score”.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit">
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/coverage_norm.html">coverage_score</a></span><span class="op">(</span><span class="va">junctions</span>, <span class="va">coverage</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-26 18:07:06 - Generating coverage abnormality score..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:07:07 - Obtaining regions with greatest coverage dysruption..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:07:07 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:49 - Generating coverage abnormality score..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:50 - Obtaining regions with greatest coverage dysruption..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:50 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assays</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] "raw"             "norm"            "direction"       "score"          </span>
@@ -479,13 +479,13 @@
     bp_param <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html">SerialParam</a></span><span class="op">(</span><span class="op">)</span>,
     random_state <span class="op">=</span> <span class="fl">32L</span>
 <span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-26 18:07:07 - generating outlier scores for sample 1/2"</span>
-<span class="co">#&gt; [1] "2020-10-26 18:08:18 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-26 18:08:18 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-26 18:08:18 - generating outlier scores for sample 2/2"</span>
-<span class="co">#&gt; [1] "2020-10-26 18:08:18 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-26 18:08:19 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2020-10-26 18:08:19 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:36:50 - generating outlier scores for sample 1/2"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:37:53 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:37:53 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:37:53 - generating outlier scores for sample 2/2"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:37:54 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:37:54 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:37:54 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">assays</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] "raw"             "norm"            "direction"       "score"          </span>
@@ -493,9 +493,9 @@
 <p>Finally, <code>outlier_aggregate</code> will aggregate the junction-level “outlier_scores” to a cluster level. The returned <code>outlier_scores</code> object contains a <code>DataFrame</code> with each row detailing a cluster in terms of how aberrant it looks. The <code>gene_id_cluster</code> column describes the gene linked to each cluster, derived from the gene annotation returned by <code>junction_annot</code>. Splicing events are ranked in the <code>rank</code> column with 1 referring to the most aberrant splicing event in that patient. Details of the specific junctions that look the most aberrant for each cluster can be found in the <code>junctions</code> column.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit">
 <span class="va">outlier_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outlier_aggregate.html">outlier_aggregate</a></span><span class="op">(</span><span class="va">junctions</span>, samp_id_col <span class="op">=</span> <span class="st">"samp_id"</span>, <span class="op">)</span>
-<span class="co">#&gt; [1] "2020-10-26 18:08:19 - Aggregating outlier scores to cluster level... "</span>
-<span class="co">#&gt; [1] "2020-10-26 18:08:19 - Annotating clusters with gene details..."</span>
-<span class="co">#&gt; [1] "2020-10-26 18:08:19 - done!"</span>
+<span class="co">#&gt; [1] "2020-10-26 18:37:54 - Aggregating outlier scores to cluster level... "</span>
+<span class="co">#&gt; [1] "2020-10-26 18:37:55 - Annotating clusters with gene details..."</span>
+<span class="co">#&gt; [1] "2020-10-26 18:37:55 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">outlier_scores</span><span class="op">)</span>
 <span class="co">#&gt; DataFrame with 6 rows and 6 columns</span>
@@ -579,9 +579,9 @@
 <span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="st">"dasper.bib"</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span></pre></div>
 <p>Date the vignette was generated.</p>
-<pre><code>#&gt; [1] "2020-10-26 18:08:26 GMT"</code></pre>
+<pre><code>#&gt; [1] "2020-10-26 18:37:59 GMT"</code></pre>
 <p>Wallclock time spent generating the vignette.</p>
-<pre><code>#&gt; Time difference of 2.959 mins</code></pre>
+<pre><code>#&gt; Time difference of 2.634 mins</code></pre>
 <p><code>R</code> session information.</p>
 <pre><code>#&gt; ─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────
 #&gt;  setting  value                       
