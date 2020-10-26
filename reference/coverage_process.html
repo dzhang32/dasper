@@ -77,7 +77,7 @@ functions, see &quot;Details&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.16</span>
       </span>
     </div>
 
@@ -281,7 +281,7 @@ greatest disruption.</p>
     genome <span class='op'>=</span> <span class='st'>"hg38"</span>,
     filetype <span class='op'>=</span> <span class='st'>"TxDb"</span>
 <span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-04-27</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
+</div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-04-27</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
 <span class='co'>##### Set up BigWig #####</span>
 
 <span class='co'># obtain path to example bw on recount2</span>
@@ -304,27 +304,27 @@ greatest disruption.</p>
     types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-26 18:30:27 - Filtering junctions..."
-#&gt; [1] "2020-10-26 18:30:27 - by count..."
-#&gt; [1] "2020-10-26 18:30:28 - done!"
+#&gt; [1] "2020-10-26 19:22:41 - Filtering junctions..."
+#&gt; [1] "2020-10-26 19:22:41 - by count..."
+#&gt; [1] "2020-10-26 19:22:41 - done!"
 #&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-10-26 18:30:28 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-10-26 18:30:44 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-10-26 18:30:45 - Tidying junction annotation..."
-#&gt; [1] "2020-10-26 18:30:45 - Deriving junction categories..."
-#&gt; [1] "2020-10-26 18:30:46 - done!"
+#&gt; [1] "2020-10-26 19:22:41 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-10-26 19:22:55 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-10-26 19:22:56 - Tidying junction annotation..."
+#&gt; [1] "2020-10-26 19:22:56 - Deriving junction categories..."
+#&gt; [1] "2020-10-26 19:22:57 - done!"
 #&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-26 18:30:46 - Filtering junctions..."
-#&gt; [1] "2020-10-26 18:30:46 - by type..."
-#&gt; [1] "2020-10-26 18:30:46 - done!"
+#&gt; [1] "2020-10-26 19:22:57 - Filtering junctions..."
+#&gt; [1] "2020-10-26 19:22:57 - by type..."
+#&gt; [1] "2020-10-26 19:22:57 - done!"
 #&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-26 18:30:46 - Clustering junctions..."
-#&gt; [1] "2020-10-26 18:30:46 - Normalising junction counts..."
-#&gt; [1] "2020-10-26 18:30:46 - done!"
+#&gt; [1] "2020-10-26 19:22:57 - Clustering junctions..."
+#&gt; [1] "2020-10-26 19:22:57 - Normalising junction counts..."
+#&gt; [1] "2020-10-26 19:22:57 - done!"
 #&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-10-26 18:30:46 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-10-26 18:30:46 - Generating junction abnormality score..."
-#&gt; [1] "2020-10-26 18:30:46 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-26 19:22:57 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-10-26 19:22:57 - Generating junction abnormality score..."
+#&gt; [1] "2020-10-26 19:22:57 - done!"</div><div class='input'>
 <span class='co'>##### coverage_norm #####</span>
 
 <span class='va'>coverage_normed</span> <span class='op'>&lt;-</span> <span class='fu'>coverage_norm</span><span class='op'>(</span>
@@ -334,17 +334,17 @@ greatest disruption.</p>
     coverage_paths_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>,
     coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-10-26 18:30:46 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-10-26 18:30:46 - Obtaining regions to use to normalise coverage..."
-#&gt; [1] "2020-10-26 18:30:52 - Loading coverage..."
-#&gt; [1] "2020-10-26 18:30:56 - Normalising coverage..."
-#&gt; [1] "2020-10-26 18:30:56 - done!"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "2020-10-26 19:22:57 - Obtaining exonic and intronic regions to load coverage from..."
+#&gt; [1] "2020-10-26 19:22:57 - Obtaining regions to use to normalise coverage..."
+#&gt; [1] "2020-10-26 19:23:03 - Loading coverage..."
+#&gt; [1] "2020-10-26 19:23:07 - Normalising coverage..."
+#&gt; [1] "2020-10-26 19:23:07 - done!"</div><div class='input'>
 <span class='co'>##### coverage_score #####</span>
 
 <span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>coverage_score</span><span class='op'>(</span><span class='va'>junctions_processed</span>, <span class='va'>coverage_normed</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-10-26 18:30:56 - Generating coverage abnormality score..."
-#&gt; [1] "2020-10-26 18:30:57 - Obtaining regions with greatest coverage dysruption..."
-#&gt; [1] "2020-10-26 18:30:57 - done!"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "2020-10-26 19:23:07 - Generating coverage abnormality score..."
+#&gt; [1] "2020-10-26 19:23:08 - Obtaining regions with greatest coverage dysruption..."
+#&gt; [1] "2020-10-26 19:23:08 - done!"</div><div class='input'>
 <span class='co'>##### coverage_process #####</span>
 
 <span class='co'># this wrapper will obtain coverage scores identical to those</span>
@@ -356,15 +356,15 @@ greatest disruption.</p>
     coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>3</span><span class='op'>)</span>
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Loading and normalising coverage ---------------------------------------------"
-#&gt; [1] "2020-10-26 18:30:57 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-10-26 18:30:57 - Obtaining regions to use to normalise coverage..."
-#&gt; [1] "2020-10-26 18:31:02 - Loading coverage..."
-#&gt; [1] "2020-10-26 18:31:08 - Normalising coverage..."
-#&gt; [1] "2020-10-26 18:31:08 - done!"
+#&gt; [1] "2020-10-26 19:23:08 - Obtaining exonic and intronic regions to load coverage from..."
+#&gt; [1] "2020-10-26 19:23:08 - Obtaining regions to use to normalise coverage..."
+#&gt; [1] "2020-10-26 19:23:13 - Loading coverage..."
+#&gt; [1] "2020-10-26 19:23:19 - Normalising coverage..."
+#&gt; [1] "2020-10-26 19:23:19 - done!"
 #&gt; [1] "# Scoring coverage ---------------------------------------------"
-#&gt; [1] "2020-10-26 18:31:08 - Generating coverage abnormality score..."
-#&gt; [1] "2020-10-26 18:31:08 - Obtaining regions with greatest coverage dysruption..."
-#&gt; [1] "2020-10-26 18:31:09 - done!"</div><div class='input'>
+#&gt; [1] "2020-10-26 19:23:19 - Generating coverage abnormality score..."
+#&gt; [1] "2020-10-26 19:23:19 - Obtaining regions with greatest coverage dysruption..."
+#&gt; [1] "2020-10-26 19:23:19 - done!"</div><div class='input'>
 <span class='co'># the two objects are equivalent</span>
 <span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>junctions_w_coverage</span>, <span class='va'>junctions</span>, check.attributes <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div></pre>
