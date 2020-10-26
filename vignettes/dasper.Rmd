@@ -71,7 +71,7 @@ BiocManager::install("dzhang32/dasper")
 BiocManager::valid()
 ```
 
-## Required knowledge {\#\#required\_knowledge}
+## Required knowledge
 
 The expected input of `r Biocpkg("dasper")` are junctions reads (e.g. directly outputted from an aligner such as [STAR](https://github.com/alexdobin/STAR) or extracted from a BAM file (e.g. using [megadepth](https://github.com/LieberInstitute/megadepth)) and coverage in the form of BigWig files (which can be generated from BAM files using [megadepth](https://github.com/LieberInstitute/megadepth) or [RSeQC](http://rseqc.sourceforge.net/#bam2wig-py)). `r Biocpkg("dasper")` is based on many other packages and in particular in those that have implemented the infrastructure needed for dealing with RNA-sequencing data. The packages `r Biocpkg("SummarizedExperiment")` and `r Biocpkg("GenomicRanges")` are used throughout, therefore familiarity with these packages will greatly help in interpreting the output of `r Biocpkg("dasper")`.
 
@@ -92,7 +92,7 @@ citation("dasper")
 
 # Quick start guide
 
-## Workflow {\#\#workflow}
+## Workflow {##workflow}
 
 ```{r "dasper workflow", echo = FALSE}
 knitr::include_graphics("dasper_workflow.png")
@@ -109,7 +109,7 @@ The above workflow diagram gives a top-level overview of the available functions
 
 `dasper` includes wrapper functions for the 3 major analysis steps in the workflow - processing junction data, processing coverage data, then performing outlier detection. If you are familiar with `dasper` or uninterested with the intermediates, you can go from start to finish using these wrappers.
 
-### Setup {\#\#\#setup}
+### Setup {###setup}
 
 First, we need to install the system dependency [megadepth](https://github.com/ChristopherWilks/megadepth), which is required for the loading of coverage from BigWig files. The easiest way to do this is to run `install_megadepth` from the `r Biocpkg("megadepth")`
 
