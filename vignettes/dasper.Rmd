@@ -92,7 +92,7 @@ citation("dasper")
 
 # Quick start guide
 
-## Workflow {##workflow}
+## Workflow {#workflow}
 
 ```{r "dasper workflow", echo = FALSE}
 knitr::include_graphics("dasper_workflow.png")
@@ -109,7 +109,7 @@ The above workflow diagram gives a top-level overview of the available functions
 
 `dasper` includes wrapper functions for the 3 major analysis steps in the workflow - processing junction data, processing coverage data, then performing outlier detection. If you are familiar with `dasper` or uninterested with the intermediates, you can go from start to finish using these wrappers.
 
-### Setup {###setup}
+### Setup {#setup}
 
 First, we need to install the system dependency [megadepth](https://github.com/ChristopherWilks/megadepth), which is required for the loading of coverage from BigWig files. The easiest way to do this is to run `install_megadepth` from the `r Biocpkg("megadepth")`
 
@@ -168,7 +168,7 @@ outlier_scores <-
 
 # Comprehensive usage guide
 
-In this section, we will run each of the 1-9 functions shown in [workflow](##workflow). This can be helpful for users that want to understand or modify the intermediates of the `dasper` pipeline or are only interested in a executing a specific step (e.g. annotating junctions using `junction_annot`). If you want to follow along and run this code in your R session, make sure you have followed the instructions in the section [setup](###setup).
+In this section, we will run each of the 1-9 functions shown in [workflow](#workflow). This can be helpful for users that want to understand or modify the intermediates of the `dasper` pipeline or are only interested in a executing a specific step (e.g. annotating junctions using `junction_annot`). If you want to follow along and run this code in your R session, make sure you have followed the instructions in the section [setup](#setup).
 
 ## Junction processing
 
