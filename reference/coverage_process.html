@@ -77,7 +77,7 @@ functions, see &quot;Details&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -281,7 +281,28 @@ greatest disruption.</p>
     genome <span class='op'>=</span> <span class='st'>"hg38"</span>,
     filetype <span class='op'>=</span> <span class='st'>"TxDb"</span>
 <span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-04-27</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
+</div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-04-27</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomicFeatures</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: BiocGenerics</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: parallel</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘BiocGenerics’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:parallel’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,</span>
+#&gt; <span class='message'>    clusterExport, clusterMap, parApply, parCapply, parLapply,</span>
+#&gt; <span class='message'>    parLapplyLB, parRapply, parSapply, parSapplyLB</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    IQR, mad, sd, var, xtabs</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    anyDuplicated, append, as.data.frame, basename, cbind, colnames,</span>
+#&gt; <span class='message'>    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,</span>
+#&gt; <span class='message'>    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,</span>
+#&gt; <span class='message'>    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,</span>
+#&gt; <span class='message'>    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,</span>
+#&gt; <span class='message'>    union, unique, unsplit, which.max, which.min</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: S4Vectors</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: stats4</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘S4Vectors’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    expand.grid</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: IRanges</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomeInfoDb</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomicRanges</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: AnnotationDbi</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: Biobase</span></div><div class='output co'>#&gt; <span class='message'>Welcome to Bioconductor</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    Vignettes contain introductory material; view with</span>
+#&gt; <span class='message'>    'browseVignettes()'. To cite Bioconductor, see</span>
+#&gt; <span class='message'>    'citation("Biobase")', and for packages 'citation("pkgname")'.</span></div><div class='input'>
 <span class='co'>##### Set up BigWig #####</span>
 
 <span class='co'># obtain path to example bw on recount2</span>
@@ -290,7 +311,7 @@ greatest disruption.</p>
     type <span class='op'>=</span> <span class='st'>"samples"</span>,
     download <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-<span class='co'># \dontshow{</span>
+</div><div class='output co'>#&gt; <span class='message'>Setting options('download.file.method.GEOquery'='auto')</span></div><div class='output co'>#&gt; <span class='message'>Setting options('GEOquery.inmemory.gpl'=FALSE)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: multiple methods tables found for ‘rowRanges’</span></div><div class='output co'>#&gt; <span class='message'>No methods found in package ‘IRanges’ for request: ‘values&lt;-’ when loading ‘derfinder’</span></div><div class='output co'>#&gt; <span class='message'>No methods found in package ‘IRanges’ for request: ‘values’ when loading ‘derfinder’</span></div><div class='input'><span class='co'># \dontshow{</span>
 <span class='co'># cache the bw for speed in later</span>
 <span class='co'># examples/testing during R CMD Check</span>
 <span class='va'>bw_path</span> <span class='op'>&lt;-</span> <span class='fu'>dasper</span><span class='fu'>:::</span><span class='fu'>.file_cache</span><span class='op'>(</span><span class='va'>bw_path</span><span class='op'>)</span>
@@ -304,27 +325,27 @@ greatest disruption.</p>
     types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-26 19:22:41 - Filtering junctions..."
-#&gt; [1] "2020-10-26 19:22:41 - by count..."
-#&gt; [1] "2020-10-26 19:22:41 - done!"
+#&gt; [1] "2020-11-08 01:38:48 - Filtering junctions..."
+#&gt; [1] "2020-11-08 01:38:48 - by count..."
+#&gt; [1] "2020-11-08 01:38:49 - done!"
 #&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-10-26 19:22:41 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-10-26 19:22:55 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-10-26 19:22:56 - Tidying junction annotation..."
-#&gt; [1] "2020-10-26 19:22:56 - Deriving junction categories..."
-#&gt; [1] "2020-10-26 19:22:57 - done!"
+#&gt; [1] "2020-11-08 01:38:49 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
+#&gt; [1] "2020-11-08 01:39:12 - Getting junction annotation using overlapping exons..."
+#&gt; [1] "2020-11-08 01:39:14 - Tidying junction annotation..."
+#&gt; [1] "2020-11-08 01:39:14 - Deriving junction categories..."
+#&gt; [1] "2020-11-08 01:39:14 - done!"
 #&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-26 19:22:57 - Filtering junctions..."
-#&gt; [1] "2020-10-26 19:22:57 - by type..."
-#&gt; [1] "2020-10-26 19:22:57 - done!"
+#&gt; [1] "2020-11-08 01:39:14 - Filtering junctions..."
+#&gt; [1] "2020-11-08 01:39:14 - by type..."
+#&gt; [1] "2020-11-08 01:39:14 - done!"
 #&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-10-26 19:22:57 - Clustering junctions..."
-#&gt; [1] "2020-10-26 19:22:57 - Normalising junction counts..."
-#&gt; [1] "2020-10-26 19:22:57 - done!"
+#&gt; [1] "2020-11-08 01:39:14 - Clustering junctions..."
+#&gt; [1] "2020-11-08 01:39:15 - Normalising junction counts..."
+#&gt; [1] "2020-11-08 01:39:15 - done!"
 #&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-10-26 19:22:57 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-10-26 19:22:57 - Generating junction abnormality score..."
-#&gt; [1] "2020-10-26 19:22:57 - done!"</div><div class='input'>
+#&gt; [1] "2020-11-08 01:39:15 - Calculating the direction of change of junctions..."
+#&gt; [1] "2020-11-08 01:39:15 - Generating junction abnormality score..."
+#&gt; [1] "2020-11-08 01:39:15 - done!"</div><div class='input'>
 <span class='co'>##### coverage_norm #####</span>
 
 <span class='va'>coverage_normed</span> <span class='op'>&lt;-</span> <span class='fu'>coverage_norm</span><span class='op'>(</span>
@@ -334,17 +355,17 @@ greatest disruption.</p>
     coverage_paths_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>,
     coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-10-26 19:22:57 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-10-26 19:22:57 - Obtaining regions to use to normalise coverage..."
-#&gt; [1] "2020-10-26 19:23:03 - Loading coverage..."
-#&gt; [1] "2020-10-26 19:23:07 - Normalising coverage..."
-#&gt; [1] "2020-10-26 19:23:07 - done!"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "2020-11-08 01:39:15 - Obtaining exonic and intronic regions to load coverage from..."
+#&gt; [1] "2020-11-08 01:39:15 - Obtaining regions to use to normalise coverage..."
+#&gt; [1] "2020-11-08 01:39:20 - Loading coverage..."
+#&gt; [1] "2020-11-08 01:39:28 - Normalising coverage..."
+#&gt; [1] "2020-11-08 01:39:28 - done!"</div><div class='input'>
 <span class='co'>##### coverage_score #####</span>
 
 <span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>coverage_score</span><span class='op'>(</span><span class='va'>junctions_processed</span>, <span class='va'>coverage_normed</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-10-26 19:23:07 - Generating coverage abnormality score..."
-#&gt; [1] "2020-10-26 19:23:08 - Obtaining regions with greatest coverage dysruption..."
-#&gt; [1] "2020-10-26 19:23:08 - done!"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "2020-11-08 01:39:28 - Generating coverage abnormality score..."
+#&gt; [1] "2020-11-08 01:39:28 - Obtaining regions with greatest coverage dysruption..."
+#&gt; [1] "2020-11-08 01:39:28 - done!"</div><div class='input'>
 <span class='co'>##### coverage_process #####</span>
 
 <span class='co'># this wrapper will obtain coverage scores identical to those</span>
@@ -356,15 +377,15 @@ greatest disruption.</p>
     coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>3</span><span class='op'>)</span>
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "# Loading and normalising coverage ---------------------------------------------"
-#&gt; [1] "2020-10-26 19:23:08 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-10-26 19:23:08 - Obtaining regions to use to normalise coverage..."
-#&gt; [1] "2020-10-26 19:23:13 - Loading coverage..."
-#&gt; [1] "2020-10-26 19:23:19 - Normalising coverage..."
-#&gt; [1] "2020-10-26 19:23:19 - done!"
+#&gt; [1] "2020-11-08 01:39:28 - Obtaining exonic and intronic regions to load coverage from..."
+#&gt; [1] "2020-11-08 01:39:28 - Obtaining regions to use to normalise coverage..."
+#&gt; [1] "2020-11-08 01:39:34 - Loading coverage..."
+#&gt; [1] "2020-11-08 01:39:42 - Normalising coverage..."
+#&gt; [1] "2020-11-08 01:39:42 - done!"
 #&gt; [1] "# Scoring coverage ---------------------------------------------"
-#&gt; [1] "2020-10-26 19:23:19 - Generating coverage abnormality score..."
-#&gt; [1] "2020-10-26 19:23:19 - Obtaining regions with greatest coverage dysruption..."
-#&gt; [1] "2020-10-26 19:23:19 - done!"</div><div class='input'>
+#&gt; [1] "2020-11-08 01:39:42 - Generating coverage abnormality score..."
+#&gt; [1] "2020-11-08 01:39:43 - Obtaining regions with greatest coverage dysruption..."
+#&gt; [1] "2020-11-08 01:39:43 - done!"</div><div class='input'>
 <span class='co'># the two objects are equivalent</span>
 <span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>junctions_w_coverage</span>, <span class='va'>junctions</span>, check.attributes <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div></pre>
