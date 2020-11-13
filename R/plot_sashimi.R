@@ -96,36 +96,6 @@ plot_sashimi <- function(
         count_label
     )
 
-    ##### Plot coverage #####
-
-    # if(!is.null(coverage_case)){
-    #
-    #   coverage_plot <-
-    #     plot_coverage(coverage_case = coverage_case,
-    #                   coverage_ctrl = coverage_ctrl,
-    #                   region_to_plot = GenomicRanges::GRanges(stringr::str_c(chromosome_to_plot, ":", xmin, "-", xmax)),
-    #                   binwidth = binwidth) +
-    #     theme(axis.title.x = element_blank())
-    #
-    #   coverage_plot_leg <- ggpubr::get_legend(coverage_plot)
-    #   sashimi_plot_plot_leg <- ggpubr::get_legend(sashimi_plot_list[[1]])
-    #
-    #   # arrange plots into panels
-    #   sashimi_plot <- ggpubr::ggarrange(plotlist = c(list(coverage_plot), sashimi_plot_list),
-    #                                     ncol = 1,
-    #                                     nrow = length(c(list(coverage_plot), sashimi_plot_list)),
-    #                                     align = "v",
-    #                                     legend = "none",
-    #                                     heights = c(1, rep(1.25, length(sashimi_plot_list))))
-    #
-    #   # add legends
-    #   sashimi_plot <- ggpubr::ggarrange(plotlist = list(coverage_plot_leg, sashimi_plot, sashimi_plot_plot_leg),
-    #                                     ncol = 1,
-    #                                     nrow = 3,
-    #                                     heights = c(0.75, 10, 0.75))
-    #
-    # }
-
     ##### Add annotation #####
 
     sashimi_plots <- .plot_annotation(sashimi_plots, gene_tx_id, coords_to_plot)
@@ -133,6 +103,20 @@ plot_sashimi <- function(
     return(sashimi_plots)
 }
 
+#' Tidy user-inputted gene or transcript id
+#'
+#' `.gene_tx_type_get` will recognize whether the user has inputted a gene or
+#' transcript ID. Then derive the column which the gene/transcript should be
+#' matched against in `junctions`.
+#'
+#' @param gene_tx_id gene or transcript id (currently MUST be in a "ENSG" or
+#'   "ENST" format).
+#'
+#' @return list with gene/transcript id, the name of which corresponds to the
+#'   `SummarizedExperiment::rowRanges` column to filter in `junctions`.
+#'
+#' @keywords internal
+#' @noRd
 .gene_tx_type_get <- function(gene_tx_id) {
     if (is.null(gene_tx_id) | length(gene_tx_id) != 1) {
         stop("gene_tx_id must be set and be of length 1")
@@ -152,20 +136,23 @@ plot_sashimi <- function(
     return(gene_tx_list)
 }
 
-.gene_tx_to_plot_get <- function(ref,
-    gene_tx_id,
-    gene_tx_type) {
-
-    # create named list of gene/tx id
-    gene_tx_id_list <- list(gene_tx_id)
-    names(gene_tx_id_list) <- gene_tx_type
-
-    # filter for exons of gene/tx of interest
-    gene_tx_to_plot <- GenomicFeatures::genes(ref, filter = gene_tx_id_list)
-
-    return(gene_tx_to_plot)
-}
-
+#' Obtain exons to be plotted
+#'
+#' `.exons_to_plot_get` will obtain the exons from the reference annotation base
+#' on the user-inputted gene or transcript of interest. Then will filter for
+#' only exons overlapping `region`. Will use `GenomicRanges::disjoin` to
+#' collapse together overlapping exons.
+#'
+#' @inheritParams plot_sashimi
+#'
+#' @param gene_tx_list list containing gene/transcript id returned from
+#'   `.gene_tx_type_get`.
+#'
+#' @return [GenomicRanges][GenomicRanges::GRanges-class] object containing exons
+#'   to be plotted.
+#'
+#' @keywords internal
+#' @noRd
 .exons_to_plot_get <- function(ref,
     gene_tx_list,
     region) {
@@ -193,6 +180,19 @@ plot_sashimi <- function(
     return(exons_to_plot)
 }
 
+#' Obtain junctions to be plotted
+#'
+#' `.junctions_to_plot_get` will obtain the junctions that are connected with
+#' the gene or transcript via `junction_annot` and fall within `region`.
+#'
+#' @inheritParams plot_sashimi
+#'
+#' @return
+#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#'   object containing exons to be plotted.
+#'
+#' @keywords internal
+#' @noRd
 .junctions_to_plot_get <- function(junctions, gene_tx_list, region) {
     gene_tx <- gene_tx_list %>% unlist()
 
@@ -217,6 +217,19 @@ plot_sashimi <- function(
     return(junctions_to_plot)
 }
 
+#' Obtains the co-ordinates used for plotting
+#'
+#' `.coords_to_plot_get` will obtain the junctions that are connected with
+#' the gene or transcript via `junction_annot` and fall within `region`.
+#'
+#' @inheritParams plot_sashimi
+#'
+#' @return
+#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#'   object containing exons to be plotted.
+#'
+#' @keywords internal
+#' @noRd
 .coords_to_plot_get <- function(gene_tx_to_plot, exons_to_plot, junctions_to_plot, ext_factor = 30) {
     coords_to_plot <-
         list(
@@ -298,11 +311,8 @@ plot_sashimi <- function(
         ggplot2::scale_y_continuous(limits = c(-1, 1)) +
         ggplot2::scale_x_continuous(
             name = stringr::str_c("Chromosome ", coords_to_plot[["chr"]]),
-            limits = c(
-                coords_to_plot[["x_min"]],
-                coords_to_plot[["x_max"]]
-            )
         ) +
+        ggplot2::coord_cartesian(xlim = c(coords_to_plot[["x_min"]], coords_to_plot[["x_max"]])) +
         ggpubr::theme_pubclean(flip = TRUE) +
         ggplot2::theme(
             axis.line.y = ggplot2::element_blank(),
