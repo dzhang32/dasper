@@ -312,7 +312,12 @@ plot_sashimi <- function(
         ggplot2::scale_x_continuous(
             name = stringr::str_c("Chromosome ", coords_to_plot[["chr"]]),
         ) +
-        ggplot2::coord_cartesian(xlim = c(coords_to_plot[["x_min"]], coords_to_plot[["x_max"]])) +
+        ggplot2::coord_cartesian(
+            xlim = c(
+                coords_to_plot[["x_min"]],
+                coords_to_plot[["x_max"]]
+            )
+        ) +
         ggpubr::theme_pubclean(flip = TRUE) +
         ggplot2::theme(
             axis.line.y = ggplot2::element_blank(),
