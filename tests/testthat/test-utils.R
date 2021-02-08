@@ -1,5 +1,3 @@
-context("Test utility functions")
-
 ##### .chr_filter #####
 
 x <- dplyr::tibble(chr = c("1", "2", "3"))

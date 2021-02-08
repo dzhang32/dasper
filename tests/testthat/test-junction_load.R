@@ -1,5 +1,3 @@
-context("Test the loading of junctions data")
-
 junctions_example_1_path <- system.file("extdata", "junctions_example_1.txt", package = "dasper", mustWork = TRUE)
 junctions_example_2_path <- system.file("extdata", "junctions_example_2.txt", package = "dasper", mustWork = TRUE)
 
@@ -50,8 +48,8 @@ ucsc_2 <- .control_coord_convert(control, coord_system = 0)
 ensembl_2 <- .control_coord_convert(control, coord_system = 1)
 
 test_that(".control_coord_convert has the correct output", {
-    expect_equivalent(ucsc, ucsc_2)
-    expect_equivalent(ensembl, ensembl_2)
+    expect_equal(ucsc, ucsc_2)
+    expect_equal(ensembl, ensembl_2)
 })
 
 test_that(".control_coord_convert catches user-input errors", {

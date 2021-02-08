@@ -1,3 +1,9 @@
+# dasper 1.1.1
+
+NEW FEATURES
+
+* Use of testthat edition 3 and parrallel running of tests. 
+
 # dasper 0.99.2
 
 NEW FEATURES

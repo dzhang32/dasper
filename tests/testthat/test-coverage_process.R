@@ -1,5 +1,3 @@
-context("Testing coverage processing")
-
 # Load data ---------------------------------------------------------------
 
 # use Genomic state to load txdb (GENCODE v31)
@@ -54,20 +52,20 @@ exon_widths_end <- mcols(junctions)[["exon_width_end"]][annot_indexes] %>%
     unname()
 
 test_that(".coverage_exon_intron output looks correct", {
-    expect_equivalent(
+    expect_equal(
         end(coverage_regions[["exon_coords_start"]]),
         start(coverage_regions[["intron_coords"]]) - 1
     )
-    expect_equivalent(
+    expect_equal(
         start(coverage_regions[["exon_coords_end"]]),
         end(coverage_regions[["intron_coords"]]) + 1
     )
 
-    expect_equivalent(
+    expect_equal(
         (end(coverage_regions[["exon_coords_start"]][annot_indexes]) - (exon_widths_start - 1)),
         start(coverage_regions[["exon_coords_start"]][annot_indexes])
     )
-    expect_equivalent(
+    expect_equal(
         (start(coverage_regions[["exon_coords_end"]][annot_indexes]) + (exon_widths_end - 1)),
         end(coverage_regions[["exon_coords_end"]][annot_indexes])
     )
@@ -219,13 +217,13 @@ test_that(".coverage_load_samp output looks correct", {
 coverage_normalised <- .coverage_norm(coverage, norm_const = 2)
 
 test_that(".coverage_norm output looks correct", {
-    expect_equivalent(
+    expect_equal(
         coverage_normalised[["case"]][["exon_coverage_start"]][1, ],
         coverage[["case"]][["exon_coverage_start"]][1, ] /
             (coverage[["case"]][["norm_coverage"]][1, ] + 2)
     )
 
-    expect_equivalent(
+    expect_equal(
         coverage_normalised[["case"]][["exon_coverage_start"]][2, ],
         coverage[["case"]][["exon_coverage_start"]][2, ] /
             (coverage[["case"]][["norm_coverage"]][2, ] + 2)
@@ -291,12 +289,12 @@ test_that("zscore has been calculated correctly", {
             FUN = sd
         )
 
-    expect_equivalent(
+    expect_equal(
         coverage_scores[[1]][, 1],
         (coverage_normalised[["case"]][[1]][, 1] - control_mean) / (control_sd + 0.02)
     )
 
-    expect_equivalent(
+    expect_equal(
         coverage_scores[[1]][, 2],
         (coverage_normalised[["case"]][[1]][, 2] - control_mean) / (control_sd + 0.02)
     )

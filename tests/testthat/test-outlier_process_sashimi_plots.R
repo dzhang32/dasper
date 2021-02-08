@@ -1,5 +1,3 @@
-context("Testing outlier processing and sashimi plot functions")
-
 # Load data ---------------------------------------------------------------
 
 # use Genomic state to load txdb (GENCODE v31)

@@ -1,5 +1,3 @@
-context("Testing junction processing")
-
 # Load data ---------------------------------------------------------------
 
 # use Genomic state to load txdb (GENCODE v31)
@@ -465,7 +463,7 @@ test_that("direction and score have been calculated correctly", {
         ifelse(case_score > 0, 1, -1)
     )
 
-    expect_equivalent(
+    expect_equal(
         assays(junctions_w_score)[["score"]],
         case_score %>% unlist()
     )

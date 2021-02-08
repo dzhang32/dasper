@@ -1,6 +1,6 @@
 Package: dasper
 Title: Detecting aberrant splicing events from RNA-sequencing data
-Version: 1.1.0
+Version: 1.1.1
 Date: 2020-10-26
 Authors@R: c(person(given = "David", family = "Zhang", 
     role = c("aut", "cre"),
@@ -66,3 +66,5 @@ Imports:
 Depends: 
     R (>= 4.0)
 StagedInstall: no
+Config/testthat/edition: 3
+Config/testthat/parallel: true
