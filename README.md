@@ -54,7 +54,7 @@ print(citation("dasper"), bibtex = TRUE)
 #> dzhang32 (2021). _Detecting abberant splicing events from
 #> RNA-sequencing data_. doi: 10.18129/B9.bioc.dasper (URL:
 #> https://doi.org/10.18129/B9.bioc.dasper),
-#> https://github.com/dzhang32/dasper - R package version 1.1.1, <URL:
+#> https://github.com/dzhang32/dasper - R package version 1.1.2, <URL:
 #> http://www.bioconductor.org/packages/dasper>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -64,7 +64,7 @@ print(citation("dasper"), bibtex = TRUE)
 #>     author = {{dzhang32}},
 #>     year = {2021},
 #>     url = {http://www.bioconductor.org/packages/dasper},
-#>     note = {https://github.com/dzhang32/dasper - R package version 1.1.1},
+#>     note = {https://github.com/dzhang32/dasper - R package version 1.1.2},
 #>     doi = {10.18129/B9.bioc.dasper},
 #>   }
 #> 
@@ -125,4 +125,4 @@ In particular, I am very grateful to
 [Leo](http://lcolladotor.github.io/) for his time and advice throughout
 the development of `dasper`. The transition of `dasper`
 Bioconductor-friendly package was made possible thanks to his
-*[biocthis](https://github.com/lcolladotor/biocthis)* package.
+*[biocthis](https://bioconductor.org/packages/3.12/biocthis)* package.
