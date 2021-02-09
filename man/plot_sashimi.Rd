@@ -25,21 +25,25 @@ object.}
 \item{ref}{either path to gtf/gff3 or object of class
 \link[GenomicFeatures:TxDb-class]{TxDb-class}.}
 
-\item{gene_tx_id}{gene name as ensembl id, ensembl transcript id or gene
-name.}
+\item{gene_tx_id}{character scalar with the id of the gene. Currently, this
+must be in the form of an Ensembl gene or transcript id, which has a
+matching entry in \code{ref}.}
 
-\item{case_id}{list of one element. This must be a character vector
-containing the}
+\item{case_id}{list containing 1 element. The contents of this element must
+be a character vector specifying sample ids that are to be plotted. The
+name of this element must correspond to the column containing sample ids in
+the junction \code{SummarizedExperiment::mcols()}. By default, all cases will be
+plotted.}
 
-\item{sum_func}{list of one element. This must be a character vector
-containing the}
+\item{sum_func}{function that will be used to aggregate the junction counts
+and coverage for controls. By default, \code{mean} will be used.}
 
 \item{region}{a \link[GenomicRanges:GRanges-class]{GenomicRanges} of length 1
-that is used to filter the exons/junctions. Only those that overlap this
-region are plotted.}
+that is used to filter the exons/junctions plotted. Only those that overlap
+this region are plotted.}
 
-\item{annot_colour}{character vector of colours for junction types. One value
-must be supplied labelling each of the 7 possible types.}
+\item{annot_colour}{character vector length 7, representing the colours of
+junction types.}
 
 \item{digits}{used in \code{round}, specifying the number of digits to round the
 junction counts to for visualisation purposes.}
@@ -52,9 +56,10 @@ each junction.}
 transcript/region of interest.
 }
 \description{
-\code{plot_sashimi} plots the splicing events and coverage over a specific
-genes/transcript and/or genomic region of interest. The plotting are built
-from \code{ggplot2} functions.
+\code{plot_sashimi} plots the splicing events and coverage across specific
+genes/transcripts/regions of interest. Unlike traditional sashimi plots,
+coverage and junction tracks are separated, which enables user's to choose
+whether they would like to plot only the junctions.
 }
 \examples{
 

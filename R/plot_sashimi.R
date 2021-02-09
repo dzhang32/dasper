@@ -1,22 +1,27 @@
 #' Visualise RNA-seq data in a the form of a sashimi plot
 #'
-#' \code{plot_sashimi} plots the splicing events and coverage over a specific
-#' genes/transcript and/or genomic region of interest. The plotting are built
-#' from `ggplot2` functions.
+#' \code{plot_sashimi} plots the splicing events and coverage across specific
+#' genes/transcripts/regions of interest. Unlike traditional sashimi plots,
+#' coverage and junction tracks are separated, which enables user's to choose
+#' whether they would like to plot only the junctions.
 #'
 #' @inheritParams junction_annot
 #'
-#' @param gene_tx_id gene name as ensembl id, ensembl transcript id or gene
-#'   name.
-#' @param case_id list of one element. This must be a character vector
-#'   containing the
-#' @param sum_func list of one element. This must be a character vector
-#'   containing the
+#' @param gene_tx_id character scalar with the id of the gene. Currently, this
+#'   must be in the form of an Ensembl gene or transcript id, which has a
+#' matching entry in `ref`.
+#' @param case_id list containing 1 element. The contents of this element must
+#'   be a character vector specifying sample ids that are to be plotted. The
+#'   name of this element must correspond to the column containing sample ids in
+#'   the junction `SummarizedExperiment::mcols()`. By default, all cases will be
+#'   plotted.
+#' @param sum_func function that will be used to aggregate the junction counts
+#'   and coverage for controls. By default, `mean` will be used.
 #' @param region a [GenomicRanges][GenomicRanges::GRanges-class] of length 1
-#'   that is used to filter the exons/junctions. Only those that overlap this
-#'   region are plotted.
-#' @param annot_colour character vector of colours for junction types. One value
-#'   must be supplied labelling each of the 7 possible types.
+#'   that is used to filter the exons/junctions plotted. Only those that overlap
+#'   this region are plotted.
+#' @param annot_colour character vector length 7, representing the colours of
+#'   junction types.
 #' @param digits used in `round`, specifying the number of digits to round the
 #'   junction counts to for visualisation purposes.
 #' @param count_label logical value specifying whether to add label the count of
@@ -189,7 +194,7 @@ plot_sashimi <- function(
 #'
 #' @return
 #'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
-#'   object containing exons to be plotted.
+#'   object containing junctions to be plotted.
 #'
 #' @keywords internal
 #' @noRd
@@ -219,14 +224,20 @@ plot_sashimi <- function(
 
 #' Obtains the co-ordinates used for plotting
 #'
-#' `.coords_to_plot_get` will obtain the junctions that are connected with
-#' the gene or transcript via `junction_annot` and fall within `region`.
+#' `.coords_to_plot_get` will obtain the junctions that are connected with the
+#' gene or transcript via `junction_annot` and fall within `region`.
 #'
 #' @inheritParams plot_sashimi
 #'
-#' @return
+#' @param exons_to_plot [GenomicRanges][GenomicRanges::GRanges-class] object
+#'   containing exons to be plotted.
+#' @param junctions_to_plot
 #'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
-#'   object containing exons to be plotted.
+#'    object containing junctions to be plotted.
+#' @param ext_factor the factor by which to extend the x-axes limits of the
+#'   plot.
+#'
+#' @return list containing the coordinates to be used for plotting.
 #'
 #' @keywords internal
 #' @noRd
@@ -261,7 +272,20 @@ plot_sashimi <- function(
     return(coords_to_plot)
 }
 
-
+#' Plot the exons and gene/transcript of interest
+#'
+#' `.plot_gene_track` will plot the exons and gene body of the inputted gene as a `ggplot`.
+#'
+#' @inheritParams plot_sashimi
+#'
+#' @param coords_to_plot list containing the coordinates to be used for plotting.
+#' @param exons_to_plot [GenomicRanges][GenomicRanges::GRanges-class] object
+#'   containing exons to be plotted.
+#'
+#' @return A `ggplot` object with the gene track.
+#'
+#' @keywords internal
+#' @noRd
 .plot_gene_track <- function(coords_to_plot, exons_to_plot) {
 
     # convert to df for ggplot
@@ -329,6 +353,28 @@ plot_sashimi <- function(
     return(gene_track)
 }
 
+#' Plot the junction track for cases and controls
+#'
+#' `.plot_sashimi_junctions` will plot the junctions overlayed on the
+#' `gene_track_plot` for cases and controls. Internally, this uses
+#' `.junctions_counts_type_get` and `.junctions_points_get` and
+#' `.plot_junctions`.
+#'
+#' @inheritParams plot_sashimi
+#'
+#' @param junctions_to_plot
+#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#'    object containing junctions to be plotted.
+#' @param gene_track_plot `ggplot` object displaying the exons and gene body
+#'   returned by `.plot_gene_track`.
+#' @param assay_name character scalar specifying the
+#'   `SummarizedExperiment::assay()` from which to obtain junction counts.
+#'
+#' @return A `ggplot` object with the exons and junctions for cases and
+#'   controls.
+#'
+#' @keywords internal
+#' @noRd
 .plot_sashimi_junctions <- function(junctions_to_plot,
     gene_track_plot,
     case_id,
@@ -367,7 +413,29 @@ plot_sashimi <- function(
     )
 }
 
-.junctions_counts_type_get <- function(junctions_to_plot, case_id = list(samp_id = "samp_1"), sum_func = mean, digits = 2, assay_name = "norm") {
+#' Obtain the junction counts
+#'
+#' `.junctions_counts_type_get` will obtain the counts to plot for the
+#' cases/controls. For controls, if there is more than one sample, it will
+#' summarise the counts via `sum_func`.
+#'
+#' @inheritParams plot_sashimi
+#'
+#' @param junctions_to_plot
+#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#'    object containing junctions to be plotted.
+#'
+#' @return A `data.frame` will the junctions to be plotted and their associated
+#'   counts for cases/controls.
+#'
+#' @keywords internal
+#' @noRd
+.junctions_counts_type_get <- function(
+    junctions_to_plot,
+    case_id = list(samp_id = "samp_1"),
+    sum_func = mean,
+    digits = 2,
+    assay_name = "norm") {
 
     # for R CMD Check
     index <- type <- . <- NULL
@@ -418,6 +486,20 @@ plot_sashimi <- function(
     return(junctions_counts)
 }
 
+#' Obtain the junction points
+#'
+#' `.junctions_points_get` will obtain the points of the arc used to plot each
+#' junction. This is based off of the `grid:::calcControlPoints()` function.
+#' Will also mark the midpoint of each junction, used for the labelled of
+#' junction counts.
+#'
+#' @param junctions_counts `data.frame` containing junction counts returned by
+#'   `.junctions_counts_type_get`.
+#'
+#' @return A `data.frame` with junction x-coords calculated.
+#'
+#' @keywords internal
+#' @noRd
 .junctions_points_get <- function(junctions_counts, ncp = 25) {
     # For R CMD Check
     y <- index <- x <- . <- type <- mid_point <- samp_id <- NULL
@@ -492,6 +574,21 @@ plot_sashimi <- function(
     return(junctions_points)
 }
 
+#' Plot the junction counts for a particular sample
+#'
+#' `.plot_junctions` will plot the junctions for each sample and store outputted
+#' `ggplot`s into a list.
+#'
+#' @param junctions_to_plot
+#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#'    object containing junctions to be plotted.
+#' @param gene_track_plot `ggplot` object displaying the exons and gene body
+#'   returned by `.plot_gene_track`.
+#'
+#' @return A `list` containing 1 `ggplot` object per sample.
+#'
+#' @keywords internal
+#' @noRd
 .plot_junctions <- function(junctions_to_plot = junctions_to_plot,
     gene_track_plot = gene_track_plot,
     annot_colour = annot_colour,
@@ -570,6 +667,21 @@ plot_sashimi <- function(
     return(sashimi_plots)
 }
 
+#' Add annotation for sashimi plots
+#'
+#' `.plot_annotation` will add the gene name, chromosome and strand plotted.
+#'
+#' @inheritParams plot_sashimi
+#'
+#' @param sashimi_plots
+#'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
+#'    object containing junctions to be plotted.
+#' @param coords_to_plot list containing the coordinates to be used for plotting.
+#'
+#' @return An annotated sashimi plot.
+#'
+#' @keywords internal
+#' @noRd
 .plot_annotation <- function(sashimi_plots, gene_tx_id, coords_to_plot) {
     sashimi_plots <- sashimi_plots %>%
         ggpubr::annotate_figure(

@@ -46,7 +46,6 @@ bib <- c(
     dasper = citation("dasper")[1],
     RefManageR = citation("RefManageR")[1]
 )
-
 ```
 
 # Basics
