@@ -29,18 +29,14 @@ RoxygenNote: 7.1.1
 Suggests: 
     BiocStyle,
     covr,
-    testthat,
-    GenomicState, 
-    ggplot2,
-    ggpubr,
-    ggrepel,
-    grid,
+    GenomicState,
     knitr,
     recount,
     RefManageR,
     rmarkdown,
-    sessioninfo,
     rtracklayer,
+    sessioninfo,
+    testthat,
     tibble
 VignetteBuilder: knitr
 Imports: 
@@ -52,6 +48,10 @@ Imports:
     GenomeInfoDb,
     GenomicFeatures,
     GenomicRanges,
+    ggplot2,
+    ggpubr,
+    ggrepel,
+    grid,    
     IRanges, 
     magrittr, 
     megadepth,
