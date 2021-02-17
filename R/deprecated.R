@@ -39,15 +39,15 @@ annotate_junc_ref <- function(junc_metadata, gtf) {
         print(stringr::str_c(Sys.time(), " - Importing gtf..."))
 
         # import gtf using refGenome, needed to obtain the annotated splice junctions easily
-        ref <- refGenome::ensemblGenome()
-        refGenome::basedir(ref) <- dirname(gtf)
-        refGenome::read.gtf(ref, gtf %>% stringr::str_replace(".*/", ""))
+        ref <- ensemblGenome()
+        basedir(ref) <- dirname(gtf)
+        read.gtf(ref, gtf %>% stringr::str_replace(".*/", ""))
     } else if (class(gtf) == "ensemblGenome") {
         ref <- gtf
     }
 
     ref_exons <- ref@ev$gtf[ref@ev$gtf$feature == "exon", ] %>% GRanges()
-    ref_junc <- refGenome::getSpliceTable(ref)
+    ref_junc <- getSpliceTable(ref)
     ref_junc <- ref_junc@ev$gtf
 
     ##### Obtain annotation through overlapping exons #####
