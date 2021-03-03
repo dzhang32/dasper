@@ -16,8 +16,6 @@
 #'   object with additional columns that detail overlapping
 #'   genes/transcripts/exons and junction categories.
 #'
-#' @export
-#'
 #' @keywords internal
 #' @rdname deprecated
 annotate_junc_ref <- function(junc_metadata, gtf) {
