@@ -50,12 +50,28 @@ mcols(junctions_sorted)[["coverage"]] <-
         chr_format = "chr"
     )
 
+coverage_rt <-
+    .coverage_load(
+        regions = junctions_sorted,
+        coverage_path = bw_path,
+        sum_fun = "mean",
+        chr_format = "chr",
+        method = "rt"
+    ) %>%
+    mean() %>%
+    round(2)
+
 test_that(".coverage_load has correct output", {
 
     # make sure the order of returned coverage is same as inputted regions
     expect_identical(
         mcols(sort(junctions))[["coverage"]],
         mcols(junctions_sorted)[["coverage"]]
+    )
+
+    expect_equal(
+        mcols(junctions_sorted)[["coverage"]],
+        coverage_rt
     )
 })
 

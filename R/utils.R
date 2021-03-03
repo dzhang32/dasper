@@ -78,7 +78,13 @@
 #'
 #' @keywords internal
 #' @noRd
-.coverage_load <- function(coverage_path, regions, chr_format = NULL, sum_fun, out_file = tempfile()) {
+.coverage_load <- function(
+    coverage_path,
+    regions,
+    chr_format = NULL,
+    sum_fun,
+    out_file = tempfile(),
+    method = "md") {
 
     ##### check user input #####
 
@@ -94,32 +100,40 @@
 
     ##### load coverage #####
 
-    temp_regions_path <- stringr::str_c(out_file, ".bed")
-    temp_coverage_prefix <- stringr::str_c(out_file, "_coverage")
+    if (method == "md") {
+        temp_regions_path <- stringr::str_c(out_file, ".bed")
+        temp_coverage_prefix <- stringr::str_c(out_file, "_coverage")
 
-    regions %>%
-        as.data.frame() %>%
-        dplyr::select(seqnames, start, end, strand) %>%
-        dplyr::mutate(
-            start = start - 1, # megadepth uses python indexing, -1 here to match rtracklayer
-            dummy_1 = ".",
-            dummy_2 = "."
-        ) %>%
-        readr::write_delim(temp_regions_path, delim = "\t", col_names = FALSE)
+        regions %>%
+            as.data.frame() %>%
+            dplyr::select(seqnames, start, end, strand) %>%
+            dplyr::mutate(
+                start = start - 1, # megadepth uses 0-based indexing
+                dummy_1 = ".",
+                dummy_2 = "."
+            ) %>%
+            readr::write_delim(temp_regions_path,
+                delim = "\t",
+                col_names = FALSE
+            )
 
-    # check <- rtracklayer::import(coverage_path, which = regions, as = "NumericList")
+        coverage <- megadepth::get_coverage(
+            bigwig_file = coverage_path,
+            op = sum_fun,
+            annotation = temp_regions_path,
+            prefix = temp_coverage_prefix
+        )
 
-    coverage <- megadepth::get_coverage(
-        bigwig_file = coverage_path,
-        op = sum_fun,
-        annotation = temp_regions_path,
-        prefix = temp_coverage_prefix
-    )
+        coverage <- mcols(coverage)[["score"]]
 
-    coverage <- mcols(coverage)[["score"]]
-
-    if (sum(coverage, na.rm = TRUE) == 0) {
-        warning("Total AUC across all regions was 0. Make sure chromsome format matches between input regions and bigWig/BAM file.")
+        if (sum(coverage, na.rm = TRUE) == 0) {
+            warning("Total AUC across all regions was 0. Make sure chromosome format matches between input regions and bigWig/BAM file.")
+        }
+    } else if (method == "rt") {
+        coverage <- rtracklayer::import(coverage_path,
+            which = regions,
+            as = "NumericList"
+        )
     }
 
     return(coverage)

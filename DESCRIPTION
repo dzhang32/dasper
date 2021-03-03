@@ -60,6 +60,7 @@ Imports:
     plyranges, 
     readr,
     reticulate, 
+    rtracklayer,
     S4Vectors,
     stringr, 
     SummarizedExperiment,
