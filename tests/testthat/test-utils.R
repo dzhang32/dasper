@@ -57,8 +57,9 @@ coverage_rt <-
         sum_fun = "mean",
         chr_format = "chr",
         method = "rt"
-    ) %>%
-    mean() %>%
+    ) %>% 
+    lapply(FUN = mean) %>% 
+    unlist() %>% 
     round(2)
 
 test_that(".coverage_load has correct output", {
