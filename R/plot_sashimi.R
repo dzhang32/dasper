@@ -9,7 +9,7 @@
 #'
 #' @param gene_tx_id character scalar with the id of the gene. Currently, this
 #'   must be in the form of an Ensembl gene or transcript id, which has a
-#' matching entry in `ref`.
+#'   matching entry in `ref`.
 #' @param case_id list containing 1 element. The contents of this element must
 #'   be a character vector specifying sample ids that are to be plotted. The
 #'   name of this element must correspond to the column containing sample ids in
@@ -26,6 +26,12 @@
 #'   junction counts to for visualisation purposes.
 #' @param count_label logical value specifying whether to add label the count of
 #'   each junction.
+#' @param coverage_paths_case path to BigWig file for case sample, currently
+#'   only supports the inclusion of 1 case.
+#' @param coverage_paths_control path(s) to BigWig files for control samples.
+#' @param load_func function used to load coverage.
+#' @param binwidth the number of bases to aggregate coverage across using
+#'   `sum_func` when plotting. .
 #'
 #' @return `ggplot` displaying the splicing (and coverage) surrounding the
 #'   transcript/region of interest.
@@ -65,7 +71,12 @@ plot_sashimi <- function(
         ggpubr::get_palette("jco", 6)[c(3)]
     ),
     digits = 2,
-    count_label = TRUE) {
+    count_label = TRUE,
+    coverage_paths_case = NULL,
+    coverage_paths_control = NULL,
+    coverage_chr_control = NULL,
+    load_func = .coverage_load,
+    binwidth = 100) {
 
     ##### Load reference annotation #####
 
@@ -91,7 +102,8 @@ plot_sashimi <- function(
 
     ##### Plot junctions #####
 
-    sashimi_plots <- .plot_sashimi_junctions(junctions_to_plot,
+    sashimi_plots <- .plot_sashimi_junctions(
+        junctions_to_plot,
         gene_track_plot,
         case_id,
         sum_func,
@@ -99,6 +111,37 @@ plot_sashimi <- function(
         assay_name = "norm",
         annot_colour,
         count_label
+    )
+
+    ##### Plot coverage #####
+
+    if (!is.null(coverage_paths_case)) {
+        coverage_to_plot <- .coverage_to_plot_get(coords_to_plot,
+            coverage_paths_case,
+            coverage_paths_control,
+            coverage_chr_control = NULL,
+            load_func = .coverage_load,
+            sum_func = sum_func
+        )
+
+        coverage_plot <- .plot_coverage(
+            coverage_to_plot,
+            coords_to_plot,
+            binwidth
+        )
+
+        sashimi_plots <- .merge_coverage_sashimi(coverage_plot, sashimi_plots)
+    }
+
+    ##### Arrange plots #####
+
+    sashimi_plots <- ggpubr::ggarrange(
+        plotlist = sashimi_plots,
+        ncol = 1,
+        nrow = length(sashimi_plots),
+        common.legend = TRUE,
+        align = "v",
+        legend = "top"
     )
 
     ##### Add annotation #####
@@ -254,8 +297,9 @@ plot_sashimi <- function(
 
     # add a gap between end of exon and end of plot for visualisation
     coords_to_plot[["range_exon_start_end"]] <- coords_to_plot[["max_exon_end"]] - coords_to_plot[["min_exon_start"]]
-    coords_to_plot[["x_min"]] <- coords_to_plot[["min_exon_start"]] - coords_to_plot[["range_exon_start_end"]] / ext_factor
-    coords_to_plot[["x_max"]] <- coords_to_plot[["max_exon_end"]] + coords_to_plot[["range_exon_start_end"]] / ext_factor
+    ext_num <- round(coords_to_plot[["range_exon_start_end"]] / ext_factor)
+    coords_to_plot[["x_min"]] <- coords_to_plot[["min_exon_start"]] - ext_num
+    coords_to_plot[["x_max"]] <- coords_to_plot[["max_exon_end"]] + ext_num
 
     # set coords of the line segment marking gene body
     # extend this if end of gene/tx falls outside of x_min/x_max
@@ -268,6 +312,10 @@ plot_sashimi <- function(
         coords_to_plot[["x_max"]],
         coords_to_plot[["max_exon_end"]]
     )
+
+    # convert numeric values to integers
+    coords_to_plot <- coords_to_plot %>%
+        lapply(FUN = function(x) if (is.numeric(x)) as.integer(x) else x)
 
     return(coords_to_plot)
 }
@@ -375,7 +423,8 @@ plot_sashimi <- function(
 #'
 #' @keywords internal
 #' @noRd
-.plot_sashimi_junctions <- function(junctions_to_plot,
+.plot_sashimi_junctions <- function(
+    junctions_to_plot,
     gene_track_plot,
     case_id,
     sum_func,
@@ -403,14 +452,7 @@ plot_sashimi <- function(
         count_label = count_label
     )
 
-    sashimi_plots <- ggpubr::ggarrange(
-        plotlist = sashimi_plots,
-        ncol = 1,
-        nrow = length(sashimi_plots),
-        common.legend = TRUE,
-        align = "v",
-        legend = "bottom"
-    )
+    return(sashimi_plots)
 }
 
 #' Obtain the junction counts
@@ -589,7 +631,8 @@ plot_sashimi <- function(
 #'
 #' @keywords internal
 #' @noRd
-.plot_junctions <- function(junctions_to_plot = junctions_to_plot,
+.plot_junctions <- function(
+    junctions_to_plot = junctions_to_plot,
     gene_track_plot = gene_track_plot,
     annot_colour = annot_colour,
     count_label = count_label) {
@@ -667,6 +710,143 @@ plot_sashimi <- function(
     return(sashimi_plots)
 }
 
+#' Obtain coverage to plot
+#'
+#' `.coverage_to_plot_get` load the coverage from bigwigs to be plotted and wrangle this into a format ready for `ggplot2`.
+#'
+#' @inheritParams plot_sashimi
+#'
+#' @param coords_to_plot list containing the coordinates to be used for plotting.
+#'
+#' @return An annotated sashimi plot.
+#'
+#' @keywords internal
+#' @noRd
+.coverage_to_plot_get <- function(
+    coords_to_plot,
+    coverage_paths_case,
+    coverage_paths_control,
+    coverage_chr_control = NULL,
+    load_func = .coverage_load,
+    sum_func) {
+    if (length(coverage_paths_case) > 1) {
+        stop("Currently coverage plotting functions only support a single case sample as input")
+    }
+
+    # obtain coverage to plot on the x limits of plot
+    region_to_plot <- GenomicRanges::GRanges(stringr::str_c(
+        coords_to_plot[["chr"]], ":",
+        coords_to_plot[["x_min"]], "-",
+        coords_to_plot[["x_max"]]
+    ))
+
+    # obtain coverage for cases
+    coverage_to_plot_case <- .coverage_load(
+        coverage_path = coverage_paths_case,
+        regions = region_to_plot,
+        sum_fun = "mean",
+        chr_format = NULL,
+        method = "rt"
+    ) %>%
+        unlist() %>%
+        dplyr::tibble(
+            pos = start(region_to_plot):end(region_to_plot),
+            coverage = .
+        ) %>%
+        dplyr::mutate(case_control = "case")
+
+    # obtain coverage for controls
+    if (!is.null(coverage_paths_control)) {
+        coverage_to_plot_control <- vector(
+            mode = "list",
+            length = length(coverage_paths_control)
+        )
+
+        for (i in seq_along(coverage_paths_control)) {
+            coverage_to_plot_control[[i]] <- .coverage_load(
+                coverage_path = coverage_paths_control[i],
+                regions = region_to_plot,
+                sum_fun = "mean",
+                chr_format = coverage_chr_control,
+                method = "rt"
+            ) %>%
+                unlist() %>%
+                dplyr::tibble(
+                    pos = start(region_to_plot):end(region_to_plot),
+                    coverage = .
+                )
+        }
+
+        coverage_to_plot_control <- do.call(dplyr::bind_rows, coverage_to_plot_control) %>%
+            dplyr::group_by(pos) %>%
+            dplyr::summarise(coverage = sum_func(coverage)) %>%
+            dplyr::mutate(case_control = "control")
+
+        coverage_to_plot <- dplyr::bind_rows(
+            coverage_to_plot_case,
+            coverage_to_plot_control
+        )
+    } else {
+        coverage_to_plot <- coverage_to_plot_case
+    }
+
+    # normalise coverage to a relative coverage across the region
+    # to compare between case and controls
+    coverage_to_plot <- coverage_to_plot %>%
+        dplyr::group_by(case_control) %>%
+        dplyr::mutate(coverage = coverage / sum(coverage)) %>%
+        dplyr::ungroup()
+
+    return(coverage_to_plot)
+}
+
+.plot_coverage <- function(coverage_to_plot, coords_to_plot, binwidth) {
+    coverage_plot <-
+        ggplot2::ggplot() +
+        ggplot2::stat_summary_bin(
+            data = coverage_to_plot,
+            ggplot2::aes(
+                x = pos,
+                y = coverage,
+                colour = case_control,
+                fill = case_control
+            ),
+            fun = "mean",
+            geom = "area",
+            binwidth = binwidth,
+            alpha = 0.2
+        ) +
+        ggplot2::scale_x_continuous(
+            name = stringr::str_c("Chromosome ", coords_to_plot[["chr"]] %>%
+                unique() %>%
+                stringr::str_replace("chr", "")),
+            limits = c(coords_to_plot[["x_min"]], coords_to_plot[["x_max"]])
+        ) +
+        ggplot2::scale_y_continuous(name = "Coverage") +
+        ggplot2::scale_colour_manual(name = "", values = ggpubr::get_palette("jco", 2)) +
+        ggplot2::scale_fill_manual(name = "", values = ggpubr::get_palette("jco", 2)) +
+        ggpubr::theme_pubclean(flip = T) +
+        ggplot2::theme(
+            axis.line = ggplot2::element_line(colour = "black"),
+            axis.ticks.x = ggplot2::element_blank()
+        )
+
+    return(coverage_plot)
+}
+
+.merge_coverage_sashimi <- function(coverage_plot, sashimi_plots) {
+    sashimi_legend <- ggpubr::get_legend(sashimi_plots[[1]]) %>%
+        ggpubr::as_ggplot()
+
+    sashimi_plots <- c(
+        list(coverage_plot),
+        sashimi_plots,
+        list(sashimi_legend)
+    )
+
+    return(sashimi_plots)
+}
+
 #' Add annotation for sashimi plots
 #'
 #' `.plot_annotation` will add the gene name, chromosome and strand plotted.
@@ -686,8 +866,10 @@ plot_sashimi <- function(
     sashimi_plots <- sashimi_plots %>%
         ggpubr::annotate_figure(
             top = ggpubr::text_grob(stringr::str_c(
-                "Chromosome ", coords_to_plot[["chr"]], ", ",
-                gene_tx_id, ", strand: ", coords_to_plot[["strand"]]
+                "Chromosome ",
+                coords_to_plot[["chr"]] %>% stringr::str_replace("chr", ""),
+                ", ", gene_tx_id,
+                ", strand: ", coords_to_plot[["strand"]]
             ),
             x = 0.98, face = "italic", size = 10, just = "right"
             )

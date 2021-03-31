@@ -220,12 +220,12 @@ test_that("coords_to_plot has the correct output", {
 
     expect_equal(
         coords_to_plot[["x_min"]],
-        min_start - (max_end - min_start) / 20
+        min_start - round((max_end - min_start) / 20)
     )
 
     expect_equal(
         coords_to_plot[["x_max"]],
-        max_end + (max_end - min_start) / 20
+        max_end + round((max_end - min_start) / 20)
     )
 })
 
@@ -283,6 +283,96 @@ test_that("coords_to_plot has the correct output", {
     ))
 })
 
+##### .coverage_to_plot_get #####
+
+# obtain path to example bw on recount2
+url <- recount::download_study(
+    project = "SRP012682",
+    type = "samples",
+    download = FALSE
+)
+
+bw_path <- dasper:::.file_cache(url[1])
+
+# set up pseudo paths
+# the value of these will be used as random seeds in .load_rand
+coverage_paths_case <- bw_path
+coverage_paths_control <- rep(bw_path, 2)
+
+coverage_to_plot <- .coverage_to_plot_get(coords_to_plot,
+    coverage_paths_case,
+    coverage_paths_control,
+    coverage_chr_control = NULL,
+    load_func = .coverage_load,
+    sum_func = mean
+)
+
+coverage_to_plot_case_only <- .coverage_to_plot_get(coords_to_plot,
+    coverage_paths_case,
+    coverage_paths_control = NULL,
+    coverage_chr_control = NULL,
+    load_func = .coverage_load,
+    sum_func = mean
+)
+
+test_that(".coverage_to_plot_get has the correct output", {
+    expect_identical(
+        coverage_to_plot[["pos"]] %>% unique(),
+        coords_to_plot[["x_min"]]:coords_to_plot[["x_max"]]
+    )
+    expect_identical(
+        unique(coverage_to_plot[["case_control"]]),
+        c("case", "control")
+    )
+    expect_equal(
+        nrow(coverage_to_plot),
+        length(coords_to_plot[["x_min"]]:coords_to_plot[["x_max"]]) * 2
+    )
+
+    expect_identical(
+        coverage_to_plot_case_only[["pos"]] %>% unique(),
+        coords_to_plot[["x_min"]]:coords_to_plot[["x_max"]]
+    )
+    expect_identical(
+        unique(coverage_to_plot_case_only[["case_control"]]),
+        "case"
+    )
+    expect_equal(
+        nrow(coverage_to_plot_case_only),
+        length(coords_to_plot[["x_min"]]:coords_to_plot[["x_max"]])
+    )
+})
+
+test_that(".coverage_to_plot_get catches user input errors", {
+    expect_error(
+        .coverage_to_plot_get(coords_to_plot,
+            coverage_paths_case = rep(bw_path, 2),
+            coverage_paths_control,
+            coverage_chr_control = NULL,
+            load_func = .coverage_load,
+            sum_func = mean
+        ),
+        "Currently coverage plotting functions only support a single case sample as input"
+    )
+})
+
+##### .plot_coverage #####
+
+coverage1 <- .plot_coverage(coverage_to_plot,
+    coords_to_plot,
+    binwidth = 10
+)
+
+coverage2 <- .plot_coverage(coverage_to_plot_case_only,
+    coords_to_plot,
+    binwidth = 10
+)
+
+test_that(".plot_coverage has the correct output", {
+    expect_true(is(coverage1, "ggplot"))
+    expect_true(is(coverage2, "ggplot"))
+})
+
 ##### plot_sashimi #####
 
 sashimi1 <- plot_sashimi(
@@ -303,7 +393,21 @@ sashimi2 <- plot_sashimi(
     digits = 2
 )
 
-test_that("coords_to_plot has the correct output", {
+sashimi3 <- plot_sashimi(
+    junctions = junctions_processed,
+    ref = ref,
+    gene_tx_id = tx_name_to_plot,
+    case_id = list(samp_id = c("samp_1")),
+    sum_func = mean,
+    count_label = TRUE,
+    digits = 2,
+    coverage_paths_case = coverage_paths_case,
+    coverage_paths_control = coverage_paths_control,
+    binwidth = 10
+)
+
+test_that("plot_sashimi has the correct output", {
     expect_true(is(sashimi1, "ggplot"))
     expect_true(is(sashimi2, "ggplot"))
+    expect_true(is(sashimi3, "ggplot"))
 })

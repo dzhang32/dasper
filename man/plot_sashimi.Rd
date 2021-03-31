@@ -14,7 +14,12 @@ plot_sashimi(
   annot_colour = c(ggpubr::get_palette("jco", 1), ggpubr::get_palette("npg", 7)[c(1, 3,
     2, 5, 6)], ggpubr::get_palette("jco", 6)[c(3)]),
   digits = 2,
-  count_label = TRUE
+  count_label = TRUE,
+  coverage_paths_case = NULL,
+  coverage_paths_control = NULL,
+  coverage_chr_control = NULL,
+  load_func = .coverage_load,
+  binwidth = 100
 )
 }
 \arguments{
@@ -50,6 +55,16 @@ junction counts to for visualisation purposes.}
 
 \item{count_label}{logical value specifying whether to add label the count of
 each junction.}
+
+\item{coverage_paths_case}{path to BigWig file for case sample, currently
+only supports the inclusion of 1 case.}
+
+\item{coverage_paths_control}{path(s) to BigWig files for control samples.}
+
+\item{load_func}{function used to load coverage.}
+
+\item{binwidth}{the number of bases to aggregate coverage across using
+\code{sum_func} when plotting. .}
 }
 \value{
 \code{ggplot} displaying the splicing (and coverage) surrounding the
