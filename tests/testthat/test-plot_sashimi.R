@@ -35,6 +35,18 @@ coverage_scores <- matrix(
 colnames(coverage_scores) <- dimnames(junctions)[[2]]
 assays(junctions)[["coverage_score"]] <- coverage_scores
 
+# Snapshot functions ------------------------------------------------------
+
+ggsave_path <- function(filename, plot, path) {
+    ggplot2::ggsave(
+        filename = filename,
+        plot = plot,
+        path = path
+    )
+
+    return(file.path(path, filename))
+}
+
 # Sashimi plot functions --------------------------------------------------
 
 # set one of the samples as control for testing plotting of controls
@@ -233,8 +245,15 @@ test_that("coords_to_plot has the correct output", {
 
 gene_track <- .plot_gene_track(coords_to_plot, exons_to_plot)
 
-test_that("coords_to_plot has the correct output", {
-    expect_true(is(gene_track, "ggplot"))
+test_that(".plot_gene_track has the correct output", {
+    expect_snapshot_file(
+        ggsave_path(
+            filename = "gene_track_plot.png",
+            plot = gene_track,
+            path = tempdir()
+        ),
+        "gene_track_plot.png"
+    )
 })
 
 ##### .junctions_counts_type_get #####
@@ -302,7 +321,7 @@ coverage_paths_control <- rep(bw_path, 2)
 coverage_to_plot <- .coverage_to_plot_get(coords_to_plot,
     coverage_paths_case,
     coverage_paths_control,
-    coverage_chr_control = NULL,
+    coverage_chr_control = "chr",
     load_func = .coverage_load,
     sum_func = mean
 )
@@ -369,8 +388,22 @@ coverage2 <- .plot_coverage(coverage_to_plot_case_only,
 )
 
 test_that(".plot_coverage has the correct output", {
-    expect_true(is(coverage1, "ggplot"))
-    expect_true(is(coverage2, "ggplot"))
+    expect_snapshot_file(
+        ggsave_path(
+            filename = "coverage1.png",
+            plot = coverage1,
+            path = tempdir()
+        ),
+        "coverage1.png"
+    )
+    expect_snapshot_file(
+        ggsave_path(
+            filename = "coverage2.png",
+            plot = coverage2,
+            path = tempdir()
+        ),
+        "coverage2.png"
+    )
 })
 
 ##### plot_sashimi #####
@@ -407,7 +440,28 @@ sashimi3 <- plot_sashimi(
 )
 
 test_that("plot_sashimi has the correct output", {
-    expect_true(is(sashimi1, "ggplot"))
-    expect_true(is(sashimi2, "ggplot"))
-    expect_true(is(sashimi3, "ggplot"))
+    expect_snapshot_file(
+        ggsave_path(
+            filename = "sashimi1.png",
+            plot = sashimi1,
+            path = tempdir()
+        ),
+        "sashimi1.png"
+    )
+    expect_snapshot_file(
+        ggsave_path(
+            filename = "sashimi2.png",
+            plot = sashimi2,
+            path = tempdir()
+        ),
+        "sashimi2.png"
+    )
+    expect_snapshot_file(
+        ggsave_path(
+            filename = "sashimi3.png",
+            plot = sashimi3,
+            path = tempdir()
+        ),
+        "sashimi3.png"
+    )
 })
