@@ -6,6 +6,7 @@
 #' whether they would like to plot only the junctions.
 #'
 #' @inheritParams junction_annot
+#' @inheritParams coverage_process
 #'
 #' @param gene_tx_id character scalar with the id of the gene. Currently, this
 #'   must be in the form of an Ensembl gene or transcript id, which has a
@@ -26,9 +27,6 @@
 #'   junction counts to for visualisation purposes.
 #' @param count_label logical value specifying whether to add label the count of
 #'   each junction.
-#' @param coverage_paths_case path to BigWig file for case sample, currently
-#'   only supports the inclusion of 1 case.
-#' @param coverage_paths_control path(s) to BigWig files for control samples.
 #' @param load_func function used to load coverage.
 #' @param binwidth the number of bases to aggregate coverage across using
 #'   `sum_func` when plotting. .
@@ -119,7 +117,7 @@ plot_sashimi <- function(
         coverage_to_plot <- .coverage_to_plot_get(coords_to_plot,
             coverage_paths_case,
             coverage_paths_control,
-            coverage_chr_control = NULL,
+            coverage_chr_control = coverage_chr_control,
             load_func = .coverage_load,
             sum_func = sum_func
         )
@@ -712,13 +710,15 @@ plot_sashimi <- function(
 
 #' Obtain coverage to plot
 #'
-#' `.coverage_to_plot_get` load the coverage from bigwigs to be plotted and wrangle this into a format ready for `ggplot2`.
+#' `.coverage_to_plot_get` load and normalise the coverage from bigwigs to be
+#' plotted and wrangle this into a format ready for `ggplot2`.
 #'
 #' @inheritParams plot_sashimi
 #'
-#' @param coords_to_plot list containing the coordinates to be used for plotting.
+#' @param coords_to_plot list containing the coordinates to be used for
+#'   plotting.
 #'
-#' @return An annotated sashimi plot.
+#' @return A data.frame with the normalised coverage for cases and controls.
 #'
 #' @keywords internal
 #' @noRd
@@ -800,6 +800,22 @@ plot_sashimi <- function(
     return(coverage_to_plot)
 }
 
+#' Plot coverage across region/transcript/gene of interest
+#'
+#' `.plot_coverage` will plot the coverage for case (and controls) across the
+#' region of interest as a `ggplot`.
+#'
+#' @inheritParams plot_sashimi
+#'
+#' @param coverage_to_plot data.frame containing the normalised coverat to be
+#'   plotted returned by `.coverage_to_plot_get`.
+#' @param coords_to_plot list containing the coordinates to be used for
+#'   plotting.
+#'
+#' @return An annotated sashimi plot.
+#'
+#' @keywords internal
+#' @noRd
 .plot_coverage <- function(coverage_to_plot, coords_to_plot, binwidth) {
     coverage_plot <-
         ggplot2::ggplot() +
@@ -834,6 +850,19 @@ plot_sashimi <- function(
     return(coverage_plot)
 }
 
+#' Merge coverage and junction plots
+#'
+#' `.merge_coverage_sashimi` will combine the coverage and junction plots into
+#' one. It will extract the legend from the sashimi plot in order to not
+#' duplicate this for each junction plot.
+#'
+#' @param coverage_plot ggplot containing the coverage plot.
+#' @param sashimi_plots list containing junction plots.
+#'
+#' @return sashimi plot.
+#'
+#' @keywords internal
+#' @noRd
 .merge_coverage_sashimi <- function(coverage_plot, sashimi_plots) {
     sashimi_legend <- ggpubr::get_legend(sashimi_plots[[1]]) %>%
         ggpubr::as_ggplot()

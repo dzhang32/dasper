@@ -56,10 +56,15 @@ junction counts to for visualisation purposes.}
 \item{count_label}{logical value specifying whether to add label the count of
 each junction.}
 
-\item{coverage_paths_case}{path to BigWig file for case sample, currently
-only supports the inclusion of 1 case.}
+\item{coverage_paths_case}{paths to the BigWig files containing the coverage
+of your case samples.}
 
-\item{coverage_paths_control}{path(s) to BigWig files for control samples.}
+\item{coverage_paths_control}{paths to the BigWig files for control samples.}
+
+\item{coverage_chr_control}{either "chr" or "no_chr", indicating the
+chromosome format of control coverage data. Only required if the
+chromosome format of the control BigWig files is different to that of your
+cases.}
 
 \item{load_func}{function used to load coverage.}
 

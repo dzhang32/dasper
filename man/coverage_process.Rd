@@ -48,15 +48,14 @@ obtain coverage from when the end of of a junction does not overlap an
 existing exon.}
 
 \item{coverage_paths_case}{paths to the BigWig files containing the coverage
-of your case samples. Must be the same length and order to the samples in
-\code{junctions}.}
+of your case samples.}
 
-\item{coverage_paths_control}{paths to the BigWig files}
+\item{coverage_paths_control}{paths to the BigWig files for control samples.}
 
 \item{coverage_chr_control}{either "chr" or "no_chr", indicating the
 chromosome format of control coverage data. Only required if the
 chromosome format of the control BigWig files is different to that of your
-junctions.}
+cases.}
 
 \item{load_func}{a function to use to load coverage. Currently only for
 internal use to increase testing speed.}
