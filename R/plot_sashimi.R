@@ -732,6 +732,8 @@ plot_sashimi <- function(
     if (length(coverage_paths_case) > 1) {
         stop("Currently coverage plotting functions only support a single case sample as input")
     }
+    
+    pos <- coverage <- NULL
 
     # obtain coverage to plot on the x limits of plot
     region_to_plot <- GenomicRanges::GRanges(stringr::str_c(
@@ -817,6 +819,9 @@ plot_sashimi <- function(
 #' @keywords internal
 #' @noRd
 .plot_coverage <- function(coverage_to_plot, coords_to_plot, binwidth) {
+    
+    pos <- coverage <- NULL 
+    
     coverage_plot <-
         ggplot2::ggplot() +
         ggplot2::stat_summary_bin(
