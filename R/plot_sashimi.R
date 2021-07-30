@@ -201,7 +201,8 @@ plot_sashimi <- function(
 #' @noRd
 .exons_to_plot_get <- function(ref,
     gene_tx_list,
-    region) {
+    region
+    ) {
 
     # filter for exons of gene/tx of interest
     exons_to_plot <- GenomicFeatures::exons(ref, filter = gene_tx_list)
@@ -241,6 +242,18 @@ plot_sashimi <- function(
 #' @noRd
 .junctions_to_plot_get <- function(junctions, gene_tx_list, region) {
     gene_tx <- gene_tx_list %>% unlist()
+    
+    # check the columns used are in a CharacterList format
+    col_type_chr_list <- 
+        methods::is(GenomicRanges::mcols(junctions)[[stringr::str_c(names(gene_tx), "_start")]], "CharacterList") &
+        methods::is(GenomicRanges::mcols(junctions)[[stringr::str_c(names(gene_tx), "_end")]], "CharacterList")
+    
+    if(!col_type_chr_list){
+        
+        stop(stringr::str_c("Columns storing the gene/tx information are not CharacterList objects", 
+                            " - was this SE generated using dasper::junction_annot()?"))
+        
+    }
 
     # currently the any() used here may be too liberal, especially for overlapping genes
     # but may be okay, since juncs need to precisely match the exon boundary
@@ -441,7 +454,10 @@ plot_sashimi <- function(
     )
 
     # obtain points for curves of junctions
-    junctions_to_plot <- .junctions_points_get(junctions_to_plot, ncp = 25)
+    junctions_to_plot <- .junctions_points_get(
+        junctions_counts = junctions_to_plot, 
+        ncp = 25
+    )
 
     sashimi_plots <- .plot_junctions(
         junctions_to_plot = junctions_to_plot,
@@ -486,7 +502,12 @@ plot_sashimi <- function(
         dplyr::mutate(
             index = dplyr::row_number(),
             type = mcols(junctions_to_plot)[["type"]]
-        )
+        ) 
+    
+    # make sure we only have the required columns
+    # specfically, avoid error induced by rownames of a GRanges
+    junctions_counts <- junctions_counts %>% 
+        dplyr::select(start, end, width, index, type)
 
     if (is.null(case_id)) {
         samp_ids <- stringr::str_c("samp_", c(seq_len(dim(junctions_to_plot)[2])))
@@ -633,7 +654,8 @@ plot_sashimi <- function(
     junctions_to_plot = junctions_to_plot,
     gene_track_plot = gene_track_plot,
     annot_colour = annot_colour,
-    count_label = count_label) {
+    count_label = count_label
+    ) {
     # for R CMD Check
     samp_id <- x <- y <- index <- type <- mid_point <- NULL
     samp_ids <- unique(junctions_to_plot[["samp_id"]])
