@@ -25,8 +25,8 @@ a detailed guide on the usage of `dasper`, check out the vignette
 ## Installation instructions
 
 Get the latest stable `R` release from
-[CRAN](http://cran.r-project.org/). Then install `dasper` using from
-[Bioconductor](http://bioconductor.org/) the following code:
+[CRAN](http://cran.r-project.org/). Then install `dasper` from
+[Bioconductor](http://bioconductor.org/) using the following code:
 
 ``` r
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
