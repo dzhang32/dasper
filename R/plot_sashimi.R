@@ -56,8 +56,7 @@
 #'     sum_func = NULL
 #' )
 #' @export
-plot_sashimi <- function(
-    junctions,
+plot_sashimi <- function(junctions,
     ref,
     gene_tx_id,
     case_id = NULL,
@@ -201,8 +200,7 @@ plot_sashimi <- function(
 #' @noRd
 .exons_to_plot_get <- function(ref,
     gene_tx_list,
-    region
-    ) {
+    region) {
 
     # filter for exons of gene/tx of interest
     exons_to_plot <- GenomicFeatures::exons(ref, filter = gene_tx_list)
@@ -242,17 +240,17 @@ plot_sashimi <- function(
 #' @noRd
 .junctions_to_plot_get <- function(junctions, gene_tx_list, region) {
     gene_tx <- gene_tx_list %>% unlist()
-    
+
     # check the columns used are in a CharacterList format
-    col_type_chr_list <- 
+    col_type_chr_list <-
         methods::is(GenomicRanges::mcols(junctions)[[stringr::str_c(names(gene_tx), "_start")]], "CharacterList") &
-        methods::is(GenomicRanges::mcols(junctions)[[stringr::str_c(names(gene_tx), "_end")]], "CharacterList")
-    
-    if(!col_type_chr_list){
-        
-        stop(stringr::str_c("Columns storing the gene/tx information are not CharacterList objects", 
-                            " - was this SE generated using dasper::junction_annot()?"))
-        
+            methods::is(GenomicRanges::mcols(junctions)[[stringr::str_c(names(gene_tx), "_end")]], "CharacterList")
+
+    if (!col_type_chr_list) {
+        stop(stringr::str_c(
+            "Columns storing the gene/tx information are not CharacterList objects",
+            " - was this SE generated using dasper::junction_annot()?"
+        ))
     }
 
     # currently the any() used here may be too liberal, especially for overlapping genes
@@ -434,8 +432,7 @@ plot_sashimi <- function(
 #'
 #' @keywords internal
 #' @noRd
-.plot_sashimi_junctions <- function(
-    junctions_to_plot,
+.plot_sashimi_junctions <- function(junctions_to_plot,
     gene_track_plot,
     case_id,
     sum_func,
@@ -455,7 +452,7 @@ plot_sashimi <- function(
 
     # obtain points for curves of junctions
     junctions_to_plot <- .junctions_points_get(
-        junctions_counts = junctions_to_plot, 
+        junctions_counts = junctions_to_plot,
         ncp = 25
     )
 
@@ -486,8 +483,7 @@ plot_sashimi <- function(
 #'
 #' @keywords internal
 #' @noRd
-.junctions_counts_type_get <- function(
-    junctions_to_plot,
+.junctions_counts_type_get <- function(junctions_to_plot,
     case_id = list(samp_id = "samp_1"),
     sum_func = mean,
     digits = 2,
@@ -496,17 +492,22 @@ plot_sashimi <- function(
     # for R CMD Check
     index <- type <- . <- NULL
 
+    # check that the assay exists
+    if (!(assay_name %in% SummarizedExperiment::assayNames(junctions_to_plot))) {
+        stop(stringr::str_c(assay_name, " not found in junctions object"))
+    }
+
     junctions_counts <- junctions_to_plot %>%
         GenomicRanges::ranges() %>%
         as.data.frame() %>%
         dplyr::mutate(
             index = dplyr::row_number(),
             type = mcols(junctions_to_plot)[["type"]]
-        ) 
-    
+        )
+
     # make sure we only have the required columns
     # specfically, avoid error induced by rownames of a GRanges
-    junctions_counts <- junctions_counts %>% 
+    junctions_counts <- junctions_counts %>%
         dplyr::select(start, end, width, index, type)
 
     if (is.null(case_id)) {
@@ -650,12 +651,10 @@ plot_sashimi <- function(
 #'
 #' @keywords internal
 #' @noRd
-.plot_junctions <- function(
-    junctions_to_plot = junctions_to_plot,
+.plot_junctions <- function(junctions_to_plot = junctions_to_plot,
     gene_track_plot = gene_track_plot,
     annot_colour = annot_colour,
-    count_label = count_label
-    ) {
+    count_label = count_label) {
     # for R CMD Check
     samp_id <- x <- y <- index <- type <- mid_point <- NULL
     samp_ids <- unique(junctions_to_plot[["samp_id"]])
@@ -744,8 +743,7 @@ plot_sashimi <- function(
 #'
 #' @keywords internal
 #' @noRd
-.coverage_to_plot_get <- function(
-    coords_to_plot,
+.coverage_to_plot_get <- function(coords_to_plot,
     coverage_paths_case,
     coverage_paths_control,
     coverage_chr_control = NULL,
@@ -754,7 +752,7 @@ plot_sashimi <- function(
     if (length(coverage_paths_case) > 1) {
         stop("Currently coverage plotting functions only support a single case sample as input")
     }
-    
+
     pos <- coverage <- NULL
 
     # obtain coverage to plot on the x limits of plot
@@ -841,9 +839,8 @@ plot_sashimi <- function(
 #' @keywords internal
 #' @noRd
 .plot_coverage <- function(coverage_to_plot, coords_to_plot, binwidth) {
-    
-    pos <- coverage <- NULL 
-    
+    pos <- coverage <- NULL
+
     coverage_plot <-
         ggplot2::ggplot() +
         ggplot2::stat_summary_bin(

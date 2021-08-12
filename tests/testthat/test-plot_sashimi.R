@@ -200,21 +200,21 @@ test_that("junctions_to_plot has the correct output", {
 })
 
 test_that(".junctions_to_plot_get catches user input errors", {
-    
+
     # check that changing the tx_name_start induces error
     junctions_no_chr_list <- junctions
-    
-    mcols(junctions_no_chr_list)[["tx_name_start"]] <- 
+
+    mcols(junctions_no_chr_list)[["tx_name_start"]] <-
         list(mcols(junctions_no_chr_list)[["tx_name_start"]])
-    
+
     expect_error(
         .junctions_to_plot_get(junctions_no_chr_list,
-                               list(gene_id = gene_tx_list),
-                               region = NULL
-        ), 
+            list(gene_id = gene_tx_list),
+            region = NULL
+        ),
         "Columns storing the gene/tx information are not CharacterList objects"
     )
-    
+
     expect_error(
         .junctions_to_plot_get(junctions,
             list(gene_id = "ENSG_not_a_real_gene"),
@@ -280,7 +280,7 @@ junctions_to_plot_1 <- .junctions_counts_type_get(junctions_to_plot,
     assay_name = "norm"
 )
 
-# add rownames to junctions_to_plot 
+# add rownames to junctions_to_plot
 # check error when GRanges have rownames
 rownames(junctions_to_plot) <- stringr::str_c("X", 1:length(junctions_to_plot))
 
@@ -291,11 +291,7 @@ junctions_to_plot_2 <- .junctions_counts_type_get(junctions_to_plot,
     assay_name = "raw"
 )
 
-junctions_to_plot %>%
-    GenomicRanges::ranges() %>%
-    as.data.frame()
-
-test_that("coords_to_plot has the correct output", {
+test_that(".junctions_counts_type_get has the correct output", {
     expect_true(is(junctions_to_plot_1, "data.frame"))
     expect_true(is(junctions_to_plot_2, "data.frame"))
     expect_true(length(junctions_to_plot_1) > 1)
@@ -323,6 +319,13 @@ test_that("coords_to_plot has the correct output", {
         c("samp_1", "samp_2"),
         c(0, 1)
     ))
+})
+
+test_that(".junctions_counts_type_get catches user input errors", {
+    expect_error(
+        .junctions_counts_type_get(junctions_to_plot, assay_name = "not_an_assay"),
+        "not_an_assay not found in junctions object"
+    )
 })
 
 ##### .coverage_to_plot_get #####
