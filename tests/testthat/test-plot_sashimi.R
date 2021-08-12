@@ -449,7 +449,8 @@ sashimi2 <- plot_sashimi(
     case_id = list(samp_id = c("samp_1")),
     sum_func = mean,
     count_label = TRUE,
-    digits = 2
+    digits = 2,
+    assay_name = "raw"
 )
 
 sashimi3 <- plot_sashimi(

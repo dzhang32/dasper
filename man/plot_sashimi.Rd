@@ -11,6 +11,7 @@ plot_sashimi(
   case_id = NULL,
   sum_func = mean,
   region = NULL,
+  assay_name = "norm",
   annot_colour = c(ggpubr::get_palette("jco", 1), ggpubr::get_palette("npg", 7)[c(1, 3,
     2, 5, 6)], ggpubr::get_palette("jco", 6)[c(3)]),
   digits = 2,
@@ -46,6 +47,9 @@ and coverage for controls. By default, \code{mean} will be used.}
 \item{region}{a \link[GenomicRanges:GRanges-class]{GenomicRanges} of length 1
 that is used to filter the exons/junctions plotted. Only those that overlap
 this region are plotted.}
+
+\item{assay_name}{a character scalar with the name of the
+\code{SummarizedExperiment::assay()} from which to obtain junction counts.}
 
 \item{annot_colour}{character vector length 7, representing the colours of
 junction types.}

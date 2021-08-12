@@ -21,6 +21,8 @@
 #' @param region a [GenomicRanges][GenomicRanges::GRanges-class] of length 1
 #'   that is used to filter the exons/junctions plotted. Only those that overlap
 #'   this region are plotted.
+#' @param assay_name a character scalar with the name of the
+#'   `SummarizedExperiment::assay()` from which to obtain junction counts.
 #' @param annot_colour character vector length 7, representing the colours of
 #'   junction types.
 #' @param digits used in `round`, specifying the number of digits to round the
@@ -62,6 +64,7 @@ plot_sashimi <- function(junctions,
     case_id = NULL,
     sum_func = mean,
     region = NULL,
+    assay_name = "norm",
     annot_colour = c(
         ggpubr::get_palette("jco", 1),
         ggpubr::get_palette("npg", 7)[c(1, 3, 2, 5, 6)],
@@ -105,7 +108,7 @@ plot_sashimi <- function(junctions,
         case_id,
         sum_func,
         digits,
-        assay_name = "norm",
+        assay_name = assay_name,
         annot_colour,
         count_label
     )
@@ -629,8 +632,13 @@ plot_sashimi <- function(junctions,
             -index, -type, -x, -y, -mid_point
         )
 
+    # make 0 count junctions dashed lines
+    # add size variable for plotting junction thickness
     junctions_points <- junctions_points %>%
-        dplyr::mutate(linetype = ifelse(count == 0, 2, 1)) %>%
+        dplyr::mutate(
+            linetype = ifelse(count == 0, 2, 1),
+            size = count / max(count)
+        ) %>%
         dplyr::arrange(samp_id, index, x)
 
     return(junctions_points)
@@ -670,7 +678,7 @@ plot_sashimi <- function(junctions,
                 ggplot2::aes(
                     x = x, y = y,
                     group = as.factor(index),
-                    size = count,
+                    size = size,
                     colour = type
                 ),
                 lineend = "round",
