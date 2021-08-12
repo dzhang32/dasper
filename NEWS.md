@@ -1,3 +1,9 @@
+# dasper 1.3.2
+
+NEW FEATURES
+
+* Fix bugs within `plot_sashimi()` and enable the visualization of raw junction counts. 
+
 # dasper 1.1.1
 
 NEW FEATURES
