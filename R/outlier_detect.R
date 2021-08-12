@@ -1,8 +1,7 @@
 #' @describeIn outlier_process Detecting outlier junctions
 #'
 #' @export
-outlier_detect <- function(
-    junctions,
+outlier_detect <- function(junctions,
     feature_names = c("score", "coverage_score"),
     bp_param = BiocParallel::SerialParam(),
     ...) {

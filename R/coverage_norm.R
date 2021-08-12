@@ -1,8 +1,7 @@
 #' @describeIn coverage_process Load and normalise coverage from RNA-sequencing data
 #'
 #' @export
-coverage_norm <- function(
-    junctions,
+coverage_norm <- function(junctions,
     ref,
     unannot_width = 20,
     coverage_paths_case,

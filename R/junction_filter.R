@@ -1,8 +1,7 @@
 #' @describeIn junction_process Filter junctions by count, width, annotation or region
 #'
 #' @export
-junction_filter <- function(
-    junctions,
+junction_filter <- function(junctions,
     count_thresh = c("raw" = 5),
     n_samp = c("raw" = 1),
     width_range = NULL,

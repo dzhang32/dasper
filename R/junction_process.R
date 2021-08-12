@@ -120,8 +120,7 @@
 #' # the two objects are equivalent
 #' all.equal(junctions_processed, junctions, check.attributes = FALSE)
 #' @export
-junction_process <- function(
-    junctions,
+junction_process <- function(junctions,
     ref,
     count_thresh = c("raw" = 5),
     n_samp = c("raw" = 1),

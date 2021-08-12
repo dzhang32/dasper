@@ -66,7 +66,8 @@ junction_norm <- function(junctions) {
         all_groups = seq_along(junctions)
     ) %>%
         IRanges::IntegerList() %>%
-        unique() %>% # unique so that each junction only appears once per cluster
+        unique() %>%
+        # unique so that each junction only appears once per cluster
         sort()
 
     # add clusters and indexes to coords

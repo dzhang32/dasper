@@ -121,8 +121,7 @@
 #' # the two objects are equivalent
 #' all.equal(junctions_w_coverage, junctions, check.attributes = FALSE)
 #' @export
-coverage_process <- function(
-    junctions,
+coverage_process <- function(junctions,
     ref,
     unannot_width = 20,
     coverage_paths_case,

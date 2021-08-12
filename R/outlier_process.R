@@ -44,7 +44,6 @@
 #'   https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html
 #'
 #' @examples
-#'
 #' \donttest{
 #'
 #' ##### Set up txdb #####
@@ -106,8 +105,7 @@
 #' }
 #'
 #' @export
-outlier_process <- function(
-    junctions,
+outlier_process <- function(junctions,
     feature_names = c("score", "coverage_score"),
     samp_id_col = "samp_id",
     bp_param = BiocParallel::SerialParam(),

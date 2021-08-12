@@ -2,8 +2,7 @@
 #'   cluster-level
 #'
 #' @export
-outlier_aggregate <- function(
-    junctions,
+outlier_aggregate <- function(junctions,
     samp_id_col = "samp_id",
     bp_param = BiocParallel::SerialParam()) {
 
@@ -135,7 +134,8 @@ outlier_aggregate <- function(
 
     # obtain mean outlier score between most dysregulated UJ/DJ
     outlier_clusters <- outlier_clusters %>%
-        dplyr::arrange(cluster_index, junction_index) %>% # makes sure indexes are in same order for different clusters
+        dplyr::arrange(cluster_index, junction_index) %>%
+        # makes sure indexes are in same order for different clusters
         dplyr::group_by(cluster_index) %>%
         dplyr::mutate(mean_outlier_score = mean(outlier_score)) %>%
         dplyr::ungroup()

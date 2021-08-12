@@ -86,7 +86,6 @@ cluster-level
 }}
 
 \examples{
-
 \donttest{
 
 ##### Set up txdb #####

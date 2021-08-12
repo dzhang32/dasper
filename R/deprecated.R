@@ -73,8 +73,7 @@ annotate_junc_ref <- function(junc_metadata, gtf) {
 
 #' @keywords internal
 #' @rdname deprecated
-.get_ref_exons_annot <- function(
-    junc_metadata,
+.get_ref_exons_annot <- function(junc_metadata,
     ref_exons,
     ref_cols = c("strand", "gene_name", "gene_id", "transcript_id", "exon_id")) {
 
@@ -122,8 +121,10 @@ annotate_junc_ref <- function(junc_metadata, gtf) {
             }
 
             mcols(junc_metadata)[stringr::str_c(ref_cols[j], "_", start_end)] <- ref_col_values %>%
-                .[subjectHits(junc_exon_hits)] %>% # subset the exons by those that overlap juncs
-                split(junc_hits_fct, drop = F) %>% # split into groups based on index of overlapping junc
+                .[subjectHits(junc_exon_hits)] %>%
+                # subset the exons by those that overlap juncs
+                split(junc_hits_fct, drop = F) %>%
+                # split into groups based on index of overlapping junc
                 CharacterList() %>%
                 unique() # parrallelised unique - remove duplicates when for example strand if junc overlaps >1 exon
         }
@@ -138,8 +139,7 @@ annotate_junc_ref <- function(junc_metadata, gtf) {
 
 #' @keywords internal
 #' @rdname deprecated
-.tidy_junc_annot <- function(
-    junc_metadata,
+.tidy_junc_annot <- function(junc_metadata,
     cols_to_merge = c("strand", "gene_name", "gene_id")) {
 
     # collapse gene/strand columns to per junc instead of per start/end for easier querying
@@ -253,7 +253,8 @@ annotate_junc_ref <- function(junc_metadata, gtf) {
         x_y %>%
         unname() %>%
         split(f = names(x_y) %>%
-            factor(levels = names(x))) %>% # required to keep all levels/names
+            factor(levels = names(x))) %>%
+        # required to keep all levels/names
         CharacterList() %>%
         unique()
 

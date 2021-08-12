@@ -78,8 +78,7 @@
 #'
 #' @keywords internal
 #' @noRd
-.coverage_load <- function(
-    coverage_path,
+.coverage_load <- function(coverage_path,
     regions,
     chr_format = NULL,
     sum_fun,
