@@ -209,7 +209,10 @@ coverage_norm <- function(junctions,
     ) %>%
         dplyr::left_join(ref_genes, by = "gene_id") %>%
         dplyr::group_by(index) %>%
-        dplyr::filter(width == min(width)) %>%
+        dplyr::filter(
+            width == min(width),
+            !duplicated(width)
+        ) %>%
         dplyr::select(seqnames, start, end, strand, index) %>%
         GRanges()
 
