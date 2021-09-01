@@ -123,6 +123,6 @@ For more details, check the `dev` directory.
 
 In particular, I am very grateful to
 [Leo](http://lcolladotor.github.io/) for his time and advice throughout
-the development of `dasper`. The transition of `dasper`
-Bioconductor-friendly package was made possible thanks to his
+the development of `dasper`. The transition of `dasper` to a 
+Bioconductor package was made possible thanks to his
 *[biocthis](https://bioconductor.org/packages/3.12/biocthis)* package.
