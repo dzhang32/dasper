@@ -13,6 +13,7 @@ status](https://github.com/dzhang32/dasper/workflows/R-CMD-check-bioc/badge.svg)
 coverage](https://codecov.io/gh/dzhang32/dasper/branch/master/graph/badge.svg)](https://codecov.io/gh/dzhang32/dasper?branch=master)
 [![BioC
 status](http://www.bioconductor.org/shields/build/release/bioc/dasper.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/dasper)
+[![DOI](https://zenodo.org/badge/245168125.svg)](https://zenodo.org/badge/latestdoi/245168125)
 <!-- badges: end -->
 
 The aim of `dasper` is to **d**etect **a**berrant **sp**licing
