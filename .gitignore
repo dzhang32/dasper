@@ -2,3 +2,4 @@
 *.Rproj
 .Rhistory
 *.html
+tests/testthat/_snaps
