@@ -36,7 +36,7 @@ name: R-CMD-check-bioc
 env:
   has_testthat: 'true'
   run_covr: 'true'
-  run_pkgdown: 'false'
+  run_pkgdown: 'true'
   has_RUnit: 'false'
   cache-version: 'cache-v1'
   run_docker: 'false'
@@ -55,6 +55,8 @@ jobs:
           - { os: ubuntu-latest, r: '4.1', bioc: '3.14', cont: "bioconductor/bioconductor_docker:devel", rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
           - { os: macOS-latest, r: '4.1', bioc: '3.14'}
           - { os: windows-latest, r: '4.1', bioc: '3.14'}
+          ## Check https://github.com/r-lib/actions/tree/master/examples
+          ## for examples using the http-user-agent
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       RSPM: ${{ matrix.config.rspm }}
@@ -72,7 +74,6 @@ jobs:
         run: |
           mkdir /__w/_temp/Library
           echo ".libPaths('/__w/_temp/Library')" > ~/.Rprofile
-
       ## Most of these steps are the same as the ones in
       ## https://github.com/r-lib/actions/blob/master/examples/check-standard.yaml
       ## If they update their steps, we will also need to update ours.
@@ -85,6 +86,7 @@ jobs:
         uses: r-lib/actions/setup-r@master
         with:
           r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
 
       ## pandoc is already included in the Bioconductor docker images
       - name: Setup pandoc from r-lib
@@ -97,7 +99,7 @@ jobs:
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
-      - name: Cache R packages
+      - name: Restore R package cache
         if: "!contains(github.event.head_commit.message, '/nocache') && runner.os != 'Linux'"
         uses: actions/cache@v2
         with:
@@ -119,27 +121,21 @@ jobs:
           sysreqs=$(Rscript -e 'cat("apt-get update -y && apt-get install -y", paste(gsub("apt-get install -y ", "", remotes::system_requirements("ubuntu", "20.04")), collapse = " "))')
           echo $sysreqs
           sudo -s eval "$sysreqs"
-
       - name: Install macOS system dependencies
         if: matrix.config.os == 'macOS-latest'
         run: |
           ## Enable installing XML from source if needed
           brew install libxml2
           echo "XML_CONFIG=/usr/local/opt/libxml2/bin/xml2-config" >> $GITHUB_ENV
-
           ## Required to install magick as noted at
           ## https://github.com/r-lib/usethis/commit/f1f1e0d10c1ebc75fd4c18fa7e2de4551fd9978f#diff-9bfee71065492f63457918efcd912cf2
           brew install imagemagick@6
-
           ## For textshaping, required by ragg, and required by pkgdown
           brew install harfbuzz fribidi
-
           ## For installing usethis's dependency gert
           brew install libgit2
-          
           ## Required for tcltk
           brew install xquartz --cask
-
       - name: Install Windows system dependencies
         if: runner.os == 'Windows'
         run: |
@@ -165,7 +161,6 @@ jobs:
           ## https://stat.ethz.ch/pipermail/bioc-devel/2020-April/016675.html
           ## https://github.com/r-lib/remotes/issues/296
           ## Ideally, all dependencies should get installed in the first pass.
-
           ## Set the repos source depending on the OS
           ## Alternatively use https://storage.googleapis.com/bioconductor_docker/packages/
           ## though based on https://bit.ly/bioc2021-package-binaries
@@ -176,11 +171,9 @@ jobs:
               "AnVIL" = "https://bioconductordocker.blob.core.windows.net/packages/3.14/bioc",
               BiocManager::repositories()
               ) else BiocManager::repositories()
-
           ## For running the checks
           message(paste('****', Sys.time(), 'installing rcmdcheck and BiocCheck ****'))
           install.packages(c("rcmdcheck", "BiocCheck"), repos = gha_repos)
-
           ## Pass #1 at installing dependencies
           ## This pass uses AnVIL-powered fast binaries
           ## details at https://github.com/nturaga/bioc2021-bioconductor-binaries
@@ -230,9 +223,10 @@ jobs:
           _R_CHECK_CRAN_INCOMING_: false
           DISPLAY: 99.0
         run: |
+          options(crayon.enabled = TRUE)
           rcmdcheck::rcmdcheck(
-              args = c("--no-build-vignettes", "--no-manual", "--timings"),
-              build_args = c("--no-manual", "--no-resave-data"),
+              args = c("--no-manual", "--no-vignettes", "--timings"),
+              build_args = c("--no-manual", "--keep-empty-dirs", "--no-resave-data"),
               error_on = "warning",
               check_dir = "check"
           )
@@ -255,7 +249,7 @@ jobs:
         run: |
           BiocCheck::BiocCheck(
               dir('check', 'tar.gz$', full.names = TRUE),
-              `quit-with-status` = FALSE,
+              `quit-with-status` = TRUE,
               `no-check-R-ver` = TRUE,
               `no-check-bioc-help` = TRUE,
               `no-check-coding-practices` = TRUE
@@ -272,11 +266,11 @@ jobs:
         if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true' && runner.os == 'Linux'
         run: R CMD INSTALL .
 
-      - name: Deploy package
+      - name: Build and deploy pkgdown site
         if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true' && runner.os == 'Linux'
         run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
+          git config --local user.name "$GITHUB_ACTOR"
+          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
           Rscript -e "pkgdown::deploy_to_branch(new_process = FALSE)"
         shell: bash {0}
         ## Note that you need to run pkgdown::deploy_to_branch(new_process = FALSE)
@@ -296,7 +290,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: dzhang32/dasper
+          repository: lcolladotor/biocthis
           tag_with_ref: true
           tag_with_sha: true
           tags: latest
