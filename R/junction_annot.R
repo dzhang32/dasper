@@ -14,7 +14,7 @@ junction_annot <- function(junctions, ref) {
     print(stringr::str_c(Sys.time(), " - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."))
 
     ref <- ref_load(ref)
-    ref_exons <- ref %>% GenomicFeatures::exons(columns = ref_cols)
+    ref_exons <- ref %>% GenomicFeatures::exons(columns = c("gene_id", "tx_name", "exon_name"))
     ref_introns <- ref %>%
         GenomicFeatures::intronsByTranscript() %>%
         unlist()
