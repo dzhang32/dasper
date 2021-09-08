@@ -21,5 +21,18 @@ ref_load(ref, organism = NA)
 a \link[GenomicFeatures:TxDb-class]{TxDb-class} object.
 }
 \description{
-\verb{ref_load`` loads reference annotation using [makeTxDbFromGFF][GenomicFeatures::makeTxDbFromGFF] if a character or leaves }ref` unchanged if already a \link[GenomicFeatures:TxDb-class]{TxDb-class}. If you would
+\verb{ref_load`` loads reference annotation using [makeTxDbFromGFF][GenomicFeatures::makeTxDbFromGFF] if a character or leaves }ref` unchanged if already a \link[GenomicFeatures:TxDb-class]{TxDb-class}. If
+you would
+}
+\examples{
+
+# create a TxDb,
+ref <- GenomicState::GenomicStateHub(
+    version = "31",
+    genome = "hg38",
+    filetype = "TxDb"
+)[[1]]
+
+# alternatively ref can be a character specifying a path to a GTF file
+ref <- ref_load(ref)
 }

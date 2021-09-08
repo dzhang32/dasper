@@ -292,7 +292,8 @@
 #'
 #' `ref_load`` loads reference annotation using
 #' [makeTxDbFromGFF][GenomicFeatures::makeTxDbFromGFF] if a character or leaves
-#' `ref` unchanged if already a [TxDb-class][GenomicFeatures::TxDb-class]. If you would
+#' `ref` unchanged if already a [TxDb-class][GenomicFeatures::TxDb-class]. If
+#' you would
 #'
 #' @inheritParams junction_annot
 #' @inheritParams GenomicFeatures::makeTxDbFromGFF
@@ -300,6 +301,17 @@
 #' @return a [TxDb-class][GenomicFeatures::TxDb-class] object.
 #'
 #' @export
+#' @examples
+#'
+#' # create a TxDb,
+#' ref <- GenomicState::GenomicStateHub(
+#'     version = "31",
+#'     genome = "hg38",
+#'     filetype = "TxDb"
+#' )[[1]]
+#'
+#' # alternatively ref can be a character specifying a path to a GTF file
+#' ref <- ref_load(ref)
 ref_load <- function(ref, organism = NA) {
     if (!is(ref, "character") & !is(ref, "TxDb")) {
         stop("ref must either be a path to the .gtf/gff3 file or a pre-loaded TxDb object")

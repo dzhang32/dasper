@@ -44,7 +44,6 @@
 #'   https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html
 #'
 #' @examples
-#' \donttest{
 #'
 #' ##### Set up txdb #####
 #'
@@ -102,8 +101,6 @@
 #'
 #' # the two objects are equivalent
 #' all.equal(outlier_processed, outlier_scores, check.attributes = FALSE)
-#' }
-#'
 #' @export
 outlier_process <- function(junctions,
     feature_names = c("score", "coverage_score"),
