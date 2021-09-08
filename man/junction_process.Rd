@@ -9,7 +9,7 @@
 \alias{junction_score}
 \title{Processing junctions}
 \usage{
-junction_annot(junctions, ref, ref_cols = c("gene_id", "tx_name", "exon_name"))
+junction_annot(junctions, ref)
 
 junction_filter(
   junctions,

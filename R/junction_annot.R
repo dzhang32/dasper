@@ -1,7 +1,7 @@
 #' @describeIn junction_process Annotate junctions using reference annotation
 #'
 #' @export
-junction_annot <- function(junctions, ref, ref_cols = c("gene_id", "tx_name", "exon_name")) {
+junction_annot <- function(junctions, ref) {
 
     ##### Check user input is correct #####
 
