@@ -86,6 +86,7 @@ cluster-level
 }}
 
 \examples{
+\donttest{
 
 ##### Set up txdb #####
 
@@ -143,6 +144,8 @@ outlier_processed <- outlier_process(junctions_w_coverage)
 
 # the two objects are equivalent
 all.equal(outlier_processed, outlier_scores, check.attributes = FALSE)
+}
+
 }
 \seealso{
 for more details on the isolation forest model used:
