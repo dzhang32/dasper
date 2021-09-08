@@ -38,7 +38,7 @@ coverage_norm <- function(junctions,
     print(stringr::str_c(Sys.time(), " - Obtaining regions to use to normalise coverage..."))
 
     # load in reference annotation
-    ref <- .ref_load(ref)
+    ref <- ref_load(ref)
 
     coverage_regions <- .coverage_norm_region(junctions, ref, coverage_regions)
 

@@ -80,7 +80,7 @@ plot_sashimi <- function(junctions,
 
     ##### Load reference annotation #####
 
-    ref <- .ref_load(ref)
+    ref <- ref_load(ref)
 
     ##### Obtain the exons and junctions to plot #####
 

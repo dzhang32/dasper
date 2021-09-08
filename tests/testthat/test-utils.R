@@ -142,6 +142,23 @@ test_that(".outlier_score has correct output", {
     )
 })
 
+##### ref_load #####
+
+ref <- GenomicState::GenomicStateHub(version = "31", genome = "hg38", filetype = "TxDb")[[1]]
+
+ref <- ref_load(ref)
+
+test_that("ref_load has correct output", {
+    expect_equal(GenomicFeatures::organism(ref), "Homo sapiens")
+})
+
+test_that("ref_load catches user input errors", {
+    expect_error(
+        ref_load(2),
+        "ref must either be a path to the .gtf/gff3 file "
+    )
+})
+
 ##### .regroup #####
 
 x <- c("A", "B", "C", "D")

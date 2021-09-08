@@ -288,19 +288,19 @@
     return(outlier_scores)
 }
 
-#' Load reference annotation
+#' Load reference annotation into a TxDb format
 #'
-#' `.ref_load`` loads reference annotation using
+#' `ref_load`` loads reference annotation using
 #' [makeTxDbFromGFF][GenomicFeatures::makeTxDbFromGFF] if a character or leaves
-#' `ref` unchanged if already a [TxDb-class][GenomicFeatures::TxDb-class].
+#' `ref` unchanged if already a [TxDb-class][GenomicFeatures::TxDb-class]. If you would
 #'
 #' @inheritParams junction_annot
+#' @inheritParams GenomicFeatures::makeTxDbFromGFF
 #'
 #' @return a [TxDb-class][GenomicFeatures::TxDb-class] object.
 #'
-#' @keywords internal
-#' @noRd
-.ref_load <- function(ref) {
+#' @export
+ref_load <- function(ref, organism = NA) {
     if (!is(ref, "character") & !is(ref, "TxDb")) {
         stop("ref must either be a path to the .gtf/gff3 file or a pre-loaded TxDb object")
     }
@@ -310,9 +310,15 @@
 
         # cache the gtf/gff3 for faster repeated retrieval
         ref <- .file_cache(ref)
+        ref <- GenomicFeatures::makeTxDbFromGFF(ref, organism = organism)
+    }
 
-        # import gtf using refGenome, needed to obtain the annotated splice junctions easily
-        ref <- GenomicFeatures::makeTxDbFromGFF(ref)
+    if (is.na(GenomicFeatures::organism(ref))) {
+        warning(
+            "No organism inputted or set on TxDb object. This is recommended, ",
+            "and required if you want to obtain certain gene information ",
+            "in dasper::junction_annot (version >= 1.3.4) e.g. the gene symbol."
+        )
     }
 
     return(ref)
