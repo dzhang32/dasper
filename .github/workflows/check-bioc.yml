@@ -195,7 +195,16 @@ jobs:
           ## This pass does not use AnVIL and will thus update any packages
           ## that have seen been updated in Bioconductor
           message(paste('****', Sys.time(), 'pass number 2 at installing dependencies: any remaining dependencies ****'))
-          remotes::install_local(dependencies = TRUE, repos = BiocManager::repositories(), build_vignettes = TRUE, upgrade = TRUE, force = TRUE)
+          
+          # use the github version of IRanges (2.27.0)
+          # as 2.27.2 seems to have stop exporting `values<-`
+          # derfinder upon which recount3 requires `values<-`
+          # https://github.com/lcolladotor/derfinder/blob/e9a7ef2c79fd22167ff2bb176a95b75582341163/NAMESPACE#L55
+          remotes::install_github("Bioconductor/IRanges")
+          
+          # set upgrade to FALSE
+          remotes::install_local(dependencies = TRUE, repos = BiocManager::repositories(), build_vignettes = TRUE, upgrade = FALSE, force = TRUE)
+        
         shell: Rscript {0}
 
       - name: Install BiocGenerics
