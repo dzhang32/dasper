@@ -308,6 +308,7 @@ plot_sashimi(
     ref,
     case_id = list(samp_id = "samp_1"),
     gene_tx_id = gene_id,
+    gene_tx_col = "gene_id",
     count_label = FALSE
 )
 ```
@@ -319,6 +320,7 @@ plot_sashimi(junctions_normed,
     ref,
     case_id = list(samp_id = "samp_1"),
     gene_tx_id = gene_id,
+    gene_tx_col = "gene_id",
     region = GenomicRanges::GRanges("chr22:42620000-42630000"),
     count_label = TRUE
 )
