@@ -249,8 +249,8 @@ download.file("http://ftp.ensembl.org/pub/release-104/gtf/homo_sapiens/Homo_sapi
     method = "curl"
 )
 
-edb <- ensembldb::ensDbFromGtf(ref_path)
-edb <- ensembldb::EnsDb(edb)
+edb <- ensembldb::ensDbFromGtf(ref_path, outfile = file.path(tempdir(), "Homo_sapiens.GRCh38.104.sqlite"))
+edb <- ensembldb::EnsDb(file.path(tempdir(), "Homo_sapiens.GRCh38.104.sqlite"))
 
 junctions_ens <- junctions_example
 GenomeInfoDb::seqlevelsStyle(junctions_ens) <- "Ensembl"
