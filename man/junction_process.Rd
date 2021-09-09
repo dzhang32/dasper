@@ -9,7 +9,12 @@
 \alias{junction_score}
 \title{Processing junctions}
 \usage{
-junction_annot(junctions, ref)
+junction_annot(
+  junctions,
+  ref,
+  ref_cols = c("gene_id", "tx_name", "exon_name"),
+  ref_cols_to_merge = c("gene_id")
+)
 
 junction_filter(
   junctions,
@@ -25,6 +30,8 @@ junction_norm(junctions)
 junction_process(
   junctions,
   ref,
+  ref_cols = c("gene_id", "tx_name", "exon_name"),
+  ref_cols_to_merge = c("gene_id"),
   count_thresh = c(raw = 5),
   n_samp = c(raw = 1),
   width_range = NULL,
@@ -42,7 +49,19 @@ junction_score(junctions, score_func = .zscore, ...)
 object.}
 
 \item{ref}{either path to gtf/gff3 or object of class
-\link[GenomicFeatures:TxDb-class]{TxDb-class}.}
+\link[GenomicFeatures:TxDb-class]{TxDb-class} or
+\link[ensembldb:EnsDb-class]{EnsDb-class}.
+\link[ensembldb:EnsDb-class]{EnsDb-class} is required if you intend to annotate
+junctions with gene symbols/names.}
+
+\item{ref_cols}{character vector listing the names of the columns in \code{ref}
+for which to annotate junctions with. Must contain "gene_id", used for
+categorising junctions.}
+
+\item{ref_cols_to_merge}{character vector listing which of the annotation
+columns \code{ref_cols} should be merged into in columns to merge into a single
+column per junction. Must contain "gene_id", used for categorising
+junctions.}
 
 \item{count_thresh}{named vector with names matching the names of the
 \link[SummarizedExperiment:SummarizedExperiment-class]{assays} in \code{junctions}.

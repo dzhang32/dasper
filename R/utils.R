@@ -296,7 +296,6 @@
 #' you would
 #'
 #' @inheritParams junction_annot
-#' @inheritParams GenomicFeatures::makeTxDbFromGFF
 #'
 #' @return a [TxDb-class][GenomicFeatures::TxDb-class] object.
 #'
@@ -312,9 +311,9 @@
 #'
 #' # alternatively ref can be a character specifying a path to a GTF file
 #' ref <- ref_load(ref)
-ref_load <- function(ref, organism = NA) {
-    if (!is(ref, "character") & !is(ref, "TxDb")) {
-        stop("ref must either be a path to the .gtf/gff3 file or a pre-loaded TxDb object")
+ref_load <- function(ref) {
+    if (!is(ref, "character") & !is(ref, "TxDb") & !is(ref, "EnsDb")) {
+        stop("ref must either be a path to the .gtf/gff3 file or a TxDb/EnsDb object")
     }
 
     if (is(ref, "character")) {
@@ -324,15 +323,6 @@ ref_load <- function(ref, organism = NA) {
         ref <- .file_cache(ref)
         ref <- GenomicFeatures::makeTxDbFromGFF(ref, organism = organism)
     }
-
-    if (is.na(GenomicFeatures::organism(ref))) {
-        warning(
-            "No organism inputted or set on TxDb object. This is recommended, ",
-            "and required if you want to obtain certain gene information ",
-            "in dasper::junction_annot (version >= 1.3.4) e.g. the gene symbol."
-        )
-    }
-
     return(ref)
 }
 

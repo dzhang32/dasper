@@ -59,31 +59,25 @@ junctions_processed <-
 
 test_that(".gene_tx_type_get has the correct output", {
     expect_equal(
-        .gene_tx_type_get("ENSG_example"),
+        .gene_tx_filter_get("ENSG_example", "gene_id", ref),
         list(gene_id = "ENSG_example")
     )
 
     expect_equal(
-        .gene_tx_type_get("ENST_example"),
+        .gene_tx_filter_get("ENST_example", "tx_name", ref),
         list(tx_name = "ENST_example")
     )
 })
 
 test_that(".gene_tx_type_get catches user-input errors", {
     expect_error(
-        .gene_tx_type_get(NULL),
+        .gene_tx_filter_get(NULL),
         "gene_tx_id must be set and be of length 1"
     )
 
     expect_error(
-        .gene_tx_type_get(c("ENSG_example", "ENSG_example")),
+        .gene_tx_filter_get(c("ENSG_example", "ENSG_example")),
         "gene_tx_id must be set and be of length 1"
-    )
-
-    # for now, dasper does not accept gene symbols
-    expect_error(
-        .gene_tx_type_get(c("SNCA")),
-        "gene_tx_id does not include an ENST or ENSG prefix"
     )
 })
 
@@ -98,11 +92,13 @@ gene_id_to_plot <-
     tail(1) %>%
     names()
 
-gene_tx_list <- .gene_tx_type_get(gene_id_to_plot)
+gene_tx_col <- "gene_id"
+
+gene_tx_filter <- .gene_tx_filter_get(gene_id_to_plot, gene_tx_col, ref)
 
 exons_to_plot <- .exons_to_plot_get(
     ref = ref,
-    gene_tx_list = gene_tx_list,
+    gene_tx_filter = gene_tx_filter,
     region = NULL
 )
 
@@ -119,17 +115,17 @@ region <- GRanges(
 
 exons_to_plot <- .exons_to_plot_get(
     ref = ref,
-    gene_tx_list = gene_tx_list,
+    gene_tx_filter = gene_tx_filter,
     region = region
 )
 
 test_that(".exons_to_plot_get has the correct output", {
     expect_equal(
         .exons_to_plot_get(ref,
-            .gene_tx_type_get(gene_id_to_plot),
+            .gene_tx_filter_get(gene_id_to_plot, gene_tx_col, ref),
             region = NULL
         ),
-        .gene_tx_type_get(gene_id_to_plot) %>%
+        .gene_tx_filter_get(gene_id_to_plot, gene_tx_col, ref) %>%
             GenomicFeatures::exons(ref, filter = .) %>%
             GenomicRanges::disjoin()
     )
@@ -142,14 +138,14 @@ test_that(".exons_to_plot_get has the correct output", {
 
 test_that(".junctions_to_plot_get catches user input errors", {
     expect_error(
-        .exons_to_plot_get(ref, gene_tx_list,
+        .exons_to_plot_get(ref, gene_tx_filter,
             region = GRanges(c("chr22:1-1", "chr22:1-1"))
         ),
         "region must be a GenomicRanges object of length 1"
     )
 
     expect_error(
-        .exons_to_plot_get(ref, gene_tx_list,
+        .exons_to_plot_get(ref, gene_tx_filter,
             region = data.frame()
         ),
         "region must be a GenomicRanges object of length 1"
@@ -163,7 +159,7 @@ test_that(".junctions_to_plot_get catches user input errors", {
     )
 
     expect_error(
-        .exons_to_plot_get(ref, gene_tx_list,
+        .exons_to_plot_get(ref, gene_tx_filter,
             region = GRanges("chr22:1-1")
         ),
         "No exons found to plot"
@@ -182,11 +178,11 @@ tx_name_to_plot <-
     tail(1) %>%
     names()
 
-junctions_to_plot <- .junctions_to_plot_get(junctions_processed, gene_tx_list, region)
+junctions_to_plot <- .junctions_to_plot_get(junctions_processed, gene_tx_filter, region)
 
 test_that("junctions_to_plot has the correct output", {
-    expect_true(all(any(mcols(junctions_to_plot)[["gene_id_start"]] == gene_tx_list) |
-        any(mcols(junctions_to_plot)[["gene_id_end"]] == gene_tx_list)))
+    expect_true(all(any(mcols(junctions_to_plot)[["gene_id_start"]] == gene_tx_filter) |
+        any(mcols(junctions_to_plot)[["gene_id_end"]] == gene_tx_filter)))
 
     expect_equal(
         findOverlaps(junctions_to_plot, region) %>% length(),
@@ -209,7 +205,7 @@ test_that(".junctions_to_plot_get catches user input errors", {
 
     expect_error(
         .junctions_to_plot_get(junctions_no_chr_list,
-            list(gene_id = gene_tx_list),
+            list(gene_id = gene_tx_filter),
             region = NULL
         ),
         "Columns storing the gene/tx information are not CharacterList objects"
@@ -226,7 +222,7 @@ test_that(".junctions_to_plot_get catches user input errors", {
 
 ##### .coords_to_plot_get #####
 
-gene_tx_to_plot <- GenomicFeatures::genes(ref, filter = gene_tx_list)
+gene_tx_to_plot <- GenomicFeatures::genes(ref, filter = gene_tx_filter)
 coords_to_plot <- .coords_to_plot_get(gene_tx_to_plot, exons_to_plot, junctions_to_plot, ext_factor = 20)
 
 test_that("coords_to_plot has the correct output", {
@@ -438,6 +434,7 @@ sashimi1 <- plot_sashimi(
     junctions = junctions_processed,
     ref = ref,
     gene_tx_id = gene_id_to_plot,
+    gene_tx_col = "gene_id",
     region = region,
     count_label = FALSE
 )
@@ -446,6 +443,7 @@ sashimi2 <- plot_sashimi(
     junctions = junctions_processed,
     ref = ref,
     gene_tx_id = tx_name_to_plot,
+    gene_tx_col = "tx_name",
     case_id = list(samp_id = c("samp_1")),
     sum_func = mean,
     count_label = TRUE,
@@ -457,6 +455,7 @@ sashimi3 <- plot_sashimi(
     junctions = junctions_processed,
     ref = ref,
     gene_tx_id = tx_name_to_plot,
+    gene_tx_col = "tx_name",
     case_id = list(samp_id = c("samp_1")),
     sum_func = mean,
     count_label = TRUE,

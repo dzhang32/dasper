@@ -44,7 +44,17 @@
 #'   [RangedSummarizedExperiment-class][SummarizedExperiment::RangedSummarizedExperiment-class]
 #'    object.
 #' @param ref either path to gtf/gff3 or object of class
-#'   [TxDb-class][GenomicFeatures::TxDb-class].
+#'   [TxDb-class][GenomicFeatures::TxDb-class] or
+#'   [EnsDb-class][ensembldb::EnsDb-class].
+#'   [EnsDb-class][ensembldb::EnsDb-class] is required if you intend to annotate
+#'   junctions with gene symbols/names.
+#' @param ref_cols character vector listing the names of the columns in `ref`
+#'   for which to annotate junctions with. Must contain "gene_id", used for
+#'   categorising junctions.
+#' @param ref_cols_to_merge character vector listing which of the annotation
+#'   columns `ref_cols` should be merged into in columns to merge into a single
+#'   column per junction. Must contain "gene_id", used for categorising
+#'   junctions.
 #' @param count_thresh named vector with names matching the names of the
 #'   [assays][SummarizedExperiment::SummarizedExperiment-class] in `junctions`.
 #'   Values denote the number of counts below which a junction will be filtered
@@ -122,6 +132,8 @@
 #' @export
 junction_process <- function(junctions,
     ref,
+    ref_cols = c("gene_id", "tx_name", "exon_name"),
+    ref_cols_to_merge = c("gene_id"),
     count_thresh = c("raw" = 5),
     n_samp = c("raw" = 1),
     width_range = NULL,
@@ -143,7 +155,7 @@ junction_process <- function(junctions,
 
     print("# Annotating junctions ----------------------------------------------------")
 
-    junctions <- junction_annot(junctions, ref)
+    junctions <- junction_annot(junctions, ref, ref_cols, ref_cols_to_merge)
 
     if (!is.null(types)) {
         print("# Filtering junctions -----------------------------------------------------")

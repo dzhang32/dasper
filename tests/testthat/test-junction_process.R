@@ -36,7 +36,7 @@ x <- GRanges(c("1:1-100", "2:2-200", "3:3-300", "4:4-400"))
 strand(x) <- c("+", "-", "*", "*")
 mcols(x)["strand_start"] <- CharacterList("1" = "+", "2" = "*", "3" = "+", "4" = "*")
 mcols(x)["strand_end"] <- mcols(x)["strand_start"]
-strand_tidy <- as.character(strand(.junction_annot_tidy(x, cols_to_merge = "strand")))
+strand_tidy <- as.character(strand(.junction_annot_tidy(x, "strand")))
 
 test_that(".junction_annot_tidy correctly infers strand", {
     expect_identical(strand_tidy, c("+", "-", "+", "*"))
@@ -45,6 +45,10 @@ test_that(".junction_annot_tidy correctly infers strand", {
 ##### junction_annot #####
 
 test_that("junction_annot output generally looks correct", {
+    expect_true(all(
+        c("gene_id_junction", "tx_name_end", "exon_name_start") %in%
+            colnames(mcols(junctions))
+    ))
     expect_true(methods::isClass(junctions, "RangedSummarisedExperiment"))
     expect_false(any(is.na(mcols(junctions)[["type"]])))
     expect_identical(
@@ -64,7 +68,23 @@ test_that("junction_annot catches user-input errors", {
     )
     expect_error(
         junction_annot(junctions = junctions, ref = 50),
-        "ref must either be a path to the .gtf/gff3 file or a pre-loaded TxDb object"
+        "ref must either be a path to the .gtf/gff3 file or a TxDb/EnsDb object"
+    )
+    expect_error(
+        junction_annot(
+            junctions = junctions, ref = ref,
+            ref_cols = "exon_id",
+            ref_cols_to_merge = "exon_id"
+        ),
+        "'gene_id' must be in both ref_cols and ref_cols_to_merge"
+    )
+    expect_error(
+        junction_annot(
+            junctions = junctions, ref = ref,
+            ref_cols = c("gene_id", "gene_name"),
+            ref_cols_to_merge = c("not_in_ref_cols")
+        ),
+        "All ref_cols_to_merge must be part of ref_cols."
     )
 })
 
@@ -218,6 +238,36 @@ test_that("exon annotation has been correctly retreived", {
     expect_true(annot_check(novel_combo, ref_exons, 5))
     expect_true(annot_check(ambig_gene, ref_exons, 5))
     expect_true(annot_check(unannotated, ref_exons, 10))
+})
+
+# test obtaining exons from ensembldb::ensDbFromGtf()
+# which allows you obtain the gene symbol
+ref_path <- file.path(tempdir(), "Homo_sapiens.GRCh38.104.gtf.gz")
+
+download.file("http://ftp.ensembl.org/pub/release-104/gtf/homo_sapiens/Homo_sapiens.GRCh38.104.gtf.gz",
+    destfile = ref_path,
+    method = "curl"
+)
+
+edb <- ensembldb::ensDbFromGtf(ref_path)
+edb <- ensembldb::EnsDb(edb)
+
+junctions_ens <- junctions_example
+GenomeInfoDb::seqlevelsStyle(junctions_ens) <- "Ensembl"
+
+junctions_annoted_ens <- junction_annot(
+    junctions = junctions_ens,
+    ref = edb,
+    ref_cols = c("gene_name", "symbol", "gene_id"),
+    ref_cols_to_merge = c("gene_id", "gene_name")
+)
+
+test_that("junction_annot can obtain gene symbol", {
+    expect_true("gene_name_start" %in% colnames(mcols(junctions_annoted_ens)))
+    expect_true("gene_name_junction" %in% colnames(mcols(junctions_annoted_ens)))
+    expect_true("symbol_start" %in% colnames(mcols(junctions_annoted_ens)))
+    expect_true(length(unique(unlist(mcols(junctions_annoted_ens)[["gene_name_start"]]))) > 1)
+    expect_true(length(unique(unlist(mcols(junctions_annoted_ens)[["symbol_end"]]))) > 1)
 })
 
 # Filter junctions --------------------------------------------------------

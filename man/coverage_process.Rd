@@ -41,7 +41,10 @@ coverage_score(junctions, coverage, score_func = .zscore, ...)
 object.}
 
 \item{ref}{either path to gtf/gff3 or object of class
-\link[GenomicFeatures:TxDb-class]{TxDb-class}.}
+\link[GenomicFeatures:TxDb-class]{TxDb-class} or
+\link[ensembldb:EnsDb-class]{EnsDb-class}.
+\link[ensembldb:EnsDb-class]{EnsDb-class} is required if you intend to annotate
+junctions with gene symbols/names.}
 
 \item{unannot_width}{integer scalar determining the width of the region to
 obtain coverage from when the end of of a junction does not overlap an

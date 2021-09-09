@@ -8,9 +8,10 @@
 #' @inheritParams junction_annot
 #' @inheritParams coverage_process
 #'
-#' @param gene_tx_id character scalar with the id of the gene. Currently, this
-#'   must be in the form of an Ensembl gene or transcript id, which has a
-#'   matching entry in `ref`.
+#' @param gene_tx_id character scalar with the id of the gene. This must be a an
+#'   identifier for a gene or transcript, which has a matching entry in `ref`.
+#' @param gene_tx_col character scalar with the name of the column to search for
+#'   the `gene_tx_id` in `ref`.
 #' @param case_id list containing 1 element. The contents of this element must
 #'   be a character vector specifying sample ids that are to be plotted. The
 #'   name of this element must correspond to the column containing sample ids in
@@ -25,7 +26,7 @@
 #'   `SummarizedExperiment::assay()` from which to obtain junction counts.
 #' @param annot_colour character vector length 7, representing the colours of
 #'   junction types.
-#' @param digits used in `round`, specifying the number of digits to round the
+#' @param digits used in `round()`, specifying the number of digits to round the
 #'   junction counts to for visualisation purposes.
 #' @param count_label logical value specifying whether to add label the count of
 #'   each junction.
@@ -61,6 +62,7 @@
 plot_sashimi <- function(junctions,
     ref,
     gene_tx_id,
+    gene_tx_col,
     case_id = NULL,
     sum_func = mean,
     region = NULL,
@@ -84,15 +86,15 @@ plot_sashimi <- function(junctions,
 
     ##### Obtain the exons and junctions to plot #####
 
-    gene_tx_list <- .gene_tx_type_get(gene_tx_id)
+    gene_tx_filter <- .gene_tx_filter_get(gene_tx_id, gene_tx_col, ref)
 
-    exons_to_plot <- .exons_to_plot_get(ref, gene_tx_list, region)
+    exons_to_plot <- .exons_to_plot_get(ref, gene_tx_filter, region)
 
-    junctions_to_plot <- .junctions_to_plot_get(junctions, gene_tx_list, region)
+    junctions_to_plot <- .junctions_to_plot_get(junctions, gene_tx_filter, region)
 
     ##### Obtain co-ordinates to plot #####
 
-    gene_tx_to_plot <- GenomicFeatures::genes(ref, filter = gene_tx_list)
+    gene_tx_to_plot <- GenomicFeatures::genes(ref, filter = gene_tx_filter)
 
     coords_to_plot <- .coords_to_plot_get(gene_tx_to_plot, exons_to_plot, junctions_to_plot)
 
@@ -157,31 +159,35 @@ plot_sashimi <- function(junctions,
 #' transcript ID. Then derive the column which the gene/transcript should be
 #' matched against in `junctions`.
 #'
-#' @param gene_tx_id gene or transcript id (currently MUST be in a "ENSG" or
-#'   "ENST" format).
+#' @inheritParams junction_annot
+#' @inheritParams plot_sashimi
 #'
 #' @return list with gene/transcript id, the name of which corresponds to the
 #'   `SummarizedExperiment::rowRanges` column to filter in `junctions`.
 #'
 #' @keywords internal
 #' @noRd
-.gene_tx_type_get <- function(gene_tx_id) {
+.gene_tx_filter_get <- function(gene_tx_id, gene_tx_col, ref) {
     if (is.null(gene_tx_id) | length(gene_tx_id) != 1) {
         stop("gene_tx_id must be set and be of length 1")
-    } else if (stringr::str_detect(gene_tx_id, "ENSG")) {
-        gene_tx_type <- "gene_id"
-    } else if (stringr::str_detect(gene_tx_id, "ENST")) {
-        gene_tx_type <- "tx_name"
-    } else {
-        stop("gene_tx_id does not include an ENST or ENSG prefix")
     }
 
-    # create named list of gene/tx id
-    # for filtering txdb
-    gene_tx_list <- list(gene_tx_id)
-    names(gene_tx_list) <- gene_tx_type
+    if (is(ref, "TxDb")) {
 
-    return(gene_tx_list)
+        # create named list of gene/tx id
+        # for filtering edb
+        gene_tx_filter <- list(gene_tx_id)
+        names(gene_tx_filter) <- gene_tx_col
+    } else if (is(ref, "EnsDb")) {
+
+        # create named AnnotationFilter of gene/tx id
+        # for filtering edb
+        gene_tx_filter <- AnnotationFilter::AnnotationFilter(
+            ~ gene_tx_col %in% gene_tx_id
+        )
+    }
+
+    return(gene_tx_filter)
 }
 
 #' Obtain exons to be plotted
@@ -193,8 +199,8 @@ plot_sashimi <- function(junctions,
 #'
 #' @inheritParams plot_sashimi
 #'
-#' @param gene_tx_list list containing gene/transcript id returned from
-#'   `.gene_tx_type_get`.
+#' @param gene_tx_filter list or AnnotationFilter object containing
+#'   gene/transcript id returned from `.gene_tx_type_get`.
 #'
 #' @return [GenomicRanges][GenomicRanges::GRanges-class] object containing exons
 #'   to be plotted.
@@ -202,11 +208,11 @@ plot_sashimi <- function(junctions,
 #' @keywords internal
 #' @noRd
 .exons_to_plot_get <- function(ref,
-    gene_tx_list,
+    gene_tx_filter,
     region) {
 
     # filter for exons of gene/tx of interest
-    exons_to_plot <- GenomicFeatures::exons(ref, filter = gene_tx_list)
+    exons_to_plot <- GenomicFeatures::exons(ref, filter = gene_tx_filter)
 
     # if exons overlap (e.g. for gene inputs), disjoin for plotting
     exons_to_plot <- exons_to_plot %>% GenomicRanges::disjoin()
@@ -241,8 +247,8 @@ plot_sashimi <- function(junctions,
 #'
 #' @keywords internal
 #' @noRd
-.junctions_to_plot_get <- function(junctions, gene_tx_list, region) {
-    gene_tx <- gene_tx_list %>% unlist()
+.junctions_to_plot_get <- function(junctions, gene_tx_filter, region) {
+    gene_tx <- gene_tx_filter %>% unlist()
 
     # check the columns used are in a CharacterList format
     col_type_chr_list <-

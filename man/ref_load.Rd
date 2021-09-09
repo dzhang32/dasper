@@ -4,18 +4,14 @@
 \alias{ref_load}
 \title{Load reference annotation into a TxDb format}
 \usage{
-ref_load(ref, organism = NA)
+ref_load(ref)
 }
 \arguments{
 \item{ref}{either path to gtf/gff3 or object of class
-\link[GenomicFeatures:TxDb-class]{TxDb-class}.}
-
-\item{organism}{
-    What is the Genus and species of this organism. Please use proper
-    scientific nomenclature for example: "Homo sapiens" or "Canis familiaris"
-    and not "human" or "my fuzzy buddy". If properly written, this information
-    may be used by the software to help you out later.
-  }
+\link[GenomicFeatures:TxDb-class]{TxDb-class} or
+\link[ensembldb:EnsDb-class]{EnsDb-class}.
+\link[ensembldb:EnsDb-class]{EnsDb-class} is required if you intend to annotate
+junctions with gene symbols/names.}
 }
 \value{
 a \link[GenomicFeatures:TxDb-class]{TxDb-class} object.

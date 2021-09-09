@@ -1,7 +1,10 @@
 #' @describeIn junction_process Annotate junctions using reference annotation
 #'
 #' @export
-junction_annot <- function(junctions, ref) {
+junction_annot <- function(junctions,
+    ref,
+    ref_cols = c("gene_id", "tx_name", "exon_name"),
+    ref_cols_to_merge = c("gene_id")) {
 
     ##### Check user input is correct #####
 
@@ -9,12 +12,27 @@ junction_annot <- function(junctions, ref) {
         stop("junctions must be in a RangedSummarisedExperiment format")
     }
 
-    ##### Extract annotated exons/junctions co-ordinates from gtf #####
+    if (!all(ref_cols_to_merge %in% ref_cols)) {
+        stop(
+            "All ref_cols_to_merge must be part of ref_cols. ",
+            "The following were not found: ",
+            stringr::str_c(ref_cols_to_merge[!(ref_cols_to_merge %in% ref_cols)],
+                collapse = ", "
+            )
+        )
+    }
 
-    print(stringr::str_c(Sys.time(), " - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."))
+    if (!("gene_id" %in% ref_cols && "gene_id" %in% ref_cols_to_merge)) {
+        stop("'gene_id' must be in both ref_cols and ref_cols_to_merge")
+    }
+
+    ##### Extract annotated exons/junctions co-ordinates from reference #####
+
+    print(stringr::str_c(Sys.time(), " - Obtaining co-ordinates of annotated exons and junctions..."))
 
     ref <- ref_load(ref)
-    ref_exons <- ref %>% GenomicFeatures::exons(columns = c("gene_id", "tx_name", "exon_name"))
+    ref_exons <- ref %>% GenomicFeatures::exons(columns = ref_cols)
+
     ref_introns <- ref %>%
         GenomicFeatures::intronsByTranscript() %>%
         unlist()
@@ -29,7 +47,7 @@ junction_annot <- function(junctions, ref) {
 
     print(stringr::str_c(Sys.time(), " - Tidying junction annotation..."))
 
-    junctions <- .junction_annot_tidy(junctions)
+    junctions <- .junction_annot_tidy(junctions, ref_cols_to_merge)
 
     ##### Derive junction categories using strand & overlapping exon annotation #####
 
@@ -153,13 +171,21 @@ junction_annot <- function(junctions, ref) {
 #'
 #' @keywords internal
 #' @noRd
-.junction_annot_tidy <- function(junctions, cols_to_merge = c("gene_id", "strand")) {
+.junction_annot_tidy <- function(junctions, ref_cols_to_merge) {
 
     ##### Collapse gene_id/strand annotation from start/end #####
 
+    if (is.null(ref_cols_to_merge)) {
+        ref_cols_to_merge <- c()
+    }
+
+    if (!("strand" %in% ref_cols_to_merge)) {
+        ref_cols_to_merge <- c(ref_cols_to_merge, "strand")
+    }
+
     # collapse gene/strand columns to per junction
     # instead of per start/end for easier querying
-    for (col in cols_to_merge) {
+    for (col in ref_cols_to_merge) {
         mcols(junctions)[[stringr::str_c(col, "_junction")]] <-
             .merge_CharacterList(
                 x = mcols(junctions)[[stringr::str_c(col, "_start")]],
