@@ -175,41 +175,41 @@ test_that(".coverage_load_samp output looks correct", {
         c(length(junctions), length(coverage_paths_control))
     )
 
-    expect_true(identical(
+    expect_equal(
         load_rand(
             regions = coverage_regions[["exon_coords_start"]],
             coverage_path = coverage_paths_case[1],
             sum_fun = "mean"
         ),
         coverage[["case"]][["exon_coverage_start"]][, 1]
-    ))
+    )
 
-    expect_true(identical(
+    expect_equal(
         load_rand(
             regions = coverage_regions[["exon_coords_end"]],
             coverage_path = coverage_paths_case[1],
             sum_fun = "mean"
         ),
         coverage[["case"]][["exon_coverage_end"]][, 1]
-    ))
+    )
 
-    expect_true(identical(
+    expect_equal(
         load_rand(
             regions = coverage_regions[["intron_coords"]],
             coverage_path = coverage_paths_case[2],
             sum_fun = "mean"
         ),
         coverage[["case"]][["intron_coverage"]][, 2]
-    ))
+    )
 
-    expect_true(identical(
+    expect_equal(
         load_rand(
             regions = coverage_regions[["norm_coords"]],
             coverage_path = coverage_paths_case[2],
             sum_fun = "sum"
         ),
         coverage[["case"]][["norm_coverage"]][, 2]
-    ))
+    )
 })
 
 ##### .coverage_norm #####
