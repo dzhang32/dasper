@@ -56,6 +56,7 @@
 #'     junctions = junction_filter(junctions_processed),
 #'     ref = ref,
 #'     gene_tx_id = "ENSG00000142156.14",
+#'     gene_tx_col = "gene_id",
 #'     sum_func = NULL
 #' )
 #' @export
