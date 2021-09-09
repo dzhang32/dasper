@@ -3,7 +3,7 @@
 #' @export
 junction_annot <- function(junctions,
     ref,
-    ref_cols = c("gene_id", "tx_name", "exon_name"),
+    ref_cols = c("gene_id", "tx_name", "exon_id"),
     ref_cols_to_merge = c("gene_id")) {
 
     ##### Check user input is correct #####
