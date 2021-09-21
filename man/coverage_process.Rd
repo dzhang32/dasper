@@ -164,7 +164,7 @@ junctions_processed <- junction_process(
 ##### install megadepth #####
 
 # required to load coverage in coverage_norm()
-megadepth::install_megadepth()
+megadepth::install_megadepth(force = FALSE)
 
 ##### coverage_norm #####
 

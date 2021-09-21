@@ -124,22 +124,15 @@ test_that(".coverage_norm_region output looks correct", {
 # uses regions and coverage_path to determine the random seed
 # therefore allows testing that structure of output has not been mixed up
 # across regions/paths
-load_rand <- function(regions, coverage_path, chr_format, sum_fun) {
-    seed <- regions %>%
-        start() %>%
-        mean() %>%
-        as.integer()
-    seed <- seed + coverage_path
+# this has been changed to non-random method of obtaining arbitrary cov values
+# due to changes to the way BiocParallel handles rand number generation
+# https://github.com/Bioconductor/BiocParallel/pull/140
+load_arb <- function(regions, coverage_path, chr_format, sum_fun) {
+    med_width <- GenomicRanges::width(regions) %>% median()
 
-    set.seed(seed)
+    cov_arb <- 1:nrow(regions %>% as.data.frame()) * coverage_path * med_width
 
-    cov_rand <- sample(1:100,
-        nrow(regions %>% as.data.frame()),
-        replace = TRUE
-    ) %>%
-        as.double()
-
-    return(cov_rand)
+    return(cov_arb)
 }
 
 # set up pseudo paths
@@ -151,7 +144,7 @@ coverage <- .coverage_load_samp(coverage_regions,
     coverage_paths_case,
     coverage_paths_control,
     coverage_chr_control = "chr",
-    load_func = load_rand,
+    load_func = load_arb,
     bp_param = BiocParallel::SerialParam()
 )
 
@@ -176,7 +169,7 @@ test_that(".coverage_load_samp output looks correct", {
     )
 
     expect_equal(
-        load_rand(
+        load_arb(
             regions = coverage_regions[["exon_coords_start"]],
             coverage_path = coverage_paths_case[1],
             sum_fun = "mean"
@@ -185,7 +178,7 @@ test_that(".coverage_load_samp output looks correct", {
     )
 
     expect_equal(
-        load_rand(
+        load_arb(
             regions = coverage_regions[["exon_coords_end"]],
             coverage_path = coverage_paths_case[1],
             sum_fun = "mean"
@@ -194,7 +187,7 @@ test_that(".coverage_load_samp output looks correct", {
     )
 
     expect_equal(
-        load_rand(
+        load_arb(
             regions = coverage_regions[["intron_coords"]],
             coverage_path = coverage_paths_case[2],
             sum_fun = "mean"
@@ -203,7 +196,7 @@ test_that(".coverage_load_samp output looks correct", {
     )
 
     expect_equal(
-        load_rand(
+        load_arb(
             regions = coverage_regions[["norm_coords"]],
             coverage_path = coverage_paths_case[2],
             sum_fun = "sum"
@@ -316,15 +309,16 @@ test_that(".coverage_score_max output generally looks correct", {
     expect_identical(dim(coverage_region_scores_max[[1]]), dim(coverage_region_scores_max[[2]]))
     expect_identical(dim(coverage_region_scores_max[[1]]), dim(coverage_scores[[1]]))
 
-    expect_identical(
-        (abs(coverage_scores_per_samp) == abs(coverage_region_scores_max[["scores"]][, 1])) %>%
-            apply(
-                MARGIN = 1,
-                FUN = which
-            ) %>%
-            lapply(FUN = min) %>% # takes the min index if multiple regions have same score
-            unlist() %>%
-            unname(),
+    exp_region_max <-
+        coverage_scores_per_samp %>%
+        dplyr::mutate_all(.funs = function(x) abs(x) == abs(coverage_region_scores_max[["scores"]][, 1])) %>%
+        apply(
+            MARGIN = 1,
+            FUN = which
+        )
+
+    expect_equal(
+        exp_region_max,
         coverage_region_scores_max[["regions"]][, 1]
     )
 })
