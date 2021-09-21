@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Normalise junction counts by cluster — junction_norm • dasper</title>
+<title>Deprecated function: Annotate junctions using reference annotation — annotate_junc_ref • dasper</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,14 @@
 
 
 
-<meta property="og:title" content="Normalise junction counts by cluster — junction_norm" />
-<meta property="og:description" content="junction_norm normalises the raw junction counts by 1. building junction
-clusters by finding junctions that share an acceptor or donor position and 2.
-calculating a proportion-spliced-in (PSI) for each junction by dividing the
-raw junction count by the total number of counts in it's associated cluster." />
+<meta property="og:title" content="Deprecated function: Annotate junctions using reference annotation — annotate_junc_ref" />
+<meta property="og:description" content="annotate_junc_ref is deprecated, please use junction_annot instead.
+annotates junctions by whether their start and end position precisely
+overlaps with a known exon boundary. Using this information along with the
+strand, junctions are categorised into &quot;annotated&quot;, &quot;novel_acceptor&quot;,
+&quot;novel_donor&quot;, &quot;novel_combo&quot;, &quot;novel_exon_skip&quot;, &quot;ambig_gene&quot; and &quot;none&quot;." />
+
+
 
 
 
@@ -59,9 +62,15 @@ raw junction count by the total number of counts in it's associated cluster." />
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -75,7 +84,7 @@ raw junction count by the total number of counts in it's associated cluster." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.8</span>
       </span>
     </div>
 
@@ -94,7 +103,7 @@ raw junction count by the total number of counts in it's associated cluster." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/dzhang32/dasper/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -111,60 +120,60 @@ raw junction count by the total number of counts in it's associated cluster." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Normalise junction counts by cluster</h1>
-    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/junction_norm.R'><code>R/junction_norm.R</code></a></small>
-    <div class="hidden name"><code>junction_norm.Rd</code></div>
+    <h1>Deprecated function: Annotate junctions using reference annotation</h1>
+    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/deprecated.R'><code>R/deprecated.R</code></a></small>
+    <div class="hidden name"><code>deprecated.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>junction_norm</code> normalises the raw junction counts by 1. building junction
-clusters by finding junctions that share an acceptor or donor position and 2.
-calculating a proportion-spliced-in (PSI) for each junction by dividing the
-raw junction count by the total number of counts in it's associated cluster.</p>
+    <p><code>annotate_junc_ref</code> is deprecated, please use <code>junction_annot</code> instead.
+annotates junctions by whether their start and end position precisely
+overlaps with a known exon boundary. Using this information along with the
+strand, junctions are categorised into "annotated", "novel_acceptor",
+"novel_donor", "novel_combo", "novel_exon_skip", "ambig_gene" and "none".</p>
     </div>
 
-    <pre class="usage"><span class='fu'>junction_norm</span><span class='op'>(</span><span class='va'>junctions</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>annotate_junc_ref</span><span class='op'>(</span><span class='va'>junc_metadata</span>, <span class='va'>gtf</span><span class='op'>)</span>
+
+<span class='fu'>.get_ref_exons_annot</span><span class='op'>(</span>
+  <span class='va'>junc_metadata</span>,
+  <span class='va'>ref_exons</span>,
+  ref_cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"strand"</span>, <span class='st'>"gene_name"</span>, <span class='st'>"gene_id"</span>, <span class='st'>"transcript_id"</span>, <span class='st'>"exon_id"</span><span class='op'>)</span>
+<span class='op'>)</span>
+
+<span class='fu'>.tidy_junc_annot</span><span class='op'>(</span>
+  <span class='va'>junc_metadata</span>,
+  cols_to_merge <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"strand"</span>, <span class='st'>"gene_name"</span>, <span class='st'>"gene_id"</span><span class='op'>)</span>
+<span class='op'>)</span>
+
+<span class='fu'>.classify_junc</span><span class='op'>(</span><span class='va'>junc_metadata</span>, <span class='va'>ref_junc</span><span class='op'>)</span>
+
+<span class='fu'>.get_gr_for_start_end</span><span class='op'>(</span><span class='va'>gr</span><span class='op'>)</span>
+
+<span class='fu'>.merge_lists</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>junctions</th>
-      <td><p>junction data as a
-<a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>RangedSummarizedExperiment-class</a>
-object.</p></td>
+      <th>junc_metadata</th>
+      <td><p>junction metadata in a
+<a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges-class</a> format, the essential
+component being the junction co-ordinates.</p></td>
+    </tr>
+    <tr>
+      <th>gtf</th>
+      <td><p>either path to gtf or object of class <code>ensemblGenome</code> loaded
+using <code>refGenome</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>junctions as a
-<a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>RangedSummarizedExperiment-class</a>
-object with an additional `assay`` containing the normalised counts.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>junction metadata as a <a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges-class</a>
+object with additional columns that detail overlapping
+genes/transcripts/exons and junction categories.</p>
 
-    <div class='dont-index'><p>Junction processing functions
-<code><a href='junction_annot.html'>junction_annot</a>()</code>,
-<code><a href='junction_filter.html'>junction_filter</a>()</code>,
-<code><a href='junction_load.html'>junction_load</a>()</code>,
-<code><a href='junction_process.html'>junction_process</a>()</code>,
-<code><a href='junction_score.html'>junction_score</a>()</code></p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='va'>junctions_normed</span> <span class='op'>&lt;-</span> <span class='fu'>junction_norm</span><span class='op'>(</span><span class='va'>junctions_example</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-10-16 15:08:13 - Clustering junctions..."
-#&gt; [1] "2020-10-16 15:08:14 - Normalising junction counts..."
-#&gt; [1] "2020-10-16 15:08:16 - done!"</div><div class='input'>
-<span class='va'>junctions_normed</span>
-</div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
-#&gt; dim: 97671 5 
-#&gt; metadata(0):
-#&gt; assays(2): raw norm
-#&gt; rownames: NULL
-#&gt; rowData names(2): index clusters
-#&gt; colnames(5): count_1 count_2 gtex_54020 gtex_51495 gtex_56930
-#&gt; colData names(2): samp_id case_control</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -176,11 +185,11 @@ object with an additional `assay`` containing the normalised counts.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by David Zhang.</p>
+  <p><p>Developed by David Zhang.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -188,6 +197,8 @@ object with an additional `assay`` containing the normalised counts.</p>
 
   
 
+
+  
 
   </body>
 </html>

@@ -50,6 +50,8 @@ details of the individual functions, see &quot;Details&quot;." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -61,9 +63,15 @@ details of the individual functions, see &quot;Details&quot;." />
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -77,19 +85,13 @@ details of the individual functions, see &quot;Details&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.8</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/dasper.html">Get started</a>
 </li>
 <li>
@@ -102,7 +104,7 @@ details of the individual functions, see &quot;Details&quot;." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/dzhang32/dasper/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -133,7 +135,12 @@ can be used to run all 4 of the functions stated above in one go. For more
 details of the individual functions, see "Details".</p>
     </div>
 
-    <pre class="usage"><span class='fu'>junction_annot</span><span class='op'>(</span><span class='va'>junctions</span>, <span class='va'>ref</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>junction_annot</span><span class='op'>(</span>
+  <span class='va'>junctions</span>,
+  <span class='va'>ref</span>,
+  ref_cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"gene_id"</span>, <span class='st'>"tx_name"</span>, <span class='st'>"exon_id"</span><span class='op'>)</span>,
+  ref_cols_to_merge <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"gene_id"</span><span class='op'>)</span>
+<span class='op'>)</span>
 
 <span class='fu'>junction_filter</span><span class='op'>(</span>
   <span class='va'>junctions</span>,
@@ -149,6 +156,8 @@ details of the individual functions, see "Details".</p>
 <span class='fu'>junction_process</span><span class='op'>(</span>
   <span class='va'>junctions</span>,
   <span class='va'>ref</span>,
+  ref_cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"gene_id"</span>, <span class='st'>"tx_name"</span>, <span class='st'>"exon_name"</span><span class='op'>)</span>,
+  ref_cols_to_merge <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"gene_id"</span><span class='op'>)</span>,
   count_thresh <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>raw <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
   n_samp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>raw <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
   width_range <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -158,7 +167,7 @@ details of the individual functions, see "Details".</p>
   <span class='va'>...</span>
 <span class='op'>)</span>
 
-<span class='fu'>junction_score</span><span class='op'>(</span><span class='va'>junctions</span>, score_func <span class='op'>=</span> <span class='va'>.zscore</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>junction_score</span><span class='op'>(</span><span class='va'>junctions</span>, score_func <span class='op'>=</span> <span class='va'>.zscore</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,7 +181,23 @@ object.</p></td>
     <tr>
       <th>ref</th>
       <td><p>either path to gtf/gff3 or object of class
-<a href='https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html'>TxDb-class</a>.</p></td>
+<a href='https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html'>TxDb-class</a> or
+<a href='https://rdrr.io/pkg/ensembldb/man/EnsDb-class.html'>EnsDb-class</a>.
+<a href='https://rdrr.io/pkg/ensembldb/man/EnsDb-class.html'>EnsDb-class</a> is required if you intend to annotate
+junctions with gene symbols/names.</p></td>
+    </tr>
+    <tr>
+      <th>ref_cols</th>
+      <td><p>character vector listing the names of the columns in <code>ref</code>
+for which to annotate junctions with. Must contain "gene_id", used for
+categorising junctions.</p></td>
+    </tr>
+    <tr>
+      <th>ref_cols_to_merge</th>
+      <td><p>character vector listing which of the annotation
+columns <code>ref_cols</code> should be merged into in columns to merge into a single
+column per junction. Must contain "gene_id", used for categorising
+junctions.</p></td>
     </tr>
     <tr>
       <th>count_thresh</th>
@@ -253,7 +278,7 @@ score can be user-inputted or left as the default z-score. Junctions will
 also be labelled based on whether they are up-regulated (+1) or
 down-regulated (-1) with respect to controls junction and this information
 is stored in the <a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a>
-"direction" for use in <a href='outlier_aggregate.html'>outlier_aggregate</a>.</p>
+"direction" for use in <a href='outlier_process.html'>outlier_aggregate</a>.</p>
     <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
     
@@ -272,78 +297,86 @@ Further information can be found via the publication
 <a href='https://www.nature.com/articles/s41598-019-45839-z'>https://www.nature.com/articles/s41598-019-45839-z</a>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'>##### Set up txdb #####</span>
-
-<span class='co'># use GenomicState to load txdb (GENCODE v31)</span>
-<span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span>
-    version <span class='op'>=</span> <span class='st'>"31"</span>,
-    genome <span class='op'>=</span> <span class='st'>"hg38"</span>,
-    filetype <span class='op'>=</span> <span class='st'>"TxDb"</span>
-<span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-04-27</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
-<span class='co'>##### junction_annot #####</span>
-
-<span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_annot</span><span class='op'>(</span><span class='va'>junctions_example</span>, <span class='va'>ref</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-11-08 01:39:54 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-11-08 01:40:10 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-11-08 01:40:12 - Tidying junction annotation..."
-#&gt; [1] "2020-11-08 01:40:13 - Deriving junction categories..."
-#&gt; [1] "2020-11-08 01:40:18 - done!"</div><div class='input'>
-<span class='co'>##### junction_filter #####</span>
-
-<span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_filter</span><span class='op'>(</span>
-    <span class='va'>junctions</span>,
-    types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-11-08 01:40:18 - Filtering junctions..."
-#&gt; [1] "2020-11-08 01:40:18 - by count..."
-#&gt; [1] "2020-11-08 01:40:18 - by type..."
-#&gt; [1] "2020-11-08 01:40:18 - done!"</div><div class='input'>
-<span class='co'>##### junction_norm #####</span>
-
-<span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_norm</span><span class='op'>(</span><span class='va'>junctions</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-11-08 01:40:18 - Clustering junctions..."
-#&gt; [1] "2020-11-08 01:40:18 - Normalising junction counts..."
-#&gt; [1] "2020-11-08 01:40:19 - done!"</div><div class='input'>
-<span class='co'>##### junction_score #####</span>
-
-<span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_score</span><span class='op'>(</span><span class='va'>junctions</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-11-08 01:40:19 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-11-08 01:40:19 - Generating junction abnormality score..."
-#&gt; [1] "2020-11-08 01:40:19 - done!"</div><div class='input'>
-<span class='co'>##### junction_process #####</span>
-
-<span class='va'>junctions_processed</span> <span class='op'>&lt;-</span> <span class='fu'>junction_process</span><span class='op'>(</span>
-    <span class='va'>junctions_example</span>,
-    <span class='va'>ref</span>,
-    types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-11-08 01:40:19 - Filtering junctions..."
-#&gt; [1] "2020-11-08 01:40:19 - by count..."
-#&gt; [1] "2020-11-08 01:40:19 - done!"
-#&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-11-08 01:40:19 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-11-08 01:40:35 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-11-08 01:40:36 - Tidying junction annotation..."
-#&gt; [1] "2020-11-08 01:40:36 - Deriving junction categories..."
-#&gt; [1] "2020-11-08 01:40:37 - done!"
-#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-11-08 01:40:37 - Filtering junctions..."
-#&gt; [1] "2020-11-08 01:40:37 - by type..."
-#&gt; [1] "2020-11-08 01:40:37 - done!"
-#&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-11-08 01:40:37 - Clustering junctions..."
-#&gt; [1] "2020-11-08 01:40:37 - Normalising junction counts..."
-#&gt; [1] "2020-11-08 01:40:37 - done!"
-#&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-11-08 01:40:37 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-11-08 01:40:37 - Generating junction abnormality score..."
-#&gt; [1] "2020-11-08 01:40:37 - done!"</div><div class='input'>
-<span class='co'># the two objects are equivalent</span>
-<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>junctions_processed</span>, <span class='va'>junctions</span>, check.attributes <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'></span>
+<span class='r-in'><span class='co'>##### Set up txdb #####</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># use GenomicState to load txdb (GENCODE v31)</span></span>
+<span class='r-in'><span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span></span>
+<span class='r-in'>    version <span class='op'>=</span> <span class='st'>"31"</span>,</span>
+<span class='r-in'>    genome <span class='op'>=</span> <span class='st'>"hg38"</span>,</span>
+<span class='r-in'>    filetype <span class='op'>=</span> <span class='st'>"TxDb"</span></span>
+<span class='r-in'><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> snapshotDate(): 2021-09-10</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> loading from cache</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>##### junction_annot #####</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_annot</span><span class='op'>(</span><span class='va'>junctions_example</span>, <span class='va'>ref</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:14 - Obtaining co-ordinates of annotated exons and junctions..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:29 - Getting junction annotation using overlapping exons..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:31 - Tidying junction annotation..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:32 - Deriving junction categories..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:38 - done!"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>##### junction_filter #####</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_filter</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>junctions</span>,</span>
+<span class='r-in'>    types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:38 - Filtering junctions..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:38 - by count..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:38 - by type..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:38 - done!"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>##### junction_norm #####</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_norm</span><span class='op'>(</span><span class='va'>junctions</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:38 - Clustering junctions..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:38 - Normalising junction counts..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:39 - done!"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>##### junction_score #####</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>junction_score</span><span class='op'>(</span><span class='va'>junctions</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:39 - Calculating the direction of change of junctions..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:39 - Generating junction abnormality score..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:39 - done!"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>##### junction_process #####</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>junctions_processed</span> <span class='op'>&lt;-</span> <span class='fu'>junction_process</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>junctions_example</span>,</span>
+<span class='r-in'>    <span class='va'>ref</span>,</span>
+<span class='r-in'>    types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "# Filtering junctions -----------------------------------------------------"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:39 - Filtering junctions..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:39 - by count..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:39 - done!"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "# Annotating junctions ----------------------------------------------------"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:39 - Obtaining co-ordinates of annotated exons and junctions..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:55 - Getting junction annotation using overlapping exons..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:56 - Tidying junction annotation..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:56 - Deriving junction categories..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:57 - done!"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "# Filtering junctions -----------------------------------------------------"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:57 - Filtering junctions..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:57 - by type..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:57 - done!"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "# Normalise junctions -----------------------------------------------------"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:57 - Clustering junctions..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:57 - Normalising junction counts..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:57 - done!"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "# Score junctions ---------------------------------------------------------"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:57 - Calculating the direction of change of junctions..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:58 - Generating junction abnormality score..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:58 - done!"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># the two objects are equivalent</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>junctions_processed</span>, <span class='va'>junctions</span>, check.attributes <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -355,11 +388,11 @@ Further information can be found via the publication
 
       <footer>
       <div class="copyright">
-  <p>Developed by David Zhang.</p>
+  <p><p>Developed by David Zhang.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -367,6 +400,8 @@ Further information can be found via the publication
 
   
 
+
+  
 
   </body>
 </html>

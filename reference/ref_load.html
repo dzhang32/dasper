@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Random set of example junctions from two samples — example_juncs • dasper</title>
+<title>Load reference annotation into a TxDb format — ref_load • dasper</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,11 @@
 
 
 
-<meta property="og:title" content="Random set of example junctions from two samples — example_juncs" />
-<meta property="og:description" content="A dataset containing the example junction data for 2 samples outputted from
-junc_load." />
+<meta property="og:title" content="Load reference annotation into a TxDb format — ref_load" />
+<meta property="og:description" content="ref_load`` loads reference annotation using [makeTxDbFromGFF][GenomicFeatures::makeTxDbFromGFF] if a character or leaves ref` unchanged if already a TxDb-class. If
+you would" />
+
+
 
 
 
@@ -57,9 +59,15 @@ junc_load." />
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -73,19 +81,13 @@ junc_load." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.8</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/dasper.html">Get started</a>
 </li>
 <li>
@@ -98,7 +100,7 @@ junc_load." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/dzhang32/dasper/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -115,34 +117,49 @@ junc_load." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Random set of example junctions from two samples</h1>
-    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>example_juncs.Rd</code></div>
+    <h1>Load reference annotation into a TxDb format</h1>
+    <small class="dont-index">Source: <a href='https://github.com/dzhang32/dasper/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <div class="hidden name"><code>ref_load.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A dataset containing the example junction data for 2 samples outputted from
-<code><a href='https://rdrr.io/pkg/dasper/man/junc_load.html'>junc_load</a></code>.</p>
+    <p><code>ref_load`` loads reference annotation using [makeTxDbFromGFF][GenomicFeatures::makeTxDbFromGFF] if a character or leaves </code>ref` unchanged if already a <a href='https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html'>TxDb-class</a>. If
+you would</p>
     </div>
 
-    <pre class="usage"><span class='kw'>example_juncs</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>ref_load</span><span class='op'>(</span><span class='va'>ref</span><span class='op'>)</span></code></pre></div>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>ref</th>
+      <td><p>either path to gtf/gff3 or object of class
+<a href='https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html'>TxDb-class</a> or
+<a href='https://rdrr.io/pkg/ensembldb/man/EnsDb-class.html'>EnsDb-class</a>.
+<a href='https://rdrr.io/pkg/ensembldb/man/EnsDb-class.html'>EnsDb-class</a> is required if you intend to annotate
+junctions with gene symbols/names.</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>RangedSummarizedExperiment from the
-<code>SummarizedExperiment</code> detailing the counts, co-ordinates of
-junctions for 2 example samples:</p><dl>
-<dt>assays</dt><dd><p>matrix with counts for ~20,000 junctions and 2 samples</p></dd>
-<dt>colData</dt><dd><p>example sample metadata</p></dd>
-<dt>rowRanges</dt><dd><p>GRanges object describing the co-ordinates and strand of each junction</p></dd>
+    <p>a <a href='https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html'>TxDb-class</a> object.</p>
 
-</dl>
-
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
-
-    <p>generated using data-raw/example_juncs.R</p>
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'></span>
+<span class='r-in'><span class='co'># create a TxDb,</span></span>
+<span class='r-in'><span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span></span>
+<span class='r-in'>    version <span class='op'>=</span> <span class='st'>"31"</span>,</span>
+<span class='r-in'>    genome <span class='op'>=</span> <span class='st'>"hg38"</span>,</span>
+<span class='r-in'>    filetype <span class='op'>=</span> <span class='st'>"TxDb"</span></span>
+<span class='r-in'><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> snapshotDate(): 2021-09-10</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> loading from cache</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># alternatively ref can be a character specifying a path to a GTF file</span></span>
+<span class='r-in'><span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>ref_load</span><span class='op'>(</span><span class='va'>ref</span><span class='op'>)</span></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -154,11 +171,11 @@ junctions for 2 example samples:</p><dl>
 
       <footer>
       <div class="copyright">
-  <p>Developed by David Zhang.</p>
+  <p><p>Developed by David Zhang.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -166,6 +183,8 @@ junctions for 2 example samples:</p><dl>
 
   
 
+
+  
 
   </body>
 </html>

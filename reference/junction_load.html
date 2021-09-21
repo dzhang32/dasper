@@ -53,6 +53,8 @@ junction_load expects the junction data to be in STAR aligned format
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -64,9 +66,15 @@ junction_load expects the junction data to be in STAR aligned format
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -80,19 +88,13 @@ junction_load expects the junction data to be in STAR aligned format
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.8</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/dasper.html">Get started</a>
 </li>
 <li>
@@ -105,7 +107,7 @@ junction_load expects the junction data to be in STAR aligned format
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/dzhang32/dasper/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -139,7 +141,7 @@ downloaded through <a href='http://snaptron.cs.jhu.edu/'>snaptron</a>. By defaul
 (SJ.out) but this can be modified via the argument <code>load_func</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>junction_load</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>junction_load</span><span class='op'>(</span>
   <span class='va'>junction_paths</span>,
   metadata <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>samp_id <span class='op'>=</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_c.html'>str_c</a></span><span class='op'>(</span><span class='st'>"samp_"</span>,
     <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_along</a></span><span class='op'>(</span><span class='va'>junction_paths</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
@@ -147,7 +149,7 @@ downloaded through <a href='http://snaptron.cs.jhu.edu/'>snaptron</a>. By defaul
   load_func <span class='op'>=</span> <span class='va'>.STAR_load</span>,
   chrs <span class='op'>=</span> <span class='cn'>NULL</span>,
   coord_system <span class='op'>=</span> <span class='fl'>1</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -196,38 +198,40 @@ match the co-ordinate system of the user's junctions.</p></td>
 object containing junction data.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='va'>junctions_example_1_path</span> <span class='op'>&lt;-</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>,
-        <span class='st'>"junctions_example_1.txt"</span>,
-        package <span class='op'>=</span> <span class='st'>"dasper"</span>,
-        mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
-    <span class='op'>)</span>
-<span class='va'>junctions_example_2_path</span> <span class='op'>&lt;-</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>,
-        <span class='st'>"junctions_example_2.txt"</span>,
-        package <span class='op'>=</span> <span class='st'>"dasper"</span>,
-        mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
-    <span class='op'>)</span>
-
-<span class='va'>junctions</span> <span class='op'>&lt;-</span>
-    <span class='fu'>junction_load</span><span class='op'>(</span>
-        junction_paths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>junctions_example_1_path</span>, <span class='va'>junctions_example_2_path</span><span class='op'>)</span>
-    <span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-11-08 01:39:45 - Loading junctions for sample 1/2..."
-#&gt; [1] "2020-11-08 01:39:45 - Loading junctions for sample 2/2..."
-#&gt; [1] "2020-11-08 01:39:45 - Adding control junctions..."
-#&gt; [1] "2020-11-08 01:39:45 - Tidying and storing junction data as a RangedSummarizedExperiment..."
-#&gt; [1] "2020-11-08 01:39:45 - done!"</div><div class='input'>
-<span class='va'>junctions</span>
-</div><div class='output co'>#&gt; class: RangedSummarizedExperiment 
-#&gt; dim: 19733 2 
-#&gt; metadata(0):
-#&gt; assays(1): raw
-#&gt; rownames: NULL
-#&gt; rowData names(0):
-#&gt; colnames(2): count_1 count_2
-#&gt; colData names(2): samp_id case_control</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'></span>
+<span class='r-in'><span class='va'>junctions_example_1_path</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>,</span>
+<span class='r-in'>        <span class='st'>"junctions_example_1.txt"</span>,</span>
+<span class='r-in'>        package <span class='op'>=</span> <span class='st'>"dasper"</span>,</span>
+<span class='r-in'>        mustWork <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'><span class='va'>junctions_example_2_path</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>,</span>
+<span class='r-in'>        <span class='st'>"junctions_example_2.txt"</span>,</span>
+<span class='r-in'>        package <span class='op'>=</span> <span class='st'>"dasper"</span>,</span>
+<span class='r-in'>        mustWork <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>junctions</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>    <span class='fu'>junction_load</span><span class='op'>(</span></span>
+<span class='r-in'>        junction_paths <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>junctions_example_1_path</span>, <span class='va'>junctions_example_2_path</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:06 - Loading junctions for sample 1/2..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:06 - Loading junctions for sample 2/2..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:06 - Adding control junctions..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:06 - Tidying and storing junction data as a RangedSummarizedExperiment..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:07 - done!"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>junctions</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class: RangedSummarizedExperiment </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> dim: 19733 2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> metadata(0):</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> assays(1): raw</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> rownames: NULL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> rowData names(0):</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> colnames(2): count_1 count_2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> colData names(2): samp_id case_control</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -239,11 +243,11 @@ object containing junction data.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by David Zhang.</p>
+  <p><p>Developed by David Zhang.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -251,6 +255,8 @@ object containing junction data.</p>
 
   
 
+
+  
 
   </body>
 </html>

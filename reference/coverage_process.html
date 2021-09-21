@@ -50,6 +50,8 @@ functions, see &quot;Details&quot;." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -61,9 +63,15 @@ functions, see &quot;Details&quot;." />
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -77,19 +85,13 @@ functions, see &quot;Details&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.8</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/dasper.html">Get started</a>
 </li>
 <li>
@@ -102,7 +104,7 @@ functions, see &quot;Details&quot;." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/dzhang32/dasper/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -133,7 +135,7 @@ the 2 functions stated above in one go. For more details of the individual
 functions, see "Details".</p>
     </div>
 
-    <pre class="usage"><span class='fu'>coverage_norm</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>coverage_norm</span><span class='op'>(</span>
   <span class='va'>junctions</span>,
   <span class='va'>ref</span>,
   unannot_width <span class='op'>=</span> <span class='fl'>20</span>,
@@ -159,7 +161,7 @@ functions, see "Details".</p>
   <span class='va'>...</span>
 <span class='op'>)</span>
 
-<span class='fu'>coverage_score</span><span class='op'>(</span><span class='va'>junctions</span>, <span class='va'>coverage</span>, score_func <span class='op'>=</span> <span class='va'>.zscore</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>coverage_score</span><span class='op'>(</span><span class='va'>junctions</span>, <span class='va'>coverage</span>, score_func <span class='op'>=</span> <span class='va'>.zscore</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,7 +175,10 @@ object.</p></td>
     <tr>
       <th>ref</th>
       <td><p>either path to gtf/gff3 or object of class
-<a href='https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html'>TxDb-class</a>.</p></td>
+<a href='https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html'>TxDb-class</a> or
+<a href='https://rdrr.io/pkg/ensembldb/man/EnsDb-class.html'>EnsDb-class</a>.
+<a href='https://rdrr.io/pkg/ensembldb/man/EnsDb-class.html'>EnsDb-class</a> is required if you intend to annotate
+junctions with gene symbols/names.</p></td>
     </tr>
     <tr>
       <th>unannot_width</th>
@@ -184,19 +189,18 @@ existing exon.</p></td>
     <tr>
       <th>coverage_paths_case</th>
       <td><p>paths to the BigWig files containing the coverage
-of your case samples. Must be the same length and order to the samples in
-<code>junctions</code>.</p></td>
+of your case samples.</p></td>
     </tr>
     <tr>
       <th>coverage_paths_control</th>
-      <td><p>paths to the BigWig files</p></td>
+      <td><p>paths to the BigWig files for control samples.</p></td>
     </tr>
     <tr>
       <th>coverage_chr_control</th>
       <td><p>either "chr" or "no_chr", indicating the
 chromosome format of control coverage data. Only required if the
 chromosome format of the control BigWig files is different to that of your
-junctions.</p></td>
+cases.</p></td>
     </tr>
     <tr>
       <th>load_func</th>
@@ -272,123 +276,151 @@ greatest disruption.</p>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'>##### Set up txdb #####</span>
-
-<span class='co'># use GenomicState to load txdb (GENCODE v31)</span>
-<span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span>
-    version <span class='op'>=</span> <span class='st'>"31"</span>,
-    genome <span class='op'>=</span> <span class='st'>"hg38"</span>,
-    filetype <span class='op'>=</span> <span class='st'>"TxDb"</span>
-<span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-04-27</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomicFeatures</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: BiocGenerics</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: parallel</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘BiocGenerics’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:parallel’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,</span>
-#&gt; <span class='message'>    clusterExport, clusterMap, parApply, parCapply, parLapply,</span>
-#&gt; <span class='message'>    parLapplyLB, parRapply, parSapply, parSapplyLB</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    IQR, mad, sd, var, xtabs</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    anyDuplicated, append, as.data.frame, basename, cbind, colnames,</span>
-#&gt; <span class='message'>    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,</span>
-#&gt; <span class='message'>    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,</span>
-#&gt; <span class='message'>    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,</span>
-#&gt; <span class='message'>    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,</span>
-#&gt; <span class='message'>    union, unique, unsplit, which.max, which.min</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: S4Vectors</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: stats4</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘S4Vectors’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    expand.grid</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: IRanges</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomeInfoDb</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomicRanges</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: AnnotationDbi</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: Biobase</span></div><div class='output co'>#&gt; <span class='message'>Welcome to Bioconductor</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    Vignettes contain introductory material; view with</span>
-#&gt; <span class='message'>    'browseVignettes()'. To cite Bioconductor, see</span>
-#&gt; <span class='message'>    'citation("Biobase")', and for packages 'citation("pkgname")'.</span></div><div class='input'>
-<span class='co'>##### Set up BigWig #####</span>
-
-<span class='co'># obtain path to example bw on recount2</span>
-<span class='va'>bw_path</span> <span class='op'>&lt;-</span> <span class='fu'>recount</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/recount/man/download_study.html'>download_study</a></span><span class='op'>(</span>
-    project <span class='op'>=</span> <span class='st'>"SRP012682"</span>,
-    type <span class='op'>=</span> <span class='st'>"samples"</span>,
-    download <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; <span class='message'>Setting options('download.file.method.GEOquery'='auto')</span></div><div class='output co'>#&gt; <span class='message'>Setting options('GEOquery.inmemory.gpl'=FALSE)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: multiple methods tables found for ‘rowRanges’</span></div><div class='output co'>#&gt; <span class='message'>No methods found in package ‘IRanges’ for request: ‘values&lt;-’ when loading ‘derfinder’</span></div><div class='output co'>#&gt; <span class='message'>No methods found in package ‘IRanges’ for request: ‘values’ when loading ‘derfinder’</span></div><div class='input'><span class='co'># \dontshow{</span>
-<span class='co'># cache the bw for speed in later</span>
-<span class='co'># examples/testing during R CMD Check</span>
-<span class='va'>bw_path</span> <span class='op'>&lt;-</span> <span class='fu'>dasper</span><span class='fu'>:::</span><span class='fu'>.file_cache</span><span class='op'>(</span><span class='va'>bw_path</span><span class='op'>)</span>
-<span class='co'># }</span>
-
-<span class='co'>##### junction_process #####</span>
-
-<span class='va'>junctions_processed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='junction_annot.html'>junction_process</a></span><span class='op'>(</span>
-    <span class='va'>junctions_example</span>,
-    <span class='va'>ref</span>,
-    types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-11-08 01:38:48 - Filtering junctions..."
-#&gt; [1] "2020-11-08 01:38:48 - by count..."
-#&gt; [1] "2020-11-08 01:38:49 - done!"
-#&gt; [1] "# Annotating junctions ----------------------------------------------------"
-#&gt; [1] "2020-11-08 01:38:49 - Obtaining co-ordinates of annotated exons and junctions from gtf/gff3..."
-#&gt; [1] "2020-11-08 01:39:12 - Getting junction annotation using overlapping exons..."
-#&gt; [1] "2020-11-08 01:39:14 - Tidying junction annotation..."
-#&gt; [1] "2020-11-08 01:39:14 - Deriving junction categories..."
-#&gt; [1] "2020-11-08 01:39:14 - done!"
-#&gt; [1] "# Filtering junctions -----------------------------------------------------"
-#&gt; [1] "2020-11-08 01:39:14 - Filtering junctions..."
-#&gt; [1] "2020-11-08 01:39:14 - by type..."
-#&gt; [1] "2020-11-08 01:39:14 - done!"
-#&gt; [1] "# Normalise junctions -----------------------------------------------------"
-#&gt; [1] "2020-11-08 01:39:14 - Clustering junctions..."
-#&gt; [1] "2020-11-08 01:39:15 - Normalising junction counts..."
-#&gt; [1] "2020-11-08 01:39:15 - done!"
-#&gt; [1] "# Score junctions ---------------------------------------------------------"
-#&gt; [1] "2020-11-08 01:39:15 - Calculating the direction of change of junctions..."
-#&gt; [1] "2020-11-08 01:39:15 - Generating junction abnormality score..."
-#&gt; [1] "2020-11-08 01:39:15 - done!"</div><div class='input'>
-<span class='co'>##### coverage_norm #####</span>
-
-<span class='va'>coverage_normed</span> <span class='op'>&lt;-</span> <span class='fu'>coverage_norm</span><span class='op'>(</span>
-    <span class='va'>junctions_processed</span>,
-    <span class='va'>ref</span>,
-    unannot_width <span class='op'>=</span> <span class='fl'>20</span>,
-    coverage_paths_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>,
-    coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-11-08 01:39:15 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-11-08 01:39:15 - Obtaining regions to use to normalise coverage..."
-#&gt; [1] "2020-11-08 01:39:20 - Loading coverage..."
-#&gt; [1] "2020-11-08 01:39:28 - Normalising coverage..."
-#&gt; [1] "2020-11-08 01:39:28 - done!"</div><div class='input'>
-<span class='co'>##### coverage_score #####</span>
-
-<span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>coverage_score</span><span class='op'>(</span><span class='va'>junctions_processed</span>, <span class='va'>coverage_normed</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "2020-11-08 01:39:28 - Generating coverage abnormality score..."
-#&gt; [1] "2020-11-08 01:39:28 - Obtaining regions with greatest coverage dysruption..."
-#&gt; [1] "2020-11-08 01:39:28 - done!"</div><div class='input'>
-<span class='co'>##### coverage_process #####</span>
-
-<span class='co'># this wrapper will obtain coverage scores identical to those</span>
-<span class='co'># obtained through running the individual wrapped functions shown below</span>
-<span class='va'>junctions_w_coverage</span> <span class='op'>&lt;-</span> <span class='fu'>coverage_process</span><span class='op'>(</span>
-    <span class='va'>junctions_processed</span>,
-    <span class='va'>ref</span>,
-    coverage_paths_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>,
-    coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>3</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "# Loading and normalising coverage ---------------------------------------------"
-#&gt; [1] "2020-11-08 01:39:28 - Obtaining exonic and intronic regions to load coverage from..."
-#&gt; [1] "2020-11-08 01:39:28 - Obtaining regions to use to normalise coverage..."
-#&gt; [1] "2020-11-08 01:39:34 - Loading coverage..."
-#&gt; [1] "2020-11-08 01:39:42 - Normalising coverage..."
-#&gt; [1] "2020-11-08 01:39:42 - done!"
-#&gt; [1] "# Scoring coverage ---------------------------------------------"
-#&gt; [1] "2020-11-08 01:39:42 - Generating coverage abnormality score..."
-#&gt; [1] "2020-11-08 01:39:43 - Obtaining regions with greatest coverage dysruption..."
-#&gt; [1] "2020-11-08 01:39:43 - done!"</div><div class='input'>
-<span class='co'># the two objects are equivalent</span>
-<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>junctions_w_coverage</span>, <span class='va'>junctions</span>, check.attributes <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'></span>
+<span class='r-in'><span class='co'>##### Set up txdb #####</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># use GenomicState to load txdb (GENCODE v31)</span></span>
+<span class='r-in'><span class='va'>ref</span> <span class='op'>&lt;-</span> <span class='fu'>GenomicState</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/GenomicState/man/GenomicStateHub.html'>GenomicStateHub</a></span><span class='op'>(</span></span>
+<span class='r-in'>    version <span class='op'>=</span> <span class='st'>"31"</span>,</span>
+<span class='r-in'>    genome <span class='op'>=</span> <span class='st'>"hg38"</span>,</span>
+<span class='r-in'>    filetype <span class='op'>=</span> <span class='st'>"TxDb"</span></span>
+<span class='r-in'><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> snapshotDate(): 2021-09-10</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> loading from cache</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: GenomicFeatures</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: BiocGenerics</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Attaching package: ‘BiocGenerics’</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from ‘package:stats’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     IQR, mad, sd, var, xtabs</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     Filter, Find, Map, Position, Reduce, anyDuplicated, append,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     as.data.frame, basename, cbind, colnames, dirname, do.call,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     duplicated, eval, evalq, get, grep, grepl, intersect, is.unsorted,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     lapply, mapply, match, mget, order, paste, pmax, pmax.int, pmin,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     pmin.int, rank, rbind, rownames, sapply, setdiff, sort, table,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     tapply, union, unique, unsplit, which.max, which.min</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: S4Vectors</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: stats4</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Attaching package: ‘S4Vectors’</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     I, expand.grid, unname</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: IRanges</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: GenomeInfoDb</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: GenomicRanges</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: AnnotationDbi</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: Biobase</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Welcome to Bioconductor</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     Vignettes contain introductory material; view with</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     'browseVignettes()'. To cite Bioconductor, see</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     'citation("Biobase")', and for packages 'citation("pkgname")'.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>##### Set up BigWig #####</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># obtain path to example bw on recount2</span></span>
+<span class='r-in'><span class='va'>bw_path</span> <span class='op'>&lt;-</span> <span class='fu'>recount</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/recount/man/download_study.html'>download_study</a></span><span class='op'>(</span></span>
+<span class='r-in'>    project <span class='op'>=</span> <span class='st'>"SRP012682"</span>,</span>
+<span class='r-in'>    type <span class='op'>=</span> <span class='st'>"samples"</span>,</span>
+<span class='r-in'>    download <span class='op'>=</span> <span class='cn'>FALSE</span></span>
+<span class='r-in'><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Setting options('download.file.method.GEOquery'='auto')</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Setting options('GEOquery.inmemory.gpl'=FALSE)</span>
+<span class='r-in'><span class='co'># \dontshow{</span></span>
+<span class='r-in'><span class='co'># cache the bw for speed in later</span></span>
+<span class='r-in'><span class='co'># examples/testing during R CMD Check</span></span>
+<span class='r-in'><span class='va'>bw_path</span> <span class='op'>&lt;-</span> <span class='fu'>dasper</span><span class='fu'>:::</span><span class='fu'>.file_cache</span><span class='op'>(</span><span class='va'>bw_path</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># }</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>##### junction_process #####</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>junctions_processed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='junction_process.html'>junction_process</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>junctions_example</span>,</span>
+<span class='r-in'>    <span class='va'>ref</span>,</span>
+<span class='r-in'>    types <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ambig_gene"</span>, <span class='st'>"unannotated"</span><span class='op'>)</span>,</span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "# Filtering junctions -----------------------------------------------------"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:11 - Filtering junctions..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:11 - by count..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:12 - done!"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "# Annotating junctions ----------------------------------------------------"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:12 - Obtaining co-ordinates of annotated exons and junctions..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:33 - Getting junction annotation using overlapping exons..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:34 - Tidying junction annotation..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:35 - Deriving junction categories..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:35 - done!"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "# Filtering junctions -----------------------------------------------------"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:35 - Filtering junctions..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:35 - by type..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:36 - done!"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "# Normalise junctions -----------------------------------------------------"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:36 - Clustering junctions..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:36 - Normalising junction counts..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:36 - done!"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "# Score junctions ---------------------------------------------------------"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:36 - Calculating the direction of change of junctions..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:36 - Generating junction abnormality score..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:37 - done!"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>##### install megadepth #####</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># required to load coverage in coverage_norm()</span></span>
+<span class='r-in'><span class='fu'>megadepth</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/megadepth/man/install_megadepth.html'>install_megadepth</a></span><span class='op'>(</span>force <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The latest megadepth version is 1.1.1</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> This is not an interactive session, therefore megadepth has been installed temporarily to </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> /tmp/RtmpNj26BQ/megadepth</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>##### coverage_norm #####</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>coverage_normed</span> <span class='op'>&lt;-</span> <span class='fu'>coverage_norm</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>junctions_processed</span>,</span>
+<span class='r-in'>    <span class='va'>ref</span>,</span>
+<span class='r-in'>    unannot_width <span class='op'>=</span> <span class='fl'>20</span>,</span>
+<span class='r-in'>    coverage_paths_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>,</span>
+<span class='r-in'>    coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:38 - Obtaining exonic and intronic regions to load coverage from..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:38 - Obtaining regions to use to normalise coverage..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:44 - Loading coverage..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:50 - Normalising coverage..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:50 - done!"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>##### coverage_score #####</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>junctions</span> <span class='op'>&lt;-</span> <span class='fu'>coverage_score</span><span class='op'>(</span><span class='va'>junctions_processed</span>, <span class='va'>coverage_normed</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:50 - Generating coverage abnormality score..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:50 - Obtaining regions with greatest coverage dysruption..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:52 - done!"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>##### coverage_process #####</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># this wrapper will obtain coverage scores identical to those</span></span>
+<span class='r-in'><span class='co'># obtained through running the individual wrapped functions shown below</span></span>
+<span class='r-in'><span class='va'>junctions_w_coverage</span> <span class='op'>&lt;-</span> <span class='fu'>coverage_process</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>junctions_processed</span>,</span>
+<span class='r-in'>    <span class='va'>ref</span>,</span>
+<span class='r-in'>    coverage_paths_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>2</span><span class='op'>)</span>,</span>
+<span class='r-in'>    coverage_paths_control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>bw_path</span>, <span class='fl'>3</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "# Loading and normalising coverage ---------------------------------------------"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:52 - Obtaining exonic and intronic regions to load coverage from..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:52 - Obtaining regions to use to normalise coverage..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:49:56 - Loading coverage..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:03 - Normalising coverage..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:03 - done!"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "# Scoring coverage ---------------------------------------------"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:03 - Generating coverage abnormality score..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:03 - Obtaining regions with greatest coverage dysruption..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "2021-09-21 16:50:03 - done!"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># the two objects are equivalent</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>junctions_w_coverage</span>, <span class='va'>junctions</span>, check.attributes <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -400,11 +432,11 @@ greatest disruption.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by David Zhang.</p>
+  <p><p>Developed by David Zhang.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -412,6 +444,8 @@ greatest disruption.</p>
 
   
 
+
+  
 
   </body>
 </html>
