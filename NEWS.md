@@ -1,3 +1,15 @@
+# dasper 1.3.8
+
+NEW FEATURES
+
+* Fix bug related to `pkgdown::deploy_to_branch()`. 
+
+# dasper 1.3.6
+
+NEW FEATURES
+
+* Add functionality to annotate junctions with `gene_name`/`symbol` using `EnsDb` inputted into `junction_annot()`. 
+
 # dasper 1.3.2
 
 NEW FEATURES
