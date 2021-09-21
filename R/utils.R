@@ -321,7 +321,7 @@ ref_load <- function(ref) {
 
         # cache the gtf/gff3 for faster repeated retrieval
         ref <- .file_cache(ref)
-        ref <- GenomicFeatures::makeTxDbFromGFF(ref, organism = organism)
+        ref <- GenomicFeatures::makeTxDbFromGFF(ref)
     }
     return(ref)
 }
