@@ -107,7 +107,7 @@ By contributing to this project, you agree to abide by its terms.
     *[rcmdcheck](https://CRAN.R-project.org/package=rcmdcheck)*
     customized to use [Bioconductor’s docker
     containers](https://www.bioconductor.org/help/docker/) and
-    *[BiocCheck](https://bioconductor.org/packages/3.14/BiocCheck)*.
+    *[BiocCheck](https://bioconductor.org/packages/3.13/BiocCheck)*.
 -   Code coverage assessment is possible thanks to
     [codecov](https://codecov.io/gh) and
     *[covr](https://CRAN.R-project.org/package=covr)*.
@@ -126,4 +126,4 @@ In particular, I am very grateful to
 [Leo](http://lcolladotor.github.io/) for his time and advice throughout
 the development of `dasper`. The transition of `dasper`
 Bioconductor-friendly package was made possible thanks to his
-*[biocthis](https://bioconductor.org/packages/3.14/biocthis)* package.
+*[biocthis](https://bioconductor.org/packages/3.13/biocthis)* package.

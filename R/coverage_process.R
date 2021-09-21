@@ -93,6 +93,11 @@
 #'     types = c("ambig_gene", "unannotated"),
 #' )
 #'
+#' ##### install megadepth #####
+#'
+#' # required to load coverage in coverage_norm()
+#' megadepth::install_megadepth()
+#'
 #' ##### coverage_norm #####
 #'
 #' coverage_normed <- coverage_norm(
