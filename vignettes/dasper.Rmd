@@ -21,6 +21,10 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
+# needed for pkgdown::build_site()
+library(utils)
+library(grDevices)
+
 knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>",
@@ -35,7 +39,7 @@ startTime <- Sys.time()
 ## Bib setup
 library("RefManageR")
 
-## Write bibliography information
+# Write bibliography information
 bib <- c(
     R = citation(),
     BiocStyle = citation("BiocStyle")[1],
