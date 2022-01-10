@@ -1,7 +1,7 @@
-pandoc: 2.11.4
-pkgdown: 1.6.1.9001
-pkgdown_sha: 2f7f797cb04de32adcf76680a00420681c7c0210
+pandoc: 2.14.0.3
+pkgdown: 2.0.1.9000
+pkgdown_sha: e25bd0bb6a604ecc60d704c7154f291afbf0dd7b
 articles:
   dasper: dasper.html
-last_built: 2021-09-21T19:44Z
+last_built: 2022-01-10T18:04Z
 
