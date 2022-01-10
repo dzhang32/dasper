@@ -1,3 +1,9 @@
+# dasper 1.5.1
+
+NEW FEATURES
+
+* Fix bug related to `coverage_norm()`, ensuring that regions used to normalise coverage have the same `seqlevels` as the inputted `junctions`. 
+
 # dasper 1.3.8
 
 NEW FEATURES
