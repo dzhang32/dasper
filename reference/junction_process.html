@@ -22,7 +22,7 @@ details of the individual functions, see "Details".'><!-- mathjax --><script src
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.1</span>
       </span>
     </div>
 
@@ -222,11 +222,11 @@ Further information can be found via the publication
 <span class="r-in"><span class="co">##### junction_annot #####</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu">junction_annot</span><span class="op">(</span><span class="va">junctions_example</span>, <span class="va">ref</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:29 - Obtaining co-ordinates of annotated exons and junctions..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:44 - Getting junction annotation using overlapping exons..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:46 - Tidying junction annotation..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:47 - Deriving junction categories..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:53 - done!"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:02:41 - Obtaining co-ordinates of annotated exons and junctions..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:02:54 - Getting junction annotation using overlapping exons..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:02:56 - Tidying junction annotation..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:02:57 - Deriving junction categories..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:01 - done!"</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">##### junction_filter #####</span></span>
 <span class="r-in"></span>
@@ -234,24 +234,24 @@ Further information can be found via the publication
 <span class="r-in">    <span class="va">junctions</span>,</span>
 <span class="r-in">    types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ambig_gene"</span>, <span class="st">"unannotated"</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:53 - Filtering junctions..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:53 - by count..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:53 - by type..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:53 - done!"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:01 - Filtering junctions..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:01 - by count..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:01 - by type..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:01 - done!"</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">##### junction_norm #####</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu">junction_norm</span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:53 - Clustering junctions..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:54 - Normalising junction counts..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:54 - done!"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:01 - Clustering junctions..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:02 - Normalising junction counts..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:02 - done!"</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">##### junction_score #####</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu">junction_score</span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:54 - Calculating the direction of change of junctions..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:54 - Generating junction abnormality score..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:54 - done!"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:02 - Calculating the direction of change of junctions..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:02 - Generating junction abnormality score..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:02 - done!"</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">##### junction_process #####</span></span>
 <span class="r-in"></span>
@@ -261,27 +261,27 @@ Further information can be found via the publication
 <span class="r-in">    types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ambig_gene"</span>, <span class="st">"unannotated"</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "# Filtering junctions -----------------------------------------------------"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:54 - Filtering junctions..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:54 - by count..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:55 - done!"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:02 - Filtering junctions..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:02 - by count..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:03 - done!"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "# Annotating junctions ----------------------------------------------------"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:06:55 - Obtaining co-ordinates of annotated exons and junctions..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:07:09 - Getting junction annotation using overlapping exons..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:07:12 - Tidying junction annotation..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:07:12 - Deriving junction categories..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:07:13 - done!"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:03 - Obtaining co-ordinates of annotated exons and junctions..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:16 - Getting junction annotation using overlapping exons..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:17 - Tidying junction annotation..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:17 - Deriving junction categories..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:18 - done!"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "# Filtering junctions -----------------------------------------------------"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:07:13 - Filtering junctions..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:07:13 - by type..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:07:13 - done!"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:18 - Filtering junctions..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:18 - by type..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:18 - done!"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "# Normalise junctions -----------------------------------------------------"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:07:13 - Clustering junctions..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:07:13 - Normalising junction counts..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:07:14 - done!"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:18 - Clustering junctions..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:18 - Normalising junction counts..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:18 - done!"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "# Score junctions ---------------------------------------------------------"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:07:14 - Calculating the direction of change of junctions..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:07:14 - Generating junction abnormality score..."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 18:07:14 - done!"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:18 - Calculating the direction of change of junctions..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:18 - Generating junction abnormality score..."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-01-10 23:03:19 - done!"</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># the two objects are equivalent</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">junctions_processed</span>, <span class="va">junctions</span>, check.attributes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
