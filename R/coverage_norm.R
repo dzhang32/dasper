@@ -153,7 +153,6 @@ coverage_norm <- function(junctions,
 #' @keywords internal
 #' @noRd
 .coverage_norm_region <- function(junctions, ref, coverage_regions) {
-
     # for R CMD check
     index <- NULL
 
@@ -180,6 +179,7 @@ coverage_norm <- function(junctions,
         )
 
     mcols(no_gene_coords)[["index"]] <- no_gene_indexes
+
 
     ##### single gene #####
 
@@ -217,6 +217,14 @@ coverage_norm <- function(junctions,
         GRanges()
 
     ##### merge all gene coords together ####
+
+    # ensure all have the same seqlevels, otherwise merge can fail
+    GenomeInfoDb::seqlevels(no_gene_coords) <-
+        GenomeInfoDb::seqlevels(junctions)
+    GenomeInfoDb::seqlevels(single_gene_coords) <-
+        GenomeInfoDb::seqlevels(junctions)
+    GenomeInfoDb::seqlevels(ambig_gene_coords) <-
+        GenomeInfoDb::seqlevels(junctions)
 
     norm_coords <- c(
         no_gene_coords,
