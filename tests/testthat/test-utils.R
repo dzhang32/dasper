@@ -14,67 +14,71 @@ test_that(".chr_filter catches user-input errors", {
 
 ##### .coverage_load #####
 
-megadepth::install_megadepth()
-
-# obtain path to example bw on recount2
-url <- recount::download_study(
+if(!xfun::is_windows()) {
+  
+  megadepth::install_megadepth()
+  
+  # obtain path to example bw on recount2
+  url <- recount::download_study(
     project = "SRP012682",
     type = "samples",
     download = FALSE
-)
-
-bw_path <- dasper:::.file_cache(url[1])
-
-# take 5 junctions from the end and 5 from the top to test in that order
-# to make sure order returned by .coverage_load() matches input ranges rather than
-# chromosome order
-junctions_to_use <- c(length(junctions_example):(length(junctions_example) - 4), 1:5)
-junctions <- junctions_example[junctions_to_use] %>%
+  )
+  
+  bw_path <- dasper:::.file_cache(url[1])
+  
+  # take 5 junctions from the end and 5 from the top to test in that order
+  # to make sure order returned by .coverage_load() matches input ranges rather than
+  # chromosome order
+  junctions_to_use <- c(length(junctions_example):(length(junctions_example) - 4), 1:5)
+  junctions <- junctions_example[junctions_to_use] %>%
     rowRanges()
-
-junctions_sorted <- junctions %>% sort()
-
-mcols(junctions)[["coverage"]] <-
+  
+  junctions_sorted <- junctions %>% sort()
+  
+  mcols(junctions)[["coverage"]] <-
     .coverage_load(
-        regions = junctions,
-        coverage_path = bw_path,
-        sum_fun = "mean",
-        chr_format = "chr"
+      regions = junctions,
+      coverage_path = bw_path,
+      sum_fun = "mean",
+      chr_format = "chr"
     )
-
-mcols(junctions_sorted)[["coverage"]] <-
+  
+  mcols(junctions_sorted)[["coverage"]] <-
     .coverage_load(
-        regions = junctions_sorted,
-        coverage_path = bw_path,
-        sum_fun = "mean",
-        chr_format = "chr"
+      regions = junctions_sorted,
+      coverage_path = bw_path,
+      sum_fun = "mean",
+      chr_format = "chr"
     )
-
-coverage_rt <-
+  
+  coverage_rt <-
     .coverage_load(
-        regions = junctions_sorted,
-        coverage_path = bw_path,
-        sum_fun = "mean",
-        chr_format = "chr",
-        method = "rt"
+      regions = junctions_sorted,
+      coverage_path = bw_path,
+      sum_fun = "mean",
+      chr_format = "chr",
+      method = "rt"
     ) %>%
     lapply(FUN = mean) %>%
     unlist() %>%
     round(2)
-
-test_that(".coverage_load has correct output", {
-
+  
+  test_that(".coverage_load has correct output", {
+    
     # make sure the order of returned coverage is same as inputted regions
     expect_identical(
-        mcols(sort(junctions))[["coverage"]],
-        mcols(junctions_sorted)[["coverage"]]
+      mcols(sort(junctions))[["coverage"]],
+      mcols(junctions_sorted)[["coverage"]]
     )
-
+    
     expect_equal(
-        mcols(junctions_sorted)[["coverage"]],
-        coverage_rt
+      mcols(junctions_sorted)[["coverage"]],
+      coverage_rt
     )
-})
+  })
+  
+}
 
 ##### .chr_check #####
 
