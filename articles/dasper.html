@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dasper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.2</span>
       </span>
     </div>
 
@@ -157,7 +157,7 @@ to cite the package and the overall approach. Thank you!</p>
 <span class="co">#&gt; dzhang32 (2022). _Detecting abberant splicing events from</span>
 <span class="co">#&gt; RNA-sequencing data_. doi: 10.18129/B9.bioc.dasper (URL:</span>
 <span class="co">#&gt; https://doi.org/10.18129/B9.bioc.dasper),</span>
-<span class="co">#&gt; https://github.com/dzhang32/dasper - R package version 1.5.1, &lt;URL:</span>
+<span class="co">#&gt; https://github.com/dzhang32/dasper - R package version 1.5.2, &lt;URL:</span>
 <span class="co">#&gt; http://www.bioconductor.org/packages/dasper&gt;.</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; dzhang32 (2020). "Detecting abberant splicing events from</span>
@@ -225,7 +225,7 @@ easiest way to do this is to run <code>install_megadepth</code> from the
 <code class="sourceCode R"><span class="fu">megadepth</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/megadepth/man/install_megadepth.html" class="external-link">install_megadepth</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; The latest megadepth version is 1.2.0</span>
 <span class="co">#&gt; This is not an interactive session, therefore megadepth has been installed temporarily to </span>
-<span class="co">#&gt; /tmp/Rtmp3yrSBO/megadepth</span></code></pre></div>
+<span class="co">#&gt; /tmp/Rtmpodp2m5/megadepth</span></code></pre></div>
 <p><code>dasper</code> requires reference annotation that can either be
 inputted as a <code>GTF</code> path or pre-loaded into a
 <code>TxDb</code> object as shown below.</p>
@@ -386,12 +386,12 @@ tissues that be selected via <code>controls</code> are “fibroblasts”,
         controls <span class="op">=</span> <span class="st">"fibroblasts"</span>,
         chrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr21"</span>, <span class="st">"chr22"</span><span class="op">)</span>
     <span class="op">)</span>
-<span class="co">#&gt; [1] "2022-03-03 11:07:30 - Loading junctions for sample 1/2..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:07:30 - Loading junctions for sample 2/2..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:07:30 - Adding control junctions..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:07:30 - Downloading and importing fibroblasts junction data..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:00 - Tidying and storing junction data as a RangedSummarizedExperiment..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:02 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 20:17:26 - Loading junctions for sample 1/2..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:17:26 - Loading junctions for sample 2/2..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:17:26 - Adding control junctions..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:17:26 - Downloading and importing fibroblasts junction data..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:17:52 - Tidying and storing junction data as a RangedSummarizedExperiment..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:17:54 - done!"</span>
 
 <span class="va">junctions</span>
 <span class="co">#&gt; class: RangedSummarizedExperiment </span>
@@ -419,11 +419,11 @@ retrieving the annotated/unannotated junctions.</p>
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="va">junctions</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
 
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_process.html">junction_annot</a></span><span class="op">(</span><span class="va">junctions</span>, <span class="va">ref</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:02 - Obtaining co-ordinates of annotated exons and junctions..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:16 - Getting junction annotation using overlapping exons..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:19 - Tidying junction annotation..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:20 - Deriving junction categories..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:24 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 20:17:54 - Obtaining co-ordinates of annotated exons and junctions..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:06 - Getting junction annotation using overlapping exons..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:09 - Tidying junction annotation..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:09 - Deriving junction categories..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:13 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; DataFrame with 6 rows and 14 columns</span>
@@ -479,9 +479,9 @@ kept in.</p>
     count_thresh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>raw <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,
     n_samp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>raw <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:24 - Filtering junctions..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:24 - by count..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:25 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:14 - Filtering junctions..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:14 - by count..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:14 - done!"</span>
 
 <span class="va">junctions</span>
 <span class="co">#&gt; class: RangedSummarizedExperiment </span>
@@ -501,9 +501,9 @@ number of reads in it’s associated cluster.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_process.html">junction_norm</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:25 - Clustering junctions..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:25 - Normalising junction counts..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:25 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:14 - Clustering junctions..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:14 - Normalising junction counts..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:15 - done!"</span>
 
 <span class="co"># save a separate object for plotting</span>
 <span class="va">junctions_normed</span> <span class="op">&lt;-</span> <span class="va">junctions</span>
@@ -536,9 +536,9 @@ user-inputted function by adjusting the argument
 <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment::assays</a></code> “score”.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_process.html">junction_score</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:26 - Calculating the direction of change of junctions..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:26 - Generating junction abnormality score..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:26 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:15 - Calculating the direction of change of junctions..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:15 - Generating junction abnormality score..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:15 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assays</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] "raw"       "norm"      "direction" "score"</span></code></pre></div>
@@ -567,20 +567,20 @@ comparison</a>).</p>
     coverage_paths_control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">bw_path</span>, <span class="fl">3</span><span class="op">)</span>,
     bp_param <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html" class="external-link">SerialParam</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:26 - Obtaining exonic and intronic regions to load coverage from..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:26 - Obtaining regions to use to normalise coverage..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:31 - Loading coverage..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:47 - Normalising coverage..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:47 - done!"</span></code></pre></div>
+<span class="co">#&gt; [1] "2022-03-03 20:18:15 - Obtaining exonic and intronic regions to load coverage from..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:15 - Obtaining regions to use to normalise coverage..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:20 - Loading coverage..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:33 - Normalising coverage..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:33 - done!"</span></code></pre></div>
 <p><code>coverage_score</code> can then be used to compare the coverage
 associated with each junction to the coverage distribution corresponding
 to the same region in controls. After which, junctions should have the
 <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment::assays</a></code> “coverage_score”.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/coverage_process.html">coverage_score</a></span><span class="op">(</span><span class="va">junctions</span>, <span class="va">coverage</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:47 - Generating coverage abnormality score..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:48 - Obtaining regions with greatest coverage dysruption..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:48 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:33 - Generating coverage abnormality score..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:33 - Obtaining regions with greatest coverage dysruption..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:33 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assays</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] "raw"             "norm"            "direction"       "score"          </span>
@@ -605,13 +605,13 @@ integer (for more details on the isolation forest model see <a href="https://sci
     bp_param <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html" class="external-link">SerialParam</a></span><span class="op">(</span><span class="op">)</span>,
     random_state <span class="op">=</span> <span class="fl">32L</span>
 <span class="op">)</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:48 - generating outlier scores for sample 1/2"</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:51 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:52 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:52 - generating outlier scores for sample 2/2"</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:52 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:53 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:53 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:33 - generating outlier scores for sample 1/2"</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:36 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:37 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:37 - generating outlier scores for sample 2/2"</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:37 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:37 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:37 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assays</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] "raw"             "norm"            "direction"       "score"          </span>
@@ -629,9 +629,9 @@ most aberrant for each cluster can be found in the
 <code>junctions</code> column.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">outlier_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outlier_process.html">outlier_aggregate</a></span><span class="op">(</span><span class="va">junctions</span>, samp_id_col <span class="op">=</span> <span class="st">"samp_id"</span>, <span class="op">)</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:53 - Aggregating outlier scores to cluster level... "</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:54 - Annotating clusters with gene details..."</span>
-<span class="co">#&gt; [1] "2022-03-03 11:08:54 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:38 - Aggregating outlier scores to cluster level... "</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:38 - Annotating clusters with gene details..."</span>
+<span class="co">#&gt; [1] "2022-03-03 20:18:38 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">outlier_scores</span><span class="op">)</span>
 <span class="co">#&gt; DataFrame with 6 rows and 6 columns</span>
@@ -732,9 +732,9 @@ Chang, and Iannone, 2022)</li>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://yihui.org/knitr/" class="external-link">"knitr"</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/knit.html" class="external-link">knit</a></span><span class="op">(</span><span class="st">"dasper.Rmd"</span>, tangle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>Date the vignette was generated.</p>
-<pre><code><span class="co">#&gt; [1] "2022-03-03 11:09:00 UTC"</span></code></pre>
+<pre><code><span class="co">#&gt; [1] "2022-03-03 20:18:43 UTC"</span></code></pre>
 <p>Wallclock time spent generating the vignette.</p>
-<pre><code><span class="co">#&gt; Time difference of 1.974 mins</span></code></pre>
+<pre><code><span class="co">#&gt; Time difference of 1.67 mins</span></code></pre>
 <p><code>R</code> session information.</p>
 <pre><code><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────</span></span>
 <span class="co">#&gt;  <span style="color: #555555; font-style: italic;">setting </span> <span style="color: #555555; font-style: italic;">value</span></span>
@@ -791,7 +791,7 @@ Chang, and Iannone, 2022)</li>
 <span class="co">#&gt;  cowplot                  1.1.1      <span style="color: #555555;">2020-12-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  crayon                   1.5.0      <span style="color: #555555;">2022-02-14</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  curl                     4.3.2      <span style="color: #555555;">2021-06-23</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  dasper                 * 1.5.1      <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  dasper                 * 1.5.2      <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  data.table               1.14.2     <span style="color: #555555;">2021-09-27</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  DBI                      1.1.2      <span style="color: #555555;">2021-12-20</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  dbplyr                   2.1.1      <span style="color: #555555;">2021-04-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
@@ -854,7 +854,7 @@ Chang, and Iannone, 2022)</li>
 <span class="co">#&gt;  latticeExtra             0.6-29     <span style="color: #555555;">2019-12-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  lifecycle                1.0.1      <span style="color: #555555;">2021-09-24</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  limma                    3.50.1     <span style="color: #555555;">2022-02-17</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  locfit                   1.5-9.4    <span style="color: #555555;">2020-03-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  locfit                   1.5-9.5    <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  lubridate                1.8.0      <span style="color: #555555;">2021-10-07</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  magrittr                 2.0.2      <span style="color: #555555;">2022-01-26</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  Matrix                   1.4-0      <span style="color: #555555;">2021-12-08</span> <span style="color: #555555;">[3]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
@@ -936,11 +936,11 @@ Chang, and Iannone, 2022)</li>
 <span class="co">#&gt; <span style="color: #555555;"> [3] /usr/local/lib/R/library</span></span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Python configuration ───────────────────────────────────────────────────────────────────────────────────────────────</span></span>
-<span class="co">#&gt;  python:         /github/home/.cache/R/basilisk/1.6.0/dasper/1.5.1/env_sklearn/bin/python</span>
-<span class="co">#&gt;  libpython:      /github/home/.cache/R/basilisk/1.6.0/dasper/1.5.1/env_sklearn/lib/libpython3.7m.so</span>
-<span class="co">#&gt;  pythonhome:     /github/home/.cache/R/basilisk/1.6.0/dasper/1.5.1/env_sklearn:/github/home/.cache/R/basilisk/1.6.0/dasper/1.5.1/env_sklearn</span>
+<span class="co">#&gt;  python:         /github/home/.cache/R/basilisk/1.6.0/dasper/1.5.2/env_sklearn/bin/python</span>
+<span class="co">#&gt;  libpython:      /github/home/.cache/R/basilisk/1.6.0/dasper/1.5.2/env_sklearn/lib/libpython3.7m.so</span>
+<span class="co">#&gt;  pythonhome:     /github/home/.cache/R/basilisk/1.6.0/dasper/1.5.2/env_sklearn:/github/home/.cache/R/basilisk/1.6.0/dasper/1.5.2/env_sklearn</span>
 <span class="co">#&gt;  version:        3.7.7 (default, May  7 2020, 21:25:33)  [GCC 7.3.0]</span>
-<span class="co">#&gt;  numpy:          /github/home/.cache/R/basilisk/1.6.0/dasper/1.5.1/env_sklearn/lib/python3.7/site-packages/numpy</span>
+<span class="co">#&gt;  numpy:          /github/home/.cache/R/basilisk/1.6.0/dasper/1.5.2/env_sklearn/lib/python3.7/site-packages/numpy</span>
 <span class="co">#&gt;  numpy_version:  1.21.5</span>
 <span class="co">#&gt;  </span>
 <span class="co">#&gt;  NOTE: Python version was forced by use_python function</span>
@@ -966,7 +966,7 @@ Documents for R</em>. R package version 2.12. 2022. URL:
 <a id="bib-dzhang2022detecting"></a><a href="#cite-dzhang2022detecting">[2]</a><cite>
 dzhang32. <em>Detecting abberant splicing events from RNA-sequencing
 data</em>. <a href="https://github.com/dzhang32/dasper" class="external-link uri">https://github.com/dzhang32/dasper</a> - R package version
-1.5.1. 2022. DOI:
+1.5.2. 2022. DOI:
 <a href="https://doi.org/10.18129/B9.bioc.dasper" class="external-link">10.18129/B9.bioc.dasper</a>.
 URL:
 <a href="http://www.bioconductor.org/packages/dasper" class="external-link">http://www.bioconductor.org/packages/dasper</a>.</cite>
