@@ -53,7 +53,9 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.5.1" id="dasper-151">dasper 1.5.1<a class="anchor" aria-label="anchor" href="#dasper-151"></a></h2>
 <p>NEW FEATURES</p>
-<ul><li>Fix bug related to <code><a href="../reference/coverage_process.html">coverage_norm()</a></code>, ensuring that regions used to normalise coverage have the same <code>seqlevels</code> as the inputted <code>junctions</code>.</li>
+<ul><li>Fix bug related to <code><a href="../reference/coverage_process.html">coverage_norm()</a></code>, ensuring that
+regions used to normalise coverage have the same <code>seqlevels</code>
+as the inputted <code>junctions</code>.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3.8" id="dasper-138">dasper 1.3.8<a class="anchor" aria-label="anchor" href="#dasper-138"></a></h2>
@@ -63,12 +65,15 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3.6" id="dasper-136">dasper 1.3.6<a class="anchor" aria-label="anchor" href="#dasper-136"></a></h2>
 <p>NEW FEATURES</p>
-<ul><li>Add functionality to annotate junctions with <code>gene_name</code>/<code>symbol</code> using <code>EnsDb</code> inputted into <code><a href="../reference/junction_process.html">junction_annot()</a></code>.</li>
+<ul><li>Add functionality to annotate junctions with
+<code>gene_name</code>/<code>symbol</code> using <code>EnsDb</code>
+inputted into <code><a href="../reference/junction_process.html">junction_annot()</a></code>.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.3.2" id="dasper-132">dasper 1.3.2<a class="anchor" aria-label="anchor" href="#dasper-132"></a></h2>
 <p>NEW FEATURES</p>
-<ul><li>Fix bugs within <code><a href="../reference/plot_sashimi.html">plot_sashimi()</a></code> and enable the visualization of raw junction counts.</li>
+<ul><li>Fix bugs within <code><a href="../reference/plot_sashimi.html">plot_sashimi()</a></code> and enable the
+visualization of raw junction counts.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.1" id="dasper-111">dasper 1.1.1<a class="anchor" aria-label="anchor" href="#dasper-111"></a></h2>
@@ -78,30 +83,57 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.99.2" id="dasper-0992">dasper 0.99.2<a class="anchor" aria-label="anchor" href="#dasper-0992"></a></h2>
 <p>NEW FEATURES</p>
-<ul><li>Merge documentation into one man page for junction, coverage and outlier processing functions to reduce runtime of roxygen examples.</li>
+<ul><li>Merge documentation into one man page for junction, coverage and
+outlier processing functions to reduce runtime of roxygen examples.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.99.1" id="dasper-0991">dasper 0.99.1<a class="anchor" aria-label="anchor" href="#dasper-0991"></a></h2>
 <p>NEW FEATURES</p>
-<ul><li>Change <code><a href="../reference/outlier_process.html">outlier_detect()</a></code> to using <code>basilisk</code> for interfacing into python replacing <code>reticulate</code>.</li>
+<ul><li>Change <code><a href="../reference/outlier_process.html">outlier_detect()</a></code> to using <code>basilisk</code>
+for interfacing into python replacing <code>reticulate</code>.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.99.0" id="dasper-0990">dasper 0.99.0<a class="anchor" aria-label="anchor" href="#dasper-0990"></a></h2>
 <p>NEW FEATURES</p>
-<ul><li>Converted <code>dasper</code> into a Bioconductor-friendly format using <a href="https://lcolladotor.github.io/biocthis/" class="external-link">biocthis</a>.</li>
-<li>Added <code><a href="../reference/junction_load.html">junction_load()</a></code>, which loads raw junction data from RNA-sequencing into an <code>RangedSummarizedExperiment</code> object. Includes an option to allow download of user-specified control junctions.</li>
-<li>Added <code><a href="../reference/junction_process.html">junction_annot()</a></code>, which uses information from reference annotation and the strand of a junction to classify junctions as “annotated”, “novel_acceptor”, “novel_donor”, “novel_exon_skip”, “novel_combo”, “ambig_gene” and “unannotated”.</li>
-<li>Added <code><a href="../reference/junction_process.html">junction_filter()</a></code>, which filters junctions by their count, width, annotation or if they overlap a set of user-defined regions.</li>
-<li>Added <code><a href="../reference/junction_process.html">junction_norm()</a></code>, which normalises raw junction counts (into a proportion-spliced-in) by dividing the counts of each junction by the total number of counts in it’s associated cluster.</li>
-<li>Added <code><a href="../reference/junction_process.html">junction_process()</a></code>, a wrapper function for all “junction_” prefixed functions except <code><a href="../reference/junction_load.html">junction_load()</a></code>.</li>
-<li>Added <code><a href="../reference/junction_process.html">junction_score()</a></code>, which scores patient junctions based on the extent their counts deviate from a control count distribution.</li>
-<li>Added <code><a href="../reference/coverage_process.html">coverage_norm()</a></code>, which will load and normalise coverage for exonic/intronic regions corresponding to each junction.</li>
-<li>Added <code><a href="../reference/coverage_process.html">coverage_score()</a></code>, which scores coverage associated with each junction based on it’s deviation from control coverage distributions.</li>
-<li>Added <code><a href="../reference/coverage_process.html">coverage_process()</a></code>, a wrapper function for all “coverage_” prefixed functions.</li>
-<li>Added <code><a href="../reference/outlier_process.html">outlier_detect()</a></code>, which uses the junction scores and coverage scores as input into an unsupervised outlier detection algorithm to find the most outlier-looking junctions in each sample.</li>
-<li>Added <code><a href="../reference/outlier_process.html">outlier_aggregate()</a></code>, which aggregates the junction-level outlier data to a cluster-level.</li>
-<li>Added <code><a href="../reference/outlier_process.html">outlier_process()</a></code>, a wrapper function for all “outlier_” prefixed functions.</li>
-<li>Added <code><a href="../reference/plot_sashimi.html">plot_sashimi()</a></code>, which enables the visualisation of junction data across genes/transcripts or regions of interest.</li>
+<ul><li>Converted <code>dasper</code> into a Bioconductor-friendly format
+using <a href="https://lcolladotor.github.io/biocthis/" class="external-link">biocthis</a>.</li>
+<li>Added <code><a href="../reference/junction_load.html">junction_load()</a></code>, which loads raw junction data
+from RNA-sequencing into an <code>RangedSummarizedExperiment</code>
+object. Includes an option to allow download of user-specified control
+junctions.</li>
+<li>Added <code><a href="../reference/junction_process.html">junction_annot()</a></code>, which uses information from
+reference annotation and the strand of a junction to classify junctions
+as “annotated”, “novel_acceptor”, “novel_donor”, “novel_exon_skip”,
+“novel_combo”, “ambig_gene” and “unannotated”.</li>
+<li>Added <code><a href="../reference/junction_process.html">junction_filter()</a></code>, which filters junctions by
+their count, width, annotation or if they overlap a set of user-defined
+regions.</li>
+<li>Added <code><a href="../reference/junction_process.html">junction_norm()</a></code>, which normalises raw junction
+counts (into a proportion-spliced-in) by dividing the counts of each
+junction by the total number of counts in it’s associated cluster.</li>
+<li>Added <code><a href="../reference/junction_process.html">junction_process()</a></code>, a wrapper function for all
+“junction_” prefixed functions except <code><a href="../reference/junction_load.html">junction_load()</a></code>.</li>
+<li>Added <code><a href="../reference/junction_process.html">junction_score()</a></code>, which scores patient junctions
+based on the extent their counts deviate from a control count
+distribution.</li>
+<li>Added <code><a href="../reference/coverage_process.html">coverage_norm()</a></code>, which will load and normalise
+coverage for exonic/intronic regions corresponding to each
+junction.</li>
+<li>Added <code><a href="../reference/coverage_process.html">coverage_score()</a></code>, which scores coverage
+associated with each junction based on it’s deviation from control
+coverage distributions.</li>
+<li>Added <code><a href="../reference/coverage_process.html">coverage_process()</a></code>, a wrapper function for all
+“coverage_” prefixed functions.</li>
+<li>Added <code><a href="../reference/outlier_process.html">outlier_detect()</a></code>, which uses the junction scores
+and coverage scores as input into an unsupervised outlier detection
+algorithm to find the most outlier-looking junctions in each
+sample.</li>
+<li>Added <code><a href="../reference/outlier_process.html">outlier_aggregate()</a></code>, which aggregates the
+junction-level outlier data to a cluster-level.</li>
+<li>Added <code><a href="../reference/outlier_process.html">outlier_process()</a></code>, a wrapper function for all
+“outlier_” prefixed functions.</li>
+<li>Added <code><a href="../reference/plot_sashimi.html">plot_sashimi()</a></code>, which enables the visualisation
+of junction data across genes/transcripts or regions of interest.</li>
 </ul></div>
   </div>
 
@@ -117,7 +149,8 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.9000.</p>
 </div>
 
       </footer></div>

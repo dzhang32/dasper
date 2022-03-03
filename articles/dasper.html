@@ -70,12 +70,13 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to dasper</h1>
-                        <h4 data-toc-skip class="author">David Zhang</h4>
+                        <h4 data-toc-skip class="author">David
+Zhang</h4>
             <address class="author_afil">
       UCL<br><a class="author_email" href="mailto:#"></a><a href="mailto:david.zhang.12@ucl.ac.uk" class="email">david.zhang.12@ucl.ac.uk</a>
       </address>
                   
-            <h4 data-toc-skip class="date">10 January 2022</h4>
+            <h4 data-toc-skip class="date">3 March 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/dzhang32/dasper/blob/HEAD/vignettes/dasper.Rmd" class="external-link"><code>vignettes/dasper.Rmd</code></a></small>
       <div class="hidden name"><code>dasper.Rmd</code></div>
@@ -84,13 +85,18 @@
 
     
     
-<div class="section level1">
-<h1 id="basics">Basics<a class="anchor" aria-label="anchor" href="#basics"></a>
-</h1>
 <div class="section level2">
-<h2 id="install-dasper">Install <code>dasper</code><a class="anchor" aria-label="anchor" href="#install-dasper"></a>
+<h2 id="basics">Basics<a class="anchor" aria-label="anchor" href="#basics"></a>
 </h2>
-<p><code>R</code> is an open-source statistical environment which can be easily modified to enhance its functionality via packages. <em><a href="https://bioconductor.org/packages/3.14/dasper" class="external-link">dasper</a></em> is a <code>R</code> package available via the <a href="http://bioconductor.org" class="external-link">Bioconductor</a> repository for packages. <code>R</code> can be installed on any operating system from <a href="https://cran.r-project.org/" class="external-link">CRAN</a> after which you can install <em><a href="https://bioconductor.org/packages/3.14/dasper" class="external-link">dasper</a></em> by using the following commands in your <code>R</code> session:</p>
+<div class="section level3">
+<h3 id="install-dasper">Install <code>dasper</code><a class="anchor" aria-label="anchor" href="#install-dasper"></a>
+</h3>
+<p><code>R</code> is an open-source statistical environment which can be
+easily modified to enhance its functionality via packages. <em><a href="https://bioconductor.org/packages/3.14/dasper" class="external-link">dasper</a></em> is
+a <code>R</code> package available via the <a href="http://bioconductor.org" class="external-link">Bioconductor</a> repository for packages.
+<code>R</code> can be installed on any operating system from <a href="https://cran.r-project.org/" class="external-link">CRAN</a> after which you can install
+<em><a href="https://bioconductor.org/packages/3.14/dasper" class="external-link">dasper</a></em> by
+using the following commands in your <code>R</code> session:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
     <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
@@ -101,21 +107,49 @@
 <span class="co">## Check that you have a valid Bioconductor installation</span>
 <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/valid.html" class="external-link">valid</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="required-knowledge">Required knowledge<a class="anchor" aria-label="anchor" href="#required-knowledge"></a>
-</h2>
-<p>The expected input of <em><a href="https://bioconductor.org/packages/3.14/dasper" class="external-link">dasper</a></em> are junctions reads (e.g. directly outputted from an aligner such as <a href="https://github.com/alexdobin/STAR" class="external-link">STAR</a> or extracted from a BAM file (e.g. using <a href="https://github.com/LieberInstitute/megadepth" class="external-link">megadepth</a>) and coverage in the form of BigWig files (which can be generated from BAM files using <a href="https://github.com/LieberInstitute/megadepth" class="external-link">megadepth</a> or <a href="http://rseqc.sourceforge.net/#bam2wig-py" class="external-link">RSeQC</a>). <em><a href="https://bioconductor.org/packages/3.14/dasper" class="external-link">dasper</a></em> is based on many other packages and in particular in those that have implemented the infrastructure needed for dealing with RNA-sequencing data. The packages <em><a href="https://bioconductor.org/packages/3.14/SummarizedExperiment" class="external-link">SummarizedExperiment</a></em> and <em><a href="https://bioconductor.org/packages/3.14/GenomicRanges" class="external-link">GenomicRanges</a></em> are used throughout, therefore familiarity with these packages will greatly help in interpreting the output of <em><a href="https://bioconductor.org/packages/3.14/dasper" class="external-link">dasper</a></em>.</p>
-<p>If you are asking yourself the question “Where do I start using Bioconductor?” you might be interested in <a href="http://lcolladotor.github.io/2014/10/16/startbioc/#.VkOKbq6rRuU" class="external-link">this blog post</a>. Or if you find the structure of a <em><a href="https://bioconductor.org/packages/3.14/SummarizedExperiment" class="external-link">SummarizedExperiment</a></em> unclear, you might consider checking out <a href="http://master.bioconductor.org/help/course-materials/2019/BSS2019/04_Practical_CoreApproachesInBioconductor.html" class="external-link">this manual</a>.</p>
+<div class="section level3">
+<h3 id="required-knowledge">Required knowledge<a class="anchor" aria-label="anchor" href="#required-knowledge"></a>
+</h3>
+<p>The expected input of <em><a href="https://bioconductor.org/packages/3.14/dasper" class="external-link">dasper</a></em> are
+junctions reads (e.g. directly outputted from an aligner such as <a href="https://github.com/alexdobin/STAR" class="external-link">STAR</a> or extracted from a
+BAM file (e.g. using <a href="https://github.com/LieberInstitute/megadepth" class="external-link">megadepth</a>) and
+coverage in the form of BigWig files (which can be generated from BAM
+files using <a href="https://github.com/LieberInstitute/megadepth" class="external-link">megadepth</a> or <a href="http://rseqc.sourceforge.net/#bam2wig-py" class="external-link">RSeQC</a>). <em><a href="https://bioconductor.org/packages/3.14/dasper" class="external-link">dasper</a></em> is
+based on many other packages and in particular in those that have
+implemented the infrastructure needed for dealing with RNA-sequencing
+data. The packages <em><a href="https://bioconductor.org/packages/3.14/SummarizedExperiment" class="external-link">SummarizedExperiment</a></em>
+and <em><a href="https://bioconductor.org/packages/3.14/GenomicRanges" class="external-link">GenomicRanges</a></em>
+are used throughout, therefore familiarity with these packages will
+greatly help in interpreting the output of <em><a href="https://bioconductor.org/packages/3.14/dasper" class="external-link">dasper</a></em>.</p>
+<p>If you are asking yourself the question “Where do I start using
+Bioconductor?” you might be interested in <a href="http://lcolladotor.github.io/2014/10/16/startbioc/#.VkOKbq6rRuU" class="external-link">this
+blog post</a>. Or if you find the structure of a <em><a href="https://bioconductor.org/packages/3.14/SummarizedExperiment" class="external-link">SummarizedExperiment</a></em>
+unclear, you might consider checking out <a href="http://master.bioconductor.org/help/course-materials/2019/BSS2019/04_Practical_CoreApproachesInBioconductor.html" class="external-link">this
+manual</a>.</p>
 </div>
-<div class="section level2">
-<h2 id="asking-for-help">Asking for help<a class="anchor" aria-label="anchor" href="#asking-for-help"></a>
-</h2>
-<p>As package developers, we try to explain clearly how to use our packages and in which order to use the functions. But <code>R</code> and <code>Bioconductor</code> have a steep learning curve so it is critical to learn where to ask for help. The blog post quoted above mentions some but we would like to highlight the <a href="https://support.bioconductor.org/" class="external-link">Bioconductor support site</a> as the main resource for getting help: remember to use the <code>dasper</code> tag and check <a href="https://support.bioconductor.org/t/dasper/" class="external-link">the older posts</a>. Other alternatives are available such as creating GitHub issues and tweeting. However, please note that if you want to receive help you should adhere to the <a href="http://www.bioconductor.org/help/support/posting-guide/" class="external-link">posting guidelines</a>. It is particularly critical that you provide a small reproducible example and your session information so package developers can track down the source of the error.</p>
+<div class="section level3">
+<h3 id="asking-for-help">Asking for help<a class="anchor" aria-label="anchor" href="#asking-for-help"></a>
+</h3>
+<p>As package developers, we try to explain clearly how to use our
+packages and in which order to use the functions. But <code>R</code> and
+<code>Bioconductor</code> have a steep learning curve so it is critical
+to learn where to ask for help. The blog post quoted above mentions some
+but we would like to highlight the <a href="https://support.bioconductor.org/" class="external-link">Bioconductor support site</a>
+as the main resource for getting help: remember to use the
+<code>dasper</code> tag and check <a href="https://support.bioconductor.org/t/dasper/" class="external-link">the older posts</a>.
+Other alternatives are available such as creating GitHub issues and
+tweeting. However, please note that if you want to receive help you
+should adhere to the <a href="http://www.bioconductor.org/help/support/posting-guide/" class="external-link">posting
+guidelines</a>. It is particularly critical that you provide a small
+reproducible example and your session information so package developers
+can track down the source of the error.</p>
 </div>
-<div class="section level2">
-<h2 id="citing-dasper">Citing <code>dasper</code><a class="anchor" aria-label="anchor" href="#citing-dasper"></a>
-</h2>
-<p>We hope that <em><a href="https://bioconductor.org/packages/3.14/dasper" class="external-link">dasper</a></em> will be useful for your research. Please use the following information to cite the package and the overall approach. Thank you!</p>
+<div class="section level3">
+<h3 id="citing-dasper">Citing <code>dasper</code><a class="anchor" aria-label="anchor" href="#citing-dasper"></a>
+</h3>
+<p>We hope that <em><a href="https://bioconductor.org/packages/3.14/dasper" class="external-link">dasper</a></em>
+will be useful for your research. Please use the following information
+to cite the package and the overall approach. Thank you!</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Citation info</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"dasper"</span><span class="op">)</span>
@@ -136,39 +170,65 @@
 <span class="co">#&gt; 'options(citation.bibtex.max=999)'.</span></code></pre></div>
 </div>
 </div>
-<div class="section level1">
-<h1 id="quick-start-guide">Quick start guide<a class="anchor" aria-label="anchor" href="#quick-start-guide"></a>
-</h1>
 <div class="section level2">
-<h2 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
+<h2 id="quick-start-guide">Quick start guide<a class="anchor" aria-label="anchor" href="#quick-start-guide"></a>
 </h2>
+<div class="section level3">
+<h3 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
+</h3>
 <p><img src="dasper_workflow.png" width="2458"></p>
-<p>The above workflow diagram gives a top-level overview of the available functions within <code>dasper</code> and describes the order in which they are intended to be run. This are broadly split into 4 categories:</p>
+<p>The above workflow diagram gives a top-level overview of the
+available functions within <code>dasper</code> and describes the order
+in which they are intended to be run. This are broadly split into 4
+categories:</p>
 <ol style="list-style-type: decimal">
 <li>
-<strong>Process junctions</strong> functions are prefixed with a <em>junction_</em>. They will load in your junctions into an <code>RangedSummarizedExperiment</code> object, annotate your junctions using reference annotation, filter out junctions for those that likely originate from technical noise and normalize your junction counts to allow for comparison between samples.</li>
+<strong>Process junctions</strong> functions are prefixed with a
+<em>junction_</em>. They will load in your junctions into an
+<code>RangedSummarizedExperiment</code> object, annotate your junctions
+using reference annotation, filter out junctions for those that likely
+originate from technical noise and normalize your junction counts to
+allow for comparison between samples.</li>
 <li>
-<strong>Process coverage</strong> functions are prefixed with a <em>coverage_</em>. They annotate your junctions with coverage from associated regions then normalize this coverage to allow for comparison between samples.</li>
+<strong>Process coverage</strong> functions are prefixed with a
+<em>coverage_</em>. They annotate your junctions with coverage from
+associated regions then normalize this coverage to allow for comparison
+between samples.</li>
 <li>
-<strong>Outlier detection</strong> functions are prefixed with a <em>outlier_</em>. They will use a outlier detection algorithm (<a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html" class="external-link">isolation forest</a>) to detect the most outlier/abnormal/aberrant junctions in terms of their counts and associated coverage.</li>
+<strong>Outlier detection</strong> functions are prefixed with a
+<em>outlier_</em>. They will use a outlier detection algorithm (<a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html" class="external-link">isolation
+forest</a>) to detect the most outlier/abnormal/aberrant junctions in
+terms of their counts and associated coverage.</li>
 <li>
-<strong>Sashimi plots</strong> can be generated using the function <code>plot_sashimi</code>. This enables you to select a gene, transcript or region of interest and plot the splicing and coverage across that region in the form of sashimi plot.</li>
+<strong>Sashimi plots</strong> can be generated using the function
+<code>plot_sashimi</code>. This enables you to select a gene, transcript
+or region of interest and plot the splicing and coverage across that
+region in the form of sashimi plot.</li>
 </ol>
 </div>
-<div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
-</h2>
-<p><code>dasper</code> includes wrapper functions for the 3 major analysis steps in the workflow - processing junction data, processing coverage data, then performing outlier detection. If you are familiar with <code>dasper</code> or uninterested with the intermediates, you can go from start to finish using these wrappers.</p>
 <div class="section level3">
-<h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+<h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h3>
-<p>First, we need to install the system dependency <a href="https://github.com/ChristopherWilks/megadepth" class="external-link">megadepth</a>, which is required for the loading of coverage from BigWig files. The easiest way to do this is to run <code>install_megadepth</code> from the <em><a href="https://bioconductor.org/packages/3.14/megadepth" class="external-link">megadepth</a></em></p>
+<p><code>dasper</code> includes wrapper functions for the 3 major
+analysis steps in the workflow - processing junction data, processing
+coverage data, then performing outlier detection. If you are familiar
+with <code>dasper</code> or uninterested with the intermediates, you can
+go from start to finish using these wrappers.</p>
+<div class="section level4">
+<h4 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h4>
+<p>First, we need to install the system dependency <a href="https://github.com/ChristopherWilks/megadepth" class="external-link">megadepth</a>,
+which is required for the loading of coverage from BigWig files. The
+easiest way to do this is to run <code>install_megadepth</code> from the
+<em><a href="https://bioconductor.org/packages/3.14/megadepth" class="external-link">megadepth</a></em></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">megadepth</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/megadepth/man/install_megadepth.html" class="external-link">install_megadepth</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; The latest megadepth version is 1.1.3</span>
+<span class="co">#&gt; The latest megadepth version is 1.2.0</span>
 <span class="co">#&gt; This is not an interactive session, therefore megadepth has been installed temporarily to </span>
-<span class="co">#&gt; /tmp/Rtmpr4C5vI/megadepth</span></code></pre></div>
-<p><code>dasper</code> requires reference annotation that can either be inputted as a <code>GTF</code> path or pre-loaded into a <code>TxDb</code> object as shown below.</p>
+<span class="co">#&gt; /tmp/Rtmp3yrSBO/megadepth</span></code></pre></div>
+<p><code>dasper</code> requires reference annotation that can either be
+inputted as a <code>GTF</code> path or pre-loaded into a
+<code>TxDb</code> object as shown below.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># use GenomicState to load txdb (GENCODE v31)</span>
@@ -210,7 +270,12 @@
 <span class="co">#&gt;     Vignettes contain introductory material; view with</span>
 <span class="co">#&gt;     'browseVignettes()'. To cite Bioconductor, see</span>
 <span class="co">#&gt;     'citation("Biobase")', and for packages 'citation("pkgname")'.</span></code></pre></div>
-<p>RNA-seq data in the form of junctions and BigWig files are the required raw input to <code>dasper</code>. For illustration, in this vignette we will use an BigWig file from the GTEx v6 data publicly hosted by <a href="https://jhubiostatistics.shinyapps.io/recount/" class="external-link">recount2</a>. In reality, users should use the BigWig files that correspond to the same samples as those your junction data originate from.</p>
+<p>RNA-seq data in the form of junctions and BigWig files are the
+required raw input to <code>dasper</code>. For illustration, in this
+vignette we will use an BigWig file from the GTEx v6 data publicly
+hosted by <a href="https://jhubiostatistics.shinyapps.io/recount/" class="external-link">recount2</a>. In
+reality, users should use the BigWig files that correspond to the same
+samples as those your junction data originate from.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># Obtain the urls to the remotely hosted GTEx BigWig files</span>
@@ -224,7 +289,9 @@
 
 <span class="co"># cache the file using BiocFileCache for faster retrieval</span>
 <span class="va">bw_path</span> <span class="op">&lt;-</span> <span class="fu">dasper</span><span class="fu">:::</span><span class="fu">.file_cache</span><span class="op">(</span><span class="va">url</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></code></pre></div>
-<p>A small set of example junctions are included within the package, which can be used for testing the functionality of <code>dasper</code>.</p>
+<p>A small set of example junctions are included within the package,
+which can be used for testing the functionality of
+<code>dasper</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dzhang32/dasper" class="external-link">dasper</a></span><span class="op">)</span>
 
@@ -238,10 +305,15 @@
 <span class="co">#&gt; colnames(5): count_1 count_2 gtex_54020 gtex_51495 gtex_56930</span>
 <span class="co">#&gt; colData names(2): samp_id case_control</span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="running-dasper">Running <code>dasper</code><a class="anchor" aria-label="anchor" href="#running-dasper"></a>
-</h3>
-<p>Here, we run the 3 wrapper functions (<code>junction_process</code>, <code>coverage_process</code> and <code>outlier_process</code>) on <code>junctions_example</code>. These functions are designed to be compatible with usage of the <code>%&gt;%</code> pipe from <a href="https://www.tidyverse.org/" class="external-link">tidyverse</a>. The time-limiting steps of this analysis can be run parallel using <em><a href="https://bioconductor.org/packages/3.14/BiocParallel" class="external-link">BiocParallel</a></em> as shown.</p>
+<div class="section level4">
+<h4 id="running-dasper">Running <code>dasper</code><a class="anchor" aria-label="anchor" href="#running-dasper"></a>
+</h4>
+<p>Here, we run the 3 wrapper functions (<code>junction_process</code>,
+<code>coverage_process</code> and <code>outlier_process</code>) on
+<code>junctions_example</code>. These functions are designed to be
+compatible with usage of the <code>%&gt;%</code> pipe from <a href="https://www.tidyverse.org/" class="external-link">tidyverse</a>. The time-limiting steps
+of this analysis can be run parallel using <em><a href="https://bioconductor.org/packages/3.14/BiocParallel" class="external-link">BiocParallel</a></em>
+as shown.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span>
@@ -257,15 +329,36 @@
 </div>
 </div>
 </div>
-<div class="section level1">
-<h1 id="comprehensive-usage-guide">Comprehensive usage guide<a class="anchor" aria-label="anchor" href="#comprehensive-usage-guide"></a>
-</h1>
-<p>In this section, we will run each of the 1-9 functions shown in <a href="#workflow">workflow</a>. This can be helpful for users that want to understand or modify the intermediates of the <code>dasper</code> pipeline or are only interested in a executing a specific step (e.g. annotating junctions using <code>junction_annot</code>). If you want to follow along and run this code in your R session, make sure you have followed the instructions in the section <a href="#setup">setup</a>.</p>
 <div class="section level2">
-<h2 id="junction-processing">Junction processing<a class="anchor" aria-label="anchor" href="#junction-processing"></a>
+<h2 id="comprehensive-usage-guide">Comprehensive usage guide<a class="anchor" aria-label="anchor" href="#comprehensive-usage-guide"></a>
 </h2>
-<p>The first step is to load in patient (and control) junction data using <code>junction_load</code>. By default, this expects junction files in the format outputted by the <a href="https://github.com/alexdobin/STAR" class="external-link">STAR</a> aligner (SJ.out). If the user’s junctions are in a different format you can accommodate for this by adjusting the <code>load_func</code> argument. The output of this will be junctions stored in a <code>RangedSummarizedExperiment</code> object required for the downstream <code>dasper</code> functions.</p>
-<p>Additionally, users can choose to add a set of control junctions from GTEx v6 (publicly available through <a href="https://jhubiostatistics.shinyapps.io/recount/" class="external-link">recount2</a>) using the argument <code>controls</code>. This may be useful if the user only has RNA-seq data from only a single or small number of patients, which is often the case in a diagnostic setting. In this example, we arbitrarily chose to use the GTEx junctions from the fibroblast tissue. However, we would recommend matching the control tissue to the tissue from which your patient RNA-seq data was derived. The current available tissues that be selected via <code>controls</code> are “fibroblasts”, “lymphocytes”, “skeletal_muscle” and “whole_blood”.</p>
+<p>In this section, we will run each of the 1-9 functions shown in <a href="#workflow">workflow</a>. This can be helpful for users that want
+to understand or modify the intermediates of the <code>dasper</code>
+pipeline or are only interested in a executing a specific step
+(e.g. annotating junctions using <code>junction_annot</code>). If you
+want to follow along and run this code in your R session, make sure you
+have followed the instructions in the section <a href="#setup">setup</a>.</p>
+<div class="section level3">
+<h3 id="junction-processing">Junction processing<a class="anchor" aria-label="anchor" href="#junction-processing"></a>
+</h3>
+<p>The first step is to load in patient (and control) junction data
+using <code>junction_load</code>. By default, this expects junction
+files in the format outputted by the <a href="https://github.com/alexdobin/STAR" class="external-link">STAR</a> aligner (SJ.out). If
+the user’s junctions are in a different format you can accommodate for
+this by adjusting the <code>load_func</code> argument. The output of
+this will be junctions stored in a
+<code>RangedSummarizedExperiment</code> object required for the
+downstream <code>dasper</code> functions.</p>
+<p>Additionally, users can choose to add a set of control junctions from
+GTEx v6 (publicly available through <a href="https://jhubiostatistics.shinyapps.io/recount/" class="external-link">recount2</a>)
+using the argument <code>controls</code>. This may be useful if the user
+only has RNA-seq data from only a single or small number of patients,
+which is often the case in a diagnostic setting. In this example, we
+arbitrarily chose to use the GTEx junctions from the fibroblast tissue.
+However, we would recommend matching the control tissue to the tissue
+from which your patient RNA-seq data was derived. The current available
+tissues that be selected via <code>controls</code> are “fibroblasts”,
+“lymphocytes”, “skeletal_muscle” and “whole_blood”.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">junctions_example_1_path</span> <span class="op">&lt;-</span>
@@ -293,12 +386,12 @@
         controls <span class="op">=</span> <span class="st">"fibroblasts"</span>,
         chrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr21"</span>, <span class="st">"chr22"</span><span class="op">)</span>
     <span class="op">)</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:03 - Loading junctions for sample 1/2..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:03 - Loading junctions for sample 2/2..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:03 - Adding control junctions..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:03 - Downloading and importing fibroblasts junction data..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:31 - Tidying and storing junction data as a RangedSummarizedExperiment..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:33 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 11:07:30 - Loading junctions for sample 1/2..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:07:30 - Loading junctions for sample 2/2..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:07:30 - Adding control junctions..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:07:30 - Downloading and importing fibroblasts junction data..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:00 - Tidying and storing junction data as a RangedSummarizedExperiment..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:02 - done!"</span>
 
 <span class="va">junctions</span>
 <span class="co">#&gt; class: RangedSummarizedExperiment </span>
@@ -309,7 +402,16 @@
 <span class="co">#&gt; rowData names(0):</span>
 <span class="co">#&gt; colnames(286): count_1 count_2 ... gtex_56472 gtex_57475</span>
 <span class="co">#&gt; colData names(2): samp_id case_control</span></code></pre></div>
-<p>Next, we will annotate our junctions using <code>junction_annot</code>. Using reference annotation inputted via <code>ref</code>, this will classify junctions into the categories “annotated”, “novel_acceptor”, “novel_donor”, “novel_combo”, “novel_exon_skip”, “ambig_gene” and “unannotated”. Additionally, the genes/transcripts/exons that each junction overlaps will be stored in the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment::rowData</a></code>. This information is necessary for the downstream <code>dasper</code> functions but can also be useful independently if user’s are interested in for example, only retrieving the annotated/unannotated junctions.</p>
+<p>Next, we will annotate our junctions using
+<code>junction_annot</code>. Using reference annotation inputted via
+<code>ref</code>, this will classify junctions into the categories
+“annotated”, “novel_acceptor”, “novel_donor”, “novel_combo”,
+“novel_exon_skip”, “ambig_gene” and “unannotated”. Additionally, the
+genes/transcripts/exons that each junction overlaps will be stored in
+the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment::rowData</a></code>. This information is
+necessary for the downstream <code>dasper</code> functions but can also
+be useful independently if user’s are interested in for example, only
+retrieving the annotated/unannotated junctions.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># take only the first 5 samples (2 cases, 3 controls)</span>
@@ -317,11 +419,11 @@
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="va">junctions</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
 
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_process.html">junction_annot</a></span><span class="op">(</span><span class="va">junctions</span>, <span class="va">ref</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:33 - Obtaining co-ordinates of annotated exons and junctions..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:46 - Getting junction annotation using overlapping exons..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:48 - Tidying junction annotation..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:49 - Deriving junction categories..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:53 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:02 - Obtaining co-ordinates of annotated exons and junctions..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:16 - Getting junction annotation using overlapping exons..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:19 - Tidying junction annotation..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:20 - Deriving junction categories..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:24 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; DataFrame with 6 rows and 14 columns</span>
@@ -365,16 +467,21 @@
 <span class="co">#&gt; 4                                                                * unannotated</span>
 <span class="co">#&gt; 5                                                                * unannotated</span>
 <span class="co">#&gt; 6                                                                * unannotated</span></code></pre></div>
-<p>We will then filter our junctions using <code>junction_filter</code>. You have the option of choosing to filter by count, width, type (annotation category) and whether junctions overlap a particular genomic region. The default settings shown below filter only by count and require a junction to have at least 5 reads in at least 1 sample to be kept in.</p>
+<p>We will then filter our junctions using <code>junction_filter</code>.
+You have the option of choosing to filter by count, width, type
+(annotation category) and whether junctions overlap a particular genomic
+region. The default settings shown below filter only by count and
+require a junction to have at least 5 reads in at least 1 sample to be
+kept in.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_process.html">junction_filter</a></span><span class="op">(</span><span class="va">junctions</span>,
     count_thresh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>raw <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,
     n_samp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>raw <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:54 - Filtering junctions..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:54 - by count..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:54 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:24 - Filtering junctions..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:24 - by count..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:25 - done!"</span>
 
 <span class="va">junctions</span>
 <span class="co">#&gt; class: RangedSummarizedExperiment </span>
@@ -385,13 +492,18 @@
 <span class="co">#&gt; rowData names(14): in_ref gene_id_start ... strand_junction type</span>
 <span class="co">#&gt; colnames(5): count_1 count_2 gtex_54020 gtex_51495 gtex_56930</span>
 <span class="co">#&gt; colData names(2): samp_id case_control</span></code></pre></div>
-<p>We can then normalize our raw junctions counts into a proportion-spliced-in using <code>junction_norm</code>. This will first cluster each junction by finding all other junctions that share an acceptor or donor site with it. Then, calculate the normalized counts by dividing the number of reads supporting each junction with the total number of reads in it’s associated cluster.</p>
+<p>We can then normalize our raw junctions counts into a
+proportion-spliced-in using <code>junction_norm</code>. This will first
+cluster each junction by finding all other junctions that share an
+acceptor or donor site with it. Then, calculate the normalized counts by
+dividing the number of reads supporting each junction with the total
+number of reads in it’s associated cluster.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_process.html">junction_norm</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:54 - Clustering junctions..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:54 - Normalising junction counts..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:55 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:25 - Clustering junctions..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:25 - Normalising junction counts..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:25 - done!"</span>
 
 <span class="co"># save a separate object for plotting</span>
 <span class="va">junctions_normed</span> <span class="op">&lt;-</span> <span class="va">junctions</span>
@@ -415,20 +527,38 @@
 <span class="co">#&gt; [4871,]       0 0.0000000 0.94252874 0.96610169 0.992063492</span>
 <span class="co">#&gt; [4872,]       0 0.4285714 0.00000000 0.00000000 0.000000000</span>
 <span class="co">#&gt; [4873,]       0 0.5714286 0.00000000 0.00000000 0.000000000</span></code></pre></div>
-<p>Finally, we need to score each patient junction by how much it’s (normalized) counts deviate from the count distribution of the same junction in the control samples using <code>junction_score</code>. By default, this uses a z-score measure, however this can be modified to a user-inputted function by adjusting the argument <code>score_func</code>. These junction scores with be stored in the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment::assays</a></code> “score”.</p>
+<p>Finally, we need to score each patient junction by how much it’s
+(normalized) counts deviate from the count distribution of the same
+junction in the control samples using <code>junction_score</code>. By
+default, this uses a z-score measure, however this can be modified to a
+user-inputted function by adjusting the argument
+<code>score_func</code>. These junction scores with be stored in the
+<code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment::assays</a></code> “score”.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/junction_process.html">junction_score</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:55 - Calculating the direction of change of junctions..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:55 - Generating junction abnormality score..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:55 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:26 - Calculating the direction of change of junctions..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:26 - Generating junction abnormality score..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:26 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assays</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] "raw"       "norm"      "direction" "score"</span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="coverage-processing">Coverage processing<a class="anchor" aria-label="anchor" href="#coverage-processing"></a>
-</h2>
-<p>We then move on to loading and normalising the coverage across regions associated with each junction using <code>coverage_norm</code>. Namely, these are the 2 exonic regions flanking each junction and the intron inbetween. Given that there are 3 regions for each junction and we need to obtain coverage for every junction from every sample, this step can be very computationally intense to run. Here, <code>dasper</code> allows parrallelisation across samples using <em><a href="https://bioconductor.org/packages/3.14/BiocParallel" class="external-link">BiocParallel</a></em> and uses the tool <a href="https://github.com/ChristopherWilks/megadepth" class="external-link">megadepth</a> developed by <a href="https://github.com/ChristopherWilks" class="external-link">Chris Wilks</a>, which is significantly faster than other tools (<code>rtracklayer</code> and <code>pyBigWig</code>) for loading coverage from BigWig files (see <a href="https://github.com/LieberInstitute/megadepth/blob/master/analysis/test_megadepth_pyBigWig_rtracklayer.Rmd" class="external-link">runtime comparison</a>).</p>
+<div class="section level3">
+<h3 id="coverage-processing">Coverage processing<a class="anchor" aria-label="anchor" href="#coverage-processing"></a>
+</h3>
+<p>We then move on to loading and normalising the coverage across
+regions associated with each junction using <code>coverage_norm</code>.
+Namely, these are the 2 exonic regions flanking each junction and the
+intron inbetween. Given that there are 3 regions for each junction and
+we need to obtain coverage for every junction from every sample, this
+step can be very computationally intense to run. Here,
+<code>dasper</code> allows parrallelisation across samples using <em><a href="https://bioconductor.org/packages/3.14/BiocParallel" class="external-link">BiocParallel</a></em>
+and uses the tool <a href="https://github.com/ChristopherWilks/megadepth" class="external-link">megadepth</a>
+developed by <a href="https://github.com/ChristopherWilks" class="external-link">Chris
+Wilks</a>, which is significantly faster than other tools
+(<code>rtracklayer</code> and <code>pyBigWig</code>) for loading
+coverage from BigWig files (see <a href="https://github.com/LieberInstitute/megadepth/blob/master/analysis/test_megadepth_pyBigWig_rtracklayer.Rmd" class="external-link">runtime
+comparison</a>).</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">coverage</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/coverage_process.html">coverage_norm</a></span><span class="op">(</span>
     <span class="va">junctions</span>,
@@ -437,49 +567,71 @@
     coverage_paths_control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">bw_path</span>, <span class="fl">3</span><span class="op">)</span>,
     bp_param <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html" class="external-link">SerialParam</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:55 - Obtaining exonic and intronic regions to load coverage from..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:38:56 - Obtaining regions to use to normalise coverage..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:00 - Loading coverage..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:14 - Normalising coverage..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:14 - done!"</span></code></pre></div>
-<p><code>coverage_score</code> can then be used to compare the coverage associated with each junction to the coverage distribution corresponding to the same region in controls. After which, junctions should have the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment::assays</a></code> “coverage_score”.</p>
+<span class="co">#&gt; [1] "2022-03-03 11:08:26 - Obtaining exonic and intronic regions to load coverage from..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:26 - Obtaining regions to use to normalise coverage..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:31 - Loading coverage..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:47 - Normalising coverage..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:47 - done!"</span></code></pre></div>
+<p><code>coverage_score</code> can then be used to compare the coverage
+associated with each junction to the coverage distribution corresponding
+to the same region in controls. After which, junctions should have the
+<code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment::assays</a></code> “coverage_score”.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/coverage_process.html">coverage_score</a></span><span class="op">(</span><span class="va">junctions</span>, <span class="va">coverage</span><span class="op">)</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:14 - Generating coverage abnormality score..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:14 - Obtaining regions with greatest coverage dysruption..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:14 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:47 - Generating coverage abnormality score..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:48 - Obtaining regions with greatest coverage dysruption..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:48 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assays</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] "raw"             "norm"            "direction"       "score"          </span>
 <span class="co">#&gt; [5] "coverage_region" "coverage_score"</span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="outlier-processing">Outlier processing<a class="anchor" aria-label="anchor" href="#outlier-processing"></a>
-</h2>
-<p>The last step in the <code>dasper</code> pipeline is to use the “scores” and “coverage scores” as input into an outlier detection model. This involves using <code>outlier_detect</code> to score each junction in each sample by how aberrant it looks. The outputted scores will be stored in the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment::assays</a></code> “outlier_score”. This step can be can be parallelised using <em><a href="https://bioconductor.org/packages/3.14/BiocParallel" class="external-link">BiocParallel</a></em>. The fit of the <code>isolation forest</code> may fluctuate depending on it’s intial <code>random_state</code>. For reproducibility you can avoid this by setting the parameter <code>random_state</code> to an fixed integer (for more details on the isolation forest model see <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html" class="external-link uri">https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html</a>).</p>
+<div class="section level3">
+<h3 id="outlier-processing">Outlier processing<a class="anchor" aria-label="anchor" href="#outlier-processing"></a>
+</h3>
+<p>The last step in the <code>dasper</code> pipeline is to use the
+“scores” and “coverage scores” as input into an outlier detection model.
+This involves using <code>outlier_detect</code> to score each junction
+in each sample by how aberrant it looks. The outputted scores will be
+stored in the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment::assays</a></code> “outlier_score”.
+This step can be can be parallelised using <em><a href="https://bioconductor.org/packages/3.14/BiocParallel" class="external-link">BiocParallel</a></em>.
+The fit of the <code>isolation forest</code> may fluctuate depending on
+it’s intial <code>random_state</code>. For reproducibility you can avoid
+this by setting the parameter <code>random_state</code> to an fixed
+integer (for more details on the isolation forest model see <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html" class="external-link uri">https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html</a>).</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outlier_process.html">outlier_detect</a></span><span class="op">(</span>
     <span class="va">junctions</span>,
     bp_param <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html" class="external-link">SerialParam</a></span><span class="op">(</span><span class="op">)</span>,
     random_state <span class="op">=</span> <span class="fl">32L</span>
 <span class="op">)</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:14 - generating outlier scores for sample 1/2"</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:17 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:17 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:17 - generating outlier scores for sample 2/2"</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:18 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:18 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:18 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:48 - generating outlier scores for sample 1/2"</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:51 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:52 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:52 - generating outlier scores for sample 2/2"</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:52 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:53 - fitting outlier detection model with parameters: behaviour=deprecated, bootstrap=FALSE, contamination=auto, max_features=1, max_samples=auto, n_estimators=100, n_jobs=NULL, random_state=32, verbose=0, warm_start=FALSE"</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:53 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assays</a></span><span class="op">(</span><span class="va">junctions</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] "raw"             "norm"            "direction"       "score"          </span>
 <span class="co">#&gt; [5] "coverage_region" "coverage_score"  "outlier_score"</span></code></pre></div>
-<p>Finally, <code>outlier_aggregate</code> will aggregate the junction-level “outlier_scores” to a cluster level. The returned <code>outlier_scores</code> object contains a <code>DataFrame</code> with each row detailing a cluster in terms of how aberrant it looks. The <code>gene_id_cluster</code> column describes the gene linked to each cluster, derived from the gene annotation returned by <code>junction_annot</code>. Splicing events are ranked in the <code>rank</code> column with 1 referring to the most aberrant splicing event in that patient. Details of the specific junctions that look the most aberrant for each cluster can be found in the <code>junctions</code> column.</p>
+<p>Finally, <code>outlier_aggregate</code> will aggregate the
+junction-level “outlier_scores” to a cluster level. The returned
+<code>outlier_scores</code> object contains a <code>DataFrame</code>
+with each row detailing a cluster in terms of how aberrant it looks. The
+<code>gene_id_cluster</code> column describes the gene linked to each
+cluster, derived from the gene annotation returned by
+<code>junction_annot</code>. Splicing events are ranked in the
+<code>rank</code> column with 1 referring to the most aberrant splicing
+event in that patient. Details of the specific junctions that look the
+most aberrant for each cluster can be found in the
+<code>junctions</code> column.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">outlier_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outlier_process.html">outlier_aggregate</a></span><span class="op">(</span><span class="va">junctions</span>, samp_id_col <span class="op">=</span> <span class="st">"samp_id"</span>, <span class="op">)</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:18 - Aggregating outlier scores to cluster level... "</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:19 - Annotating clusters with gene details..."</span>
-<span class="co">#&gt; [1] "2022-01-10 23:39:19 - done!"</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:53 - Aggregating outlier scores to cluster level... "</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:54 - Annotating clusters with gene details..."</span>
+<span class="co">#&gt; [1] "2022-03-03 11:08:54 - done!"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">outlier_scores</span><span class="op">)</span>
 <span class="co">#&gt; DataFrame with 6 rows and 6 columns</span>
@@ -500,10 +652,14 @@
 <span class="co">#&gt; 5 3456: 1:-0.121972:...,3457:-1:-0.190670:...,...</span>
 <span class="co">#&gt; 6 3462: 1:-0.105657:...,3463:-1:-0.206265:...,...</span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="sashimi-plots">Sashimi plots<a class="anchor" aria-label="anchor" href="#sashimi-plots"></a>
-</h2>
-<p>In order to help further inspection of the candidate genes with abberrant splicing returned by <code>dasper</code>, we also include functions to visualise splicing across genes/transcripts/regions of interest. For example, you could visualise the gene with the most aberrant cluster in <code>samp_1</code>.</p>
+<div class="section level3">
+<h3 id="sashimi-plots">Sashimi plots<a class="anchor" aria-label="anchor" href="#sashimi-plots"></a>
+</h3>
+<p>In order to help further inspection of the candidate genes with
+abberrant splicing returned by <code>dasper</code>, we also include
+functions to visualise splicing across genes/transcripts/regions of
+interest. For example, you could visualise the gene with the most
+aberrant cluster in <code>samp_1</code>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># take gene_id of the cluster ranked 1</span>
@@ -518,7 +674,14 @@
     count_label <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span></code></pre></div>
 <p><img src="dasper_files/figure-html/sashimi_1-1.png" width="700"></p>
-<p>Often regions of splicing can be very complex within a gene/transcript. In which case, you may consider zooming in on a specific region of interest using the argument <code>region</code>. Furthermore, the thickness of the lines represents the normalized counts of each junction however in this way, it can be difficult to accurately differentiate junctions that have similar counts. Users may want to add a label representing the count of each junction using the argument <code>count_label</code>.</p>
+<p>Often regions of splicing can be very complex within a
+gene/transcript. In which case, you may consider zooming in on a
+specific region of interest using the argument <code>region</code>.
+Furthermore, the thickness of the lines represents the normalized counts
+of each junction however in this way, it can be difficult to accurately
+differentiate junctions that have similar counts. Users may want to add
+a label representing the count of each junction using the argument
+<code>count_label</code>.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_sashimi.html">plot_sashimi</a></span><span class="op">(</span><span class="va">junctions_normed</span>,
     <span class="va">ref</span>,
@@ -531,24 +694,32 @@
 <p><img src="dasper_files/figure-html/sashimi_2-1.png" width="700"></p>
 </div>
 </div>
-<div class="section level1">
-<h1 id="reproducibility">Reproducibility<a class="anchor" aria-label="anchor" href="#reproducibility"></a>
-</h1>
-<p>The <em><a href="https://bioconductor.org/packages/3.14/dasper" class="external-link">dasper</a></em> package (dzhang32, 2022) was made possible thanks to:</p>
+<div class="section level2">
+<h2 id="reproducibility">Reproducibility<a class="anchor" aria-label="anchor" href="#reproducibility"></a>
+</h2>
+<p>The <em><a href="https://bioconductor.org/packages/3.14/dasper" class="external-link">dasper</a></em>
+package (dzhang32, 2022) was made possible thanks to:</p>
 <ul>
 <li>R (R Core Team, 2021)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.14/BiocStyle" class="external-link">BiocStyle</a></em> (Oleś, 2021)</li>
+<em><a href="https://bioconductor.org/packages/3.14/BiocStyle" class="external-link">BiocStyle</a></em>
+(Oleś, 2021)</li>
 <li>
-<em><a href="https://CRAN.R-project.org/package=RefManageR" class="external-link">RefManageR</a></em> (McLean, 2017)</li>
+<em><a href="https://CRAN.R-project.org/package=RefManageR" class="external-link">RefManageR</a></em>
+(McLean, 2017)</li>
 <li>
-<em><a href="https://CRAN.R-project.org/package=knitr" class="external-link">knitr</a></em> (Xie, 2021)</li>
+<em><a href="https://CRAN.R-project.org/package=knitr" class="external-link">knitr</a></em> (Xie,
+2021)</li>
 <li>
-<em><a href="https://CRAN.R-project.org/package=rmarkdown" class="external-link">rmarkdown</a></em> (Allaire, Xie, McPherson, Luraschi, Ushey, Atkins, Wickham, Cheng, Chang, and Iannone, 2021)</li>
+<em><a href="https://CRAN.R-project.org/package=rmarkdown" class="external-link">rmarkdown</a></em>
+(Allaire, Xie, McPherson, Luraschi, Ushey, Atkins, Wickham, Cheng,
+Chang, and Iannone, 2022)</li>
 <li>
-<em><a href="https://CRAN.R-project.org/package=sessioninfo" class="external-link">sessioninfo</a></em> (Wickham, Chang, Flight, Müller, and Hester, 2021)</li>
+<em><a href="https://CRAN.R-project.org/package=sessioninfo" class="external-link">sessioninfo</a></em>
+(Wickham, Chang, Flight, Müller, and Hester, 2021)</li>
 <li>
-<em><a href="https://CRAN.R-project.org/package=testthat" class="external-link">testthat</a></em> (Wickham, 2011)</li>
+<em><a href="https://CRAN.R-project.org/package=testthat" class="external-link">testthat</a></em>
+(Wickham, 2011)</li>
 </ul>
 <p>This package was developed using <em><a href="https://bioconductor.org/packages/3.14/biocthis" class="external-link">biocthis</a></em>.</p>
 <p>Code for creating the vignette</p>
@@ -561,9 +732,9 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://yihui.org/knitr/" class="external-link">"knitr"</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/knitr/man/knit.html" class="external-link">knit</a></span><span class="op">(</span><span class="st">"dasper.Rmd"</span>, tangle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>Date the vignette was generated.</p>
-<pre><code><span class="co">#&gt; [1] "2022-01-10 23:39:24 UTC"</span></code></pre>
+<pre><code><span class="co">#&gt; [1] "2022-03-03 11:09:00 UTC"</span></code></pre>
 <p>Wallclock time spent generating the vignette.</p>
-<pre><code><span class="co">#&gt; Time difference of 1.736 mins</span></code></pre>
+<pre><code><span class="co">#&gt; Time difference of 1.974 mins</span></code></pre>
 <p><code>R</code> session information.</p>
 <pre><code><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────</span></span>
 <span class="co">#&gt;  <span style="color: #555555; font-style: italic;">setting </span> <span style="color: #555555; font-style: italic;">value</span></span>
@@ -575,35 +746,36 @@
 <span class="co">#&gt;  collate  en_US.UTF-8</span>
 <span class="co">#&gt;  ctype    en_US.UTF-8</span>
 <span class="co">#&gt;  tz       UTC</span>
-<span class="co">#&gt;  date     2022-01-10</span>
-<span class="co">#&gt;  pandoc   2.14.0.3 @ /usr/local/bin/ (via rmarkdown)</span>
+<span class="co">#&gt;  date     2022-03-03</span>
+<span class="co">#&gt;  pandoc   2.17.1.1 @ /usr/local/bin/ (via rmarkdown)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────</span></span>
 <span class="co">#&gt;  <span style="color: #555555; font-style: italic;">package               </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version   </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span>
 <span class="co">#&gt;  abind                    1.4-5      <span style="color: #555555;">2016-07-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  AnnotationDbi          * 1.56.2     <span style="color: #555555;">2021-11-09</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  AnnotationHub            3.2.0      <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  AnnotationHub            3.2.2      <span style="color: #555555;">2022-03-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  assertthat               0.2.1      <span style="color: #555555;">2019-03-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  backports                1.4.1      <span style="color: #555555;">2021-12-13</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  base64enc                0.1-3      <span style="color: #555555;">2015-07-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  basilisk                 1.6.0      <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  basilisk.utils           1.6.0      <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  Biobase                * 2.54.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  BiocFileCache            2.2.0      <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  BiocFileCache            2.2.1      <span style="color: #555555;">2022-01-23</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  BiocGenerics           * 0.40.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  BiocIO                   1.4.0      <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  BiocManager              1.30.16    <span style="color: #555555;">2021-06-15</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  BiocParallel             1.28.3     <span style="color: #555555;">2021-12-09</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  BiocStyle              * 2.22.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  BiocVersion              3.14.0     <span style="color: #555555;">2021-05-19</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  biomaRt                  2.50.1     <span style="color: #555555;">2021-11-21</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  biomaRt                  2.50.3     <span style="color: #555555;">2022-02-03</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  Biostrings               2.62.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  bit                      4.0.4      <span style="color: #555555;">2020-08-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  bit64                    4.0.5      <span style="color: #555555;">2020-08-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  bitops                   1.0-7      <span style="color: #555555;">2021-04-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  blob                     1.2.2      <span style="color: #555555;">2021-07-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  bookdown                 0.24       <span style="color: #555555;">2021-09-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  broom                    0.7.11     <span style="color: #555555;">2022-01-03</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  brio                     1.1.3      <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  broom                    0.7.12     <span style="color: #555555;">2022-01-28</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  BSgenome                 1.62.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  bslib                    0.3.1      <span style="color: #555555;">2021-10-06</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  bumphunter               1.36.0     <span style="color: #555555;">2021-10-27</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
@@ -611,15 +783,15 @@
 <span class="co">#&gt;  car                      3.0-12     <span style="color: #555555;">2021-11-06</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  carData                  3.0-5      <span style="color: #555555;">2022-01-06</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  checkmate                2.0.0      <span style="color: #555555;">2020-02-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  cli                      3.1.0      <span style="color: #555555;">2021-10-27</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  cli                      3.2.0      <span style="color: #555555;">2022-02-14</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  cluster                  2.1.2      <span style="color: #555555;">2021-04-17</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  cmdfun                   1.0.2      <span style="color: #555555;">2020-10-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  codetools                0.2-18     <span style="color: #555555;">2020-11-04</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  colorspace               2.0-2      <span style="color: #555555;">2021-06-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  colorspace               2.0-3      <span style="color: #555555;">2022-02-21</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  cowplot                  1.1.1      <span style="color: #555555;">2020-12-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  crayon                   1.4.2      <span style="color: #555555;">2021-10-29</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  crayon                   1.5.0      <span style="color: #555555;">2022-02-14</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  curl                     4.3.2      <span style="color: #555555;">2021-06-23</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  dasper                 * 1.5.1      <span style="color: #555555;">2022-01-10</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  dasper                 * 1.5.1      <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  data.table               1.14.2     <span style="color: #555555;">2021-09-27</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  DBI                      1.1.2      <span style="color: #555555;">2021-12-20</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  dbplyr                   2.1.1      <span style="color: #555555;">2021-04-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
@@ -631,32 +803,32 @@
 <span class="co">#&gt;  dir.expiry               1.2.0      <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  doRNG                    1.8.2      <span style="color: #555555;">2020-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  downloader               0.4        <span style="color: #555555;">2015-07-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  dplyr                    1.0.7      <span style="color: #555555;">2021-06-18</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  dplyr                    1.0.8      <span style="color: #555555;">2022-02-08</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  ellipsis                 0.3.2      <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  evaluate                 0.14       <span style="color: #555555;">2019-05-28</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  fansi                    1.0.0      <span style="color: #555555;">2022-01-10</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  evaluate                 0.15       <span style="color: #555555;">2022-02-18</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  fansi                    1.0.2      <span style="color: #555555;">2022-01-14</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  farver                   2.1.0      <span style="color: #555555;">2021-02-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  fastmap                  1.1.0      <span style="color: #555555;">2021-01-25</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  filelock                 1.0.2      <span style="color: #555555;">2018-10-05</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  foreach                  1.5.1      <span style="color: #555555;">2020-10-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  foreign                  0.8-81     <span style="color: #555555;">2020-12-22</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  foreach                  1.5.2      <span style="color: #555555;">2022-02-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  foreign                  0.8-82     <span style="color: #555555;">2022-01-13</span> <span style="color: #555555;">[3]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  Formula                  1.2-4      <span style="color: #555555;">2020-10-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  fs                       1.5.2      <span style="color: #555555;">2021-12-08</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  generics                 0.1.1      <span style="color: #555555;">2021-10-25</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  GenomeInfoDb           * 1.30.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  GenomeInfoDbData         1.2.7      <span style="color: #555555;">2022-01-10</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  generics                 0.1.2      <span style="color: #555555;">2022-01-31</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  GenomeInfoDb           * 1.30.1     <span style="color: #555555;">2022-01-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  GenomeInfoDbData         1.2.7      <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  GenomicAlignments        1.30.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  GenomicFeatures        * 1.46.3     <span style="color: #555555;">2021-12-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  GenomicFeatures        * 1.46.5     <span style="color: #555555;">2022-02-27</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  GenomicFiles             1.30.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  GenomicRanges          * 1.46.1     <span style="color: #555555;">2021-11-18</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  GenomicState             0.99.15    <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  GEOquery                 2.62.1     <span style="color: #555555;">2021-11-16</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  GEOquery                 2.62.2     <span style="color: #555555;">2022-01-11</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  ggplot2                  3.3.5      <span style="color: #555555;">2021-06-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  ggpubr                   0.4.0      <span style="color: #555555;">2020-06-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  ggrepel                  0.9.1      <span style="color: #555555;">2021-01-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  ggsci                    2.9        <span style="color: #555555;">2018-05-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  ggsignif                 0.6.3      <span style="color: #555555;">2021-09-09</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  glue                     1.6.0      <span style="color: #555555;">2021-12-17</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  glue                     1.6.2      <span style="color: #555555;">2022-02-24</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  gridExtra                2.3        <span style="color: #555555;">2017-09-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  gtable                   0.3.0      <span style="color: #555555;">2019-03-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  here                     1.0.1      <span style="color: #555555;">2020-12-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
@@ -670,10 +842,10 @@
 <span class="co">#&gt;  httr                     1.4.2      <span style="color: #555555;">2020-07-20</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  interactiveDisplayBase   1.32.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  IRanges                * 2.28.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  iterators                1.0.13     <span style="color: #555555;">2020-10-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  iterators                1.0.14     <span style="color: #555555;">2022-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  jpeg                     0.1-9      <span style="color: #555555;">2021-07-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  jquerylib                0.1.4      <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  jsonlite                 1.7.2      <span style="color: #555555;">2020-12-09</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  jsonlite                 1.8.0      <span style="color: #555555;">2022-02-22</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  KEGGREST                 1.34.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  knitr                    1.37       <span style="color: #555555;">2021-12-16</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  labeling                 0.4.2      <span style="color: #555555;">2020-10-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
@@ -681,10 +853,10 @@
 <span class="co">#&gt;  lattice                  0.20-45    <span style="color: #555555;">2021-09-22</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  latticeExtra             0.6-29     <span style="color: #555555;">2019-12-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  lifecycle                1.0.1      <span style="color: #555555;">2021-09-24</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  limma                    3.50.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
+<span class="co">#&gt;  limma                    3.50.1     <span style="color: #555555;">2022-02-17</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  locfit                   1.5-9.4    <span style="color: #555555;">2020-03-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  lubridate                1.8.0      <span style="color: #555555;">2021-10-07</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  magrittr                 2.0.1      <span style="color: #555555;">2020-11-17</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  magrittr                 2.0.2      <span style="color: #555555;">2022-01-26</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  Matrix                   1.4-0      <span style="color: #555555;">2021-12-08</span> <span style="color: #555555;">[3]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  MatrixGenerics           1.6.0      <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  matrixStats              0.61.0     <span style="color: #555555;">2021-09-17</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
@@ -692,10 +864,10 @@
 <span class="co">#&gt;  memoise                  2.0.1      <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  mime                     0.12       <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  munsell                  0.5.0      <span style="color: #555555;">2018-06-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  nnet                     7.3-16     <span style="color: #555555;">2021-05-03</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  pillar                   1.6.4      <span style="color: #555555;">2021-10-18</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  nnet                     7.3-17     <span style="color: #555555;">2022-01-13</span> <span style="color: #555555;">[3]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  pillar                   1.7.0      <span style="color: #555555;">2022-02-01</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  pkgconfig                2.0.3      <span style="color: #555555;">2019-09-22</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  pkgdown                  <span style="color: #BB00BB; font-weight: bold;">2.0.1.9000</span> <span style="color: #555555;">2022-01-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Github (r-lib/pkgdown@8a77537)</span></span>
+<span class="co">#&gt;  pkgdown                  <span style="color: #BB00BB; font-weight: bold;">2.0.2.9000</span> <span style="color: #555555;">2022-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Github (r-lib/pkgdown@9aae873)</span></span>
 <span class="co">#&gt;  pkgload                  1.2.4      <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  plyr                     1.8.6      <span style="color: #555555;">2020-03-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  plyranges                1.14.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
@@ -706,26 +878,26 @@
 <span class="co">#&gt;  purrr                    0.3.4      <span style="color: #555555;">2020-04-17</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  qvalue                   2.26.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  R6                       2.5.1      <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  ragg                     1.2.1      <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  ragg                     1.2.2      <span style="color: #555555;">2022-02-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  rappdirs                 0.3.3      <span style="color: #555555;">2021-01-31</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  RColorBrewer             1.1-2      <span style="color: #555555;">2014-12-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  Rcpp                     1.0.7      <span style="color: #555555;">2021-07-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  RCurl                    1.98-1.5   <span style="color: #555555;">2021-09-17</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  readr                    2.1.1      <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  Rcpp                     1.0.8      <span style="color: #555555;">2022-01-13</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  RCurl                    1.98-1.6   <span style="color: #555555;">2022-02-08</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  readr                    2.1.2      <span style="color: #555555;">2022-01-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  recount                  1.20.0     <span style="color: #555555;">2021-10-27</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt;  RefManageR             * 1.3.0      <span style="color: #555555;">2020-11-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  rentrez                  1.2.3      <span style="color: #555555;">2020-11-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  reshape2                 1.4.4      <span style="color: #555555;">2020-04-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  restfulr                 0.0.13     <span style="color: #555555;">2017-08-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  reticulate               1.22       <span style="color: #555555;">2021-09-17</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  reticulate               1.24       <span style="color: #555555;">2022-01-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  rjson                    0.2.21     <span style="color: #555555;">2022-01-09</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  rlang                    0.4.12     <span style="color: #555555;">2021-10-18</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  rmarkdown                2.11       <span style="color: #555555;">2021-09-14</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  rlang                    1.0.1      <span style="color: #555555;">2022-02-03</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  rmarkdown                2.12       <span style="color: #555555;">2022-03-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  rngtools                 1.5.2      <span style="color: #555555;">2021-09-20</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  rpart                    4.1-15     <span style="color: #555555;">2019-04-12</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  rpart                    4.1.16     <span style="color: #555555;">2022-01-24</span> <span style="color: #555555;">[3]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  rprojroot                2.0.2      <span style="color: #555555;">2020-11-15</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  Rsamtools                2.10.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  RSQLite                  2.2.9      <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  RSQLite                  2.2.10     <span style="color: #555555;">2022-02-17</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  rstatix                  0.7.0      <span style="color: #555555;">2021-02-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  rstudioapi               0.13       <span style="color: #555555;">2020-11-12</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  rtracklayer              1.54.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
@@ -737,13 +909,13 @@
 <span class="co">#&gt;  stringi                  1.7.6      <span style="color: #555555;">2021-11-29</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  stringr                  1.4.0      <span style="color: #555555;">2019-02-10</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  SummarizedExperiment     1.24.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  survival                 3.2-13     <span style="color: #555555;">2021-08-24</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
-<span class="co">#&gt;  systemfonts              1.0.3      <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  testthat                 3.1.1      <span style="color: #555555;">2021-12-03</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  survival                 3.3-0      <span style="color: #555555;">2022-03-01</span> <span style="color: #555555;">[3]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  systemfonts              1.0.4      <span style="color: #555555;">2022-02-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  testthat                 3.1.2      <span style="color: #555555;">2022-01-20</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  textshaping              0.3.6      <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  tibble                   3.1.6      <span style="color: #555555;">2021-11-07</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  tidyr                    1.1.4      <span style="color: #555555;">2021-09-27</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  tidyselect               1.1.1      <span style="color: #555555;">2021-04-30</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  tidyr                    1.2.0      <span style="color: #555555;">2022-02-01</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  tidyselect               1.1.2      <span style="color: #555555;">2022-02-21</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  tzdb                     0.2.0      <span style="color: #555555;">2021-10-27</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  utf8                     1.2.2      <span style="color: #555555;">2021-07-24</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  VariantAnnotation        1.40.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
@@ -751,12 +923,12 @@
 <span class="co">#&gt;  vroom                    1.5.7      <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  waldo                    0.3.1      <span style="color: #555555;">2021-09-14</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  withr                    2.4.3      <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  xfun                     0.29       <span style="color: #555555;">2021-12-14</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
-<span class="co">#&gt;  XML                      3.99-0.8   <span style="color: #555555;">2021-09-17</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  xfun                     0.30       <span style="color: #555555;">2022-03-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  XML                      3.99-0.9   <span style="color: #555555;">2022-02-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  xml2                     1.3.3      <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  xtable                   1.8-4      <span style="color: #555555;">2019-04-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  XVector                  0.34.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
-<span class="co">#&gt;  yaml                     2.2.1      <span style="color: #555555;">2020-02-01</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
+<span class="co">#&gt;  yaml                     2.3.5      <span style="color: #555555;">2022-02-21</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.1.0)</span></span>
 <span class="co">#&gt;  zlibbioc                 1.40.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; <span style="color: #555555;"> [1] /__w/_temp/Library</span></span>
@@ -775,34 +947,66 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></span></code></pre>
 </div>
-<div class="section level1">
-<h1 id="bibliography">Bibliography<a class="anchor" aria-label="anchor" href="#bibliography"></a>
-</h1>
-<p>This vignette was generated using <em><a href="https://bioconductor.org/packages/3.14/BiocStyle" class="external-link">BiocStyle</a></em> (Oleś, 2021) with <em><a href="https://CRAN.R-project.org/package=knitr" class="external-link">knitr</a></em> (Xie, 2021) and <em><a href="https://CRAN.R-project.org/package=rmarkdown" class="external-link">rmarkdown</a></em> (Allaire, Xie, McPherson, et al., 2021) running behind the scenes.</p>
-<p>Citations made with <em><a href="https://CRAN.R-project.org/package=RefManageR" class="external-link">RefManageR</a></em> (McLean, 2017).</p>
+<div class="section level2">
+<h2 id="bibliography">Bibliography<a class="anchor" aria-label="anchor" href="#bibliography"></a>
+</h2>
+<p>This vignette was generated using <em><a href="https://bioconductor.org/packages/3.14/BiocStyle" class="external-link">BiocStyle</a></em>
+(Oleś, 2021) with <em><a href="https://CRAN.R-project.org/package=knitr" class="external-link">knitr</a></em> (Xie,
+2021) and <em><a href="https://CRAN.R-project.org/package=rmarkdown" class="external-link">rmarkdown</a></em>
+(Allaire, Xie, McPherson, et al., 2022) running behind the scenes.</p>
+<p>Citations made with <em><a href="https://CRAN.R-project.org/package=RefManageR" class="external-link">RefManageR</a></em>
+(McLean, 2017).</p>
 <p>
-<a id="bib-allaire2021rmarkdown"></a><a href="#cite-allaire2021rmarkdown">[1]</a><cite> J. Allaire, Y. Xie, J. McPherson, et al. <em>rmarkdown: Dynamic Documents for R</em>. R package version 2.11. 2021. URL: <a href="https://github.com/rstudio/rmarkdown" class="external-link">https://github.com/rstudio/rmarkdown</a>.</cite>
+<a id="bib-allaire2022rmarkdown"></a><a href="#cite-allaire2022rmarkdown">[1]</a><cite>
+J. Allaire, Y. Xie, J. McPherson, et al. <em>rmarkdown: Dynamic
+Documents for R</em>. R package version 2.12. 2022. URL:
+<a href="https://github.com/rstudio/rmarkdown" class="external-link">https://github.com/rstudio/rmarkdown</a>.</cite>
 </p>
 <p>
-<a id="bib-dzhang2022detecting"></a><a href="#cite-dzhang2022detecting">[2]</a><cite> dzhang32. <em>Detecting abberant splicing events from RNA-sequencing data</em>. <a href="https://github.com/dzhang32/dasper" class="external-link uri">https://github.com/dzhang32/dasper</a> - R package version 1.5.1. 2022. DOI: <a href="https://doi.org/10.18129/B9.bioc.dasper" class="external-link">10.18129/B9.bioc.dasper</a>. URL: <a href="http://www.bioconductor.org/packages/dasper" class="external-link">http://www.bioconductor.org/packages/dasper</a>.</cite>
+<a id="bib-dzhang2022detecting"></a><a href="#cite-dzhang2022detecting">[2]</a><cite>
+dzhang32. <em>Detecting abberant splicing events from RNA-sequencing
+data</em>. <a href="https://github.com/dzhang32/dasper" class="external-link uri">https://github.com/dzhang32/dasper</a> - R package version
+1.5.1. 2022. DOI:
+<a href="https://doi.org/10.18129/B9.bioc.dasper" class="external-link">10.18129/B9.bioc.dasper</a>.
+URL:
+<a href="http://www.bioconductor.org/packages/dasper" class="external-link">http://www.bioconductor.org/packages/dasper</a>.</cite>
 </p>
 <p>
-<a id="bib-mclean2017refmanager"></a><a href="#cite-mclean2017refmanager">[3]</a><cite> M. W. McLean. “RefManageR: Import and Manage BibTeX and BibLaTeX References in R”. In: <em>The Journal of Open Source Software</em> (2017). DOI: <a href="https://doi.org/10.21105/joss.00338" class="external-link">10.21105/joss.00338</a>.</cite>
+<a id="bib-mclean2017refmanager"></a><a href="#cite-mclean2017refmanager">[3]</a><cite>
+M. W. McLean. “RefManageR: Import and Manage BibTeX and BibLaTeX
+References in R”. In: <em>The Journal of Open Source Software</em>
+(2017). DOI:
+<a href="https://doi.org/10.21105/joss.00338" class="external-link">10.21105/joss.00338</a>.</cite>
 </p>
 <p>
-<a id="bib-ole2021biocstyle"></a><a href="#cite-ole2021biocstyle">[4]</a><cite> A. Oleś. <em>BiocStyle: Standard styles for vignettes and other Bioconductor documents</em>. R package version 2.22.0. 2021. URL: <a href="https://github.com/Bioconductor/BiocStyle" class="external-link">https://github.com/Bioconductor/BiocStyle</a>.</cite>
+<a id="bib-ole2021biocstyle"></a><a href="#cite-ole2021biocstyle">[4]</a><cite>
+A. Oleś. <em>BiocStyle: Standard styles for vignettes and other
+Bioconductor documents</em>. R package version 2.22.0. 2021. URL:
+<a href="https://github.com/Bioconductor/BiocStyle" class="external-link">https://github.com/Bioconductor/BiocStyle</a>.</cite>
 </p>
 <p>
-<a id="bib-2021language"></a><a href="#cite-2021language">[5]</a><cite> R Core Team. <em>R: A Language and Environment for Statistical Computing</em>. R Foundation for Statistical Computing. Vienna, Austria, 2021. URL: <a href="https://www.R-project.org/" class="external-link">https://www.R-project.org/</a>.</cite>
+<a id="bib-2021language"></a><a href="#cite-2021language">[5]</a><cite>
+R Core Team. <em>R: A Language and Environment for Statistical
+Computing</em>. R Foundation for Statistical Computing. Vienna, Austria,
+2021. URL:
+<a href="https://www.R-project.org/" class="external-link">https://www.R-project.org/</a>.</cite>
 </p>
 <p>
-<a id="bib-wickham2011testthat"></a><a href="#cite-wickham2011testthat">[6]</a><cite> H. Wickham. “testthat: Get Started with Testing”. In: <em>The R Journal</em> 3 (2011), pp. 5–10. URL: <a href="https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf" class="external-link">https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf</a>.</cite>
+<a id="bib-wickham2011testthat"></a><a href="#cite-wickham2011testthat">[6]</a><cite>
+H. Wickham. “testthat: Get Started with Testing”. In: <em>The R
+Journal</em> 3 (2011), pp. 5–10. URL:
+<a href="https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf" class="external-link">https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf</a>.</cite>
 </p>
 <p>
-<a id="bib-wickham2021sessioninfo"></a><a href="#cite-wickham2021sessioninfo">[7]</a><cite> H. Wickham, W. Chang, R. Flight, et al. <em>sessioninfo: R Session Information</em>. <a href="https://github.com/r-lib/sessioninfo#readme" class="external-link uri">https://github.com/r-lib/sessioninfo#readme</a>, <a href="https://r-lib.github.io/sessioninfo/" class="external-link uri">https://r-lib.github.io/sessioninfo/</a>. 2021.</cite>
+<a id="bib-wickham2021sessioninfo"></a><a href="#cite-wickham2021sessioninfo">[7]</a><cite>
+H. Wickham, W. Chang, R. Flight, et al. <em>sessioninfo: R Session
+Information</em>. <a href="https://github.com/r-lib/sessioninfo#readme" class="external-link uri">https://github.com/r-lib/sessioninfo#readme</a>, <a href="https://r-lib.github.io/sessioninfo/" class="external-link uri">https://r-lib.github.io/sessioninfo/</a>. 2021.</cite>
 </p>
 <p>
-<a id="bib-xie2021knitr"></a><a href="#cite-xie2021knitr">[8]</a><cite> Y. Xie. <em>knitr: A General-Purpose Package for Dynamic Report Generation in R</em>. R package version 1.37. 2021. URL: <a href="https://yihui.org/knitr/" class="external-link">https://yihui.org/knitr/</a>.</cite>
+<a id="bib-xie2021knitr"></a><a href="#cite-xie2021knitr">[8]</a><cite>
+Y. Xie. <em>knitr: A General-Purpose Package for Dynamic Report
+Generation in R</em>. R package version 1.37. 2021. URL:
+<a href="https://yihui.org/knitr/" class="external-link">https://yihui.org/knitr/</a>.</cite>
 </p>
 </div>
   </div>
@@ -824,7 +1028,8 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.9000.</p>
 </div>
 
       </footer>

@@ -79,11 +79,19 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The aim of <code>dasper</code> is to <strong>d</strong>etect <strong>a</strong>berrant <strong>sp</strong>licing <strong>e</strong>vents from <strong>R</strong>NA-seq data. By comparing patient RNA-seq data to a set of controls, <code>dasper</code> will score each splicing event in the patient representing the degree to which that splicing event looks abnormal. For a detailed guide on the usage of <code>dasper</code>, check out the vignette <a href="https://dzhang32.github.io/dasper/articles/dasper.html" class="external-link">here</a>.</p>
+<p>The aim of <code>dasper</code> is to <strong>d</strong>etect
+<strong>a</strong>berrant <strong>sp</strong>licing
+<strong>e</strong>vents from <strong>R</strong>NA-seq data. By comparing
+patient RNA-seq data to a set of controls, <code>dasper</code> will
+score each splicing event in the patient representing the degree to
+which that splicing event looks abnormal. For a detailed guide on the
+usage of <code>dasper</code>, check out the vignette <a href="https://dzhang32.github.io/dasper/articles/dasper.html" class="external-link">here</a>.</p>
 <div class="section level2">
 <h2 id="installation-instructions">Installation instructions<a class="anchor" aria-label="anchor" href="#installation-instructions"></a>
 </h2>
-<p>Get the latest stable <code>R</code> release from <a href="http://cran.r-project.org/" class="external-link">CRAN</a>. Then install <code>dasper</code> from <a href="http://bioconductor.org/" class="external-link">Bioconductor</a> using the following code:</p>
+<p>Get the latest stable <code>R</code> release from <a href="http://cran.r-project.org/" class="external-link">CRAN</a>. Then install
+<code>dasper</code> from <a href="http://bioconductor.org/" class="external-link">Bioconductor</a> using the following
+code:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
     <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
@@ -97,7 +105,9 @@
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
-<p>Below is the citation output from using <code>citation('dasper')</code> in R. Please run this yourself to check for any updates on how to cite <strong>dasper</strong>.</p>
+<p>Below is the citation output from using
+<code>citation('dasper')</code> in R. Please run this yourself to check
+for any updates on how to cite <strong>dasper</strong>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"dasper"</span><span class="op">)</span>, bibtex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; </span>
@@ -133,25 +143,43 @@
 <span class="co">#&gt;     doi = {10.1101/TODO},</span>
 <span class="co">#&gt;     url = {https://www.biorxiv.org/content/10.1101/TODO},</span>
 <span class="co">#&gt;   }</span></code></pre></div>
-<p>Please note that the <code>dasper</code> was only made possible thanks to many other R and bioinformatics software authors, which are cited either in the vignettes and/or the paper(s) describing this package.</p>
+<p>Please note that the <code>dasper</code> was only made possible
+thanks to many other R and bioinformatics software authors, which are
+cited either in the vignettes and/or the paper(s) describing this
+package.</p>
 </div>
 <div class="section level2">
 <h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
 </h2>
-<p>Please note that the <code>dasper</code> project is released with a <a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+<p>Please note that the <code>dasper</code> project is released with a
+<a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html" class="external-link">Contributor
+Code of Conduct</a>. By contributing to this project, you agree to abide
+by its terms.</p>
 </div>
 <div class="section level2">
 <h2 id="development-tools">Development tools<a class="anchor" aria-label="anchor" href="#development-tools"></a>
 </h2>
 <ul>
-<li>Continuous code testing is possible thanks to <a href="https://www.tidyverse.org/blog/2020/04/usethis-1-6-0/" class="external-link">GitHub actions</a> through <em><a href="https://CRAN.R-project.org/package=usethis" class="external-link">usethis</a></em>, <em><a href="https://CRAN.R-project.org/package=remotes" class="external-link">remotes</a></em>, <em><a href="https://github.com/r-hub/sysreqs" class="external-link">sysreqs</a></em> and <em><a href="https://CRAN.R-project.org/package=rcmdcheck" class="external-link">rcmdcheck</a></em> customized to use <a href="https://www.bioconductor.org/help/docker/" class="external-link">Bioconductor’s docker containers</a> and <em><a href="https://bioconductor.org/packages/3.14/BiocCheck" class="external-link">BiocCheck</a></em>.</li>
+<li>Continuous code testing is possible thanks to <a href="https://www.tidyverse.org/blog/2020/04/usethis-1-6-0/" class="external-link">GitHub
+actions</a> through <em><a href="https://CRAN.R-project.org/package=usethis" class="external-link">usethis</a></em>,
+<em><a href="https://CRAN.R-project.org/package=remotes" class="external-link">remotes</a></em>,
+<em><a href="https://github.com/r-hub/sysreqs" class="external-link">sysreqs</a></em> and
+<em><a href="https://CRAN.R-project.org/package=rcmdcheck" class="external-link">rcmdcheck</a></em>
+customized to use <a href="https://www.bioconductor.org/help/docker/" class="external-link">Bioconductor’s docker
+containers</a> and <em><a href="https://bioconductor.org/packages/3.14/BiocCheck" class="external-link">BiocCheck</a></em>.</li>
 <li>Code coverage assessment is possible thanks to <a href="https://codecov.io/gh" class="external-link">codecov</a> and <em><a href="https://CRAN.R-project.org/package=covr" class="external-link">covr</a></em>.</li>
-<li>The <a href="http://dzhang32.github.io/dasper" class="external-link">documentation website</a> is automatically updated thanks to <em><a href="https://CRAN.R-project.org/package=pkgdown" class="external-link">pkgdown</a></em>.</li>
+<li>The <a href="http://dzhang32.github.io/dasper" class="external-link">documentation
+website</a> is automatically updated thanks to <em><a href="https://CRAN.R-project.org/package=pkgdown" class="external-link">pkgdown</a></em>.</li>
 <li>The code is styled automatically thanks to <em><a href="https://CRAN.R-project.org/package=styler" class="external-link">styler</a></em>.</li>
-<li>The documentation is formatted thanks to <em><a href="https://CRAN.R-project.org/package=devtools" class="external-link">devtools</a></em> and <em><a href="https://CRAN.R-project.org/package=roxygen2" class="external-link">roxygen2</a></em>.</li>
+<li>The documentation is formatted thanks to <em><a href="https://CRAN.R-project.org/package=devtools" class="external-link">devtools</a></em> and
+<em><a href="https://CRAN.R-project.org/package=roxygen2" class="external-link">roxygen2</a></em>.</li>
 </ul>
 <p>For more details, check the <code>dev</code> directory.</p>
-<p>In particular, I am very grateful to <a href="http://lcolladotor.github.io/" class="external-link">Leo</a> for his time and advice throughout the development of <code>dasper</code>. The transition of <code>dasper</code> Bioconductor-friendly package was made possible thanks to his <em><a href="https://bioconductor.org/packages/3.14/biocthis" class="external-link">biocthis</a></em> package.</p>
+<p>In particular, I am very grateful to <a href="http://lcolladotor.github.io/" class="external-link">Leo</a> for his time and advice
+throughout the development of <code>dasper</code>. The transition of
+<code>dasper</code> Bioconductor-friendly package was made possible
+thanks to his <em><a href="https://bioconductor.org/packages/3.14/biocthis" class="external-link">biocthis</a></em>
+package.</p>
 </div>
 </div>
   </div>
@@ -218,7 +246,8 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.9000.</p>
 </div>
 
       </footer>
