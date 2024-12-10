@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![R build status](https://github.com/dzhang32/dasper/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/dzhang32/dasper/actions)
+[![R build status](https://github.com/dzhang32/dasper/actions/workflows/check-bioc.yml/badge.svg)](https://github.com/dzhang32/dasper/actions/workflows/check-bioc.yml)
 [![Codecov test coverage](https://codecov.io/gh/dzhang32/dasper/branch/master/graph/badge.svg)](https://codecov.io/gh/dzhang32/dasper?branch=master)
 [![BioC status](http://www.bioconductor.org/shields/build/release/bioc/dasper.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/dasper)
 [![DOI](https://zenodo.org/badge/245168125.svg)](https://zenodo.org/badge/latestdoi/245168125)

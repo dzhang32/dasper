@@ -8,7 +8,7 @@
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![R build
-status](https://github.com/dzhang32/dasper/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/dzhang32/dasper/actions)
+status](https://github.com/dzhang32/dasper/actions/workflows/check-bioc.yml/badge.svg)](https://github.com/dzhang32/dasper/actions/workflows/check-bioc.yml)
 [![Codecov test
 coverage](https://codecov.io/gh/dzhang32/dasper/branch/master/graph/badge.svg)](https://codecov.io/gh/dzhang32/dasper?branch=master)
 [![BioC
